@@ -52,3 +52,71 @@ html {
     padding: 12px 25px;
     font-size: 20px;
 }
+
+.button-link {
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: 0.25s;
+}
+
+.button-link:hover {
+    color: var(--highlighted-color);
+}
+
+
+.navbar-toggler {
+    display: none;
+}
+
+
+/* ------- navbar styling starts here ------- */
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border-bottom: 0.7px solid var(--lightest-black);
+    background-color: var(--primary-bg);
+    padding: 0px 40px;
+}
+
+nav {
+    width: 100%;
+    max-width: 1500px;
+    height: 90px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#logo > img {
+    width: 79px;
+    height: 75px;
+}
+
+.nav-links {
+    list-style: none;
+    display: inline-flex;
+    gap: 24px;
+}
+
+.nav-link a {
+    font-size: 1.2rem;
+    line-height: normal;
+}
+
+/* ------- navbar styling ends here ------- */
+
+
+main {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding-top: 90px;
+}
+
+
+/* -------- hero section styling starts here -------- */
+
