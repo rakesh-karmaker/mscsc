@@ -1,0 +1,54 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i");
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins';
+}
+
+html {
+    scroll-behavior: smooth; /* makes the page link transition smooth */
+}
+
+/* setting the color variables */
+:root {
+    --black: rgb(17, 24, 28);    
+    --light-black : rgba(17, 24, 28, 0.8);
+    --lighter-black : rgba(17, 24, 28, 0.5);
+    --lightest-black : rgba(17, 24, 28, 0.3);
+
+    --primary-bg: rgb(255, 255, 255);
+    --secondary-bg: rgb(245, 248, 252);
+    --third-level-bg: rgb(247, 248, 249);
+
+    --text-primary: rgb(17, 24, 28);
+    --test-secondary: rgba(0, 0, 0, 0.7);
+    --text-white: rgba(249, 249, 249, 0.95);
+
+    --highlighted-color: rgb(59, 130, 246);
+}
+
+
+
+
+/* utility classes */
+
+.highlighted-text {
+    color: var(--highlighted-color);
+}
+
+.secondary-text {
+    color: var(--test-secondary);
+    line-height: 33px;
+}
+
+.primary-button {
+    text-decoration: none;
+    background-color: var(--highlighted-color);
+    color: var(--text-white);
+    padding: 12px 25px;
+    font-size: 20px;
+}
