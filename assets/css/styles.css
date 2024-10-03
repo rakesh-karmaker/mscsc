@@ -34,7 +34,7 @@ html {
 
 
 
-/* utility classes */
+/** utility classes */
 
 .highlighted-text {
     color: var(--highlighted-color);
@@ -49,9 +49,13 @@ html {
     text-decoration: none;
     background-color: var(--highlighted-color);
     color: var(--text-white);
-    padding: 12px 25px;
+    padding: 10px 29px;
     font-size: 20px;
+    border-radius: 5px;
+    font-weight: 500;
 }
+
+
 
 .button-link {
     text-decoration: none;
@@ -61,6 +65,19 @@ html {
 
 .button-link:hover {
     color: var(--highlighted-color);
+}
+
+.col-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.row-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -80,6 +97,7 @@ header {
     border-bottom: 0.7px solid var(--lightest-black);
     background-color: var(--primary-bg);
     padding: 0px 40px;
+    z-index: 9999;
 }
 
 nav {
@@ -107,6 +125,24 @@ nav {
     line-height: normal;
 }
 
+.navbar-toggler {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    font-size: 22px;
+    transition: 0.25s;
+}
+.navbar-toggler:is(:hover, :focus) {
+    background-color: transparent;
+    color: var(--black);
+}
+
+.navbar-toggler:not(:is(:hover, :focus)) {
+    background-color: var(--highlighted-color);
+    color: var(--text-white);
+}
+
 /* ------- navbar styling ends here ------- */
 
 
@@ -114,9 +150,236 @@ main {
     width: 100%;
     max-width: 1500px;
     margin: 0 auto;
-    padding-top: 90px;
+    padding-top: calc(90px + 40px);
 }
 
 
-/* -------- hero section styling starts here -------- */
+/* -------- hero - top section styling starts here -------- */
 
+.hero {
+    width: 100%;
+    height: 100%;
+    min-height: calc(100vh - 90px);
+    gap: 100px;
+    padding: 0px 40px 40px;
+}
+
+.hero-info { 
+    width: 100%;
+    gap: 115px;
+    justify-content: space-between !important; 
+}
+
+
+
+.hero-section-left h1 {
+    max-width: 510px;
+    font-size: 3.5rem;
+    text-transform: uppercase;
+    line-height: 3.3rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+.hero-section-left span { display: block; }
+
+.hero-section-left p {
+    max-width: 590px;
+    font-size: 1.2rem;
+    margin: 25px 0px 25px 0px;
+    font-weight: 450;
+}
+
+
+
+
+.hero-section-right {
+    position: relative;
+    margin-bottom: 50px;
+    margin-left: 105px;
+}
+
+
+.primary-image {
+    width: 600px;
+    height: 450px;
+    border-radius: 41px;
+    object-fit: cover;
+    object-position: center center;
+
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+
+.secondary-image {
+    width: 300px;
+    height: 230px;
+    position: absolute;
+    bottom: -49px;
+    left: -106px;
+    border-radius: 22px;
+    filter: drop-shadow(5px -3px 12.9px rgba(0, 0, 0, 0.25));
+    object-fit: cover;
+    object-position: center center;
+}
+
+/* --------- hero - top section styling ends here -------- */
+
+
+/* -------- hero - bottom section styling starts here -------- */
+.club-stats {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.stats {
+    display: flex;
+    align-items: center;
+    color: var(--text-primary);
+}
+
+.stats-number {
+    font-size: 4.9rem;
+    font-weight: 420;
+}
+
+.stats-name {
+    max-width: 135px;
+    padding-left: 10px;
+    font-size: 1.35rem;
+    line-height: 25px;
+    font-weight: 520;
+}
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 1400px) {
+    .hero-section-left h1 {
+        font-size: 2.5rem;
+        max-width: 400px;
+    }
+
+    .hero-section-left p {
+        max-width: 550px;
+        font-size: 1.1rem;
+        line-height: 25px;
+    }
+
+    .primary-image {
+        width: 500px;
+        height: 350px;
+    }
+
+    .secondary-image {
+        width: 250px;
+        height: 180px;
+    }
+
+
+    .stats-number {
+        font-size: 3.5rem;
+    }
+
+    .stats-name {
+        max-width: 103px;
+        font-size: 1rem;
+        line-height: 20px;
+    }
+}
+
+
+
+@media screen and (max-width: 1150px) {
+    .hero-info {
+        gap: 50px;
+    }
+    .hero-section-right {
+        margin: 0;
+    }
+    .primary-image {
+        width: 430px;
+        height: 330px;
+    }
+    .secondary-image {
+        display: none;
+    }
+}
+
+
+@media screen and (max-width: 960px) {
+    .stats-number {
+        font-size: 3rem;
+    }
+    .stats-name {
+        max-width: 120px;
+        font-size: 0.9rem;
+    }
+    .club-stats {
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .stats {
+        flex-grow: 1;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .primary-image {
+        width: 50vw;
+        height: 40vw;
+        min-width: 300px;
+        min-height: 250px;
+    }
+    .hero-info {
+        flex-direction: column-reverse;
+        gap: 30px;
+    }
+    .hero-section-left {
+        text-align: center;
+    }
+    .hero-section-left h1 {
+        max-width: 100%;
+    }
+}
+
+
+@media screen and (max-width: 800px) {
+    .navbar-toggler {
+        display: block;
+    }
+    nav {
+        position: relative;
+    }
+    .nav-links {
+        flex-direction: column;
+        position: absolute;
+        top: 93px;
+        /* left: -40px; */
+        width: 100%;
+        height: fit-content;
+        background-color: var(--third-level-bg);
+        border-radius: 20px;
+        padding: 20px;
+        gap: 10px;
+    }
+
+    .nav-link a {
+        display: block;
+        padding: 10px 15px;
+        border-radius: 5px;
+    }
+    
+    .nav-link a:hover, .nav-link a.active {
+        color: var(--text-white);
+        background-color: var(--highlighted-color);
+    }
+}
