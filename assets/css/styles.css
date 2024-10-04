@@ -11,6 +11,7 @@
 
 html {
     scroll-behavior: smooth; /* makes the page link transition smooth */
+    scroll-margin-top: -200px;
 }
 
 /* setting the color variables */
@@ -43,6 +44,16 @@ html {
 .secondary-text {
     color: var(--test-secondary);
     line-height: 33px;
+}
+.section-header {
+    font-size: 2.5rem;
+    text-align: center;
+    font-weight: 620;
+    color: var(--black);
+}
+
+.section-sub-header {
+    text-align: center;
 }
 
 .primary-button {
@@ -340,6 +351,15 @@ article.about-article p:not(.sub-heading) {
     gap: 10px;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
+}
+.dpt path {
+    fill: var(--highlighted-color);
+}
+
+.dpt p, .dpt .icon {
+    z-index: 9;
+    transition: 0.2s;
 }
 
 .dpt::before {
@@ -347,18 +367,21 @@ article.about-article p:not(.sub-heading) {
     width: 0%;
     height: 100%;
     position: absolute;
+    z-index: 9;
     left: 0;
+    top: 0;
     background: var(--highlighted-color);
     transition: 0.25s;
 }
 
-.dpt:hover + .dpt::before {
+.dpt:hover:before {
     width: 100%;
 }
-
-.dpt > img {
-    width: 108px;
-    height: auto;
+.dpt:hover path {
+    fill: var(--text-white);
+}
+.dpt:hover p {
+    color: var(--text-white);
 }
 
 
@@ -579,5 +602,20 @@ article.about-article p:not(.sub-heading) {
     .images > img {
         width: 40vw;
         height: 39vw;
+    }
+}
+
+
+@media screen and (max-width: 450px) {
+    p.secondary-text {
+        font-size: 0.8rem;
+        line-height: 18px;
+    }
+    .images > img {
+        width: 100%;
+        height: auto;
+    }
+    .section-header {
+        font-size: 2rem !important;
     }
 }
