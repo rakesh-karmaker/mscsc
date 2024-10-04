@@ -713,11 +713,65 @@ textarea {
 }
 
 #contact button {
-    /* display: block; */
     width: fit-content;
 }
 
+/* ---------------------- contact section ends here -------------------------- */
 
+/* --------------------- footer section starts here ----------------------- */
+
+footer {
+    padding: 20px 40px;
+    height: 100px;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--third-level-bg);
+    border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+
+footer > div {
+    width: 100%;
+    max-width: 1500px;
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+footer p {
+    font-size: 1.11rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.socials {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.socials a {
+    text-decoration: none;
+    font-size: 1.5rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--test-secondary);
+    padding: 10px;
+    background-color: rgb(233, 234, 235);
+    border-radius: 50%;
+    transition: 0.25s;
+}
+
+.socials a:hover {
+    background-color: var(--highlighted-color);
+    color: var(--text-white);
+}
 
 
 
@@ -984,6 +1038,17 @@ textarea {
 
     .achievement img {
         width: 100%;
+    }
+}
+
+@media screen and (max-width: 720px) {
+    footer {
+        height: 100%;
+        padding: 25px 40px;
+    }
+    footer > div {
+        flex-direction: column-reverse;
+        align-items: center;
     }
 }
 
