@@ -1,5 +1,5 @@
 $(document).ready(() => {
-    if ($(window).width <= 900) {
+    if ($(window).width <= 800) {
         $(".nav-links").slideUp(0);
     }
 })
