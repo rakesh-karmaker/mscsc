@@ -378,11 +378,57 @@
             <div class="details">
                 <h2 class="section-header">Contact us</h2>
                 <div class="contacts">
-                    <dic class="contact">
-                        <p class="name"></p>
-                    </dic>
+                    <div class="contact">
+                        <p class="name"><i class="fa-solid fa-phone"></i> Call us</p>
+                        <p class="content">+880 1329-600430</p>
+                    </div>
+
+
+                    <div class="contact">
+                        <p class="name"><i class="fa-solid fa-envelope"></i> Email us</p>
+                        <p class="content">mscscofficial17@gmail.com</p>
+                    </div>
+
+
+                    <div class="contact">
+                        <p class="name"><i class="fa-brands fa-facebook"></i> Facebook</p>
+                        <p class="content">Monipur School & College Science Club - MSCSC</p>
+                    </div>
+
+
+                    <div class="contact">
+                        <p class="name"><i class="fa-brands fa-instagram"></i> Instagram</p>
+                        <p class="content">_mscsclub_</p>
+                    </div>
                 </div>
             </div>
+
+
+            <!-- web3form form to send emails -->
+            <!--! Limit is 250 emails per email address -->
+
+            <form action="https://api.web3forms.com/submit" method="POST">
+
+                <h2 class="section-header">Drop Us A Message</h2>
+
+                <!-- Replace with your Access Key -->
+                <input type="hidden" name="access_key" value="8f2fe1fc-33ad-47bd-86b5-85cffb19a475">
+            
+                <!-- Form Inputs. Each input must have a name="" attribute -->
+                <div class="name-email">
+                    <input type="text" name="name" placeholder="Name" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+
+                <input type="text" name="subject" placeholder="Subject" required>
+                <textarea name="message" placeholder="Write your message" required></textarea>
+            
+                <!-- Honeypot Spam Protection -->
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+            
+                <button type="submit" class="primary-button">Send the message</button>
+            
+            </form>
         </section>
 
     </main>

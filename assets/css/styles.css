@@ -73,6 +73,8 @@ body {
     font-size: 20px;
     border-radius: 5px;
     font-weight: 500;
+    border: none;
+    cursor: pointer;
 }
 
 
@@ -632,6 +634,95 @@ article.about-article p:not(.sub-heading) {
 }
 
 
+/* ------------------ executives part ends here ------------- */
+
+
+/* ------------------ contact part starts here ------------- */
+
+#contact {
+    padding: 70px 40px;
+    height: 100%;
+    width: 100vw;
+    max-width: 1500px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 50px;
+}
+
+#contact .section-header {
+    margin-bottom: 20px;
+    font-size: 2.4rem;
+    font-weight: 550;
+    text-align: left;
+    text-transform: capitalize;
+    line-height: 35px;
+}
+
+.contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 30px;
+    flex: 1;
+}
+.name > i {
+    color: var(--highlighted-color);
+}
+
+.name {
+    font-size: 1.2rem;
+    font-weight: 450;
+    text-transform: uppercase;
+}
+
+.content {
+    font-size: 1.05rem;
+    color: var(--test-secondary);
+}
+
+
+form {
+    max-width: 600px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* input {} */
+
+.name-email {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+}
+
+input:not([type="submit"]), textarea {
+    width: 100%;
+    border: none;
+    border-bottom: 1.5px solid var(--light-black);
+    padding-left: 3px;
+    font-size: 1.2rem;
+
+}
+
+textarea {
+    max-width: inherit;
+    height: 150px;
+}
+
+#contact button {
+    /* display: block; */
+    width: fit-content;
+}
+
+
+
+
+
+
+
 @media screen and (max-width: 1400px) {
     .hero {
         min-height: auto;
@@ -772,6 +863,9 @@ article.about-article p:not(.sub-heading) {
         flex-grow: 1;
         justify-content: center;
     }
+    #contact .section-header {
+        font-size: 2rem;
+    }
 }
 
 @media screen and (max-width: 900px) {
@@ -811,6 +905,20 @@ article.about-article p:not(.sub-heading) {
     .images > img {
         width: 240px;
         height: 230px;
+    }
+    
+    #contact {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #contact .section-header {
+        text-align: center;
+    }
+    #contact button {
+        width: 100%;
     }
 }
 
@@ -930,5 +1038,8 @@ article.about-article p:not(.sub-heading) {
     }
     .swiper-slide {
         width: 250px;
+    }
+    .name-email {
+        flex-direction: column;
     }
 }
