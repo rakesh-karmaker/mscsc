@@ -1,8 +1,35 @@
+
 $(document).ready(() => {
-    if ($(window).width <= 800) {
-        $(".nav-links").slideUp(0);
+    if ($(window).width() <= 800) {
+        navLink();
     }
 })
+
+
+const removeActiveClass = (ele) => {
+    for (let i = 0; i < $(".button-link").length; i++) {
+        const selectedEle = $(`.button-link:nth-child(${i + 1})`);
+        if (selectedEle.text() == ($(ele).text())) {
+            selectedEle.addClass("active");
+            continue;
+        }
+        else {
+            $(`.button-link:nth-child(${i + 1})`).removeClass("active");
+        }
+    }
+}
+
+const navLink = () => {
+    $(".nav-links").slideUp(0);
+    
+    $(".button-link").click(() => {
+        navLink();
+        removeActiveClass(this);
+        $(this).addClass("active");
+    })
+
+}
+
 
 $(".navbar-toggler").click(() => {
     $(".nav-links").slideToggle("fast");
