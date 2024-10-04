@@ -35,7 +35,7 @@
                 </li>
 
                 <li class="nav-link">
-                    <a href="#events" class="button-link">Events</a>
+                    <a href="#event" class="button-link">Events</a>
                 </li>
 
                 <li class="nav-link">
@@ -230,9 +230,9 @@
             <h2 class="section-header">our events</h2>
             <p class="section-sub-header secondary-text">Stunning events and fests organized by us</p>
 
-            <div class="event-status-nav">
+            <div class="event-status-nav row-center">
                 <button class="happened">Happened</button>
-                <button class="all">All</button>
+                <button class="all nav-active">All</button>
                 <button class="upcoming">Upcoming</button>
             </div>
 
@@ -242,19 +242,85 @@
                 <!-- Additional required wrapper -->
                 <div class="swiper-wrapper">
                 <!-- Slides -->
-                <div class="swiper-slide">Slide 1</div>
-                <div class="swiper-slide">Slide 2</div>
-                <div class="swiper-slide">Slide 3</div>
+                <div class="swiper-slide" status="upcoming">
+                    <img src="./assets/images/event-posters/psandsd.png" alt="A poster of Problem solving & Skill development workshop">
+                    <article>
+                        <p class="event-tags"><span>Workshop</span><span>Upcoming</span></p>
+                        <h3>Problem solving & Skill development</h3>
+                        <p class="secondary-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type. </p>
+                        <a href="https://www.facebook.com/MSCSC2014/posts/pfbid0ygme31byWB7UpNMM3qzt9f2gpSayw78Sxq6Mca2xkzT9hxFnyYgksnbJSa2xA3N6l" target="_blank">Learn more <i class="fa-solid fa-arrow-right"></i></a>
+                    </article>
                 </div>
-                <!-- If we need pagination -->
+
+
+                <div class="swiper-slide" status="happened">
+                    <img src="./assets/images/event-posters/newtonian.png" alt="a poster of Newtonian mechanics workshop">
+                    <article>
+                        <p class="event-tags"><span>Workshop</span><span>Happened</span></p>
+                        <h3>Newtonian mechanics</h3>
+                        <p class="secondary-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type. </p>
+                        <a href="https://www.facebook.com/MSCSC2014/posts/pfbid02F8QKrKpnuGZQZAVyffqN5x9HDQgdz4kWhaGUUMHfitbGpJNpt7omtbSdfQ8LWnvbl" target="_blank">Learn more <i class="fa-solid fa-arrow-right"></i></a>
+                    </article>
+                </div>
+
+
+                <div class="swiper-slide" status="happened">
+                    <img src="./assets/images/event-posters/intraschool-2023.png" alt="A poster of Intraschool exploration fest">
+                    <article>
+                        <p class="event-tags"><span>Fest</span><span>Happened</span></p>
+                        <h3>Intraschool exploration (2023)</h3>
+                        <p class="secondary-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type. </p>
+                        <a href="https://www.facebook.com/photo/?fbid=544333784400999&set=a.461248859376159" target="_blank">Learn more <i class="fa-solid fa-arrow-right"></i></a>
+                    </article>
+                </div>
+
+
+                <div class="swiper-slide" status="happened">
+                    <img src="./assets/images/event-posters/wave-nature.png" alt="A poster of wave-nature workshop">
+                    <article>
+                        <p class="event-tags"><span>Workshop</span><span>Happened</span></p>
+                        <h3>Wave nature of light</h3>
+                        <p class="secondary-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type. </p>
+                        <a href="https://www.facebook.com/MSCSC2014/posts/pfbid02n9K1ySBMAbQ7TNHWC6gHpBWLxHVdtQvaTeo4v3QrwgftMGYJcqMXrCMWsigDVutyl" target="_blank">Learn more <i class="fa-solid fa-arrow-right"></i></a>
+                    </article>
+                </div>
+                <!-- slides end here -->
+
+                </div>
+                
                 <div class="swiper-pagination"></div>
-            
-                <!-- If we need navigation buttons -->
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>  
+            </div>
+        </section>
+
+
+        <section id="achievements">
+            <h2 class="section-heading">CLUB ACHIEVEMENTS</h2>
+            <p class="section-sub-heading">Achievements earned by our club members </p>
+
+            <div class="achievements">
+
+                <article class="achievement">
+                    <img src="./assets/images/achievements/bdmo2nd.png" alt="Got the 1nd runner up in the BDMO">
+                    <h3>1st runners up at BDMO </h3>
+                    <p class="secondary-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, </p>
+                </article>
+
+                <article class="achievement">
+                    <img src="./assets/images/achievements/drmc2nd.png" alt="Got the 1nd runner up in the DRMC poster design">
+                    <h3>2nd at DRMC</h3>
+                    <p class="secondary-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, </p>
+                </article>
+
+                <article class="achievement">
+                    <img src="./assets/images/achievements/1st3rdphysicsoly.png" alt="Got the 1nd runner up in the DRMC poster design">
+                    <h3>1st and 3rd at Extempore Speech, Physics Olympiad </h3>
+                    <p class="secondary-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer.</p>
+                </article>
+
             </div>
 
         </section>
+
     </main>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -262,19 +328,17 @@
     const swiper = new Swiper('.swiper', {
         direction: 'horizontal',
         loop: true,
+        slidesPerView: 'auto',
+        grabCursor: true,
         speed: 400,
         spaceBetween: 100,
         autoplay: {
-            delay: 3000,
+            delay: 2000,
         },
 
         pagination: {
             el: '.swiper-pagination',
-        },
-
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
+            clickable: true,
         },
     });
 </script>
