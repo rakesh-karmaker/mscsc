@@ -10,7 +10,7 @@ const removeActiveClass = (ele) => {
     for (let i = 0; i < $(".button-link").length; i++) {
         const selectedEle = $(`.button-link:nth-child(${i + 1})`);
         if (selectedEle.text() == ($(ele).text())) {
-            selectedEle.addClass("active");
+            $(selectedEle).addClass("active");
             continue;
         }
         else {
