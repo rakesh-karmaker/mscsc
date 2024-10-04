@@ -150,7 +150,7 @@ main {
     width: 100%;
     max-width: 1500px;
     margin: 0 auto;
-    padding-top: calc(90px);
+    padding-top: calc(90px + 40px);
 }
 
 
@@ -308,6 +308,10 @@ article.about-article p:not(.sub-heading) {
 
 /* ------------------- departments part starts here ---------------- */
 
+.dpts {
+    width: 100%;
+}
+
 .dpts h2 {
     font-size: 3rem;
     line-height: 45px;
@@ -319,22 +323,39 @@ article.about-article p:not(.sub-heading) {
 
 .dpt-container {
     width: 100%;
-    gap: 40px;
+    gap: 0.75rem;
     justify-content: space-around;
     flex-wrap: wrap;
 }
 
 .dpt {
-    flex-grow: 1;
     list-style: none;
-    min-width: 250px;
+    min-width: 160px;
     min-height: 230px;
+    flex: 1;
     border-radius: 15px;
     background-color: var(--third-level-bg);
     border: 0.5px solid rgba(0, 0, 0, 0.1);
     display: flex;
     gap: 10px;
+    position: relative;
+    overflow: hidden;
 }
+
+.dpt::before {
+    content: '';
+    width: 0%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    background: var(--highlighted-color);
+    transition: 0.25s;
+}
+
+.dpt:hover + .dpt::before {
+    width: 100%;
+}
+
 .dpt > img {
     width: 108px;
     height: auto;
@@ -345,6 +366,9 @@ article.about-article p:not(.sub-heading) {
 
 
 @media screen and (max-width: 1400px) {
+    .hero {
+        min-height: auto;
+    }
     .hero-section-left h1 {
         font-size: 2.5rem;
         max-width: 400px;
