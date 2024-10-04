@@ -561,6 +561,76 @@ article.about-article p:not(.sub-heading) {
     line-height: 20px;
 }
 
+/* ------------------ achievements section ends here --------------- */
+
+/* ------------------ executives part starts here ------------- */
+
+#executives {
+    width: 100%;
+    padding: 70px 40px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background-color: var(--secondary-bg);
+}
+
+.quotes {
+    width: 100%;
+    max-width: 1700px;
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.quote {
+    width: 485px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: var(--third-level-bg);
+    border-top-right-radius: 13px;
+    border-bottom-left-radius: 13px;
+    padding: 30px;
+    position: relative;
+    border: 0.3px solid rgba(0, 0, 0, 0.1);
+}
+
+.member-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.quote img {
+    width: 66px;
+    height: 65px;
+    object-fit: cover;
+    object-position: center center;
+    border-radius: 50%;
+}
+.member-name-position > p:not(.secondary-text) {
+    font-size: 1.2rem;
+    font-weight: 450;
+}
+
+.member-quote {
+    font-size: 0.9rem;
+    opacity: 0.65;
+}
+
+.quote i {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 5rem;
+    color: var(--lightest-black);
+}
+
 
 @media screen and (max-width: 1400px) {
     .hero {
@@ -663,6 +733,10 @@ article.about-article p:not(.sub-heading) {
     .images > img {
         width: 180px;
         height: 176px;
+    }
+
+    .quotes {
+        flex-wrap: wrap;
     }
 }
 
