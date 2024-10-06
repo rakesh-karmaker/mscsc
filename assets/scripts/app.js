@@ -1,34 +1,25 @@
-
-$(document).ready(() => {
-    if ($(window).width() <= 800) {
-        navLink();
-    }
-})
-
-
 const swiper = new Swiper('.swiper', {
     centeredSlides: "auto",
-    loop: true,
-    initialSlide: 0,
+    spaceBetween: 30,
     slidesPerView: "auto",
     grabCursor: true,
     speed: 400,
-    spaceBetween: 40,
+    spaceBetween: 100,
     autoplay: {
         delay: 2000,
     },
-
-    pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-    },
     breakpoints: {
         600: {
-            loop: true,
             centeredSlides: false,
         }
     }
+
 });
+
+
+
+
+
 
 
 
@@ -65,21 +56,26 @@ $(".navbar-toggler").click(() => {
     $(".nav-links").slideToggle("fast");
 })
 
+
+
+
+
+// filter function to filter through te events slide by the status
 const filter = (status) => {
     const states = ["happened", "upcoming", "all"];
+
     for (let i = 0; i < states.length; i++) {
-        const selectedEle = $(`.${states[i]}`);
-        (selectedEle === status) ? selectedEle.addClass("nav-active") : selectedEle.removeClass("nav-active");
+        const state = $(`.${states[i]}`);
+        (state.is($(`.${status}`))) ? state.addClass("nav-active") : state.removeClass("nav-active");
     }
+
+
     if (status === "all") { 
         $(".swiper-slide").css("display", "flex")
-        $(".swiper-slide").slideDown("fast");
     }
     else {
-        $(`.swiper-slide[status='${status}']`).css("display", "flex")
-        $(`.swiper-slide[status='${status}']`).slideDown("fast");
-        $(`.swiper-slide:not([status='${status}'])`).slideUp("fast");
         $(`.swiper-slide:not([status='${status}'])`).css("display", "none");
+        $(`.swiper-slide[status='${status}']`).css("display", "flex")
     }
     swiper.updateSlides();
     swiper.slideTo(0);
@@ -89,3 +85,17 @@ const filter = (status) => {
 $(".happened").click(() => { filter("happened") });
 $(".upcoming").click(() => { filter("upcoming") });
 $(".all").click(() => { filter("all") });
+
+
+
+
+
+
+
+
+
+$(document).ready(() => {
+    if ($(window).width() <= 800) {
+        navLink();
+    }
+})
