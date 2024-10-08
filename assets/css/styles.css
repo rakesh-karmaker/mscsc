@@ -316,9 +316,10 @@ main {
 /* ---------- about us section starts here --------- */
 
 #about { 
+    width: 100%;
+    max-width: 1500px;
     gap: 100px; 
     padding: 40px;
-    max-width: 1500px;
 }
 
 article.about-article {
@@ -326,12 +327,11 @@ article.about-article {
     display: flex;
     max-width: 1500px;
     justify-content: space-between;
-    /* flex-wrap: wrap; */
-    gap: 40px;
+    gap: 70px;
 }
 
 article.about-article > div {
-    max-width: 660px;
+    flex: 1;
 }
 
 .about-left h2 {
@@ -348,8 +348,8 @@ article.about-article p:not(.sub-heading) {
 
 
 .about-img-big {
-    width: 660px;
-    height: 310px;
+    width: 100%;
+    height: auto;
     object-fit: cover;
     border-radius: 13px;
 }
@@ -359,11 +359,12 @@ article.about-article p:not(.sub-heading) {
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
+    gap: 20px;
 }
 
 .images > img {
-    width: 300px;
-    height: 296px;
+    width: calc(50% - 10px);
+    height: auto;
     border-radius: 13px;
 }
 
@@ -851,22 +852,9 @@ footer p {
         line-height: 20px;
     }
 
-    article.about-article > div {
-        max-width: 500px;
-    }
 
     article.about-article {
-        justify-content: space-around;
-    }
-
-    .about-img-big {
-        width: 500px;
-        height: 300px;
-    }
-
-    .images > img {
-        width: 230px;
-        height: 226px;
+        justify-content: space-evenly;
     }
 }
 
@@ -898,24 +886,14 @@ footer p {
         display: none;
     }
 
-    article.about-article > div {
-        max-width: 370px;
+    article.about-article {
+        gap: 30px;
     }
 
     article.about-article p:not(.sub-heading) {
         line-height: 18px;
         font-size: 0.87rem;
         margin: 12px 0px 20px 0px;
-    }
-
-    .about-img-big {
-        width: 370px;
-        height: 200px;
-    }
-
-    .images > img {
-        width: 180px;
-        height: 176px;
     }
 
     .quotes {
@@ -973,9 +951,9 @@ footer p {
         flex-direction: column-reverse;
         gap: 30px;
         width: 100%;
-        height: 100vh;
-        min-height: 700px;
-        max-height: 700px;
+        height: 700px;
+        /* min-height: 700px;
+        max-height: 700px; */
     }
     .hero-section-left {
         width: 100%;
@@ -1007,7 +985,7 @@ footer p {
         width: 100vw;
         /* height: 40px; */
         position: absolute;
-        bottom: -7px;
+        bottom: -8px;
         z-index: -2;
     }
     .curve svg {
@@ -1019,9 +997,9 @@ footer p {
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%;
-        min-height: 700px;
-        max-height: 700px;
+        height: 700px;
+        /* min-height: 700px;
+        max-height: 700px; */
         z-index: -3;
     }
     .primary-image {
@@ -1047,26 +1025,23 @@ footer p {
     .stats {
         padding: 0px 20px;
     }
+    #about {
+        padding: 100px 20px;
+    }
     article.about-article {
         flex-direction: column;
         align-items: center;
     }
 
     article.about-article > div {
-        max-width: 500px;
+        max-width: 600px;
         text-align: center;
     }
 
-    .about-img-big {
-        width: 100%;
-        height: 300px;
+    article.about-article p:not(.sub-heading) {
+        font-size: 1.05rem;
     }
 
-    .images > img {
-        width: 240px;
-        height: 230px;
-    }
-    
     #contact {
         flex-direction: column;
         text-align: center;
@@ -1117,21 +1092,7 @@ footer p {
         gap: 10px;
     }
     article.about-article > div {
-        max-width: 370px;
-    }
-    
-    .about-img-big {
-        width: 100%;
-        height: auto;
-    }
-    
-    .images {
-        gap: 10px;
-    }
-    
-    .images > img {
-        width: 180px;
-        height: 170px;
+        max-width: 520px;
     }
 
     .achievements {
@@ -1185,13 +1146,18 @@ footer p {
         font-size: 2.2rem !important;
     }
 
+    article.about-article p:not(.sub-heading) {
+        font-size: 0.9rem;
+    }
 }
 
 
 @media screen and (max-width: 450px) {
+    .images {
+        gap: 10px;
+    }
     .images > img {
-        width: 40vw;
-        height: 39vw;
+        width: calc(50% - 5px);
     }
     p.secondary-text {
         font-size: 0.8rem;
@@ -1201,10 +1167,6 @@ footer p {
     .hero-section-left h1 {
         font-size: 2.2rem;
         line-height: 33px;
-    }
-    .images > img {
-        width: 100%;
-        height: auto;
     }
     .section-header {
         font-size: 2rem !important;
