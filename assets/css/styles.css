@@ -253,6 +253,13 @@ main {
 
 
 .hero-section-right {
+    --big-image-width: 600px;
+    --big-image-height: 450px;
+    --small-image-width: 300px;
+    --small-image-height: 230px;
+
+    width: var(--big-image-width);
+    height: var(--big-image-height);
     position: relative;
     margin-bottom: 50px;
     margin-left: 105px;
@@ -260,8 +267,8 @@ main {
 
 
 .primary-image {
-    width: 600px;
-    height: 450px;
+    width: var(--big-image-width);
+    height: var(--big-image-height);
     border-radius: 41px;
     object-fit: cover;
     object-position: center center;
@@ -271,16 +278,40 @@ main {
 
 
 .secondary-image {
-    width: 300px;
-    height: 230px;
+    width: var(--small-image-width);
+    height: var(--small-image-height);
     position: absolute;
     bottom: -49px;
     left: -106px;
+    z-index: 99;
     border-radius: 22px;
     filter: drop-shadow(5px -3px 12.9px rgba(0, 0, 0, 0.25));
     object-fit: cover;
     object-position: center center;
 }
+.image-active-1 {
+    bottom: 0;
+    left: 0;
+    width: var(--big-image-width);
+    height: var(--big-image-height);
+    z-index: -1;
+    border-radius: 41px;
+}
+.image-active-2 {
+    width: var(--small-image-width);
+    height: var(--small-image-height);
+    position: absolute;
+    bottom: -49px;
+    left: -106px;
+    z-index: 99;
+    border-radius: 22px;
+}
+
+
+.img-1, .img-2 {
+    transition: 0.24s;
+}
+
 
 /* --------- hero - top section styling ends here -------- */
 
@@ -301,6 +332,15 @@ main {
 .stats-number {
     font-size: 4.4rem;
     font-weight: 420;
+}
+
+.number-value {
+    display: inline-block;
+    width: 83px;
+}
+
+.number-value:not([value = "20"]) {
+    width: 43px;
 }
 
 .stats-name {
@@ -830,16 +870,14 @@ footer p {
         font-size: 1.1rem;
         line-height: 25px;
     }
+    .hero-section-right {
+        --big-image-width: 500px;
+        --big-image-height: 350px;
 
-    .primary-image {
-        width: 500px;
-        height: 350px;
+        --small-image-width: 250px;
+        --small-image-height: 180px;
     }
 
-    .secondary-image {
-        width: 250px;
-        height: 180px;
-    }
 
 
     .stats-number {
@@ -877,10 +915,9 @@ footer p {
     }
     .hero-section-right {
         margin: 0;
-    }
-    .primary-image {
-        width: 430px;
-        height: 330px;
+
+        --big-image-width: 430px;
+        --big-image-height: 330px;
     }
     .secondary-image {
         display: none;
