@@ -44,6 +44,13 @@ const count = (ele) => {
     }, duration);
 }
 
+// const reavel = () => {
+//     $(".intro-word").addClass("intro-word-revealed");
+// }
+// setTimeout(() => {
+//     reavel();
+// }, 100)
+
 
 gsap.fromTo(".stats", {
     y: "50px",
@@ -56,6 +63,16 @@ gsap.fromTo(".stats", {
     delay: 0.1,
     scrollTrigger: ".stats"
 })
+
+// gsap.fromTo(".upper", {
+//     y: "100px",
+//     opacity: 0.2
+// }, {
+//     y: 0,
+//     opacity: 1,
+//     duration: 1,
+//     stagger: 0.1
+// })
 
 
 

@@ -239,8 +239,30 @@ main {
     line-height: 3.3rem;
     color: var(--text-primary);
     font-weight: 600;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
 }
-.hero-section-left span { display: block; }
+.hero-section-left .highlighted-text { display: block; }
+
+/* .intro-word {
+    position: relative;
+
+}
+
+.intro-word::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 3.3rem;
+    background-color: var(--primary-bg);
+    right: 0;
+    z-index: 99;
+    transition: 0.35s ease-out;
+}
+.intro-word-revealed::after {
+    content: "";
+    width: 0px;
+} */
+
 
 .hero-section-left p {
     max-width: 590px;
@@ -267,6 +289,7 @@ main {
 
 
 .primary-image {
+    position: relative;
     width: var(--big-image-width);
     height: var(--big-image-height);
     border-radius: 41px;
@@ -290,6 +313,7 @@ main {
     object-position: center center;
 }
 .image-active-1 {
+    position: relative;
     bottom: 0;
     left: 0;
     width: var(--big-image-width);
@@ -330,21 +354,22 @@ main {
 }
 
 .stats-number {
+    --number-value-1-digit: 43px;
+    --number-value-2-digit: 83px;
     font-size: 4.4rem;
     font-weight: 420;
 }
 
 .number-value {
     display: inline-block;
-    width: 83px;
+    width: var(--number-value-2-digit);
 }
 
 .number-value:not([value = "20"]) {
-    width: 43px;
+    width: var(--number-value-1-digit);
 }
 
 .stats-name {
-    max-width: 135px;
     padding-left: 10px;
     font-size: 1.35rem;
     line-height: 25px;
@@ -882,14 +907,14 @@ footer p {
 
     .stats-number {
         font-size: 3.5rem;
+        --number-value-1-digit: 33px;
+        --number-value-2-digit: 67px;
     }
 
     .stats-name {
-        max-width: 103px;
         font-size: 1rem;
         line-height: 20px;
     }
-
 
     article.about-article {
         justify-content: space-evenly;
@@ -956,9 +981,10 @@ footer p {
 @media screen and (max-width: 960px) {
     .stats-number {
         font-size: 3rem;
+        --number-value-1-digit: 29px;
+        --number-value-2-digit: 56px;
     }
     .stats-name {
-        max-width: 120px;
         font-size: 0.9rem;
     }
     .club-stats {
@@ -988,9 +1014,7 @@ footer p {
         flex-direction: column-reverse;
         gap: 30px;
         width: 100%;
-        height: 700px;
-        /* min-height: 700px;
-        max-height: 700px; */
+        height: clamp(600px, 100vh, 800px);
     }
     .hero-section-left {
         width: 100%;
@@ -1025,18 +1049,14 @@ footer p {
         bottom: -8px;
         z-index: -2;
     }
-    .curve svg {
-        fill: var(--primary-bg)
-    }
+    .curve svg { fill: var(--primary-bg) }
     
     .hero-section-right {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
-        height: 700px;
-        /* min-height: 700px;
-        max-height: 700px; */
+        height: clamp(600px, 100vh, 800px);
         z-index: -3;
     }
     .primary-image {
