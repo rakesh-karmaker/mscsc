@@ -2,11 +2,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 const swiper = new Swiper('.swiper', {
     centeredSlides: "auto",
-    spaceBetween: 30,
     slidesPerView: "auto",
     grabCursor: true,
     speed: 400,
-    spaceBetween: 100,
+    spaceBetween: 50,
     autoplay: {
         delay: 2000,
     },
