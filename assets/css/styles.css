@@ -72,7 +72,6 @@ body {
 
 .primary-button {
     text-decoration: none;
-    /* background-color: var(--highlighted-color); */
     color: var(--text-white);
     padding: 10px 29px;
     font-size: 20px;
@@ -221,7 +220,8 @@ main {
     height: 100%;
     min-height: calc(100vh - 90px);
     gap: 100px;
-    padding: 0px 40px 40px;
+    padding-bottom: 40px;
+    margin: 0px 40px;
 }
 
 .hero-info { 
@@ -233,36 +233,14 @@ main {
 
 
 .hero-section-left h1 {
-    max-width: 510px;
-    font-size: 3.5rem;
+    max-width: 530px;
+    font-size: 3.9rem;
     text-transform: uppercase;
-    line-height: 3.3rem;
+    line-height: 3.5rem;
     color: var(--text-primary);
     font-weight: 600;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
 }
 .hero-section-left .highlighted-text { display: block; }
-
-/* .intro-word {
-    position: relative;
-
-}
-
-.intro-word::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 3.3rem;
-    background-color: var(--primary-bg);
-    right: 0;
-    z-index: 99;
-    transition: 0.35s ease-out;
-}
-.intro-word-revealed::after {
-    content: "";
-    width: 0px;
-} */
-
 
 .hero-section-left p {
     max-width: 590px;
@@ -293,8 +271,6 @@ main {
     width: var(--big-image-width);
     height: var(--big-image-height);
     border-radius: 41px;
-    object-fit: cover;
-    object-position: center center;
 
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
@@ -309,8 +285,6 @@ main {
     z-index: 99;
     border-radius: 22px;
     filter: drop-shadow(5px -3px 12.9px rgba(0, 0, 0, 0.25));
-    object-fit: cover;
-    object-position: center center;
 }
 .image-active-1 {
     position: relative;
@@ -334,6 +308,9 @@ main {
 
 .img-1, .img-2 {
     transition: 0.24s;
+    cursor: grab;
+    object-fit: cover;
+    object-position: center center;
 }
 
 
@@ -384,7 +361,7 @@ main {
     width: 100%;
     max-width: 1500px;
     gap: 100px; 
-    padding: 40px;
+    padding: 40px 0px;
 }
 
 article.about-article {
@@ -450,7 +427,7 @@ article.about-article p:not(.sub-heading) {
 
 .dpt-container {
     width: 100%;
-    gap: 0.75rem;
+    gap: 1.25rem;
     justify-content: space-around;
     flex-wrap: wrap;
 }
@@ -619,6 +596,11 @@ article.about-article p:not(.sub-heading) {
     z-index: 99;
 }
 
+
+/* -------------------- events section ends here ----------- */
+
+
+/* ------------------ achievements section starts here --------------- */
 
 #achievements {
     padding: 70px 40px;
@@ -791,7 +773,6 @@ form {
     gap: 30px;
 }
 
-/* input {} */
 
 .name-email {
     width: 100%;
