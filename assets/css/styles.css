@@ -16,6 +16,7 @@ html {
 #hero,
 #about,
 #event,
+#articles,
 #executives,
 #contact {
   scroll-margin-top: 100px;
@@ -173,25 +174,40 @@ nav {
   display: inline-flex;
   gap: 24px;
   position: relative;
+  cursor: pointer;
 }
 
 .activities {
   display: block;
   position: absolute;
-  top: 60px;
-  left: -10px;
-  background-color: var(--third-level-bg);
+  top: 30px;
+  margin-left: -10px;
+  background-color: var(--primary-bg);
   width: fit-content;
-  height: fit-content;
-  padding: 20px 30px 10px 20px;
-  border: 0.2px solid rgba(0, 0, 0, 0.1);
-  border-radius: 3px;
+  height: 0px;
+  padding: 0px 30px 0px 20px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 14px 12px;
+  overflow: hidden;
+  transition: 0.25s;
+}
+
+.button-link[dropdown="true"]:hover ~ .activities,
+.activities:hover {
+  padding-top: 30px;
+  padding-bottom: 20px;
+  height: calc(58px + 30px + 20px);
 }
 
 .nav-link a,
 .nav-link p {
   font-size: 1.2rem;
   line-height: normal;
+}
+
+.nav-link i {
+  font-size: 1.05rem;
+  opacity: 0.7;
 }
 
 .navbar-toggler {
