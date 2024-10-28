@@ -53,6 +53,11 @@ const observer = new IntersectionObserver(
           $(`.nav-link a[href='#${active[0]}']`).removeClass("active");
           active.pop(active[0]);
         }
+
+        id == "event" || id == "articles"
+          ? $(`.nav-link:has(ul.activities) > a`).addClass("active")
+          : $(`.nav-link:has(ul.activities) > a`).removeClass("active");
+
         active.push(id);
         $(`.nav-link a[href='#${id}']`).addClass("active");
       }
