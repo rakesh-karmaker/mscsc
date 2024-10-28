@@ -39,12 +39,33 @@ const count = (ele) => {
   }, duration);
 };
 
-// const reavel = () => {
-//     $(".intro-word").addClass("intro-word-revealed");
-// }
-// setTimeout(() => {
-//     reavel();
-// }, 100)
+//! nav-link status change on section scroll
+
+const sections = document.querySelectorAll(".page-section");
+let active = [];
+
+const observer = new IntersectionObserver(
+  (entities) => {
+    entities.forEach((entity) => {
+      const id = entity.target.id;
+      if (entity.isIntersecting) {
+        if (active.length > 0) {
+          $(`.nav-link a[href='#${active[0]}']`).removeClass("active");
+          active.pop(active[0]);
+        }
+        active.push(id);
+        $(`.nav-link a[href='#${id}']`).addClass("active");
+      }
+    });
+  },
+  {
+    threshold: 0.5,
+  }
+);
+
+sections.forEach((section) => {
+  observer.observe(section);
+});
 
 gsap.fromTo(
   ".stats",
@@ -61,16 +82,6 @@ gsap.fromTo(
     scrollTrigger: ".stats",
   }
 );
-
-// gsap.fromTo(".upper", {
-//     y: "100px",
-//     opacity: 0.2
-// }, {
-//     y: 0,
-//     opacity: 1,
-//     duration: 1,
-//     stagger: 0.1
-// })
 
 $(".img-2").click(() => {
   $(".img-2").addClass("image-active-1");
