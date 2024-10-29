@@ -872,7 +872,16 @@ footer p {
 }
 
 /* ---------------- responsive part starts here ---------------- */
-
+@media screen and (max-width: 1600px) {
+  #about,
+  #event,
+  #articles,
+  #contact,
+  .hero {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
 @media screen and (max-width: 1400px) {
   .hero {
     min-height: auto;
