@@ -802,11 +802,6 @@ article.about-article p:not(.sub-heading) {
 .member-quote {
   font-size: 0.95rem;
   opacity: 0.55;
-  display: -webkit-box;
-  -webkit-line-clamp: 2; /* number of lines to show */
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .member-socials {
@@ -1023,6 +1018,14 @@ footer p {
   .date {
     font-size: 0.85rem;
   }
+
+  .quotes {
+    justify-content: space-evenly;
+  }
+  .quote {
+    align-items: center;
+    text-align: center;
+  }
 }
 
 @media screen and (max-width: 1150px) {
@@ -1214,6 +1217,12 @@ footer p {
   }
 }
 
+@media screen and (max-width: 860px) {
+  .quote {
+    max-width: 35%;
+  }
+}
+
 @media screen and (max-width: 800px) {
   #logo > img {
     width: 50px;
@@ -1333,6 +1342,10 @@ footer p {
 
   article.about-article p:not(.sub-heading) {
     font-size: 0.9rem;
+  }
+
+  .quote {
+    max-width: 330px;
   }
 }
 
