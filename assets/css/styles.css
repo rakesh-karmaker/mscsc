@@ -532,7 +532,7 @@ article.about-article p:not(.sub-heading) {
 
 /* ------------ events section starts here ----------- */
 #event {
-  padding: 70px 0px;
+  padding: 90px 0px;
   height: 100%;
   width: 100vw;
   display: flex;
@@ -541,6 +541,14 @@ article.about-article p:not(.sub-heading) {
   align-items: center;
   background-color: var(--secondary-bg);
   gap: 20px;
+}
+
+#event > div {
+  width: 100%;
+  max-width: var(--max-elements-width);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #event > h2 {
@@ -554,7 +562,7 @@ article.about-article p:not(.sub-heading) {
   border: 0.3px solid var(--lightest-black);
   border-radius: 80px;
   margin-bottom: 50px;
-  margin-top: 30px;
+  /* margin-top: 30px; */
 }
 .event-status-nav > button {
   padding: 4px 14px;
@@ -657,10 +665,10 @@ article.about-article p:not(.sub-heading) {
   gap: 20px;
 }
 
-#articles > a {
+/* #articles > a {
   margin-top: 30px;
   border-radius: 40px;
-}
+} */
 
 .articles {
   width: 100%;
