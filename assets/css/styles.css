@@ -41,7 +41,7 @@ body {
   --third-level-bg: rgb(247, 248, 249);
 
   --text-primary: rgb(17, 24, 28);
-  --test-secondary: rgba(0, 0, 0, 0.7);
+  --text-secondary: rgba(0, 0, 0, 0.7);
   --text-white: rgba(249, 249, 249, 0.95);
 
   --highlighted-color: rgb(59, 130, 246);
@@ -54,7 +54,7 @@ body {
 }
 
 .secondary-text {
-  color: var(--test-secondary);
+  color: var(--text-secondary);
   line-height: 33px;
 }
 
@@ -91,7 +91,7 @@ body {
 
 .section-sub-heading {
   text-align: center;
-  color: var(--test-secondary);
+  color: var(--text-secondary);
 }
 
 .primary-button {
@@ -919,39 +919,39 @@ article.about-article p:not(.sub-heading) {
   margin-bottom: 7px;
 }
 
-.member-quote {
-  font-size: 0.95rem;
-  opacity: 0.55;
-}
-
-/* .member-socials {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-} */
-
 /* ------------------ executives part ends here ------------- */
 
 /* ------------------ contact part starts here ------------- */
 
 #contact {
-  padding: 70px 0px;
+  padding: 100px 0px;
   height: 100%;
   width: 100vw;
   max-width: var(--max-elements-width);
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 50px;
 }
 
 #contact .section-heading {
   margin-bottom: 20px;
+  margin-top: 5px;
   font-size: 2.4rem;
   font-weight: 550;
   text-align: left;
   text-transform: capitalize;
   line-height: 35px;
+}
+
+#contact h3 {
+  font-weight: 450;
+}
+
+#contact .secondary-text {
+  text-align: left;
+  max-width: 36rem;
+  line-height: normal;
 }
 
 .contacts {
@@ -961,6 +961,25 @@ article.about-article p:not(.sub-heading) {
   margin-top: 30px;
   flex: 1;
 }
+
+.contact {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.contact > .icon {
+  min-width: 75px;
+  height: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--highlighted-color);
+  border-radius: 10px;
+  font-size: 2rem;
+  color: var(--text-white);
+}
+
 .name > i {
   color: var(--highlighted-color);
 }
@@ -973,15 +992,27 @@ article.about-article p:not(.sub-heading) {
 
 .content {
   font-size: 1.05rem;
-  color: var(--test-secondary);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: 0.25s;
+}
+
+.content:hover {
+  text-decoration: underline;
+  color: var(--highlighted-color);
+  opacity: 0.8;
 }
 
 form {
   max-width: 600px;
+  min-width: 450px;
+  padding: 50px 40px;
+  border-radius: 10px;
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 30px;
+  gap: 50px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 .name-email {
@@ -997,15 +1028,19 @@ textarea {
   border-bottom: 1.5px solid var(--light-black);
   padding-left: 3px;
   font-size: 1.2rem;
+  padding-bottom: 5px;
+  background-color: transparent;
 }
 
 textarea {
-  max-width: inherit;
+  max-width: 100%;
+  min-width: 100%;
   height: 150px;
+  /* resize: none; */
 }
 
 #contact button {
-  width: fit-content;
+  width: 100%;
   background: transparent;
 }
 
@@ -1055,7 +1090,7 @@ footer p {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: var(--test-secondary);
+  color: var(--text-secondary);
   padding: 10px;
   background-color: rgb(233, 234, 235);
   border-radius: 50%;
@@ -1208,8 +1243,22 @@ footer p {
     flex-grow: 1;
     justify-content: center;
   }
+  #contact {
+    flex-direction: column;
+    text-align: center;
+  }
+  #contact .section-heading,
+  #contact .secondary-text {
+    text-align: center;
+  }
+  .contact {
+    flex-direction: column;
+  }
   #contact .section-heading {
     font-size: 2rem;
+  }
+  form {
+    min-width: 0px;
   }
 }
 
@@ -1456,6 +1505,11 @@ footer p {
 
   .quote {
     max-width: 330px;
+  }
+
+  form {
+    box-shadow: none;
+    padding: 0px;
   }
 }
 
