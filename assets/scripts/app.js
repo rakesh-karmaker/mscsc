@@ -43,6 +43,10 @@ const count = (ele) => {
 
 const sections = document.querySelectorAll(".page-section");
 let active = [];
+let thresHold = 0.55;
+if (window.innerWidth <= 900) {
+  thresHold = 0.3;
+}
 
 const observer = new IntersectionObserver(
   (entities) => {
@@ -64,7 +68,7 @@ const observer = new IntersectionObserver(
     });
   },
   {
-    threshold: 0.55,
+    threshold: thresHold,
   }
 );
 
@@ -116,11 +120,6 @@ const navLink = () => {
       $(".nav-links").slideUp("fast");
     });
   }
-  $(".button-link").click(() => {
-    navLink();
-    removeActiveClass(this);
-    $(this).addClass("active");
-  });
 };
 
 $(".navbar-toggler").click(() => {
