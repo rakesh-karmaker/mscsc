@@ -90,7 +90,7 @@
         <button class="navbar-toggler">
           <i class="fa-solid fa-bars"></i>
         </button>
-        <ul class="nav-links">
+        <ul class="nav-links-container">
           <li class="nav-link">
             <a href="#hero" class="button-link">Home</a>
           </li>
@@ -102,19 +102,17 @@
           <li class="nav-link">
             <a class="button-link" dropdown="true">Activities</a>
             <ul class="activities">
-              <li class="events">
+              <li class="events-link">
                 <a href="#event" class="button-link">Events</a>
               </li>
-              <li class="article">
+              <li class="articles-link">
                 <a href="#articles" class="button-link">Articles</a>
               </li>
             </ul>
           </li>
-
           <li class="nav-link">
             <a href="#executives" class="button-link">Executives</a>
           </li>
-
           <li class="nav-link">
             <a href="#contact" class="button-link">Contact</a>
           </li>
@@ -125,9 +123,9 @@
 
     <main>
       <!-- hero section starts here -->
-      <section class="hero col-center page-section" id="hero">
-        <div class="hero-info row-center">
-          <div class="hero-section-left">
+      <section class="hero-section col-center page-section" id="hero">
+        <div class="hero-section-upper row-center">
+          <div class="hero-section-description">
             <div class="upper">
               <h1>
                 Where
@@ -158,7 +156,7 @@
             </div>
           </div>
 
-          <div class="hero-section-right">
+          <div class="hero-section-images">
             <img
               src="./assets/images/hero-img-1.png"
               alt="Club members are studying in a workshop"
@@ -174,7 +172,7 @@
 
         <!-- Club stats is a section where we can show some stats about the club -->
         <!--! Should change in every year -->
-        <div class="club-stats">
+        <div class="club-stats-container">
           <h3 class="stats">
             <span class="stats-number"
               ><span class="number-value" counted="false" value="5">0</span
@@ -225,8 +223,8 @@
       <!-- about us section starts here -->
       <section id="about" class="col-center page-section">
         <!-- about club article starts here -->
-        <article class="about-article">
-          <div class="about-left">
+        <article class="about-article-container">
+          <div class="about-article-left">
             <h2>About <span class="highlighted-text">MSCSC</span></h2>
             <p class="sub-heading secondary-text">Science & Technology club</p>
 
@@ -245,12 +243,11 @@
             <img
               src="assets/images/about-img-1.png"
               alt="Members are attending the club's workshop"
-              class="about-img-big"
             />
           </div>
 
-          <div class="about-right">
-            <div class="images">
+          <div class="about-article-right">
+            <div>
               <img
                 src="./assets/images/olympiad-exam.png"
                 alt="People are taking the olympiad exam"
@@ -283,7 +280,7 @@
         <!-- about club - article ends here -->
 
         <!-- departments part starts here -->
-        <div class="dpts col-center">
+        <div class="dpts-section col-center">
           <h2 class="section-heading">CLUB DEPARTMENTS</h2>
           <p class="secondary-text section-sub-heading">
             Sectors we are divided into, inside the club
@@ -291,7 +288,6 @@
 
           <ul class="dpt-container row-center">
             <li class="dpt col-center">
-              <!-- <img src="./assets/images/icons/math-icon.svg" alt="Math icon"> -->
               <div class="icon">
                 <svg
                   version="1.1"
@@ -562,8 +558,8 @@
       <!-- about us section ends here -->
 
       <!-- events part start here -->
-      <section id="event" class="page-section">
-        <div>
+      <section id="event" class="page-section col-center">
+        <div class="col-center">
           <div class="section-header">
             <div>
               <h2 class="section-heading">our events</h2>

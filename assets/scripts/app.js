@@ -153,13 +153,13 @@ $(".img-1").click(() => {
 const navLink = () => {
   if ($(window).width() <= 800) {
     $("main").click(() => {
-      $(".nav-links").slideUp("fast");
+      $(".nav-links-container").slideUp("fast");
     });
   }
 };
 
 $(".navbar-toggler").click(() => {
-  $(".nav-links").slideToggle("fast");
+  $(".nav-links-container").slideToggle("fast");
 });
 
 // filter function to filter through te events slide by the status
