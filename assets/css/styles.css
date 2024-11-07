@@ -245,6 +245,7 @@ nav {
   border-radius: 10px;
   font-size: 19px;
   transition: 0.25s;
+  cursor: pointer;
 }
 .navbar-toggler:is(:hover, :focus) {
   background-color: transparent;
@@ -626,12 +627,22 @@ article.about-article p:not(.sub-heading) {
   color: var(--black);
   margin: 20px 0px 15px 0px;
   font-weight: 520;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .swiper-slide article p:not(:has(span)) {
   font-size: 0.8rem;
   line-height: 19px;
   margin-bottom: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 6; /* number of lines to show */
+  line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .swiper-slide article a {
@@ -753,7 +764,6 @@ article.about-article p:not(.sub-heading) {
 
 #executives {
   width: 100%;
-  /* padding: 70px 40px; */
   padding: 130px 0px;
   height: 100%;
   display: flex;
@@ -775,7 +785,7 @@ article.about-article p:not(.sub-heading) {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   gap: 60px;
   position: relative;
 }
@@ -783,6 +793,7 @@ article.about-article p:not(.sub-heading) {
 .executive-member {
   width: min(100%, 300px);
   height: 100%;
+  margin: 0px auto;
   border-radius: 10px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   cursor: pointer;
@@ -1101,8 +1112,9 @@ footer p {
     min-height: auto;
   }
   .hero-section-left h1 {
-    font-size: 2.5rem;
-    max-width: 400px;
+    font-size: 3rem;
+    max-width: 17ch;
+    line-height: 45px;
   }
 
   .hero-section-left p {
