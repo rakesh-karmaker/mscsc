@@ -92,6 +92,54 @@ gsap.fromTo(
   }
 );
 
+gsap.fromTo(
+  ".swiper",
+  {
+    y: "100px",
+    opacity: 0,
+  },
+  {
+    y: 0,
+    opacity: 1,
+    duration: 1,
+    scrollTrigger: ".swiper",
+  }
+);
+
+gsap.utils.toArray(".article").forEach((article) => {
+  gsap.fromTo(
+    article,
+    {
+      y: "100px",
+      opacity: 0.4,
+    },
+    {
+      y: 0,
+      opacity: 1,
+      duration: 1,
+      scrollTrigger: article,
+    }
+  );
+});
+
+gsap.utils.toArray(".executive-member").forEach((executive) => {
+  gsap.fromTo(
+    executive,
+    {
+      scale: 0.7,
+      opacity: 0.5,
+    },
+    {
+      scale: 1,
+      opacity: 1,
+      delay: 0.01,
+      duration: 0.2,
+      ease: "none",
+      scrollTrigger: executive,
+    }
+  );
+});
+
 $(".img-2").click(() => {
   $(".img-2").addClass("image-active-1");
   $(".img-1").addClass("image-active-2");
@@ -101,18 +149,6 @@ $(".img-1").click(() => {
   $(".img-2").removeClass("image-active-1");
   $(".img-1").removeClass("image-active-2");
 });
-
-const removeActiveClass = (ele) => {
-  for (let i = 0; i < $(".button-link").length; i++) {
-    const selectedEle = $(`.button-link:nth-child(${i + 1})`);
-    if (selectedEle.text() == $(ele).text()) {
-      $(selectedEle).addClass("active");
-      continue;
-    } else {
-      $(`.button-link:nth-child(${i + 1})`).removeClass("active");
-    }
-  }
-};
 
 const navLink = () => {
   if ($(window).width() <= 800) {

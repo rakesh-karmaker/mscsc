@@ -754,7 +754,7 @@ article.about-article p:not(.sub-heading) {
 #executives {
   width: 100%;
   /* padding: 70px 40px; */
-  padding: 130px 40px;
+  padding: 130px 0px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -770,7 +770,17 @@ article.about-article p:not(.sub-heading) {
   max-width: var(--max-elements-width);
 }
 
-.executive {
+.executives {
+  margin-top: 3rem;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 60px;
+  position: relative;
+}
+
+.executive-member {
   width: min(100%, 300px);
   height: 100%;
   border-radius: 10px;
@@ -778,19 +788,24 @@ article.about-article p:not(.sub-heading) {
   cursor: pointer;
   transition: 0.25s;
 }
+.executive-member > div {
+  transition: 0.25s;
+}
 
 .executive-upper {
   width: 100%;
   height: 280px;
   position: relative;
+  overflow: hidden;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 .executive-upper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  transition: 0.25s;
 }
 .executive-upper::after {
   content: "";
@@ -846,15 +861,19 @@ article.about-article p:not(.sub-heading) {
   opacity: 0.7;
 }
 
-.executive:hover {
+.executive-member:hover > div {
   transform: translateY(-10px);
 }
 
-.executive:is(:hover) .executive-upper::after {
+.executive-member:is(:hover) .executive-upper img {
+  scale: 1.1;
+}
+
+.executive-member:is(:hover) .executive-upper::after {
   transform: scaleY(100%);
 }
 
-.executive:is(:hover) .member-socials a {
+.executive-member:is(:hover) .member-socials a {
   opacity: 1;
 }
 
@@ -880,43 +899,6 @@ article.about-article p:not(.sub-heading) {
 .executive-lower p.secondary-text {
   font-size: 0.97rem;
   opacity: 0.8;
-}
-
-.quotes {
-  margin-top: 3rem;
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 60px;
-}
-
-.quote {
-  max-width: 355px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.quote img {
-  width: 86px;
-  height: 85px;
-  object-fit: cover;
-  object-position: center center;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-
-.quote p:not(:is(.secondary-text, .member-quote)) {
-  font-size: 1.125rem;
-  font-weight: 470;
-  color: var(--highlighted-color);
-}
-
-.quote p.secondary-text {
-  font-size: 0.9rem;
-  line-height: normal;
-  margin-bottom: 7px;
 }
 
 /* ------------------ executives part ends here ------------- */
@@ -1105,8 +1087,9 @@ footer p {
 /* ---------------- responsive part starts here ---------------- */
 @media screen and (max-width: 1600px) {
   #about,
-  #event,
   #articles,
+  #event > div,
+  #executives > div,
   #contact,
   .hero {
     padding-left: 40px;
@@ -1163,14 +1146,6 @@ footer p {
   .date {
     font-size: 0.85rem;
   }
-
-  .quotes {
-    justify-content: space-evenly;
-  }
-  .quote {
-    align-items: center;
-    text-align: center;
-  }
 }
 
 @media screen and (max-width: 1150px) {
@@ -1197,7 +1172,7 @@ footer p {
     margin: 12px 0px 20px 0px;
   }
 
-  .quotes {
+  .executives {
     flex-wrap: wrap;
   }
 }
@@ -1376,12 +1351,6 @@ footer p {
   }
 }
 
-@media screen and (max-width: 860px) {
-  .quote {
-    max-width: 35%;
-  }
-}
-
 @media screen and (max-width: 800px) {
   #logo > img {
     width: 50px;
@@ -1458,6 +1427,10 @@ footer p {
   .article img {
     width: 100%;
   }
+
+  .executives {
+    justify-content: space-around;
+  }
 }
 
 @media screen and (max-width: 720px) {
@@ -1501,10 +1474,6 @@ footer p {
 
   article.about-article p:not(.sub-heading) {
     font-size: 0.9rem;
-  }
-
-  .quote {
-    max-width: 330px;
   }
 
   form {
