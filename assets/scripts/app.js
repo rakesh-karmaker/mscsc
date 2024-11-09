@@ -1,43 +1,16 @@
 gsap.registerPlugin(ScrollTrigger);
 
-const swiper = new Swiper(".swiper", {
-  centeredSlides: "auto",
-  slidesPerView: "auto",
-  grabCursor: true,
-  speed: 400,
-  spaceBetween: 50,
-  autoplay: {
-    delay: 2000,
-  },
-  breakpoints: {
-    600: {
-      centeredSlides: false,
-    },
-  },
+const navLink = () => {
+  if ($(window).width() <= 800) {
+    $("main").click(() => {
+      $(".nav-links-container").slideUp("fast");
+    });
+  }
+};
+
+$(".navbar-toggler").click(() => {
+  $(".nav-links-container").slideToggle("fast");
 });
-
-const counter = () => {
-  const numberValues = document.querySelectorAll(".number-value");
-  numberValues.forEach((numberValue) => {
-    count(numberValue);
-    numberValue.setAttribute("counted", "true");
-  });
-};
-
-const count = (ele) => {
-  let number = 0;
-  const limit = ele.getAttribute("value");
-  const interval = 1000;
-  const duration = Math.floor(interval / limit);
-
-  const counterInterval = setInterval(() => {
-    number++;
-    ele.innerText = number;
-    if (number == limit) {
-      clearInterval(counterInterval);
-    }
-  }, duration);
-};
 
 //! nav-link status change on section scroll
 
@@ -76,6 +49,48 @@ sections.forEach((section) => {
   observer.observe(section);
 });
 
+$(".img-2").click(() => {
+  $(".img-2").addClass("image-active-1");
+  $(".img-1").addClass("image-active-2");
+});
+
+$(".img-1").click(() => {
+  $(".img-2").removeClass("image-active-1");
+  $(".img-1").removeClass("image-active-2");
+});
+
+const counter = () => {
+  const numberObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        count(entry.target);
+        entry.target.setAttribute("counted", "true");
+        numberObserver.unobserve(entry.target);
+      }
+    });
+  });
+
+  const numberValues = document.querySelectorAll(".number-value");
+  numberValues.forEach((numberValue) => {
+    numberObserver.observe(numberValue);
+  });
+};
+
+const count = (ele) => {
+  let number = 0;
+  const limit = ele.getAttribute("value");
+  const interval = 1000;
+  const duration = Math.floor(interval / limit);
+
+  const counterInterval = setInterval(() => {
+    number++;
+    ele.innerText = number;
+    if (number == limit) {
+      clearInterval(counterInterval);
+    }
+  }, duration);
+};
+
 gsap.fromTo(
   ".stats",
   {
@@ -91,6 +106,54 @@ gsap.fromTo(
     scrollTrigger: ".stats",
   }
 );
+
+const swiper = new Swiper(".swiper", {
+  centeredSlides: "auto",
+  slidesPerView: "auto",
+  grabCursor: true,
+  speed: 400,
+  spaceBetween: 50,
+  autoplay: {
+    delay: 2000,
+  },
+  breakpoints: {
+    600: {
+      centeredSlides: false,
+    },
+  },
+});
+
+// filterEventsSlider function to filter through te events slide by the status
+const filterEventsSlider = (status) => {
+  const states = ["happened", "upcoming", "all"];
+
+  for (let i = 0; i < states.length; i++) {
+    const state = $(`.${states[i]}`);
+    state.is($(`.${status}`))
+      ? state.addClass("nav-active")
+      : state.removeClass("nav-active");
+  }
+
+  if (status === "all") {
+    $(".swiper-slide").css("display", "flex");
+  } else {
+    $(`.swiper-slide:not([status='${status}'])`).css("display", "none");
+    $(`.swiper-slide[status='${status}']`).css("display", "flex");
+  }
+  swiper.updateSlides();
+  swiper.slideTo(0);
+  swiper.autoplay.start();
+};
+
+$(".happened").click(() => {
+  filterEventsSlider("happened");
+});
+$(".upcoming").click(() => {
+  filterEventsSlider("upcoming");
+});
+$(".all").click(() => {
+  filterEventsSlider("all");
+});
 
 gsap.fromTo(
   ".swiper",
@@ -138,60 +201,6 @@ gsap.utils.toArray(".executive-member").forEach((executive) => {
       scrollTrigger: executive,
     }
   );
-});
-
-$(".img-2").click(() => {
-  $(".img-2").addClass("image-active-1");
-  $(".img-1").addClass("image-active-2");
-});
-
-$(".img-1").click(() => {
-  $(".img-2").removeClass("image-active-1");
-  $(".img-1").removeClass("image-active-2");
-});
-
-const navLink = () => {
-  if ($(window).width() <= 800) {
-    $("main").click(() => {
-      $(".nav-links-container").slideUp("fast");
-    });
-  }
-};
-
-$(".navbar-toggler").click(() => {
-  $(".nav-links-container").slideToggle("fast");
-});
-
-// filter function to filter through te events slide by the status
-const filter = (status) => {
-  const states = ["happened", "upcoming", "all"];
-
-  for (let i = 0; i < states.length; i++) {
-    const state = $(`.${states[i]}`);
-    state.is($(`.${status}`))
-      ? state.addClass("nav-active")
-      : state.removeClass("nav-active");
-  }
-
-  if (status === "all") {
-    $(".swiper-slide").css("display", "flex");
-  } else {
-    $(`.swiper-slide:not([status='${status}'])`).css("display", "none");
-    $(`.swiper-slide[status='${status}']`).css("display", "flex");
-  }
-  swiper.updateSlides();
-  swiper.slideTo(0);
-  swiper.autoplay.start();
-};
-
-$(".happened").click(() => {
-  filter("happened");
-});
-$(".upcoming").click(() => {
-  filter("upcoming");
-});
-$(".all").click(() => {
-  filter("all");
 });
 
 $(document).ready(() => {
