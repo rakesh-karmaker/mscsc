@@ -1142,16 +1142,15 @@ footer p {
 }
 
 @media screen and (max-width: 900px) {
+  main {
+    padding-top: 0px;
+  }
   .hero-section {
     padding: 0px;
     justify-content: center;
     align-items: center;
   }
-  main {
-    padding-top: 0px;
-  }
   .hero-section-upper {
-    flex-direction: column-reverse;
     gap: 30px;
     width: 100%;
     height: clamp(600px, 100svh, 800px);
@@ -1238,20 +1237,6 @@ footer p {
   article.about-article-container p:not(.sub-heading) {
     font-size: 1.05rem;
   }
-
-  #contact {
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #contact .section-heading {
-    text-align: center;
-  }
-  #contact button {
-    width: 100%;
-  }
 }
 
 @media screen and (max-width: 800px) {
@@ -1271,7 +1256,6 @@ footer p {
     flex-direction: column;
     position: absolute;
     top: 73px;
-    /* left: -40px; */
     width: 100%;
     height: fit-content;
     background-color: var(--third-level-bg);
@@ -1326,14 +1310,6 @@ footer p {
   .article {
     max-width: 400px;
     width: 100%;
-  }
-
-  .article img {
-    width: 100%;
-  }
-
-  .executives-container {
-    justify-content: space-around;
   }
 }
 
