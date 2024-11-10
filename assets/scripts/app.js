@@ -1,19 +1,20 @@
 gsap.registerPlugin(ScrollTrigger);
 
-const navLink = () => {
-  if ($(window).width() <= 800) {
-    $("main").click(() => {
-      $(".nav-links-container").slideUp("fast");
-    });
-  }
-};
+// This callback function is called when the user will press something on the page or the nav-links and
+// will close the navbar
+if (window.innerWidth <= 800) {
+  $("main, footer, .nav-link a").click(() => {
+    $(".nav-links-container").slideUp("fast");
+  });
+}
 
+// This callback function is called when the user will press the hamburger button and
+// will open/close the navbar
 $(".navbar-toggler").click(() => {
   $(".nav-links-container").slideToggle("fast");
 });
 
-//! nav-link status change on section scroll
-
+// This part will add the active class to the nav-link that the user is currently on
 const sections = document.querySelectorAll(".page-section");
 let active = [];
 let thresHold = 0.55;
@@ -49,6 +50,7 @@ sections.forEach((section) => {
   observer.observe(section);
 });
 
+// This part will add/remove the active class so that the image's orientations will change
 $(".img-2").click(() => {
   $(".img-2").addClass("image-active-1");
   $(".img-1").addClass("image-active-2");
@@ -59,23 +61,7 @@ $(".img-1").click(() => {
   $(".img-1").removeClass("image-active-2");
 });
 
-const counter = () => {
-  const numberObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        count(entry.target);
-        entry.target.setAttribute("counted", "true");
-        numberObserver.unobserve(entry.target);
-      }
-    });
-  });
-
-  const numberValues = document.querySelectorAll(".number-value");
-  numberValues.forEach((numberValue) => {
-    numberObserver.observe(numberValue);
-  });
-};
-
+// The count function will count to the value of the number-value element
 const count = (ele) => {
   let number = 0;
   const limit = ele.getAttribute("value");
@@ -91,6 +77,25 @@ const count = (ele) => {
   }, duration);
 };
 
+// The counter function will assign a intersectionObserver to each number-value element and
+// will call the count function when the element is in the viewport
+const counter = () => {
+  const numberObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        count(entry.target);
+        numberObserver.unobserve(entry.target);
+      }
+    });
+  });
+
+  const numberValues = document.querySelectorAll(".number-value");
+  numberValues.forEach((numberValue) => {
+    numberObserver.observe(numberValue);
+  });
+};
+
+// This gsap animation will animate a fade up animation to the stats section
 gsap.fromTo(
   ".stats",
   {
@@ -107,6 +112,7 @@ gsap.fromTo(
   }
 );
 
+// This swiper object will initialize the event slider
 const swiper = new Swiper(".swiper", {
   centeredSlides: "auto",
   slidesPerView: "auto",
@@ -118,43 +124,12 @@ const swiper = new Swiper(".swiper", {
   },
   breakpoints: {
     600: {
-      centeredSlides: false,
+      centeredSlides: false, // Event will be centered for the mobile view under 600px
     },
   },
 });
 
-// filterEventsSlider function to filter through te events slide by the status
-const filterEventsSlider = (status) => {
-  const states = ["happened", "upcoming", "all"];
-
-  for (let i = 0; i < states.length; i++) {
-    const state = $(`.${states[i]}`);
-    state.is($(`.${status}`))
-      ? state.addClass("nav-active")
-      : state.removeClass("nav-active");
-  }
-
-  if (status === "all") {
-    $(".swiper-slide").css("display", "flex");
-  } else {
-    $(`.swiper-slide:not([status='${status}'])`).css("display", "none");
-    $(`.swiper-slide[status='${status}']`).css("display", "flex");
-  }
-  swiper.updateSlides();
-  swiper.slideTo(0);
-  swiper.autoplay.start();
-};
-
-$(".happened").click(() => {
-  filterEventsSlider("happened");
-});
-$(".upcoming").click(() => {
-  filterEventsSlider("upcoming");
-});
-$(".all").click(() => {
-  filterEventsSlider("all");
-});
-
+// This gsap animation will animate a fade up animation to the events section
 gsap.fromTo(
   ".swiper",
   {
@@ -169,6 +144,33 @@ gsap.fromTo(
   }
 );
 
+// This filterEventsSlider function will filter through the events slide by the status
+const filterEventsSlider = (status) => {
+  const states = document.querySelectorAll(".event-status-nav > button");
+
+  for (let i = 0; i < states.length; i++) {
+    const state = states[i];
+    state.getAttribute("status-name") == status
+      ? state.classList.add("nav-active")
+      : state.classList.remove("nav-active");
+  }
+
+  if (status === "all") {
+    $(".swiper-slide").css("display", "flex");
+  } else {
+    $(`.swiper-slide:not([status='${status}'])`).css("display", "none");
+    $(`.swiper-slide[status='${status}']`).css("display", "flex");
+  }
+};
+
+$(".event-status-nav > button").click((e) => {
+  filterEventsSlider(e.target.getAttribute("status-name"));
+  swiper.updateSlides();
+  swiper.slideTo(0);
+  swiper.autoplay.start();
+});
+
+// This gsap animation will animate a fade up animation for each article
 gsap.utils.toArray(".article").forEach((article) => {
   gsap.fromTo(
     article,
@@ -185,6 +187,7 @@ gsap.utils.toArray(".article").forEach((article) => {
   );
 });
 
+// This gsap animation will animate a scale up animation for each executive member
 gsap.utils.toArray(".executive-member").forEach((executive) => {
   gsap.fromTo(
     executive,
@@ -205,7 +208,4 @@ gsap.utils.toArray(".executive-member").forEach((executive) => {
 
 $(document).ready(() => {
   counter();
-  if ($(window).width() <= 800) {
-    navLink();
-  }
 });

@@ -10,16 +10,16 @@
 
 html {
   scroll-behavior: smooth; /* makes the page link transition smooth */
-  scroll-margin-top: -200px;
 }
 
-#hero,
-#about,
-#event,
-#articles,
-#executives,
-#contact {
+.page-section {
   scroll-margin-top: 100px;
+}
+
+@media screen and (max-width: 800px) {
+  .page-section {
+    scroll-margin-top: 0px;
+  }
 }
 
 body {
