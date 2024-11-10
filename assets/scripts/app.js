@@ -119,7 +119,7 @@ const swiper = new Swiper(".swiper", {
   speed: 400,
   spaceBetween: 20,
   autoplay: {
-    delay: 3000,
+    delay: 4000,
   },
   breakpoints: {
     1200: {
@@ -128,7 +128,7 @@ const swiper = new Swiper(".swiper", {
     1600: {
       spaceBetween: 20,
       autoplay: {
-        delay: 2000,
+        delay: 3000,
       },
     },
   },
