@@ -114,7 +114,6 @@ gsap.fromTo(
 
 // This swiper object will initialize the event slider
 const swiper = new Swiper(".swiper", {
-  centeredSlides: "auto",
   slidesPerView: "auto",
   grabCursor: true,
   speed: 400,
@@ -123,9 +122,6 @@ const swiper = new Swiper(".swiper", {
     delay: 3000,
   },
   breakpoints: {
-    600: {
-      centeredSlides: false, // Event will be centered for the mobile view under 600px
-    },
     1200: {
       spaceBetween: 30,
     },
