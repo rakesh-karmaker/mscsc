@@ -118,13 +118,22 @@ const swiper = new Swiper(".swiper", {
   slidesPerView: "auto",
   grabCursor: true,
   speed: 400,
-  spaceBetween: 50,
+  spaceBetween: 20,
   autoplay: {
-    delay: 2000,
+    delay: 3000,
   },
   breakpoints: {
     600: {
       centeredSlides: false, // Event will be centered for the mobile view under 600px
+    },
+    1200: {
+      spaceBetween: 30,
+    },
+    1600: {
+      spaceBetween: 20,
+      autoplay: {
+        delay: 2000,
+      },
     },
   },
 });
@@ -156,10 +165,10 @@ const filterEventsSlider = (status) => {
   }
 
   if (status === "all") {
-    $(".swiper-slide").css("display", "flex");
+    $(".activity").css("display", "flex");
   } else {
-    $(`.swiper-slide:not([status='${status}'])`).css("display", "none");
-    $(`.swiper-slide[status='${status}']`).css("display", "flex");
+    $(`.activity:not([status='${status}'])`).css("display", "none");
+    $(`.activity[status='${status}']`).css("display", "flex");
   }
 };
 

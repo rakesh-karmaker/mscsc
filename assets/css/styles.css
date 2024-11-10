@@ -561,7 +561,7 @@ article.about-article-container p:not(.sub-heading) {
 }
 
 .swiper-slide {
-  width: 500px !important;
+  width: calc((var(--max-elements-width) - 40px) / 3) !important;
   height: 350px;
   display: flex;
   border-radius: 13px;
@@ -579,6 +579,9 @@ article.about-article-container p:not(.sub-heading) {
 
 .swiper-slide article {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .event-tags {
   display: flex;
@@ -1014,14 +1017,20 @@ footer p {
 
 /* ---------------- responsive part starts here ---------------- */
 @media screen and (max-width: 1600px) {
-  #about,
-  #articles,
-  #event > div,
-  #executives > div,
-  #contact,
-  .hero-section {
-    padding-left: 40px;
-    padding-right: 40px;
+  body {
+    --max-elements-width: 94vw;
+  }
+
+  .swiper-slide {
+    width: calc(50% - 20px) !important;
+  }
+
+  .swiper-slide img {
+    min-width: 277px;
+    width: 100%;
+  }
+  .swiper-slide article {
+    max-width: 40ch;
   }
 }
 @media screen and (max-width: 1400px) {
@@ -1067,6 +1076,15 @@ footer p {
   }
 }
 
+@media screen and (max-width: 1200px) {
+  .swiper-slide {
+    width: calc(50% - 15px) !important;
+  }
+  .swiper-slide img {
+    min-width: 230px;
+  }
+}
+
 @media screen and (max-width: 1150px) {
   .hero-section-upper {
     gap: 50px;
@@ -1107,6 +1125,13 @@ footer p {
   .article {
     width: 330px;
     margin: 0px auto;
+  }
+  .swiper-slide {
+    width: 100% !important;
+    min-height: 400px;
+  }
+  .swiper-slide article {
+    max-width: none;
   }
 }
 
@@ -1151,6 +1176,7 @@ footer p {
     padding: 0px;
     justify-content: center;
     align-items: center;
+    max-width: 100%;
   }
   .hero-section-upper {
     gap: 30px;
@@ -1324,28 +1350,13 @@ footer p {
     flex-direction: column-reverse;
     align-items: center;
   }
+
+  .swiper-slide {
+    width: 94vw !important;
+  }
 }
 
 @media screen and (max-width: 600px) {
-  .swiper {
-    height: auto;
-  }
-  .swiper-slide {
-    flex-direction: column;
-    position: relative;
-    max-width: 300px;
-    height: 620px;
-  }
-  .swiper-slide img {
-    width: 100%;
-    height: 100%;
-    max-height: 300px;
-  }
-  .swiper-slide > article {
-    width: 100%;
-    height: 100%;
-  }
-
   .event-status-nav {
     width: auto;
     gap: 20px;
@@ -1361,6 +1372,27 @@ footer p {
   form {
     box-shadow: none;
     padding: 0px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .swiper {
+    height: auto;
+  }
+  .swiper-slide {
+    flex-direction: column;
+    position: relative;
+    max-width: 100%;
+    height: 620px;
+  }
+  .swiper-slide img {
+    width: 100%;
+    height: 100%;
+    max-height: 300px;
+  }
+  .swiper-slide > article {
+    width: 100%;
+    height: 100%;
   }
 }
 
