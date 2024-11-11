@@ -24,7 +24,7 @@ html {
 
 body {
   overflow-x: hidden;
-  --max-elements-width: 1490px;
+  --max-elements-width: 1550px;
 }
 
 /* setting the color variables */
@@ -650,7 +650,7 @@ article.about-article-container p:not(.sub-heading) {
   gap: 20px;
 }
 .article {
-  max-width: 390px;
+  max-width: 430px;
 }
 
 .article img {
@@ -1031,6 +1031,10 @@ footer p {
   }
   .swiper-slide article {
     max-width: 40ch;
+  }
+
+  .article {
+    max-width: 390px;
   }
 }
 @media screen and (max-width: 1400px) {
