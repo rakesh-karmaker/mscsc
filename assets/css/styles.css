@@ -82,8 +82,8 @@ body {
 
 .section-heading {
   font-size: 3rem;
-  text-align: center;
   text-transform: uppercase;
+  text-align: center;
   font-weight: 620;
   color: var(--black);
   line-height: 28px;
@@ -97,7 +97,7 @@ body {
 .primary-button {
   text-decoration: none;
   color: var(--text-white);
-  padding: 10px 29px;
+  padding: 0px 29px;
   font-size: 20px;
   border-radius: 5px;
   font-weight: 500;
@@ -106,6 +106,10 @@ body {
   position: relative;
   overflow: hidden;
   z-index: 9;
+  height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .primary-button::before {
   content: "";
@@ -402,61 +406,71 @@ main {
   padding: 80px 0px;
 }
 
-article.about-article-container {
+.about-article-container {
   width: 100%;
-  display: flex;
-  max-width: var(--max-elements-width);
+  gap: 50px;
   justify-content: space-between;
-  gap: 70px;
 }
 
-article.about-article-container > div {
-  flex: 1;
+.club-description {
+  max-width: 75ch;
 }
 
-.about-article-left h2 {
-  font-size: 2.5rem;
-  line-height: 35px;
-}
-.sub-heading {
-  opacity: 0.8;
+.club-description > p:not(.secondary-text) {
+  font-size: 1.5rem;
+  font-weight: 510;
+  margin-bottom: 10px;
 }
 
-article.about-article-container p:not(.sub-heading) {
-  line-height: 23px;
-  font-size: 1.05rem;
-  margin: 20px 0px 30px 0px;
+.club-description > h2 {
+  font-size: 4rem;
+  font-weight: 560;
+  line-height: 70px;
+  margin-bottom: 13px;
 }
 
-.about-article-left img {
-  width: 100%;
-  height: auto;
+.club-description p.secondary-text {
+  line-height: normal;
+}
+
+.benefits-container {
+  margin-top: 60px;
+  margin-bottom: 33px;
+  gap: 30px;
+  justify-content: space-between;
+}
+
+.benefit img {
+  width: 53px;
+  height: 49px;
+}
+
+.benefit h3 {
+  font-weight: 520;
+  margin-bottom: 7px;
+  margin-top: 7px;
+}
+
+.about-article-container > img {
+  max-width: 680px;
+  height: 650px;
   object-fit: cover;
-  border-radius: 13px;
-}
-
-.about-article-right > div:has(img) {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 30px;
-  gap: 20px;
-}
-
-.about-article-right > div:has(img) > img {
-  width: calc(50% - 10px);
-  height: auto;
-  border-radius: 13px;
+  object-position: center center;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 10px;
 }
 
 /* ------------------- departments part starts here ---------------- */
 
 .dpts-section {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
-.dpts-section > p {
-  margin: 10px 0px 40px 0px;
+.dpts-section > div > p {
+  margin: 20px 0px 10px 0px;
 }
 
 .dpt-container {
