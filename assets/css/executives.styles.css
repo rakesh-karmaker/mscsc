@@ -1,0 +1,18 @@
+main {
+  max-width: var(--max-elements-width);
+  margin-top: 40px;
+}
+.executive-panel-container {
+  display: flex;
+  gap: 60px;
+  justify-content: space-between;
+}
+
+.executive-panel-container > aside {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.panel-year {
+}
