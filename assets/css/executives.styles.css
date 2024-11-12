@@ -1,6 +1,7 @@
 main {
   max-width: var(--max-elements-width);
   margin-top: 50px;
+  margin-bottom: 70px;
 }
 .executive-panel-container {
   margin-top: 80px;
