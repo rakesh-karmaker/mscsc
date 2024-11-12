@@ -1,8 +1,9 @@
 main {
   max-width: var(--max-elements-width);
-  margin-top: 40px;
+  margin-top: 50px;
 }
 .executive-panel-container {
+  margin-top: 80px;
   display: flex;
   gap: 60px;
   justify-content: space-between;
@@ -10,9 +11,34 @@ main {
 
 .executive-panel-container > aside {
   display: flex;
+  height: 100%;
   flex-direction: column;
   gap: 30px;
+  position: sticky;
+  top: 170px;
 }
 
 .panel-year {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: larger;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+  background: transparent;
+}
+
+.active-year {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.panel-year:hover {
+  color: var(--highlighted-color);
+  background-color: rgba(59, 131, 246, 0.123);
+}
+
+.executives-container {
+  margin: 0px;
 }

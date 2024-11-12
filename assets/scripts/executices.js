@@ -192,6 +192,9 @@ let constructedHtml = {};
 // It is used to reduce the HTML code
 // It is not a good practice to use innerHTML so just use react components
 const createExecutiveMemberElement = (year) => {
+  $(".panel-year").removeClass("active-year");
+  $(`.panel-year[year="${year}"]`).addClass("active-year");
+
   if (!constructedHtml[year]) {
     constructedHtml[year] = "";
     const PanelData = executivesData[year];
