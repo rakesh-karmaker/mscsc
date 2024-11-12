@@ -6,7 +6,7 @@ const executivesData = {
     {
       name: "Alvi Adib",
       position: "President",
-      image: "alvipfp.jpg",
+      image: "2024-2025/alvipfp.jpg",
       socials: {
         facebook: "https://www.facebook.com/Higashi.Yagami",
         linkedin: "https://www.linkedin.com/in/alvi-abid-2076012a6/",
@@ -15,7 +15,7 @@ const executivesData = {
     {
       name: "Taharat Rahman",
       position: "VP of Administration",
-      image: "taharatpfp.jpg",
+      image: "2023-2024/taharatpfp.jpg",
       socials: {
         facebook: "https://www.facebook.com/taharat.rahman.18",
       },
@@ -23,12 +23,12 @@ const executivesData = {
     {
       name: "Muhammad Saad",
       position: "VP of Learning & Head of Physics and Math Dpt.",
-      image: "saadpfp.jpg",
+      image: "2023-2024/saadpfp.jpg",
     },
     {
       name: "Raqin Shahrier",
       position: "VP of management",
-      image: "raqinpfp.jpg",
+      image: "2023-2024/raqinpfp.jpg",
       socials: {
         facebook: "https://www.facebook.com/raqin.shahrier",
       },
@@ -36,7 +36,7 @@ const executivesData = {
     {
       name: "Md Tanvir Ahmed",
       position: "General Secretary",
-      image: "tanvirpfp.jpg",
+      image: "2024-2025/tanvirpfp.jpg",
       socials: {
         facebook: "https://www.facebook.com/virtangog",
         github: "https://github.com/TanvirPlayzXX",
@@ -45,7 +45,7 @@ const executivesData = {
     {
       name: "Arham Akhyar",
       position: "Assistant General Secretary",
-      image: "arhampfp.jpg",
+      image: "2024-2025/arhampfp.jpg",
       socials: {
         facebook: "https://www.facebook.com/arham.akhyar.31",
       },
@@ -53,7 +53,7 @@ const executivesData = {
     {
       name: "Alif Khandaker",
       position: "Organizing Secretary",
-      image: "alifpfp.jpg",
+      image: "2024-2025/alifpfp.jpg",
       socials: {
         facebook: "https://www.facebook.com/profile.php?id=100026608211528",
       },
@@ -61,7 +61,7 @@ const executivesData = {
     {
       name: "Mohammed Safoan",
       position: "Assistant Organizing Secretary",
-      image: "safoanpfp.jpg",
+      image: "2024-2025/safoanpfp.jpg",
       socials: {
         facebook: "https://www.facebook.com/profile.php?id=100091412962644",
       },
@@ -69,7 +69,7 @@ const executivesData = {
     {
       name: "Rakesh Karmaker",
       position: "Web Developer",
-      image: "rakeshpfp.jpg",
+      image: "2024-2025/rakeshpfp.jpg",
       socials: {
         facebook: "https://www.facebook.com/rakesh.karmaker.980",
         github: "https://github.com/rakesh-karmaker",
@@ -78,7 +78,7 @@ const executivesData = {
     {
       name: "Shaikh Sadi",
       position: "Graphics Designer",
-      image: "sadipfp.jpg",
+      image: "2024-2025/sadipfp.jpg",
       socials: {
         facebook: "https://www.facebook.com/ShaikhSadi2008",
       },
@@ -86,14 +86,103 @@ const executivesData = {
     {
       name: "Zannatul Zafrin",
       position: "Press and Publication",
-      image: "zannatulpfp.jpg",
+      image: "2024-2025/zannatulpfp.jpg",
       socials: {
         facebook: "https://www.facebook.com/profile.php?id=100058734297302",
       },
     },
   ],
 
-  "2023-2024": [],
+  "2023-2024": [
+    {
+      name: "Nur Saba",
+      position: "President",
+      image: "placeholderpfp.jpg",
+      socials: {},
+    },
+    {
+      name: "Faiza Karim",
+      position: "General Secretary",
+      image: "placeholderpfp.jpg",
+      socials: {
+        facebook: "https://www.facebook.com/faizakarim1311",
+      },
+    },
+    {
+      name: "Turjo Ghosh",
+      position: "Organizing Secretary",
+      image: "2023-2024/turjopfp.jpg",
+      socials: {
+        facebook: "https://www.facebook.com/profile.php?id=100074396814474",
+      },
+    },
+    {
+      name: "Raqin Shahrier",
+      position: "Assistant General Secretary",
+      image: "2023-2024/raqinpfp.jpg",
+      socials: {
+        facebook: "https://www.facebook.com/raqin.shahrier",
+      },
+    },
+    {
+      name: "Muhammad Saad",
+      position: "Assistant General Secretary",
+      image: "2023-2024/saadpfp.jpg",
+      socials: {},
+    },
+    {
+      name: "Ahanaf Muntasir",
+      position: "Assistant General Secretary",
+      image: "placeholderpfp.jpg",
+      socials: {
+        facebook: "https://www.facebook.com/MD.AHANAF.4741",
+      },
+    },
+    {
+      name: "MD. Sheam Haque",
+      position: "Assistant Organizing Secretary",
+      image: "placeholderpfp.jpg",
+      socials: {
+        facebook: "https://www.facebook.com/mdsheam.haque",
+      },
+    },
+    {
+      name: "Taharat Rahman",
+      position: "Assistant Organizing Secretary",
+      image: "2023-2024/taharatpfp.jpg",
+      socials: {
+        facebook: "https://www.facebook.com/taharat.rahman.18",
+      },
+    },
+    {
+      name: "Adnan Adib",
+      position: "Assistant Organizing Secretary",
+      image: "2023-2024/adnanpfp.jpg",
+      socials: {
+        facebook: "https://www.facebook.com/kamaboko.gonpachiro.393",
+      },
+    },
+    {
+      name: "Dhrubo Nur Ahammed",
+      position: "Head of IT & Graphics Team",
+      image: "placeholderpfp.jpg",
+      socials: {
+        facebook: "https://www.facebook.com/the.legendary.boy.134",
+      },
+    },
+    {
+      name: "Kazi Maisha",
+      position: "Secretary of Press and Publication",
+      image: "placeholderpfp.jpg",
+      socials: {},
+    },
+    {
+      name: "Sadaf Bin Azhar",
+      position: "Secretary of Press and Publication",
+      image: "placeholderpfp.jpg",
+      socials: {},
+    },
+  ],
 };
 
 const years = Object.keys(executivesData);
@@ -122,7 +211,7 @@ const createExecutiveMemberElement = (year) => {
         <div>
           <div class="executive-upper">
             <img
-              src="../assets/images/executive-members/${year}/${image}"
+              src="${year}/${image}"
               alt="A picture of ${name}"
             />
             <div class="member-socials row-center">
