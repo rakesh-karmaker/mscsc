@@ -84,7 +84,7 @@ body {
   font-size: 3rem;
   text-transform: uppercase;
   text-align: center;
-  font-weight: 620;
+  font-weight: 590;
   color: var(--black);
   line-height: 28px;
 }
@@ -92,6 +92,7 @@ body {
 .section-sub-heading {
   text-align: center;
   color: var(--text-secondary);
+  margin-top: 15px;
 }
 
 .primary-button {
@@ -1414,10 +1415,6 @@ footer p {
   .benefits-container {
     flex-direction: column;
   }
-
-  /* .about-article-container > img {
-
-  } */
 }
 
 @media screen and (max-width: 450px) {
