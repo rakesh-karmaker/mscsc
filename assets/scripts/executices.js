@@ -186,49 +186,51 @@ const executivesData = {
 };
 
 const years = Object.keys(executivesData);
-let constructedHtml = "";
+let constructedHtml = {};
 
 // This function uses innerHTML to dynamically create the executive members' elements
 // It is used to reduce the HTML code
 // It is not a good practice to use innerHTML so just use react components
 const createExecutiveMemberElement = (year) => {
-  const PanelData = executivesData[year];
-  PanelData.forEach((member) => {
-    const { name, position, image, socials } = member;
+  if (!constructedHtml[year]) {
+    constructedHtml[year] = "";
+    const PanelData = executivesData[year];
+    PanelData.forEach((member) => {
+      const { name, position, image, socials } = member;
 
-    let memberSocialHTML = "";
-    if (socials) {
-      Object.keys(socials).forEach((social) => {
-        let socialLink = socials[social];
-        memberSocialHTML += `
+      let memberSocialHTML = "";
+      if (socials) {
+        Object.keys(socials).forEach((social) => {
+          let socialLink = socials[social];
+          memberSocialHTML += `
           <a href=${socialLink} target="_blank" title=${social}><i class="row-center fa-brands fa-${social}"></i></a>
         `;
-      });
-    }
+        });
+      }
 
-    constructedHtml += `
-      <div class="executive-member">
-        <div>
-          <div class="executive-upper">
-            <img
-              src="${year}/${image}"
-              alt="A picture of ${name}"
-            />
-            <div class="member-socials row-center">
-              ${memberSocialHTML}
+      constructedHtml[year] += `
+        <div class="executive-member">
+          <div>
+            <div class="executive-upper">
+              <img
+                src="../assets/images/executive-members/${image}"
+                alt="A picture of ${name}"
+              />
+              <div class="member-socials row-center">
+                ${memberSocialHTML}
+              </div>
+            </div>
+            <div class="executive-lower col-center">
+              <p>${name}</p>
+              <p class="secondary-text">${position}</p>
             </div>
           </div>
-          <div class="executive-lower col-center">
-            <p>${name}</p>
-            <p class="secondary-text">${position}</p>
-          </div>
         </div>
-      </div>
     `;
-  });
-
+    });
+  }
   const executivesContainer = document.querySelector(".executives-container");
-  executivesContainer.innerHTML = constructedHtml;
+  executivesContainer.innerHTML = constructedHtml[year];
 };
 
 $().ready(() => {
