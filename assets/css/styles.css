@@ -1445,6 +1445,9 @@ footer p {
   .swiper-slide {
     width: 250px;
   }
+  form {
+    width: 100%;
+  }
   .name-email {
     flex-direction: column;
   }

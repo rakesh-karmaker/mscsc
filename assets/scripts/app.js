@@ -28,7 +28,7 @@ const observer = new IntersectionObserver(
       const id = entity.target.id;
       if (entity.isIntersecting) {
         if (active.length > 0) {
-          $(`.nav-link a[href='#${active[0]}']`).removeClass("active");
+          $(`.nav-link a[nav-link-name='${active[0]}']`).removeClass("active");
           active.pop(active[0]);
         }
 
@@ -37,7 +37,7 @@ const observer = new IntersectionObserver(
           : $(`.nav-link:has(ul.activities) > a`).removeClass("active");
 
         active.push(id);
-        $(`.nav-link a[href='#${id}']`).addClass("active");
+        $(`.nav-link a[nav-link-name='${id}']`).addClass("active");
       }
     });
   },
