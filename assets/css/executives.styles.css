@@ -51,6 +51,8 @@ main {
 }
 
 .panel-year {
+  min-width: 13ch;
+  width: 100%;
   border: none;
   padding: 10px 20px;
   border-radius: 10px;

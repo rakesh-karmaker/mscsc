@@ -272,16 +272,18 @@ const createYearElement = () => {
     `;
   });
   $(".panel-year").click((e) => {
-    const yearPanels = document.querySelectorAll(".panel-year");
-    yearPanels.forEach((yearPanel) => {
-      if (yearPanel.getAttribute("year") === e.target.getAttribute("year")) {
-        yearPanel.style.order = "-1";
-      } else {
-        yearPanel.style.order = "0";
-      }
-    });
+    if (window.innerWidth <= 950) {
+      const yearPanels = document.querySelectorAll(".panel-year");
+      yearPanels.forEach((yearPanel) => {
+        if (yearPanel.getAttribute("year") === e.target.getAttribute("year")) {
+          yearPanel.style.order = "-1";
+        } else {
+          yearPanel.style.order = "0";
+        }
+      });
+      toggleYearDropdown();
+    }
     createExecutiveMemberElement(e.target.getAttribute("year"));
-    toggleYearDropdown();
   });
 };
 
