@@ -234,26 +234,72 @@ const createExecutiveMemberElement = (year) => {
   }
   const executivesContainer = document.querySelector(".executives-container");
   executivesContainer.innerHTML = constructedHtml[year];
+  const executiveMembers = document.querySelectorAll(".executive-member");
+  executiveMembers.forEach((executiveMember) => {
+    observeExecutiveMember.observe(executiveMember);
+  });
 };
 
-$().ready(() => {
-  createExecutiveMemberElement(years[0]);
-  // This gsap animation will animate a scale up animation for each executive member
-  gsap.utils.toArray(".executive-member").forEach((executive) => {
-    gsap.fromTo(
-      executive,
-      {
-        scale: 0.7,
-        opacity: 0.5,
-      },
-      {
-        scale: 1,
-        opacity: 1,
-        delay: 0.01,
-        duration: 0.2,
-        ease: "none",
-        scrollTrigger: executive,
-      }
-    );
+const toggleYearDropdown = () => {
+  const yearDropdownButton = document.querySelector(".year-dropdown");
+  yearDropdownButton.classList.toggle("active");
+  const yearsDropdown = document.querySelector(
+    ".executive-panel-container > aside"
+  );
+  if (yearsDropdown.getAttribute("dropdown-active") === "false") {
+    const years = Object.keys(executivesData);
+    yearsDropdown.style.height = 40 * years.length + "px";
+    yearsDropdown.setAttribute("dropdown-active", "true");
+  } else {
+    yearsDropdown.style.height = "40px";
+    yearsDropdown.setAttribute("dropdown-active", "false");
+  }
+};
+
+const createYearElement = () => {
+  const years = Object.keys(executivesData);
+  const yearContainer = document.querySelector(
+    ".executive-panel-container > aside"
+  );
+  years.forEach((year) => {
+    yearContainer.innerHTML += `
+      <button
+        class="panel-year"
+        year="${year}"
+      >
+        ${year}
+      </button>
+    `;
   });
+  $(".panel-year").click((e) => {
+    const yearPanels = document.querySelectorAll(".panel-year");
+    yearPanels.forEach((yearPanel) => {
+      if (yearPanel.getAttribute("year") === e.target.getAttribute("year")) {
+        yearPanel.style.order = "-1";
+      } else {
+        yearPanel.style.order = "0";
+      }
+    });
+    createExecutiveMemberElement(e.target.getAttribute("year"));
+    toggleYearDropdown();
+  });
+};
+
+const observeExecutiveMember = new IntersectionObserver(
+  (executiveMembers) => {
+    executiveMembers.forEach((executiveMember) => {
+      if (executiveMember.isIntersecting) {
+        executiveMember.target.classList.add("shown");
+        observeExecutiveMember.unobserve(executiveMember.target);
+      }
+    });
+  },
+  {
+    threshold: 0.3,
+  }
+);
+
+$().ready(() => {
+  createYearElement();
+  createExecutiveMemberElement(years[0]);
 });

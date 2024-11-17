@@ -19,6 +19,36 @@ main {
   top: 170px;
 }
 
+.year-dropdown {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--black);
+  transition: 0.25s;
+  color: var(--white);
+  cursor: pointer;
+}
+
+.year-dropdown:hover {
+  background-color: var(--highlighted-color);
+}
+
+.year-dropdown i {
+  transition: 0.25s;
+}
+
+.year-dropdown.active {
+  background-color: var(--highlighted-color);
+}
+
+.year-dropdown.active i {
+  transform: rotate(180deg);
+}
+
 .panel-year {
   border: none;
   padding: 10px 20px;
@@ -42,4 +72,40 @@ main {
 
 .executives-container {
   margin: 0px;
+}
+
+.executive-member {
+  scale: 0.7;
+  opacity: 0;
+  transition: 0.2s;
+}
+
+.executive-member.shown {
+  scale: 1;
+  opacity: 1;
+}
+
+@media screen and (max-width: 950px) {
+  .executive-panel-container {
+    flex-direction: column;
+  }
+  .executive-panel-container > aside {
+    position: relative;
+    top: 0px;
+    gap: 0px;
+    overflow: hidden;
+    height: 40px;
+    border-radius: 10px;
+    transition: 0.25s;
+  }
+  .panel-year {
+    box-shadow: none;
+    padding: 0px;
+    min-height: 40px;
+    border-radius: 0px;
+  }
+  .panel-year.active-year {
+    background-color: rgba(59, 131, 246, 0.123);
+    color: var(--highlighted-color);
+  }
 }

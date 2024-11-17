@@ -168,25 +168,10 @@
         </h1>
       </div>
       <section class="executive-panel-container">
-        <aside>
-          <button
-            class="panel-year"
-            year="2024-2025"
-            onclick="createExecutiveMemberElement('2024-2025')"
-          >
-            2024-2025
+        <aside dropdown-active="false">
+          <button class="year-dropdown" onclick="toggleYearDropdown()">
+            <i class="fa-solid fa-chevron-down"></i>
           </button>
-          <button
-            class="panel-year"
-            year="2023-2024"
-            onclick="createExecutiveMemberElement('2023-2024')"
-          >
-            2023-2024
-          </button>
-          <button class="panel-year" year="2022-2023">2022-2023</button>
-          <button class="panel-year" year="2021-2022">2021-2022</button>
-          <button class="panel-year" year="2020-2021">2020-2021</button>
-          <button class="panel-year" year="2019-2020">2019-2020</button>
         </aside>
 
         <div class="executives-container"></div>
@@ -232,7 +217,6 @@
     </footer>
     <!-- footer section ends here -->
   </body>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script
