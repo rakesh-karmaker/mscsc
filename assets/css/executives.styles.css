@@ -31,6 +31,7 @@ main {
   transition: 0.25s;
   color: var(--white);
   cursor: pointer;
+  display: none;
 }
 
 .year-dropdown:hover {
@@ -97,6 +98,10 @@ main {
     height: 40px;
     border-radius: 10px;
     transition: 0.25s;
+  }
+
+  .year-dropdown {
+    display: block;
   }
   .panel-year {
     box-shadow: none;
