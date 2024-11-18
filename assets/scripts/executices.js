@@ -244,7 +244,6 @@ const createExecutiveMemberElement = (year) => {
 // It is used to reduce the HTML code
 // It is not a good practice to use innerHTML so just use react components
 const createYearElement = () => {
-  const years = Object.keys(executivesData);
   const yearContainer = document.querySelector(
     ".executive-panel-container > aside"
   );
@@ -283,7 +282,6 @@ const toggleYearDropdown = () => {
     ".executive-panel-container > aside"
   );
   if (yearsDropdown.getAttribute("dropdown-active") === "false") {
-    const years = Object.keys(executivesData);
     yearsDropdown.style.height = 40 * years.length + "px";
     yearsDropdown.setAttribute("dropdown-active", "true");
   } else {
