@@ -240,6 +240,42 @@ const createExecutiveMemberElement = (year) => {
   });
 };
 
+// This function uses innerHTML to dynamically create the year-panel elements
+// It is used to reduce the HTML code
+// It is not a good practice to use innerHTML so just use react components
+const createYearElement = () => {
+  const years = Object.keys(executivesData);
+  const yearContainer = document.querySelector(
+    ".executive-panel-container > aside"
+  );
+  years.forEach((year) => {
+    yearContainer.innerHTML += `
+      <button
+        class="panel-year"
+        year="${year}"
+      >
+        ${year}
+      </button>
+    `;
+  });
+
+  // This event listener is used to make the triggered year panel move to the top
+  $(".panel-year").click((e) => {
+    const calledYearPanel = e.target.getAttribute("year");
+    if (window.innerWidth <= 950) {
+      const yearPanels = document.querySelectorAll(".panel-year");
+      yearPanels.forEach((yearPanel) => {
+        yearPanel.getAttribute("year") === calledYearPanel
+          ? (yearPanel.style.order = "-1")
+          : (yearPanel.style.order = "0");
+      });
+      toggleYearDropdown();
+    }
+    createExecutiveMemberElement(calledYearPanel);
+  });
+};
+
+// The toggleYearDropdown function is used to toggle the year dropdown's height
 const toggleYearDropdown = () => {
   const yearDropdownButton = document.querySelector(".year-dropdown");
   yearDropdownButton.classList.toggle("active");
@@ -256,37 +292,7 @@ const toggleYearDropdown = () => {
   }
 };
 
-const createYearElement = () => {
-  const years = Object.keys(executivesData);
-  const yearContainer = document.querySelector(
-    ".executive-panel-container > aside"
-  );
-  years.forEach((year) => {
-    yearContainer.innerHTML += `
-      <button
-        class="panel-year"
-        year="${year}"
-      >
-        ${year}
-      </button>
-    `;
-  });
-  $(".panel-year").click((e) => {
-    if (window.innerWidth <= 950) {
-      const yearPanels = document.querySelectorAll(".panel-year");
-      yearPanels.forEach((yearPanel) => {
-        if (yearPanel.getAttribute("year") === e.target.getAttribute("year")) {
-          yearPanel.style.order = "-1";
-        } else {
-          yearPanel.style.order = "0";
-        }
-      });
-      toggleYearDropdown();
-    }
-    createExecutiveMemberElement(e.target.getAttribute("year"));
-  });
-};
-
+// The observeExecutiveMember function is used to observe the executive members and make scale up animation
 const observeExecutiveMember = new IntersectionObserver(
   (executiveMembers) => {
     executiveMembers.forEach((executiveMember) => {
