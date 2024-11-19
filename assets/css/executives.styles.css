@@ -72,7 +72,7 @@ main {
 
 .panel-year:hover {
   color: var(--highlighted-color);
-  background-color: rgba(59, 131, 246, 0.123);
+  background-color: var(--light-highlighted-color);
 }
 
 .executives-container {
@@ -114,7 +114,7 @@ main {
     border-radius: 0px;
   }
   .panel-year.active-year {
-    background-color: rgba(59, 131, 246, 0.123);
+    background-color: var(--light-highlighted-color);
     color: var(--highlighted-color);
   }
 }

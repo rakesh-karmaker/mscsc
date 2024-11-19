@@ -45,6 +45,7 @@ body {
   --text-white: rgba(249, 249, 249, 0.95);
 
   --highlighted-color: rgb(59, 130, 246);
+  --light-highlighted-color: rgb(219, 234, 254);
 }
 
 /** utility classes */
