@@ -82,6 +82,16 @@ There are several types of neutron stars, including magnetars and pulsars. There
       "https://www.facebook.com/photo/?fbid=811658864335155&set=pcb.811658881001820",
   },
   {
+    tag: "achievement",
+    activitiesDate: "22-03-2024",
+    activityImagePath: "21statbdoaa.jpg",
+    activityName: "21st position at BDOAA",
+    activityDesc:
+      "MSCSC is steadily gaining recognition in the biggest of stages. Alvi Abid from MSCSC has gotten the 21st position in BDOAA and will be attending the national camp. His skills and sheer talent have brought him to such heights and represented MSCSC in such high ranks. We sincerely hope that the members of MSCSC will keep bringing these successes and represent MSCSC in the highest positions.",
+    activityLink:
+      "https://www.facebook.com/MSCSC2014/posts/pfbid0B9865y5CTuQWm1hWZWYn13mLxQiYW5zqKK84w6jMTmszyLbNVsNhThVjbgiqdJXcl",
+  },
+  {
     tag: "workshop",
     activityDate: "02-03-2024",
     activityImagePath: "wave-nature.jpg",
@@ -110,6 +120,16 @@ There are several types of neutron stars, including magnetars and pulsars. There
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
       "https://www.facebook.com/MSCSC2014/posts/pfbid06ymY657GmMvKjSXH8wsKkaP34nACtLMtUXhyerTpxwEhUDwL8nswtnBK5cEFSWgul",
+  },
+  {
+    tag: "achievement",
+    activityDate: "07-03-2023",
+    activityImagePath: "3rdndcmathcarnivalchampion.jpg",
+    activityName: "3rd NDC Math Carnival Wall Magazine Champion",
+    activityDesc:
+      "It's a great pleasure to announce that team Infinity contained with Turjo Ghosh, Mohammad Safoan & Saran Chowdhury became champions of Math Relay & Wall Magazine in the 3rd Annual Notre Dame Math Festival 2023. MSCSC is only growing immensely since it's an expedition of science that started back in 2017. Regardless of the magnitude of the milestones, MSCSC believes that every achievement is worth celebrating.",
+    activityLink:
+      "https://www.facebook.com/MSCSC2014/posts/pfbid02DGRKoZGbAEYWyxHLhQS3db6qgD7sSsWcKwE2xrdg7kcgqRUF3Wyb5niirysK59FVl",
   },
   {
     tag: "workshop",
@@ -152,6 +172,16 @@ There are several types of neutron stars, including magnetars and pulsars. There
       "https://www.facebook.com/photo.php?fbid=461248866042825&set=pb.100064731457622.-2207520000&type=3",
   },
   {
+    tag: "achievement",
+    activityDate: "29-06-2022",
+    activityImagePath: "1st3rdphysicsoly.png",
+    activityName: "1st place in Extempore Speech and 3rd in Physics Olympiad",
+    activityDesc:
+      "It is with pleasure that we announce that two beloved members of our MSCSC family, Md. Tarekuzzaman Tarek and Aziza Shadaf Etha have achieved recognition in ড্রিঙ্কো '২য় জাতীয় বিজ্ঞান উৎসব ২০২২' পাওয়ার্ড বাই ওয়ালটন ল্যাপটপ। Tarek secured 1st place in Extempore Speech and Etha stood 3rd in Physics Olympiad at the event. MSCSC congratulates them on their success and wishes them all the best for their future endeavours💚",
+    activityLink:
+      "https://www.facebook.com/MSCSC2014/posts/pfbid0EaeeUEySbMz2L4Vs4sdxpk7toLq467LxEK6mXLgDoESGxWAAZjZgPbV3gpnX8kojl",
+  },
+  {
     tag: "event",
     activityDate: "19-08-2021",
     activityImagePath: "chemistrycampaign.jpg",
@@ -180,6 +210,16 @@ There are several types of neutron stars, including magnetars and pulsars. There
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
       "https://www.facebook.com/MSCSC2014/photos/a.199847797167738/1138074580011717/?type=3",
+  },
+  {
+    tag: "achievement",
+    activityDate: "28-05-2021",
+    activityImagePath: "drmc2nd.png",
+    activityName: "2nd at DRMC Virtual National Science Carnival-2021",
+    activityDesc:
+      'Albeit a little belated, we are proudly announcing that one of our most diligent members of MSCSC, Mushfiq Zubayer, has placed second in the Digital Poster Designing segment of DRMC Science Club Presents "DRMC Virtual National  Science Carnival-2021".',
+    activityLink:
+      "https://www.facebook.com/MSCSC2014/posts/pfbid0dpQqfNA7byZQb9YkKt4iV6K3aHcEnN2Y9F5MLvwMGCF8RbvsLMMhgBS9m2k6X21cl",
   },
   {
     tag: "event",
