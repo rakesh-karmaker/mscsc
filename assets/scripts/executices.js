@@ -1,5 +1,3 @@
-gsap.registerPlugin(ScrollTrigger);
-
 //* Below the codes are just to store the data for the executive-panel, not for to convert to React
 const executivesData = {
   "2024-2025": [
