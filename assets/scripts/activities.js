@@ -4,7 +4,7 @@ const activitiesData = [
     tag: "workshop",
     activityDate: "11-10-2024",
     activityImagePath: "psycho&humanbrain.jpg",
-    activityName: "Psychology & Human Brain",
+    activityTitle: "Psychology & Human Brain",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
@@ -14,7 +14,7 @@ const activitiesData = [
     tag: "workshop",
     activityDate: "23-08-2024",
     activityImagePath: "psandsd.jpg",
-    activityName: "Problem Solving and Skill Development",
+    activityTitle: "Problem Solving and Skill Development",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
@@ -24,7 +24,7 @@ const activitiesData = [
     tag: "workshop",
     activityDate: "16-08-2024",
     activityImagePath: "newtonian.jpg",
-    activityName: "Newtonian Mechanics",
+    activityTitle: "Newtonian Mechanics",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
@@ -34,7 +34,7 @@ const activitiesData = [
     tag: "article",
     activityDate: "21-05-2024",
     activityImagePath: "analyticalchemistry.jpg",
-    activityName: "Analytical Chemistry",
+    activityTitle: "Analytical Chemistry",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
@@ -44,7 +44,7 @@ const activitiesData = [
     tag: "article",
     activityDate: "23-04-2024",
     activityImagePath: "europa.jpg",
-    activityName: "ARE WE ALONE IN THE UNIVERSE?",
+    activityTitle: "ARE WE ALONE IN THE UNIVERSE?",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
@@ -54,7 +54,7 @@ const activitiesData = [
     tag: "article",
     activityDate: "21-04-2024",
     activityImagePath: "neutronstars.jpg",
-    activityName: "Neutron Stars",
+    activityTitle: "Neutron Stars",
     activityDesc: `Neutron stars are the remains of the cores of massive stars that have reached the end of their lives. There are 2 possible evolutionary endpoints of the massive stars, they can be either black holes or neutron stars. Astronomers consider the mass of a neutron star to range from 1.4 to 2.9 solar masses.
 A neutron star is the densest object astronomers can observe directly. It was discovered by Jocelyn Bell Burnell in 1967.
 There are several types of neutron stars, including magnetars and pulsars. There are thought to be around one billion neutron stars in the Milky Way. Only 31 magnetars have ever been discovered and over 3000 pulsars have been discovered.`,
@@ -65,7 +65,7 @@ There are several types of neutron stars, including magnetars and pulsars. There
     tag: "achievement",
     activityDate: "22-03-2024",
     activityImagePath: "1strunnersupbdmo.jpg",
-    activityName: "1st Runner Up at BDMO",
+    activityTitle: "1st Runner Up at BDMO",
     activityDesc:
       "MSCSC is representing itself in its fullest on the national field, Muhammad Saad from MSCSC has become 1st runners-up in the national round secondary category of BDMO. Through these successes, MSCSC is effectively displaying the talent and skills of our members. We can only hope for even more prosperous days in the future of MSCSC.",
     activityLink:
@@ -75,7 +75,7 @@ There are several types of neutron stars, including magnetars and pulsars. There
     tag: "achievement",
     activitiesDate: "22-03-2024",
     activityImagePath: "2ndrunnersupbdbo.jpg",
-    activityName: "2nd Runner Up at BDBO",
+    activityTitle: "2nd Runner Up at BDBO",
     activityDesc:
       "MSCSC is representing itself in its fullest on the national field, Raqin Shahrier has become the 2nd regional runners-up of BDBO. Through these successes, MSCSC is effectively displaying the talent and skills of our members. We can only hope for even more prosperous days in the future of MSCSC.",
     activityLink:
@@ -85,7 +85,7 @@ There are several types of neutron stars, including magnetars and pulsars. There
     tag: "achievement",
     activitiesDate: "22-03-2024",
     activityImagePath: "21statbdoaa.jpg",
-    activityName: "21st position at BDOAA",
+    activityTitle: "21st position at BDOAA",
     activityDesc:
       "MSCSC is steadily gaining recognition in the biggest of stages. Alvi Abid from MSCSC has gotten the 21st position in BDOAA and will be attending the national camp. His skills and sheer talent have brought him to such heights and represented MSCSC in such high ranks. We sincerely hope that the members of MSCSC will keep bringing these successes and represent MSCSC in the highest positions.",
     activityLink:
@@ -95,7 +95,7 @@ There are several types of neutron stars, including magnetars and pulsars. There
     tag: "workshop",
     activityDate: "02-03-2024",
     activityImagePath: "wave-nature.jpg",
-    activityName: "The Wave Nature of Light",
+    activityTitle: "The Wave Nature of Light",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
@@ -105,7 +105,7 @@ There are several types of neutron stars, including magnetars and pulsars. There
     tag: "workshop",
     activityDate: "16-12-2023",
     activityImagePath: "logicbehindcomputers.jpg",
-    activityName: "Introduction to the logic behind",
+    activityTitle: "Introduction to the logic behind",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
@@ -114,8 +114,8 @@ There are several types of neutron stars, including magnetars and pulsars. There
   {
     tag: "workshop",
     activityDate: "05-05-2023",
-    activityImagePath: "hawkingradiationbigbangcipa.jpg",
-    activityName: "Hawking Radiation, Big Bang, CIPA",
+    activityImagePath: "hawkingraditionbigbangcipa.jpg",
+    activityTitle: "Hawking Radiation, Big Bang, CIPA",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
@@ -125,7 +125,7 @@ There are several types of neutron stars, including magnetars and pulsars. There
     tag: "achievement",
     activityDate: "07-03-2023",
     activityImagePath: "3rdndcmathcarnivalchampion.jpg",
-    activityName: "3rd NDC Math Carnival Wall Magazine Champion",
+    activityTitle: "3rd NDC Math Carnival Wall Magazine Champion",
     activityDesc:
       "It's a great pleasure to announce that team Infinity contained with Turjo Ghosh, Mohammad Safoan & Saran Chowdhury became champions of Math Relay & Wall Magazine in the 3rd Annual Notre Dame Math Festival 2023. MSCSC is only growing immensely since it's an expedition of science that started back in 2017. Regardless of the magnitude of the milestones, MSCSC believes that every achievement is worth celebrating.",
     activityLink:
@@ -135,7 +135,7 @@ There are several types of neutron stars, including magnetars and pulsars. There
     tag: "workshop",
     activityDate: "24-01-2023",
     activityImagePath: "matholympiad.jpg",
-    activityName: "Math Olympiad",
+    activityTitle: "Math Olympiad",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
@@ -145,7 +145,7 @@ There are several types of neutron stars, including magnetars and pulsars. There
     tag: "workshop",
     activityDate: "20-01-2023",
     activityImagePath: "projectbuilding.jpg",
-    activityName: "Project Building",
+    activityTitle: "Project Building",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
@@ -155,7 +155,7 @@ There are several types of neutron stars, including magnetars and pulsars. There
     tag: "event",
     activityDate: "26-01-2023",
     activityImagePath: "intraschool-2023.png",
-    activityName: "Intraschool exploration (2023)",
+    activityTitle: "Intraschool exploration (2023)",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
@@ -164,8 +164,8 @@ There are several types of neutron stars, including magnetars and pulsars. There
   {
     tag: "event",
     activityDate: "23-09-2022",
-    activityImagePath: "scitonic2.0.png",
-    activityName: "Scitonic 2.0",
+    activityImagePath: "scitonic2.0.jpg",
+    activityTitle: "Scitonic 2.0",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
@@ -175,7 +175,7 @@ There are several types of neutron stars, including magnetars and pulsars. There
     tag: "achievement",
     activityDate: "29-06-2022",
     activityImagePath: "1st3rdphysicsoly.png",
-    activityName: "1st place in Extempore Speech and 3rd in Physics Olympiad",
+    activityTitle: "1st place in Extempore Speech and 3rd in Physics Olympiad",
     activityDesc:
       "It is with pleasure that we announce that two beloved members of our MSCSC family, Md. Tarekuzzaman Tarek and Aziza Shadaf Etha have achieved recognition in ড্রিঙ্কো '২য় জাতীয় বিজ্ঞান উৎসব ২০২২' পাওয়ার্ড বাই ওয়ালটন ল্যাপটপ। Tarek secured 1st place in Extempore Speech and Etha stood 3rd in Physics Olympiad at the event. MSCSC congratulates them on their success and wishes them all the best for their future endeavours💚",
     activityLink:
@@ -185,7 +185,7 @@ There are several types of neutron stars, including magnetars and pulsars. There
     tag: "event",
     activityDate: "19-08-2021",
     activityImagePath: "chemistrycampaign.jpg",
-    activityName: "Chemistry Campaign",
+    activityTitle: "Chemistry Campaign",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
@@ -194,8 +194,8 @@ There are several types of neutron stars, including magnetars and pulsars. There
   {
     tag: "workshop",
     activityDate: "29-07-2021",
-    activityImagePath: "robotics.jpg",
-    activityName: "Robotics",
+    activityImagePath: "robotics.png",
+    activityTitle: "Robotics",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
@@ -205,7 +205,7 @@ There are several types of neutron stars, including magnetars and pulsars. There
     tag: "event",
     activityDate: "07-07-2021",
     activityImagePath: "astrocampaign.jpg",
-    activityName: "Astro Campaign",
+    activityTitle: "Astro Campaign",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
@@ -215,7 +215,7 @@ There are several types of neutron stars, including magnetars and pulsars. There
     tag: "achievement",
     activityDate: "28-05-2021",
     activityImagePath: "drmc2nd.png",
-    activityName: "2nd at DRMC Virtual National Science Carnival-2021",
+    activityTitle: "2nd at DRMC Virtual National Science Carnival-2021",
     activityDesc:
       'Albeit a little belated, we are proudly announcing that one of our most diligent members of MSCSC, Mushfiq Zubayer, has placed second in the Digital Poster Designing segment of DRMC Science Club Presents "DRMC Virtual National  Science Carnival-2021".',
     activityLink:
@@ -225,7 +225,7 @@ There are several types of neutron stars, including magnetars and pulsars. There
     tag: "event",
     activitiesDate: "03-03-2021",
     activityImagePath: "mathtcsquest.png",
-    activityName: "Mathycs Quest",
+    activityTitle: "Mathycs Quest",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
@@ -235,11 +235,95 @@ There are several types of neutron stars, including magnetars and pulsars. There
     tag: "event",
     activityDate: "02-10-2020",
     activityImagePath: "science&cosmicspace.png",
-    activityName: "Science & Cosmic Space",
+    activityTitle: "Science & Cosmic Space",
     activityDesc:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
     activityLink:
       "https://www.facebook.com/photo?fbid=951179522034558&set=pb.100064731457622.-2207520000",
   },
-  {},
 ];
+
+const tags = ["all", "event", "workshop", "articles", "achievement"];
+
+const getActivities = (tag) => {
+  if (tag === "all") {
+    return activitiesData;
+  }
+  return activitiesData.filter((activity) => activity.tag === tag);
+};
+
+const generateActivityHtml = (activity, selected) => {
+  let activityTagHTML = "";
+  if (!selected) {
+    activityTagHTML = `
+        <p class="activity-tag">
+            <i class="fa-solid fa-chalkboard-user"></i>
+            <span>${activity.tag}</span>
+        </p>
+      `;
+  }
+  return `
+    <div class="activity" tag="${activity.tag}">
+        <img
+        src="../assets/images/activities/${activity.tag}/${activity.activityImagePath}"
+        alt="The image of ${activity.activityTitle}"
+        />
+
+        <article>
+        <div>
+            ${activityTagHTML}
+            <p class="activity-date">
+                <i class="fa-regular fa-calendar"></i> <span>11-10-2024</span>
+            </p>
+        </div>
+        <h2 class="activity-name">${activity.activityTitle}</h2>
+        <p class="secondary-text activity-summary">${activity.activityDesc}</p>
+        <a href="${activity.activityLink}" class="primary-button"
+            >Learn More <i class="fa-solid fa-arrow-right"></i
+        ></a>
+        </article>
+    </div>
+    `;
+};
+
+const displayActivities = (tag, selectedActiticities) => {
+  const activitiesContainer = document.querySelector(".activities-container");
+  activitiesContainer.innerHTML = "";
+  selectedActiticities.forEach((activity) => {
+    activitiesContainer.innerHTML += generateActivityHtml(
+      activity,
+      tag !== "all"
+    );
+  });
+};
+
+const getURLTag = () => {
+  const url = window.location.href;
+  return !url.includes("?tag=") ? "all" : url.split("?tag=")[1];
+};
+
+let paginationStartingPoint = 0;
+let paginationEndingPoint = 12;
+const activitiesMain = () => {
+  const tag = getURLTag();
+  document.querySelectorAll(".activities-nav-link").forEach((link) => {
+    link.getAttribute("nav-type") === tag
+      ? link.classList.add("active")
+      : link.classList.remove("active");
+  });
+
+  const allTagedAtivities = getActivities(tag);
+  let selectedActiticities = allTagedAtivities;
+  if (allTagedAtivities.length >= 12) {
+    selectedActiticities = allTagedAtivities.slice(
+      paginationStartingPoint,
+      paginationEndingPoint
+    );
+  }
+
+  displayActivities(tag, selectedActiticities);
+};
+
+$().ready(() => {
+  activitiesMain();
+});

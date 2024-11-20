@@ -167,61 +167,48 @@
         <h1>All <span class="highlighted-text">Activities</span></h1>
         <menu>
           <li>
-            <button class="activities-nav-link" nav-type="events">
+            <button
+              class="activities-nav-link"
+              onclick="displayActivities('event')"
+              nav-type="event"
+            >
               <i class="fa-solid fa-calendar-days"></i> <span>Event</span>
             </button>
           </li>
 
           <li>
-            <button class="activities-nav-link" nav-type="workshops">
+            <button
+              class="activities-nav-link"
+              onclick="displayActivities('workshop')"
+              nav-type="workshop"
+            >
               <i class="fa-solid fa-chalkboard-user"></i> <span>Workshop</span>
             </button>
           </li>
 
           <li>
-            <button class="activities-nav-link" nav-type="articles">
+            <button
+              class="activities-nav-link"
+              onclick="displayActivities('article')"
+              nav-type="article"
+            >
               <i class="fa-solid fa-newspaper"></i> <span>Article</span>
             </button>
           </li>
 
           <li>
-            <button class="activities-nav-link" nav-type="achievements">
+            <button
+              class="activities-nav-link"
+              onclick="displayActivities('achievement')"
+              nav-type="achievement"
+            >
               <i class="fa-solid fa-trophy"></i> <span>Achievement</span>
             </button>
           </li>
         </menu>
       </div>
 
-      <section class="activities-container">
-        <div class="activity" tag="workshop">
-          <img
-            src="../assets/images/activities/workshops/psycho&humanbrain.jpg"
-            alt="hghf"
-          />
-
-          <article>
-            <div>
-              <p class="activity-tag">
-                <i class="fa-solid fa-chalkboard-user"></i>
-                <span>Workshop</span>
-              </p>
-              <p class="activity-date">
-                <i class="fa-regular fa-calendar"></i> <span>11-10-2024</span>
-              </p>
-            </div>
-
-            <h2 class="activity-name">Psychology & Human Brain</h2>
-            <p class="secondary-text activity-summary">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus
-              aliquid officiis provident ad molestiae consequatur facere odit
-              voluptas veniam dignissimos!
-            </p>
-            <a href="" class="primary-button"
-              >Learn More <i class="fa-solid fa-arrow-right"></i
-            ></a>
-          </article>
-        </div>
-      </section>
+      <section class="activities-container"></section>
     </main>
 
     <!-- footer section starts here -->
