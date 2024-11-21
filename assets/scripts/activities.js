@@ -245,11 +245,10 @@ There are several types of neutron stars, including magnetars and pulsars. There
 
 const tags = ["all", "event", "workshop", "articles", "achievement"];
 
-const getActivities = (tag) => {
-  if (tag === "all") {
-    return activitiesData;
-  }
-  return activitiesData.filter((activity) => activity.tag === tag);
+const getActivitiesByTag = (selectedTag) => {
+  return selectedTag === "all"
+    ? activitiesData
+    : activitiesData.filter(({ tag }) => tag === selectedTag);
 };
 
 const generateActivityHTML = (
@@ -302,6 +301,10 @@ const renderActivities = (activities, showTag) => {
   activities.forEach((activity) => {
     activitiesContainer.innerHTML += generateActivityHTML(activity, showTag);
   });
+
+  document.querySelectorAll(".activity").forEach((activity) => {
+    observeActivities.observe(activity);
+  });
 };
 
 const getUrlTag = () => {
@@ -315,8 +318,13 @@ const activitiesMain = (selectedTag = getUrlTag()) => {
     const navType = link.getAttribute("nav-type");
     link.classList.toggle("active", navType === selectedTag);
   });
+  if (selectedTag !== "all") {
+    const title =
+      selectedTag.charAt(0).toUpperCase() + selectedTag.slice(1) + "s";
+    document.querySelector(".activities-navbar h1 span").textContent = title;
+  }
 
-  const activities = getActivities(selectedTag);
+  const activities = getActivitiesByTag(selectedTag);
   const isPaginationAvailable = activities.length >= 12;
   $(".pagination").attr("available", isPaginationAvailable.toString());
 
@@ -353,8 +361,9 @@ const initPagination = (activities) => {
 const changePage = (pageNumber) => {
   const startIndex = 12 * (pageNumber - 1);
   const endIndex = 12 * pageNumber;
-  const allTaggedActivities = getActivities(getUrlTag());
+  const allTaggedActivities = getActivitiesByTag(getUrlTag());
   const selectedActivities = allTaggedActivities.slice(startIndex, endIndex);
+  window.scrollTo(0, 0);
   renderActivities(selectedActivities, getUrlTag());
   updatePagination(pageNumber, allTaggedActivities.length);
 };
@@ -385,6 +394,42 @@ const updatePagination = (pageNumber, activitiesNumber) => {
     nextButton.classList.remove("hidden");
   }
 };
+
+const paginationActionButtons = (action) => {
+  const pageNumbers = document.querySelectorAll(".page-number");
+  const currentPageNumber = getActivePageNumber(pageNumbers);
+
+  const nextPage =
+    action === "next" ? currentPageNumber + 1 : currentPageNumber - 1;
+
+  changePage(nextPage);
+};
+
+const getActivePageNumber = (pageNumbers) => {
+  let activePageNumber;
+  pageNumbers.forEach((page) => {
+    if (page.classList.contains("page-active")) {
+      activePageNumber = Number(page.getAttribute("page-number"));
+    }
+  });
+
+  return activePageNumber;
+};
+
+// The observeActivities function is used to observe the activities and make scale up animation
+const observeActivities = new IntersectionObserver(
+  (activities) => {
+    activities.forEach((activity) => {
+      if (activity.isIntersecting) {
+        activity.target.classList.add("shown");
+        observeActivities.unobserve(activity.target);
+      }
+    });
+  },
+  {
+    threshold: 0.3,
+  }
+);
 
 $().ready(() => {
   activitiesMain();

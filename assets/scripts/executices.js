@@ -236,6 +236,7 @@ const createExecutiveMemberElement = (year) => {
   executiveMembers.forEach((executiveMember) => {
     observeExecutiveMember.observe(executiveMember);
   });
+  window.scrollTo(0, 0);
 };
 
 // This function uses innerHTML to dynamically create the year-panel elements
