@@ -1,10 +1,30 @@
 import { activitiesData } from "./data.js";
-const tags = ["all", "event", "workshop", "articles", "achievement"];
+
+// The observeActivities function is used to observe the activities and make scale up animation
+const observeActivities = new IntersectionObserver(
+  (activities) => {
+    activities.forEach((activity) => {
+      if (activity.isIntersecting) {
+        activity.target.classList.add("shown");
+        observeActivities.unobserve(activity.target);
+      }
+    });
+  },
+  {
+    threshold: 0.3,
+  }
+);
 
 const getActivitiesByTag = (selectedTag) => {
   return selectedTag === "all"
     ? activitiesData
     : activitiesData.filter(({ tag }) => tag === selectedTag);
+};
+
+const getUrlTag = () => {
+  const url = new URL(window.location.href);
+  const tag = url.searchParams.get("tag");
+  return tag ?? "all";
 };
 
 const generateActivityHTML = (
@@ -61,12 +81,6 @@ const renderActivities = (activities, showTag) => {
   document.querySelectorAll(".activity").forEach((activity) => {
     observeActivities.observe(activity);
   });
-};
-
-const getUrlTag = () => {
-  const url = new URL(window.location.href);
-  const tag = url.searchParams.get("tag");
-  return tag ?? "all";
 };
 
 const activitiesMain = (selectedTag = getUrlTag()) => {
@@ -171,21 +185,6 @@ const getActivePageNumber = (pageNumbers) => {
 
   return activePageNumber;
 };
-
-// The observeActivities function is used to observe the activities and make scale up animation
-const observeActivities = new IntersectionObserver(
-  (activities) => {
-    activities.forEach((activity) => {
-      if (activity.isIntersecting) {
-        activity.target.classList.add("shown");
-        observeActivities.unobserve(activity.target);
-      }
-    });
-  },
-  {
-    threshold: 0.3,
-  }
-);
 
 $().ready(() => {
   activitiesMain();
