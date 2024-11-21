@@ -169,7 +169,7 @@
           <li>
             <button
               class="activities-nav-link"
-              onclick="displayActivities('event')"
+              onclick="activitiesMain('event')"
               nav-type="event"
             >
               <i class="fa-solid fa-calendar-days"></i> <span>Event</span>
@@ -179,7 +179,7 @@
           <li>
             <button
               class="activities-nav-link"
-              onclick="displayActivities('workshop')"
+              onclick="activitiesMain('workshop')"
               nav-type="workshop"
             >
               <i class="fa-solid fa-chalkboard-user"></i> <span>Workshop</span>
@@ -189,7 +189,7 @@
           <li>
             <button
               class="activities-nav-link"
-              onclick="displayActivities('article')"
+              onclick="activitiesMain('article')"
               nav-type="article"
             >
               <i class="fa-solid fa-newspaper"></i> <span>Article</span>
@@ -199,7 +199,7 @@
           <li>
             <button
               class="activities-nav-link"
-              onclick="displayActivities('achievement')"
+              onclick="activitiesMain('achievement')"
               nav-type="achievement"
             >
               <i class="fa-solid fa-trophy"></i> <span>Achievement</span>
@@ -209,6 +209,16 @@
       </div>
 
       <section class="activities-container"></section>
+
+      <div class="pagination" available="false">
+        <button class="pagination-btn" action="prev">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <div class="page-nav-container"></div>
+        <button class="pagination-btn" action="next">
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
     </main>
 
     <!-- footer section starts here -->
