@@ -103,6 +103,10 @@ const activitiesMain = (selectedTag = getUrlTag()) => {
   } else {
     renderActivities(activities, selectedTag);
   }
+  // $(".activities-nav-link").click((e) => {
+  //   const selectedTag = e.target.getAttribute("nav-type");
+  //   activitiesMain(selectedTag);
+  // });
 };
 
 const initPagination = (activities) => {
@@ -121,11 +125,17 @@ const initPagination = (activities) => {
     pageNumberElement.setAttribute("nav-type", i);
     pageNumberElement.setAttribute("page-number", i);
     pageNumberElement.textContent = i;
-    pageNumberElement.addEventListener("click", () => changePage(i));
     pageNavContainer.appendChild(pageNumberElement);
   }
 
   changePage(1);
+
+  $(".page-number").click((e) =>
+    changePage(Number(e.target.getAttribute("page-number")))
+  );
+  $(".pagination-btn").click((e) =>
+    paginationActionButtons(e.target.getAttribute("action"))
+  );
 };
 
 const changePage = (pageNumber) => {
