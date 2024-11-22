@@ -1,4 +1,5 @@
 import { activitiesData } from "./data.js";
+const tags = ["all", ...new Set(activitiesData.map(({ tag }) => tag))];
 
 // The observeActivities function is used to observe the activities and make scale up animation
 const observeActivities = new IntersectionObserver(
@@ -103,10 +104,6 @@ const activitiesMain = (selectedTag = getUrlTag()) => {
   } else {
     renderActivities(activities, selectedTag);
   }
-  // $(".activities-nav-link").click((e) => {
-  //   const selectedTag = e.target.getAttribute("nav-type");
-  //   activitiesMain(selectedTag);
-  // });
 };
 
 const initPagination = (activities) => {
@@ -198,4 +195,9 @@ const getActivePageNumber = (pageNumbers) => {
 
 $().ready(() => {
   activitiesMain();
+  tags.forEach((tag) => {
+    $(`.activities-nav-link[nav-type='${tag}']`).click(() => {
+      activitiesMain(`${tag}`);
+    });
+  });
 });
