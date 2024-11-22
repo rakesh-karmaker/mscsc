@@ -1,5 +1,19 @@
 import { executivesData } from "./data.js";
 
+// This callback function is called when the user will press something on the page or the nav-links and
+// will close the navbar
+if (window.innerWidth <= 800) {
+  $("main, footer, .nav-link a").click(() => {
+    $(".nav-links-container").slideUp("fast");
+  });
+}
+
+// This callback function is called when the user will press the hamburger button and
+// will open/close the navbar
+$(".navbar-toggler").click(() => {
+  $(".nav-links-container").slideToggle("fast");
+});
+
 const years = Object.keys(executivesData);
 let constructedHtml = {};
 

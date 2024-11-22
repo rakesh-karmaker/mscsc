@@ -1,6 +1,20 @@
 import { activitiesData } from "./data.js";
 const tags = ["all", ...new Set(activitiesData.map(({ tag }) => tag))];
 
+// This callback function is called when the user will press something on the page or the nav-links and
+// will close the navbar
+if (window.innerWidth <= 800) {
+  $("main, footer, .nav-link a").click(() => {
+    $(".nav-links-container").slideUp("fast");
+  });
+}
+
+// This callback function is called when the user will press the hamburger button and
+// will open/close the navbar
+$(".navbar-toggler").click(() => {
+  $(".nav-links-container").slideToggle("fast");
+});
+
 // The observeActivities function is used to observe the activities and make scale up animation
 const observeActivities = new IntersectionObserver(
   (activities) => {

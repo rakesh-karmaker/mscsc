@@ -180,3 +180,22 @@ article div {
 .page-nav-container {
   display: flex;
 }
+
+@media screen and (max-width: 1000px) {
+  .activities-navbar {
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 120px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .activities-navbar h1 {
+    text-align: center;
+  }
+  menu {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
