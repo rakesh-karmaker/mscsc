@@ -17,9 +17,13 @@ $(".navbar-toggler").click(() => {
 const years = Object.keys(executivesData);
 let constructedHtml = {};
 
-// This function uses innerHTML to dynamically create the executive members' elements
-// It is used to reduce the HTML code
-// It is not a good practice to use innerHTML so just use react components
+/**
+ * This function uses innerHTML to dynamically create the executive members' elements
+ * It is used to reduce the HTML code
+ * It is not a good practice to use innerHTML so just use react components
+ *
+ * @param {Number} year - The year of the executives
+ */
 const createExecutiveMemberElement = (year) => {
   $(".panel-year").removeClass("active-year");
   $(`.panel-year[year="${year}"]`).addClass("active-year");
@@ -70,9 +74,11 @@ const createExecutiveMemberElement = (year) => {
   window.scrollTo(0, 0);
 };
 
-// This function uses innerHTML to dynamically create the year-panel elements
-// It is used to reduce the HTML code
-// It is not a good practice to use innerHTML so just use react components
+/**
+ * This function uses innerHTML to dynamically create the year-panel elements
+ * It is used to reduce the HTML code
+ * It is not a good practice to use innerHTML so just use react components
+ */
 const createYearElement = () => {
   const yearContainer = document.querySelector(
     ".executive-panel-container > aside"
