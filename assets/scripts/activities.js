@@ -30,18 +30,36 @@ const observeActivities = new IntersectionObserver(
   }
 );
 
+/**
+ * The getActivitiesByTag function is used to get the activities by tag for the data.js file
+ *
+ * @param selectedTag - The tag to filter by
+ * @returns {Array<Activity>} - The filtered activities
+ */
 const getActivitiesByTag = (selectedTag) => {
   return selectedTag === "all"
     ? activitiesData
     : activitiesData.filter(({ tag }) => tag === selectedTag);
 };
 
+/**
+ * The getUrlTag function is used to get the tag from the URL
+ *
+ * @returns {string} - The tag
+ */
 const getUrlTag = () => {
   const url = new URL(window.location.href);
   const tag = url.searchParams.get("tag");
   return tag ?? "all";
 };
 
+/**
+ * The generateActivityHTML function is used to generate the HTML for the activity
+ *
+ * @param activity - The activity to generate the HTML for
+ * @param showTag - Whether to show the tag or not
+ * @returns {string} - The HTML for the activity
+ */
 const generateActivityHTML = (
   {
     tag,
@@ -86,6 +104,12 @@ const generateActivityHTML = (
   `;
 };
 
+/**
+ * The renderActivities function is used to render the activities
+ *
+ * @param activities - The activities to render
+ * @param showTag - Whether to show the tag or not
+ */
 const renderActivities = (activities, showTag) => {
   const activitiesContainer = document.querySelector(".activities-container");
   activitiesContainer.innerHTML = "";
@@ -98,6 +122,11 @@ const renderActivities = (activities, showTag) => {
   });
 };
 
+/**
+ * This function is used to handle the main functionality of the activities
+ *
+ * @param {string} selectedTag - The tag to filter by
+ */
 const activitiesMain = (selectedTag = getUrlTag()) => {
   document.querySelectorAll(".activities-nav-link").forEach((link) => {
     const navType = link.getAttribute("nav-type");
@@ -120,6 +149,11 @@ const activitiesMain = (selectedTag = getUrlTag()) => {
   }
 };
 
+/**
+ * This function is used to initialize the pagination
+ *
+ * @param {Array<Activities>} activities
+ */
 const initPagination = (activities) => {
   const pagination = document.querySelector(".pagination");
   pagination.setAttribute("available", "true");
@@ -149,6 +183,11 @@ const initPagination = (activities) => {
   );
 };
 
+/**
+ * This function is used to change the page based on the page number
+ *
+ * @param {Number} pageNumber - The number of the page to change to
+ */
 const changePage = (pageNumber) => {
   const startIndex = 12 * (pageNumber - 1);
   const endIndex = 12 * pageNumber;
@@ -159,6 +198,12 @@ const changePage = (pageNumber) => {
   updatePagination(pageNumber, allTaggedActivities.length);
 };
 
+/**
+ * This function is used to update the pagination
+ *
+ * @param {Number} pageNumber - The number of the page
+ * @param {Number} activitiesNumber - The length of the activities
+ */
 const updatePagination = (pageNumber, activitiesNumber) => {
   const pageNumbers = document.querySelectorAll(".page-number");
   const minimumPageNumber = 1;
@@ -186,6 +231,11 @@ const updatePagination = (pageNumber, activitiesNumber) => {
   }
 };
 
+/**
+ * This function is used to perform an action on the pagination
+ *
+ * @param {String} action - The action to perform
+ */
 const paginationActionButtons = (action) => {
   const pageNumbers = document.querySelectorAll(".page-number");
   const currentPageNumber = getActivePageNumber(pageNumbers);
@@ -196,6 +246,12 @@ const paginationActionButtons = (action) => {
   changePage(nextPage);
 };
 
+/**
+ * This function is used to get the active page number
+ *
+ * @param {Array} pageNumbers - The array of page numbers
+ * @returns {Number} - The pageNumber with a class of page-active
+ */
 const getActivePageNumber = (pageNumbers) => {
   let activePageNumber;
   pageNumbers.forEach((page) => {
