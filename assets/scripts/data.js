@@ -191,7 +191,7 @@ export const activitiesData = [
     activityImagePath: "psycho&humanbrain.jpg",
     activityTitle: "Psychology & Human Brain",
     activityDesc:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
+      "I hope you're doing well. We are excited to announce that we are arranging a workshop on Friday. Our respected Alumni will also attend to say a few words to our general members!",
     activityLink:
       "https://www.facebook.com/MSCSC2014/posts/pfbid02v6CpPbgH94nYqVVTqEQWAyP5eDKbT8YT4JHREuovxBw8zXvhfQCpMMEv4gdC2hrJl",
   },
@@ -201,7 +201,7 @@ export const activitiesData = [
     activityImagePath: "psandsd.jpg",
     activityTitle: "Problem Solving and Skill Development",
     activityDesc:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
+      "MSCSC is hosting a workshop on Problem solving and skill development this Friday, led by our respected seniors, Muhammad Sadman Aziz Bhai and Shihabul Islam Mazi. After the session, there will be a fun quiz for all general members, and the winner will receive a special gift. Don’t miss out on this chance to learn and enjoy!",
     activityLink:
       "https://www.facebook.com/MSCSC2014/posts/pfbid033NC7YhySMq2xF8wZQNTDSzaB9SMzkn7dLebpUbMcwSDRWWvfJcYTWKppLSLDBdcwl",
   },
@@ -211,7 +211,7 @@ export const activitiesData = [
     activityImagePath: "newtonian.jpg",
     activityTitle: "Newtonian Mechanics",
     activityDesc:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
+      "MSCSC is hosting a workshop on Newtonian mechanics this Friday, led by our respected senior, Sadab Sayed Ridmi Bhai. The workshop will cover the basics of classical mechanics in a simple and easy-to-understand way. After the session, there will be a fun quiz for all general members, and the winner will receive a special gift. Don’t miss out on this chance to learn and enjoy!",
     activityLink:
       "https://www.facebook.com/MSCSC2014/posts/pfbid02ExP6BMGRua3Uw9qpxAjqnBQCuwA2RDxaJJk2qdbggiDdTnh3YCEU1RLiTTsWArGSl",
   },
@@ -221,9 +221,19 @@ export const activitiesData = [
     activityImagePath: "analyticalchemistry.jpg",
     activityTitle: "Analytical Chemistry",
     activityDesc:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
+      "Analytical chemistry is like a detective for substances, helping with drug development, environmental protection, and even solving crimes!",
     activityLink:
       "https://www.facebook.com/MSCSC2014/posts/pfbid02bvKttcr2XvPNQYYEvP3mM9ULvQoL3YntV1ERV3uVGzgnLMGpFGPAA2TQut1wqohTl",
+  },
+  {
+    tag: "article",
+    activityDate: "30-04-2024",
+    activityImagePath: "neurogenesis.jpg",
+    activityTitle: "Neurogenesis",
+    activityDesc:
+      'Did you know? "Neurogenesis" examines the decisions of the fixed brain, reshaping our concepts of growth, learning, and psychomotor development. "Neurogenesis" is the idea that at certain ages of the brain, especially during the critical years of life, some brain cells grow and repair themselves.',
+    activityLink:
+      "https://www.facebook.com/MSCSC2014/posts/pfbid02EhCji7vADtS8PV5zzbtEoFmZf7Eq5ni8VBPQxHWJrE36RC13iUUzw2bJs1FXb3D3l",
   },
   {
     tag: "article",
@@ -231,7 +241,7 @@ export const activitiesData = [
     activityImagePath: "europa.jpg",
     activityTitle: "ARE WE ALONE IN THE UNIVERSE?",
     activityDesc:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
+      "Such questions have always puzzled human civilization. It began when we learned that in addition to Earth, there are countless planets, satellites, and even meteorites in our universe where life could exist. According to scientists, Jupiter's satellite Europa is suitable for supporting life. But why?",
     activityLink:
       "https://www.facebook.com/MSCSC2014/posts/pfbid02asPSimLtLt7pHSYa62sQMATDdCbQZHN1mxeckCFEtYaN8hyaYEnpv9DbirVKoZuyl",
   },
@@ -240,11 +250,17 @@ export const activitiesData = [
     activityDate: "21-04-2024",
     activityImagePath: "neutronstars.jpg",
     activityTitle: "Neutron Stars",
-    activityDesc: `Neutron stars are the remains of the cores of massive stars that have reached the end of their lives. There are 2 possible evolutionary endpoints of the massive stars, they can be either black holes or neutron stars. Astronomers consider the mass of a neutron star to range from 1.4 to 2.9 solar masses.
-A neutron star is the densest object astronomers can observe directly. It was discovered by Jocelyn Bell Burnell in 1967.
-There are several types of neutron stars, including magnetars and pulsars. There are thought to be around one billion neutron stars in the Milky Way. Only 31 magnetars have ever been discovered and over 3000 pulsars have been discovered.`,
+    activityDesc: `Neutron stars are the remains of the cores of massive stars that have reached the end of their lives. There are 2 possible evolutionary endpoints of the massive stars, they can be either black holes or neutron stars. Astronomers consider the mass of a neutron star to range from 1.4 to 2.9 solar masses.`,
     activityLink:
       "https://www.facebook.com/MSCSC2014/posts/pfbid027RYKXSgpbCajg7kCfcKjZPm1CACL2LwpSuCiz1npGctZvfhBchHUn36jtVEDfmwVl",
+  },
+  {
+    tag: "article",
+    activityDate: "20-04-2024",
+    activityImagePath: "quantumcomputer.jpg",
+    activityTitle: "Quantum Computer",
+    activityDesc:
+      '"Quantum computers" use quantum mechanics to process information, which allows qubits to exist in multiple states due to superposition. This allows them to explore multiple solutions at the same time and perform calculations much faster than classical computers.',
   },
   {
     tag: "achievement",
@@ -282,7 +298,7 @@ There are several types of neutron stars, including magnetars and pulsars. There
     activityImagePath: "wave-nature.jpg",
     activityTitle: "The Wave Nature of Light",
     activityDesc:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
+      "MSCSC is arranging a workshop on 2/3/2024 on the Wave nature of light. This workshop will be instructed by none other than the Vice-President of our 21-22 EC Panel Mushfiq Zubayer Vai! In the workshop, he will explain all the insightful details about light waves and the science behind them. ",
     activityLink:
       "https://www.facebook.com/MSCSC2014/posts/pfbid02myHnJTczAxY8i1rzNfh4MSLUf5gAeMmk29iHYXFy362M23HyHvN3zFN4UtTndN1tl",
   },
@@ -292,9 +308,28 @@ There are several types of neutron stars, including magnetars and pulsars. There
     activityImagePath: "logicbehindcomputers.jpg",
     activityTitle: "Introduction to the logic behind",
     activityDesc:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
+      "MSCSC is arranging a workshop on 16/12/2023 on The Logic Behind Computers. The workshop will consist of a lot of insightful details about how computers are made and how they work. ",
     activityLink:
       "https://www.facebook.com/MSCSC2014/posts/pfbid033rFyVZJR7Z1dQxp1UXhkTe55JkBSFfE7VzjWaeSP8C1UJziZk4ZY3NuAeBNPvE3ql",
+  },
+  {
+    tag: "article",
+    activityDate: "11-09-2023",
+    activityImagePath: "redshift.jpg",
+    activityTitle: "Redshift",
+    activityDesc:
+      "Redshift is a phenomenon in astronomy where light from distant celestial objects, like galaxies or stars, appears to shift toward longer wavelengths, moving into the red end of the electromagnetic spectrum. This occurs due to the expansion of the universe. As objects move away from an observer, the light they emit stretches, causing a shift toward longer, redder wavelengths.",
+    activityLink:
+      "https://www.facebook.com/MSCSC2014/posts/pfbid036xEqXjJWGKu9XaBmypLGxM7rFeDa8tCCPkrQhJDdxoBDWvz7sdEdJvNWniXnGphol",
+  },
+  {
+    tag: "article",
+    activityDate: "23-06-2023",
+    activityImagePath: "standardmodelofparticlephysicspart2.jpg",
+    activityTitle: "Standard Model of Particle Physics Part 2",
+    activityDesc: `All subatomic particles in the universe can be mainly divided into two categories: bosons and fermions, which have been mentioned in the previous episode. In this episode, the basic properties, functions, origin and differences of these two types of particles will be discussed.`,
+    activityLink:
+      "https://www.facebook.com/MSCSC2014/posts/pfbid0hx8UfAMpjRwQy6mcQ5ZJix2YQbXN5aKj3oe4VhApxZYaibJRLzBX3zYskcuApeLol",
   },
   {
     tag: "workshop",
