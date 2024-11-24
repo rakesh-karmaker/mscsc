@@ -337,7 +337,7 @@ export const activitiesData = [
     activityImagePath: "hawkingraditionbigbangcipa.jpg",
     activityTitle: "Hawking Radiation, Big Bang, CIPA",
     activityDesc:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
+      "MSCSC is arranging a workshop today. It would be an immense pleasure for us if you all could attend this workshop. We hope that this expedition would be enjoyable for all of you. Thank you!",
     activityLink:
       "https://www.facebook.com/MSCSC2014/posts/pfbid06ymY657GmMvKjSXH8wsKkaP34nACtLMtUXhyerTpxwEhUDwL8nswtnBK5cEFSWgul",
   },
