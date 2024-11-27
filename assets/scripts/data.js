@@ -357,7 +357,7 @@ export const activitiesData = [
     activityImagePath: "matholympiad.jpg",
     activityTitle: "Math Olympiad",
     activityDesc:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
+      "Math, the language of science, has always been an exquisite conundrum for inquisitive minds. Math is employed as a mode of transportation to bring us to the magnificent realm of science. It is amongst the most potent weapons in one's inventory. To sharpen this cognitive tool of our young students, we kept the math olympiad in our segment list for our forthcoming event,",
     activityLink:
       "https://www.facebook.com/MSCSC2014/posts/pfbid02JxEZscZxqRQA6xmh1GRhFkt1GM9phXT1b9xwxx95h8DeEspsoHcP9y28myZPPEoel",
   },
@@ -367,7 +367,7 @@ export const activitiesData = [
     activityImagePath: "projectbuilding.jpg",
     activityTitle: "Project Building",
     activityDesc:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
+      "The objective of Project Building is to encourage students to identify problems in their daily lives and devise solutions to them. It assists young students in training their minds for improved problem-solving abilities. That is why Project Building is an integral part of any science competition.",
     activityLink:
       "https://www.facebook.com/MSCSC2014/posts/pfbid02oQcnpL88MkaUJhpKAoUGPjaqBoMyHWz1bTHnbeszSE6EbXSVxQRdbM2rSQAeaMr3l",
   },
