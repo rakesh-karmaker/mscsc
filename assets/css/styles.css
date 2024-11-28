@@ -25,6 +25,19 @@ html {
 body {
   overflow-x: hidden;
   --max-elements-width: 1550px;
+  background-image: linear-gradient(
+      rgba(131, 131, 134, 0) 29px,
+      rgba(131, 131, 134, 0.05) 29px,
+      rgba(131, 131, 134, 0.05) 30px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(131, 131, 134, 0) 29px,
+      rgba(131, 131, 134, 0.05) 29px,
+      rgba(131, 131, 134, 0.05) 30px
+    );
+  background-size: 30px 30px, 30px 30px;
+  background-position: 0px 0px, 0px 0px;
 }
 
 /* setting the color variables */
@@ -73,7 +86,7 @@ body {
 .section-header p,
 .section-header h2 {
   text-align: left;
-  padding: 7px 0px;
+  padding: 3px 0px;
 }
 
 .section-header h2 {
