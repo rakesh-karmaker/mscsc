@@ -332,6 +332,16 @@ export const activitiesData = [
       "https://www.facebook.com/MSCSC2014/posts/pfbid0hx8UfAMpjRwQy6mcQ5ZJix2YQbXN5aKj3oe4VhApxZYaibJRLzBX3zYskcuApeLol",
   },
   {
+    tag: "article",
+    activityDate: "12-06-2023",
+    activityImagePath: "standardmodelofparticlephysicspart1.jpg",
+    activityTitle: "Standard Model of Particle Physics Part 1",
+    activityDisc:
+      "𝗦𝗲𝗿𝗶𝗲𝘀 𝗔𝗯𝗼𝘂𝘁: With an introduction of almost all the properties and natures of every subatomic particle would be described in this series. There would be more than 10 parts in this explanation series. The basic language of this series would be Bangla.",
+    activityLink:
+      "https://www.facebook.com/MSCSC2014/posts/pfbid0ZVnBM4iZ56CoBV6baYzuuEfm6w9ycp2S5oHSGbVmkDZ9WJGfV314CUCcZ7LkC38ql",
+  },
+  {
     tag: "workshop",
     activityDate: "05-05-2023",
     activityImagePath: "hawkingraditionbigbangcipa.jpg",
@@ -340,6 +350,26 @@ export const activitiesData = [
       "MSCSC is arranging a workshop today. It would be an immense pleasure for us if you all could attend this workshop. We hope that this expedition would be enjoyable for all of you. Thank you!",
     activityLink:
       "https://www.facebook.com/MSCSC2014/posts/pfbid06ymY657GmMvKjSXH8wsKkaP34nACtLMtUXhyerTpxwEhUDwL8nswtnBK5cEFSWgul",
+  },
+  {
+    tag: "article",
+    activityDate: "30-04-2023",
+    activityImagePath: "immortaljellyfish.jpg",
+    activityTitle: "Immortal Jellyfish",
+    activityDisc:
+      'Did you know that there is a species of jellyfish known as Turritopsis dohrnii, also called the "Immortal Jellyfish", that is able to revert to its juvenile form after it matures? This means that if the jellyfish gets injured, sick or simply old,',
+    activityLink:
+      "https://www.facebook.com/MSCSC2014/posts/pfbid02TH4H3CHhPpPiCrXroa7mbPnjp4SGSmUpGanrE6act1stGruciA9ZsynrtPSzCfwAl",
+  },
+  {
+    tag: "article",
+    activityDate: "16-04-2023",
+    activityImagePath: "1stonetojourneyintoouterspace.jpg",
+    activityTitle: "1st Human to Journey into Outer Space",
+    activityDisc:
+      "Yuri Gagarin was the first human to journey into outer space, orbiting the Earth aboard the Vostok 1 spacecraft on April 12, 1961. Born in 1934 in the Soviet Union, Gagarin was a",
+    activityLink:
+      "https://www.facebook.com/MSCSC2014/posts/pfbid025rgaFeRYG1fvA4hStyH2u17qFu5u2VoH9VPwGfXMUayCZNVtpNFXHukCF4wd9aDDl",
   },
   {
     tag: "achievement",
@@ -377,19 +407,19 @@ export const activitiesData = [
     activityImagePath: "intraschool-2023.png",
     activityTitle: "Intraschool exploration (2023)",
     activityDesc:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
+      "We are happy to announce that MSCSC 2023 has been successfully completed. During the event, we had a great time with our students and we would like to share a few highlights of the event.",
     activityLink:
       "https://www.facebook.com/photo/?fbid=544333784400999&set=a.461248859376159",
   },
   {
-    tag: "event",
-    activityDate: "23-09-2022",
-    activityImagePath: "scitonic2.0.jpg",
-    activityTitle: "Scitonic 2.0",
+    tag: "achievement",
+    activityDate: "04-07-2024",
+    activityImagePath: "3rdinwallmagazine.jpg",
+    activityTitle: "3rd in Wall Magazine",
     activityDesc:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
+      'Albeit belated, we would like to congratulate team "The Marvel Fictions" from MSCSC for securing third position in the Wall Magazine (Junior) segment of "10th National GSC Scientist Mania". We wish them all the best and applaud their hard work!',
     activityLink:
-      "https://www.facebook.com/photo.php?fbid=461248866042825&set=pb.100064731457622.-2207520000&type=3",
+      "https://www.facebook.com/MSCSC2014/posts/pfbid0Yqmt8Y4yzn3yy2de1UCFdnZ4SPYXcRLY3xwYP9UiQ3y6FrHEPrNMxsnuUp1KMLz3l",
   },
   {
     tag: "achievement",
@@ -402,12 +432,32 @@ export const activitiesData = [
       "https://www.facebook.com/MSCSC2014/posts/pfbid0EaeeUEySbMz2L4Vs4sdxpk7toLq467LxEK6mXLgDoESGxWAAZjZgPbV3gpnX8kojl",
   },
   {
+    tag: "article",
+    activityDate: "04-02-2022",
+    activityImagePath: "1stmeteorshowerofthecalendar.jpg",
+    activityTitle: "1st Meteor Shower of the Calendar",
+    activityDesc:
+      "The Quadrantid meteor shower is the first meteor shower of 2022. It peaks overnight on January 2 (the morning of January 3) at 21:00 UTC (3:00am). The new moon on January 2 will rise and set with the sun and be absent from the night sky, leaving it dark for meteor watching.",
+    activityLink:
+      "https://www.facebook.com/MSCSC2014/posts/pfbid0aTUcaRdcY4w4NYxJVStqcdi6yT7LssiZnzANvT1sQzdUQaRWvgbkLz5dqrAmZZcdl",
+  },
+  {
     tag: "event",
+    activityDate: "23-09-2022",
+    activityImagePath: "scitonic2.0.jpg",
+    activityTitle: "Scitonic 2.0",
+    activityDesc:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
+    activityLink:
+      "https://www.facebook.com/photo.php?fbid=461248866042825&set=pb.100064731457622.-2207520000&type=3",
+  },
+  {
+    tag: "workshop",
     activityDate: "19-08-2021",
     activityImagePath: "chemistrycampaign.jpg",
     activityTitle: "Chemistry Campaign",
     activityDesc:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
+      "The universe is constantly undergoing various reactions. From the uncertain quantum world to the complex processes that occur in life, strange interactions between matter and energy can be observed everywhere. Chemistry shows us how all the interactions that occur around us are",
     activityLink:
       "https://www.facebook.com/MSCSC2014/photos/a.199847797167738/1169562713529570/?type=3",
   },
@@ -417,7 +467,7 @@ export const activitiesData = [
     activityImagePath: "robotics.png",
     activityTitle: "Robotics",
     activityDesc:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
+      "In the future, a large part of the world will be occupied by intelligence and robots. And everyone from young to old is very curious about this artificial intelligence or robot. Everyone wants to know how robots work and how to create this wonder of the 21st century.",
     activityLink:
       "https://www.facebook.com/MSCSC2014/posts/pfbid025DmM5ZHcEiUWDFTEnkBnepp5omiZ8h7uW3HtgjoXr15t7uwtZuCKhBEiCfLZPvP3l",
   },
@@ -427,7 +477,7 @@ export const activitiesData = [
     activityImagePath: "astrocampaign.jpg",
     activityTitle: "Astro Campaign",
     activityDesc:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",
+      "The universe is surrounded by infinite mysteries that constantly awaken the curiosity of humans. Along the path of this boundless curiosity, new mysteries are being solved while searching for answers to the questions posed by the human brain. The constant new discoveries of scientists about the universe are adding a unique dimension to this curiosity.",
     activityLink:
       "https://www.facebook.com/MSCSC2014/photos/a.199847797167738/1138074580011717/?type=3",
   },
