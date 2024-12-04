@@ -8,8 +8,8 @@ Welcome to MSCSC’s official website repository. This platform highlights our c
 ## Tech Stack
 
 - [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) - Markup Language
-- [Vanilla CSS]([https://tailwindcss.com/](https://developer.mozilla.org/en-US/docs/Web/CSS)) – CSS
-- [JavaScript]([https://www.typescriptlang.org/](https://developer.mozilla.org/en-US/docs/Web/JavaScript)) – Language
+- [Vanilla CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) – CSS
+- [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) – Language
 - [Github](https://pages.github.com/) – Hosting
 
 ## Any Issues?
