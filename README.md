@@ -15,3 +15,10 @@ Welcome to MSCSC’s official website repository. This platform highlights our c
 ## Any Issues?
 
 Please contact to mscscofficial17@gmail.com or open an issue if you find any bugs and issues. We would be very grateful to you.
+
+
+## Contact Us
+
+- [Website](https://rakesh-karmaker.github.io/mscsc)
+- [Facebook](https://www.facebook.com/MSCSC2014)
+- [Instragram](https://www.instagram.com/_mscsclub_)
