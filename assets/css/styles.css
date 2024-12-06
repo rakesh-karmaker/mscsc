@@ -576,7 +576,7 @@ main {
   height: 420px;
 }
 
-.swiper-slide {
+.activity {
   width: calc((var(--max-elements-width) - 40px) / 3) !important;
   height: 350px;
   display: flex;
@@ -586,14 +586,14 @@ main {
   border: 0.5px solid rgba(0, 0, 0, 0.1);
 }
 
-.swiper-slide img {
+.activity img {
   width: 210px;
   height: 100%;
   object-fit: cover;
   object-position: center center;
 }
 
-.swiper-slide article {
+.activity article {
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -612,7 +612,7 @@ main {
   border-radius: 20px;
 }
 
-.swiper-slide article h3 {
+.activity article h3 {
   font-size: 1.4rem;
   line-height: 30px;
   color: var(--black);
@@ -625,7 +625,7 @@ main {
   overflow: hidden;
 }
 
-.swiper-slide article p:not(:has(span)) {
+.activity article p:not(:has(span)) {
   font-size: 0.8rem;
   line-height: 19px;
   margin-bottom: 15px;
@@ -636,14 +636,14 @@ main {
   overflow: hidden;
 }
 
-.swiper-slide article a {
+.activity article a {
   text-decoration: none;
   font-size: 1.1rem;
   color: var(--light-black);
   transition: 0.25s;
 }
 
-.swiper-slide article a:hover {
+.activity article a:hover {
   opacity: 0.8;
 }
 
@@ -1037,15 +1037,15 @@ footer p {
     --max-elements-width: 94vw;
   }
 
-  .swiper-slide {
+  .activity {
     width: calc(50% - 20px) !important;
   }
 
-  .swiper-slide img {
+  .activity img {
     min-width: 277px;
     width: 100%;
   }
-  .swiper-slide article {
+  .activity article {
     max-width: 40ch;
   }
 
@@ -1101,10 +1101,10 @@ footer p {
 }
 
 @media screen and (max-width: 1200px) {
-  .swiper-slide {
+  .activity {
     width: calc(50% - 15px) !important;
   }
-  .swiper-slide img {
+  .activity img {
     min-width: 230px;
   }
 }
@@ -1140,11 +1140,11 @@ footer p {
     width: 330px;
     margin: 0px auto;
   }
-  .swiper-slide {
+  .activity {
     width: 100% !important;
     min-height: 400px;
   }
-  .swiper-slide article {
+  .activity article {
     max-width: none;
   }
 
@@ -1365,7 +1365,7 @@ footer p {
     align-items: center;
   }
 
-  .swiper-slide {
+  .activity {
     width: 94vw !important;
   }
 }
@@ -1389,18 +1389,18 @@ footer p {
   .swiper {
     height: auto;
   }
-  .swiper-slide {
+  .activity {
     flex-direction: column;
     position: relative;
     max-width: 100%;
     height: 620px;
   }
-  .swiper-slide img {
+  .activity img {
     width: 100%;
     height: 100%;
     max-height: 300px;
   }
-  .swiper-slide > article {
+  .activity > article {
     width: 100%;
     height: 100%;
   }
@@ -1440,7 +1440,7 @@ footer p {
   .event-status-nav {
     gap: 0px;
   }
-  .swiper-slide {
+  .activity {
     width: 250px;
   }
   form {

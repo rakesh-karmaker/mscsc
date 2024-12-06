@@ -167,94 +167,92 @@
     <main>
       <!-- hero section starts here -->
       <section class="hero-section col-center page-section" id="hero">
-        <div class="hero-section-upper row-center">
-          <div class="hero-section-description">
-            <div class="upper">
-              <h1>
-                Where
-                <span class="highlighted-text">Science enthusiasts</span> come
-                together
-              </h1>
+        <article class="hero-section-left">
+          <div class="mscsc-tag">
+            <p>Science & Technology Club</p>
+            <p class="name">MSCSC</p>
+          </div>
 
-              <p class="secondary-text">
-                Connect with like-minded individuals and expand your knowledge
-                in math, science, biology, astronomy and IT. Let's be the best
-                together.
-              </p>
+          <div class="club-intro">
+            <h1>
+              Where
+              <span class="highlighted-text">Science enthusiasts</span> come
+              together
+            </h1>
+            <p class="secondary-text">
+              Connect with like-minded individuals and expand your knowledge in
+              math, science, biology, astronomy and IT. Let's be the best
+              together.
+            </p>
+          </div>
+          <!-- Club stats is a section where we can show some stats about the club -->
+          <!--TODO Should change in every year -->
+          <div class="club-stats">
+            <h3>The milestones we have achieved:</h3>
+            <div class="club-stats-container">
+              <h3 class="stats">
+                <span class="stats-number"
+                  ><span class="number-value" value="5">0</span>K+</span
+                >
+                <span class="stats-name"
+                  >Past club<br />
+                  Members</span
+                >
+              </h3>
 
-              <a
-                href="https://www.facebook.com/MSCSC2014"
-                class="primary-button"
-                target="_blank"
-                >Join now</a
-              >
+              <h3 class="stats">
+                <span class="stats-number"
+                  ><span class="number-value" value="7">0</span>+</span
+                >
+                <span class="stats-name"
+                  >Years of<br />
+                  Connectivity</span
+                >
+              </h3>
+
+              <h3 class="stats">
+                <span class="stats-number"
+                  ><span class="number-value" value="4">0</span>+</span
+                >
+                <span class="stats-name"
+                  >Successful<br />
+                  Fests</span
+                >
+              </h3>
+
+              <h3 class="stats">
+                <span class="stats-number"
+                  ><span class="number-value" value="20">0</span>+</span
+                >
+                <span class="stats-name"
+                  >Interesting<br />
+                  workshops</span
+                >
+              </h3>
             </div>
+          </div>
+        </article>
 
-            <div class="curve">
-              <svg viewBox="0 0 1500 200">
-                <path
-                  d="m 0,240 h 1500.4828 v -71.92164 c 0,0 -286.2763,-81.79324 -743.19024,-81.79324 C 300.37862,86.28512 0,168.07836 0,168.07836 Z"
-                ></path>
-              </svg>
+        <div class="hero-section-right">
+          <div class="images-container">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide hero-img">
+                <img src="./assets/images/hero-img-1.jpg" alt="hero image 1" />
+              </div>
+              <div class="swiper-slide hero-img">
+                <img src="./assets/images/hero-img-2.png" alt="hero image 2" />
+              </div>
+              <div class="swiper-slide hero-img">
+                <img src="./assets/images/hero-img-3.png" alt="hero image 3" />
+              </div>
             </div>
           </div>
 
-          <div class="hero-section-images">
-            <img
-              src="./assets/images/hero-img-2.png"
-              alt="Club members are studying in a workshop"
-              class="primary-image img-1"
-            />
-            <img
-              src="./assets/images/hero-img-3.png"
-              alt="Alumni is teaching the club members"
-              class="secondary-image img-2"
-            />
-          </div>
-        </div>
-
-        <!-- Club stats is a section where we can show some stats about the club -->
-        <!--TODO Should change in every year -->
-        <div class="club-stats-container">
-          <h3 class="stats">
-            <span class="stats-number"
-              ><span class="number-value" value="5">0</span>K+</span
-            >
-            <span class="stats-name"
-              >Past club<br />
-              Members</span
-            >
-          </h3>
-
-          <h3 class="stats">
-            <span class="stats-number"
-              ><span class="number-value" value="7">0</span>+</span
-            >
-            <span class="stats-name"
-              >Years of<br />
-              Connectivity</span
-            >
-          </h3>
-
-          <h3 class="stats">
-            <span class="stats-number"
-              ><span class="number-value" value="4">0</span>+</span
-            >
-            <span class="stats-name"
-              >Successful<br />
-              Fests</span
-            >
-          </h3>
-
-          <h3 class="stats">
-            <span class="stats-number"
-              ><span class="number-value" value="20">0</span>+</span
-            >
-            <span class="stats-name"
-              >Interesting<br />
-              workshops</span
-            >
-          </h3>
+          <button class="join-btn">
+            <div class="pulse"></div>
+            <p>Join Us With Our Journey</p>
+            <p><i class="fa-solid fa-arrow-right-long"></i></p>
+          </button>
         </div>
       </section>
       <!-- hero section ends here -->
@@ -625,7 +623,7 @@
           <div class="swiper">
             <!--TODO --------------- this part should be dynamic which will be the 1st 6 events (start) --------------- -->
 
-            <div class="swiper-wrapper">
+            <div class="swiper-wrapper events-wrapper">
               <!-- Slides -->
               <div class="swiper-slide activity" status="upcoming">
                 <img
