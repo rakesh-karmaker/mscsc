@@ -270,7 +270,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: calc(90px + 40px);
+  /* padding-top: calc(90px + 40px); */
 }
 
 /* -------- hero - top section styling starts here -------- */
@@ -279,18 +279,86 @@ main {
   width: 100%;
   max-width: var(--max-elements-width);
   height: 100%;
-  min-height: calc(100vh - 90px);
-  gap: 100px;
-  padding-bottom: 40px;
+  min-height: 100svh;
+  padding-top: 90px;
 }
 
-.hero-section-upper {
+.hero-section-container {
   width: 100%;
-  gap: 110px;
+  max-width: var(--max-elements-width);
+  height: 100%;
+  gap: 100px;
+  justify-content: space-between;
+}
+
+.hero-section-left {
+  height: 680px;
+  display: flex;
+  flex-direction: column;
   justify-content: space-between !important;
 }
 
-.hero-section-description h1 {
+.mscsc-tag {
+  width: 100%;
+  /*TODO: from 160px to 470px */
+  max-width: 160px;
+  height: 75px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+
+  background: var(--secondary-bg);
+  box-shadow: 0px 0px 1.1px rgba(0, 0, 0, 0.25);
+  border-radius: 43.5px;
+  padding: 0px 20px;
+  position: relative;
+  z-index: 99;
+  overflow: hidden;
+  transition: 1s;
+}
+
+.mscsc-tag.active {
+  max-width: 470px;
+}
+
+.mscsc-tag p:not(.name) {
+  font-size: 20px;
+  color: var(--black);
+  font-weight: 500;
+  min-width: fit-content;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mscsc-tag .name {
+  background-color: var(--highlighted-color);
+  width: 120px;
+  height: 40px;
+  border-radius: 20px;
+  color: var(--text-white);
+  letter-spacing: 1px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  position: absolute;
+  right: 20px;
+}
+
+.mscsc-tag .name::before {
+  content: "";
+  position: absolute;
+  width: 135px;
+  height: 56px;
+  border-radius: 95.5px;
+  background-color: inherit;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+.club-intro h1 {
   max-width: 17ch;
   font-size: 3.9rem;
   text-transform: uppercase;
@@ -298,67 +366,99 @@ main {
   color: var(--text-primary);
   font-weight: 600;
 }
-.hero-section-description .highlighted-text {
+.club-intro .highlighted-text {
   display: block;
 }
 
-.hero-section-description p {
-  max-width: 48ch;
+.club-intro p {
+  /* max-width: 48ch; */
   font-size: 1.2rem;
-  margin: 25px 0px 25px 0px;
+  margin-top: 25px;
+  margin-bottom: 25px;
   font-weight: 450;
 }
 
-.hero-section-images {
-  --big-image-width: 600px;
-  --big-image-height: 450px;
-  --small-image-width: 300px;
-  --small-image-height: 230px;
-
-  width: var(--big-image-width);
-  height: var(--big-image-height);
-  position: relative;
-  margin: 0px 0px 50px 105px;
+.club-stats h3 {
+  font-weight: 450;
+  padding-bottom: 7px;
 }
 
-.primary-image {
-  position: relative;
-  width: var(--big-image-width);
-  height: var(--big-image-height);
-  border-radius: 41px;
-
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+.hero-section-right {
+  gap: 20px;
 }
 
-.secondary-image,
-.image-active-2 {
-  width: var(--small-image-width);
-  height: var(--small-image-height);
-  position: absolute;
-  bottom: -49px;
-  left: -106px;
-  z-index: 99;
-  border-radius: 22px;
-  filter: drop-shadow(5px -3px 12.9px rgba(0, 0, 0, 0.25));
-}
-.image-active-1 {
-  position: relative;
-  bottom: 0;
-  left: 0;
-  z-index: -1;
-  width: var(--big-image-width);
-  height: var(--big-image-height);
-  border-radius: 41px;
+.images-container {
+  background-color: var(--secondary-bg);
+  max-width: 730px;
+  overflow: hidden;
+  border-radius: 16px;
 }
 
-.img-1,
-.img-2 {
-  transition: 0.24s;
-  cursor: grab;
+.hero-img > img {
+  width: 730px;
+  height: 600px;
   object-fit: cover;
   object-position: center center;
 }
 
+.join-btn {
+  width: 100%;
+  height: 60px;
+  border-radius: 16px;
+  justify-content: space-between;
+  padding: 0px 30px;
+  background-color: var(--secondary-bg);
+  box-shadow: 0px 0px 1.1px rgba(0, 0, 0, 0.25);
+  transition: 0.25s;
+  cursor: pointer;
+}
+
+.join-btn:hover {
+  background-color: var(--highlighted-color);
+}
+
+.join-btn:hover p {
+  color: var(--text-white);
+}
+
+.join-btn:hover .pulse {
+  background-color: var(--text-white);
+}
+
+.join-btn:hover p:has(i) {
+  transform: translateX(5px);
+}
+
+.join-btn > div {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.pulse {
+  width: 13px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: var(--highlighted-color);
+  position: relative;
+  animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+  0% {
+    box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+}
+
+.join-btn p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: 0.25s;
+}
 /* --------- hero - top section styling ends here -------- */
 
 /* -------- hero - bottom section styling starts here -------- */
@@ -375,9 +475,9 @@ main {
 }
 
 .stats-number {
-  --number-value-1-digit: 43px;
-  --number-value-2-digit: 83px;
-  font-size: 4.4rem;
+  --number-value-1-digit: 26px;
+  --number-value-2-digit: 51px;
+  font-size: 40px;
   font-weight: 420;
 }
 
@@ -391,10 +491,10 @@ main {
 }
 
 .stats-name {
-  padding-left: 10px;
-  font-size: 1.35rem;
-  line-height: 25px;
-  font-weight: 520;
+  padding-left: 6px;
+  font-size: 1.1rem;
+  line-height: 22px;
+  font-weight: 500;
 }
 
 /* ----------- hero - bottom styling ends here ------------- */
@@ -414,6 +514,7 @@ main {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
+  flex-direction: row-reverse;
 }
 
 .club-description {
@@ -576,7 +677,7 @@ main {
   height: 420px;
 }
 
-.swiper-slide {
+.activity {
   width: calc((var(--max-elements-width) - 40px) / 3) !important;
   height: 350px;
   display: flex;
@@ -586,14 +687,14 @@ main {
   border: 0.5px solid rgba(0, 0, 0, 0.1);
 }
 
-.swiper-slide img {
+.activity img {
   width: 210px;
   height: 100%;
   object-fit: cover;
   object-position: center center;
 }
 
-.swiper-slide article {
+.activity article {
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -612,7 +713,7 @@ main {
   border-radius: 20px;
 }
 
-.swiper-slide article h3 {
+.activity article h3 {
   font-size: 1.4rem;
   line-height: 30px;
   color: var(--black);
@@ -625,7 +726,7 @@ main {
   overflow: hidden;
 }
 
-.swiper-slide article p:not(:has(span)) {
+.activity article p:not(:has(span)) {
   font-size: 0.8rem;
   line-height: 19px;
   margin-bottom: 15px;
@@ -636,14 +737,14 @@ main {
   overflow: hidden;
 }
 
-.swiper-slide article a {
+.activity article a {
   text-decoration: none;
   font-size: 1.1rem;
   color: var(--light-black);
   transition: 0.25s;
 }
 
-.swiper-slide article a:hover {
+.activity article a:hover {
   opacity: 0.8;
 }
 
@@ -1037,15 +1138,15 @@ footer p {
     --max-elements-width: 94vw;
   }
 
-  .swiper-slide {
+  .activity {
     width: calc(50% - 20px) !important;
   }
 
-  .swiper-slide img {
+  .activity img {
     min-width: 277px;
     width: 100%;
   }
-  .swiper-slide article {
+  .activity article {
     max-width: 40ch;
   }
 
@@ -1101,10 +1202,10 @@ footer p {
 }
 
 @media screen and (max-width: 1200px) {
-  .swiper-slide {
+  .activity {
     width: calc(50% - 15px) !important;
   }
-  .swiper-slide img {
+  .activity img {
     min-width: 230px;
   }
 }
@@ -1140,11 +1241,11 @@ footer p {
     width: 330px;
     margin: 0px auto;
   }
-  .swiper-slide {
+  .activity {
     width: 100% !important;
     min-height: 400px;
   }
-  .swiper-slide article {
+  .activity article {
     max-width: none;
   }
 
@@ -1365,7 +1466,7 @@ footer p {
     align-items: center;
   }
 
-  .swiper-slide {
+  .activity {
     width: 94vw !important;
   }
 }
@@ -1389,18 +1490,18 @@ footer p {
   .swiper {
     height: auto;
   }
-  .swiper-slide {
+  .activity {
     flex-direction: column;
     position: relative;
     max-width: 100%;
     height: 620px;
   }
-  .swiper-slide img {
+  .activity img {
     width: 100%;
     height: 100%;
     max-height: 300px;
   }
-  .swiper-slide > article {
+  .activity > article {
     width: 100%;
     height: 100%;
   }
@@ -1440,7 +1541,7 @@ footer p {
   .event-status-nav {
     gap: 0px;
   }
-  .swiper-slide {
+  .activity {
     width: 250px;
   }
   form {

@@ -1,5 +1,15 @@
 gsap.registerPlugin(ScrollTrigger);
 
+const heroSwiper = new Swiper(".images-container", {
+  slidesPerView: "auto",
+  grabCursor: true,
+  speed: 400,
+  // spaceBetween: 20,
+  autoplay: {
+    delay: 5000,
+  },
+});
+
 // This callback function is called when the user will press something on the page or the nav-links and
 // will close the navbar
 if (window.innerWidth <= 800) {
@@ -213,4 +223,7 @@ gsap.utils.toArray(".executive-member").forEach((executive) => {
 
 $(document).ready(() => {
   counter();
+  setTimeout(() => {
+    $(".mscsc-tag").addClass("active");
+  }, 200);
 });
