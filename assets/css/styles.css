@@ -459,11 +459,6 @@ main {
   border-radius: 16px;
 }
 
-.images-container > .swiper-wrapper {
-  /* max-width: 730px; */
-  /* overflow: hidden; */
-}
-
 .hero-img > img {
   width: 730px;
   height: 600px;
