@@ -275,72 +275,6 @@ main {
 
 /* -------- hero - top section styling starts here -------- */
 
-/* .hero-section {
-  width: 100%;
-  max-width: var(--max-elements-width);
-  height: 100%;
-  min-height: calc(100vh - 90px);
-  gap: 100px;
-  padding-bottom: 40px;
-}
-
-.hero-section-upper {
-  width: 100%;
-  gap: 110px;
-  justify-content: space-between !important;
-}
-
-
-.hero-section-images {
-  --big-image-width: 600px;
-  --big-image-height: 450px;
-  --small-image-width: 300px;
-  --small-image-height: 230px;
-
-  width: var(--big-image-width);
-  height: var(--big-image-height);
-  position: relative;
-  margin: 0px 0px 50px 105px;
-}
-
-.primary-image {
-  position: relative;
-  width: var(--big-image-width);
-  height: var(--big-image-height);
-  border-radius: 41px;
-
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-}
-
-.secondary-image,
-.image-active-2 {
-  width: var(--small-image-width);
-  height: var(--small-image-height);
-  position: absolute;
-  bottom: -49px;
-  left: -106px;
-  z-index: 99;
-  border-radius: 22px;
-  filter: drop-shadow(5px -3px 12.9px rgba(0, 0, 0, 0.25));
-}
-.image-active-1 {
-  position: relative;
-  bottom: 0;
-  left: 0;
-  z-index: -1;
-  width: var(--big-image-width);
-  height: var(--big-image-height);
-  border-radius: 41px;
-}
-
-.img-1,
-.img-2 {
-  transition: 0.24s;
-  cursor: grab;
-  object-fit: cover;
-  object-position: center center;
-} */
-
 .hero-section {
   width: 100%;
   max-width: var(--max-elements-width);
@@ -454,6 +388,7 @@ main {
 }
 
 .images-container {
+  background-color: var(--secondary-bg);
   max-width: 730px;
   overflow: hidden;
   border-radius: 16px;
@@ -579,6 +514,7 @@ main {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
+  flex-direction: row-reverse;
 }
 
 .club-description {
