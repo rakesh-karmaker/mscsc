@@ -6,20 +6,8 @@ const heroSwiper = new Swiper(".images-container", {
   speed: 400,
   // spaceBetween: 20,
   autoplay: {
-    delay: 2000,
+    delay: 5000,
   },
-
-  // breakpoints: {
-  //   1200: {
-  //     spaceBetween: 30,
-  //   },
-  //   1600: {
-  //     spaceBetween: 20,
-  //     autoplay: {
-  //       delay: 3000,
-  //     },
-  //   },
-  // },
 });
 
 // This callback function is called when the user will press something on the page or the nav-links and
@@ -235,4 +223,7 @@ gsap.utils.toArray(".executive-member").forEach((executive) => {
 
 $(document).ready(() => {
   counter();
+  setTimeout(() => {
+    $(".mscsc-tag").addClass("active");
+  }, 200);
 });
