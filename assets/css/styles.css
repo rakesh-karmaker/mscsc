@@ -289,13 +289,15 @@ main {
   height: 100%;
   gap: 100px;
   justify-content: space-between;
+  --image-slider-height: 600px;
 }
 
 .hero-section-left {
-  height: 680px;
+  min-height: 680px;
   display: flex;
   flex-direction: column;
   justify-content: space-between !important;
+  gap: 20px;
 }
 
 .mscsc-tag {
@@ -371,7 +373,7 @@ main {
 }
 
 .club-intro p {
-  /* max-width: 48ch; */
+  max-width: 55ch;
   font-size: 1.2rem;
   margin-top: 25px;
   margin-bottom: 25px;
@@ -390,12 +392,13 @@ main {
 .images-container {
   background-color: var(--secondary-bg);
   max-width: 730px;
+  min-width: 600px;
   overflow: hidden;
   border-radius: 16px;
 }
 
 .hero-img > img {
-  width: 730px;
+  width: 100%;
   height: 600px;
   object-fit: cover;
   object-position: center center;
@@ -466,6 +469,8 @@ main {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .stats {
@@ -483,11 +488,11 @@ main {
 
 .number-value {
   display: inline-block;
-  width: var(--number-value-2-digit);
+  min-width: var(--number-value-2-digit);
 }
 
 .number-value:not([value="20"]) {
-  width: var(--number-value-1-digit);
+  min-width: var(--number-value-1-digit);
 }
 
 .stats-name {
@@ -1133,9 +1138,17 @@ footer p {
 }
 
 /* ---------------- responsive part starts here ---------------- */
-@media screen and (max-width: 1600px) {
+@media screen and (max-width: 1650px) {
   body {
     --max-elements-width: 94vw;
+  }
+
+  .club-intro > p {
+    margin-bottom: 0px;
+  }
+
+  .club-stats-container {
+    gap: 15px;
   }
 
   .activity {
@@ -1154,36 +1167,52 @@ footer p {
     max-width: 390px;
   }
 }
-@media screen and (max-width: 1400px) {
-  .hero-section {
-    min-height: auto;
+
+@media screen and (max-width: 1500px) {
+  .hero-img > img {
+    height: 100%;
   }
-  .hero-section-description h1 {
+  .hero-section-left {
+    min-height: 0px;
+    gap: 30px;
+  }
+}
+@media screen and (max-width: 1400px) {
+  .club-intro h1 {
     font-size: 3rem;
     line-height: 45px;
   }
-
-  .hero-section-description p {
+  .club-intro p {
     font-size: 1.1rem;
     line-height: 25px;
   }
-  .hero-section-images {
-    --big-image-width: 500px;
-    --big-image-height: 350px;
 
-    --small-image-width: 250px;
-    --small-image-height: 180px;
+  .mscsc-tag {
+    max-width: 118px;
+    height: 50px;
+    padding-left: 17px;
   }
 
-  .stats-number {
-    font-size: 3.5rem;
-    --number-value-1-digit: 33px;
-    --number-value-2-digit: 67px;
+  .mscsc-tag.active {
+    max-width: 400px;
   }
 
-  .stats-name {
-    font-size: 1rem;
-    line-height: 20px;
+  .mscsc-tag p:not(.name) {
+    font-size: 18px;
+  }
+
+  .mscsc-tag .name {
+    width: 90px;
+    height: 30px;
+    letter-spacing: normal;
+    font-size: 17px;
+    font-weight: 450;
+    right: 13px;
+  }
+
+  .mscsc-tag .name::before {
+    width: 105px;
+    height: 42px;
   }
 
   .about-article-container > img {
@@ -1192,6 +1221,9 @@ footer p {
 }
 
 @media screen and (max-width: 1320px) {
+  .images-container {
+    min-width: 500px;
+  }
   .article {
     max-width: 320px;
   }
@@ -1210,22 +1242,61 @@ footer p {
   }
 }
 
-@media screen and (max-width: 1150px) {
-  .hero-section-upper {
-    gap: 50px;
-  }
-  .hero-section-images {
-    margin: 0;
-
-    --big-image-width: 430px;
-    --big-image-height: 330px;
-  }
-  .secondary-image {
-    display: none;
-  }
-}
-
 @media screen and (max-width: 1080px) {
+  .hero-section {
+    padding-top: 0px;
+    width: 100vw;
+    max-width: none;
+  }
+  .hero-section::after {
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  .hero-section-container {
+    flex-direction: column;
+    gap: 30px;
+  }
+  .hero-section-left {
+    z-index: 11;
+    align-items: center;
+    text-align: center;
+  }
+  .club-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .club-intro h1 {
+    color: var(--text-white);
+  }
+  .club-intro p {
+    color: var(--text-white);
+  }
+  .club-stats h3,
+  .club-stats p {
+    color: var(--text-white);
+  }
+  .join-btn {
+    z-index: 99;
+  }
+
+  .images-container {
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 0px;
+    height: 100svh;
+    min-height: 100%;
+    position: absolute;
+    top: 0px;
+    z-index: -11;
+    left: 0px;
+  }
+
   .section-header {
     flex-direction: column;
   }

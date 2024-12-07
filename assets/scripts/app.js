@@ -4,7 +4,7 @@ const heroSwiper = new Swiper(".images-container", {
   slidesPerView: "auto",
   grabCursor: true,
   speed: 400,
-  // spaceBetween: 20,
+  spaceBetween: 0,
   autoplay: {
     delay: 5000,
   },
