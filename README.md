@@ -14,7 +14,7 @@ Welcome to MSCSC’s official website repository. This platform highlights our c
 
 ## Any Issues?
 
-Please contact to mscscofficial17@gmail.com or open an issue if you find any bugs and issues. We would be very grateful to you.
+Please contact to rakeshkarmaker0175@gmail.com or open an issue if you find any bugs and issues. We would be very grateful to you.
 
 
 ## Contact Us
