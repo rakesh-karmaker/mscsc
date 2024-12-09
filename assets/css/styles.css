@@ -469,7 +469,7 @@ main {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  gap: 20px;
   flex-wrap: wrap;
 }
 
