@@ -1266,6 +1266,9 @@ footer p {
     align-items: center;
     text-align: center;
   }
+  .mscsc-tag {
+    display: none;
+  }
   .club-intro {
     display: flex;
     flex-direction: column;
@@ -1277,12 +1280,11 @@ footer p {
   .club-intro p {
     color: var(--text-white);
   }
-  .club-stats h3,
-  .club-stats p {
-    color: var(--text-white);
-  }
   .join-btn {
     z-index: 99;
+  }
+  .join-btn p:has(i) {
+    display: none;
   }
 
   .images-container {
@@ -1295,6 +1297,33 @@ footer p {
     top: 0px;
     z-index: -11;
     left: 0px;
+  }
+
+  .shape {
+    width: 100%;
+    position: absolute;
+    bottom: -20px;
+    z-index: 9;
+  }
+
+  .shape path {
+    fill: var(--primary-bg);
+  }
+
+  .club-stats {
+    width: 100%;
+    max-width: 75ch;
+    position: absolute;
+    bottom: -20px;
+    transform: translateY(100%);
+  }
+
+  .club-stats-container {
+    margin-top: 20px;
+  }
+
+  #about {
+    margin-top: 100px;
   }
 
   .section-header {
@@ -1456,6 +1485,7 @@ footer p {
   }
   #about {
     padding: 100px 20px;
+    margin-top: 200px;
   }
 }
 
@@ -1558,6 +1588,9 @@ footer p {
 }
 
 @media screen and (max-width: 520px) {
+  .shape {
+    bottom: -10px;
+  }
   .swiper {
     height: auto;
   }
@@ -1620,5 +1653,17 @@ footer p {
   }
   .name-email {
     flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  #about {
+    margin-top: 290px;
+  }
+}
+
+@media screen and (max-width: 409px) {
+  #about {
+    margin-top: 370px;
   }
 }
