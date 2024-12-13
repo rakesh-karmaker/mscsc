@@ -15,7 +15,6 @@ function App() {
           <Route path="/executives" element={<Executives />} />
         </Routes>
       </BrowserRouter>
-      {/* <h1>Hello</h1> */}
     </>
   );
 }

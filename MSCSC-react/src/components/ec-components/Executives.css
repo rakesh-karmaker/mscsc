@@ -1,0 +1,231 @@
+main {
+  max-width: var(--max-elements-width);
+  margin-top: 150px;
+  margin-bottom: 70px;
+}
+.executive-panel-container {
+  margin-top: 80px;
+  display: flex;
+  gap: 60px;
+  justify-content: space-between;
+}
+
+.executive-panel-container > aside {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  gap: 30px;
+  position: sticky;
+  top: 170px;
+}
+
+.year-dropdown {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--black);
+  transition: 0.25s;
+  color: var(--white);
+  cursor: pointer;
+  display: none;
+}
+
+.year-dropdown:hover {
+  background-color: var(--highlighted-color);
+}
+
+.year-dropdown i {
+  font-size: 1.1rem;
+  margin-top: 2px;
+  transition: 0.25s;
+}
+
+.year-dropdown.active {
+  background-color: var(--highlighted-color);
+}
+
+.year-dropdown.active i {
+  transform: rotate(180deg);
+}
+
+.panel-year {
+  min-width: 13ch;
+  width: 100%;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: larger;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+  background: transparent;
+}
+
+.active-year {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.panel-year:hover {
+  color: var(--highlighted-color);
+  background-color: var(--light-highlighted-color);
+}
+
+.executives-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 60px;
+}
+
+.executive-member {
+  width: min(100%, 300px);
+  margin: 0px auto;
+  border-radius: 10px;
+  cursor: pointer;
+  scale: 0.7;
+  opacity: 0;
+  transition: 0.2s;
+}
+.executive-member > div {
+  transition: 0.25s;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.executive-upper {
+  width: 100%;
+  height: 280px;
+  position: relative;
+  overflow: hidden;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.executive-upper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transition: 0.25s;
+}
+.executive-upper::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #474747;
+  opacity: 0.5;
+  z-index: 9;
+  transform: scaleY(0%);
+  transform-origin: bottom;
+  transition: 0.25s;
+}
+
+.member-socials {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  gap: 15px;
+  z-index: 99;
+}
+
+.member-socials a {
+  text-decoration: none;
+  opacity: 0;
+  transition: 0.25s;
+}
+
+.member-socials i {
+  font-size: 1.5rem;
+  background-color: var(--highlighted-color);
+  color: var(--white);
+  width: 50px;
+  height: 50px;
+  transition: 0.25s;
+  border-radius: 50%;
+}
+
+.member-socials i:hover {
+  color: var(--light-black);
+}
+
+.executive-member:hover > div {
+  transform: translateY(-10px);
+}
+
+.executive-member:is(:hover) .executive-upper img {
+  scale: 1.1;
+}
+
+.executive-member:is(:hover) .executive-upper::after {
+  transform: scaleY(100%);
+}
+
+.executive-member:is(:hover) .member-socials a {
+  opacity: 1;
+}
+
+.executive-lower {
+  background-color: #fff;
+  width: 100%;
+  height: 100%;
+  min-height: 8.5rem;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.executive-lower p:not(.secondary-text) {
+  text-align: center;
+  font-size: 1.525rem;
+  font-weight: 500;
+  line-height: 26px;
+  margin-bottom: 3px;
+}
+
+.executive-lower p.secondary-text {
+  text-align: center;
+  font-size: 0.97rem;
+  opacity: 0.8;
+  max-width: 27ch;
+  line-height: normal;
+}
+
+.executive-member.shown {
+  scale: 1;
+  opacity: 1;
+}
+
+@media screen and (max-width: 950px) {
+  .executive-panel-container {
+    flex-direction: column;
+  }
+  .executive-panel-container > aside {
+    position: relative;
+    top: 0px;
+    gap: 0px;
+    overflow: hidden;
+    height: 40px;
+    border-radius: 10px;
+    transition: 0.25s;
+  }
+
+  .year-dropdown {
+    display: block;
+  }
+  .panel-year {
+    box-shadow: none;
+    padding: 0px;
+    min-height: 40px;
+    border-radius: 0px;
+  }
+  .panel-year.active-year {
+    background-color: var(--light-highlighted-color);
+    color: var(--highlighted-color);
+  }
+}
