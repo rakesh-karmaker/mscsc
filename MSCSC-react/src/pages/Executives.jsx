@@ -1,5 +1,12 @@
+import Header from "../components/nav-bars/Header";
+
 const Executives = () => {
-  return <h1>Executives</h1>;
+  return (
+    <>
+      <Header />
+      <h1>Executives</h1>
+    </>
+  );
 };
 
 export default Executives;

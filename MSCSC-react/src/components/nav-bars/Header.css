@@ -1,0 +1,146 @@
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border-bottom: 0.7px solid var(--lightest-black);
+  background-color: var(--primary-bg);
+  padding: 0px 40px;
+  z-index: 9999;
+}
+
+nav {
+  width: 100%;
+  max-width: var(--max-elements-width);
+  height: 90px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#logo > img {
+  width: 79px;
+  height: 75px;
+}
+
+.activities,
+.nav-links-container {
+  list-style: none;
+  display: inline-flex;
+  gap: 24px;
+  position: relative;
+  cursor: pointer;
+}
+
+.activities {
+  display: block;
+  position: absolute;
+  top: 30px;
+  margin-left: -10px;
+  background-color: var(--primary-bg);
+  height: 0px;
+  padding: 0px 30px 0px 20px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 14px 12px;
+  overflow: hidden;
+  transition: 0.25s;
+}
+
+.button-link[dropdown="true"]:hover ~ .activities,
+.activities:hover {
+  padding-top: 30px;
+  padding-bottom: 20px;
+  height: calc(58px + 30px + 20px);
+}
+
+.nav-link a,
+.nav-link p {
+  font-size: 1.2rem;
+  line-height: normal;
+}
+
+.nav-link a.active {
+  color: var(--highlighted-color);
+}
+
+.nav-link i {
+  font-size: 1.05rem;
+  opacity: 0.7;
+}
+
+.navbar-toggler {
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 10px;
+  font-size: 19px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+.navbar-toggler:is(:hover, :focus) {
+  background-color: transparent;
+  color: var(--black);
+}
+
+.navbar-toggler:not(:is(:hover, :focus)) {
+  background-color: var(--highlighted-color);
+  color: var(--text-white);
+}
+
+@media screen and (max-width: 800px) {
+  #logo > img {
+    width: 50px;
+    height: 50px;
+  }
+  nav {
+    position: relative;
+    height: 70px;
+  }
+
+  .nav-links-container {
+    flex-direction: column;
+    position: absolute;
+    top: 73px;
+    width: 100%;
+    height: fit-content;
+    background-color: var(--third-level-bg);
+    border-radius: 20px;
+    padding: 20px;
+    gap: 10px;
+    display: none;
+    border: 0.5px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-links-container p,
+  .nav-link a {
+    display: block;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin: 5px 0px 0px 0px;
+  }
+
+  .activities {
+    position: static;
+    box-shadow: none;
+    width: 100%;
+    height: 0px;
+    margin-left: 0px;
+    overflow: hidden;
+  }
+
+  .button-link[dropdown="true"]:hover ~ .activities,
+  .activities:hover {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    height: 145px;
+  }
+
+  .nav-link p:hover,
+  .nav-link p:focus,
+  .nav-link a:hover,
+  .nav-link a.active {
+    color: var(--text-white);
+    background-color: var(--highlighted-color);
+  }
+}
