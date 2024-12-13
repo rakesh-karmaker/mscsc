@@ -1,4 +1,4 @@
-export const YearDropdown = ({ onClick }) => {
+export const YearsDropdown = ({ onClick }) => {
   if (window.innerWidth > 950) return null;
 
   return (

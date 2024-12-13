@@ -72,7 +72,7 @@
   },
   {
     "tag": "achievement",
-    "activitiesDate": "22-03-2024",
+    "activityDate": "22-03-2024",
     "activityImagePath": "2ndrunnersupbdbo.jpg",
     "activityTitle": "2nd Runner Up at BDBO",
     "activityDesc": "MSCSC is representing itself in its fullest on the national field, Raqin Shahrier has become the 2nd regional runners-up of BDBO. Through these successes, MSCSC is effectively displaying the talent and skills of our members. We can only hope for even more prosperous days in the future of MSCSC.",
@@ -80,7 +80,7 @@
   },
   {
     "tag": "achievement",
-    "activitiesDate": "22-03-2024",
+    "activityDate": "22-03-2024",
     "activityImagePath": "21statbdoaa.jpg",
     "activityTitle": "21st position at BDOAA",
     "activityDesc": "MSCSC is steadily gaining recognition in the biggest of stages. Alvi Abid from MSCSC has gotten the 21st position in BDOAA and will be attending the national camp. His skills and sheer talent have brought him to such heights and represented MSCSC in such high ranks. We sincerely hope that the members of MSCSC will keep bringing these successes and represent MSCSC in the highest positions.",
@@ -123,7 +123,7 @@
     "activityDate": "12-06-2023",
     "activityImagePath": "standardmodelofparticlephysicspart1.jpg",
     "activityTitle": "Standard Model of Particle Physics Part 1",
-    "activityDisc": "𝗦𝗲𝗿𝗶𝗲𝘀 𝗔𝗯𝗼𝘂𝘁: With an introduction of almost all the properties and natures of every subatomic particle would be described in this series. There would be more than 10 parts in this explanation series. The basic language of this series would be Bangla.",
+    "activityDesc": "𝗦𝗲𝗿𝗶𝗲𝘀 𝗔𝗯𝗼𝘂𝘁: With an introduction of almost all the properties and natures of every subatomic particle would be described in this series. There would be more than 10 parts in this explanation series. The basic language of this series would be Bangla.",
     "activityLink": "https://www.facebook.com/MSCSC2014/posts/pfbid0ZVnBM4iZ56CoBV6baYzuuEfm6w9ycp2S5oHSGbVmkDZ9WJGfV314CUCcZ7LkC38ql"
   },
   {
@@ -139,7 +139,7 @@
     "activityDate": "30-04-2023",
     "activityImagePath": "immortaljellyfish.jpg",
     "activityTitle": "Immortal Jellyfish",
-    "activityDisc": "Did you know that there is a species of jellyfish known as Turritopsis dohrnii, also called the \"Immortal Jellyfish\", that is able to revert to its juvenile form after it matures? This means that if the jellyfish gets injured, sick or simply old,",
+    "activityDesc": "Did you know that there is a species of jellyfish known as Turritopsis dohrnii, also called the 'Immortal Jellyfish', that is able to revert to its juvenile form after it matures? This means that if the jellyfish gets injured, sick or simply old,",
     "activityLink": "https://www.facebook.com/MSCSC2014/posts/pfbid02TH4H3CHhPpPiCrXroa7mbPnjp4SGSmUpGanrE6act1stGruciA9ZsynrtPSzCfwAl"
   },
   {
@@ -147,7 +147,7 @@
     "activityDate": "16-04-2023",
     "activityImagePath": "1stonetojourneyintoouterspace.jpg",
     "activityTitle": "1st Human to Journey into Outer Space",
-    "activityDisc": "Yuri Gagarin was the first human to journey into outer space, orbiting the Earth aboard the Vostok 1 spacecraft on April 12, 1961. Born in 1934 in the Soviet Union, Gagarin was a",
+    "activityDesc": "Yuri Gagarin was the first human to journey into outer space, orbiting the Earth aboard the Vostok 1 spacecraft on April 12, 1961. Born in 1934 in the Soviet Union, Gagarin was a",
     "activityLink": "https://www.facebook.com/MSCSC2014/posts/pfbid025rgaFeRYG1fvA4hStyH2u17qFu5u2VoH9VPwGfXMUayCZNVtpNFXHukCF4wd9aDDl"
   },
   {
@@ -248,7 +248,7 @@
   },
   {
     "tag": "event",
-    "activitiesDate": "03-03-2021",
+    "activityDate": "03-03-2021",
     "activityImagePath": "mathtcsquest.png",
     "activityTitle": "Mathycs Quest",
     "activityDesc": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus aliquid officiis provident ad molestiae consequatur facere odit voluptas veniam dignissimos!",

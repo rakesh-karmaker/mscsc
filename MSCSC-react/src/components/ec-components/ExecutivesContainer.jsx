@@ -2,7 +2,7 @@ import YearPanel from "./PanelYearBtn";
 import { useState, useEffect } from "react";
 import ExecutiveCard from "./ExecutiveCard";
 import {
-  YearDropdown,
+  YearsDropdown,
   yearsDropdownClick,
   orderPanelYears,
 } from "./PanelYearsNavbarDropdown";
@@ -14,7 +14,7 @@ const ExecutivesContainer = ({ years, executivesData }) => {
 
   // Make a state for the executives panel to be rendered and re-rendered when a year panel is clicked
   const [executivePanel, setExecutivePanel] = useState(
-    <ExecutivesPanel data={selectedExecutives} />
+    <ExecutivePanel data={selectedExecutives} />
   );
 
   // Change the executives panel when a year panel is clicked
@@ -22,7 +22,7 @@ const ExecutivesContainer = ({ years, executivesData }) => {
     selectedExecutives = executivesData.filter(
       (executive) => executive.panel === year
     );
-    setExecutivePanel(<ExecutivesPanel data={selectedExecutives} />);
+    setExecutivePanel(<ExecutivePanel data={selectedExecutives} />);
     if (window.innerWidth <= 950) {
       orderPanelYears(year);
     }
@@ -41,7 +41,7 @@ const ExecutivesContainer = ({ years, executivesData }) => {
   return (
     <>
       <aside dropdown-active="false">
-        <YearDropdown
+        <YearsDropdown
           onClick={() => {
             yearsDropdownClick(years);
           }}
@@ -62,7 +62,7 @@ const ExecutivesContainer = ({ years, executivesData }) => {
   );
 };
 
-const ExecutivesPanel = (prams) => {
+const ExecutivePanel = (prams) => {
   return (
     <>
       {prams.data.map((executive) => {
