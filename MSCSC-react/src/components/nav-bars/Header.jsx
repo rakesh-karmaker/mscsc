@@ -20,33 +20,21 @@ const Header = () => {
 const Navbar = () => {
   return (
     <ul className="nav-links-container">
-      <NavLink href="/home" name="home">
-        Home
-      </NavLink>
-      <NavLink href="/home#about" name="about">
-        About Us
-      </NavLink>
-      <NavLink href="/activities" dropdown="true" name="activities">
+      <NavLink href="/home">Home</NavLink>
+      <NavLink href="/home#about">About Us</NavLink>
+      <NavLink href="/activities" dropdown="true">
         Activities
         <ul className="activities">
-          <NavLink href="/home#event" innerClass="events-link" name="events">
+          <NavLink href="/home#events" innerClass="events-link">
             Events
           </NavLink>
-          <NavLink
-            href="/home#articles"
-            innerClass="articles-link"
-            name="articles"
-          >
+          <NavLink href="/home#articles" innerClass="articles-link">
             Articles
           </NavLink>
         </ul>
       </NavLink>
-      <NavLink href="/executives" name="executives">
-        Executives
-      </NavLink>
-      <NavLink href="/contact" name="contact">
-        Contact
-      </NavLink>
+      <NavLink href="/executives">Executives</NavLink>
+      <NavLink href="/contact">Contact</NavLink>
     </ul>
   );
 };
