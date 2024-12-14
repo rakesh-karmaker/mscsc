@@ -1,6 +1,7 @@
 [
   {
     "tag": "workshop",
+    "status": "happened",
     "activityDate": "11-10-2024",
     "activityImagePath": "psycho&humanbrain.jpg",
     "activityTitle": "Psychology & Human Brain",
@@ -9,6 +10,7 @@
   },
   {
     "tag": "workshop",
+    "status": "happened",
     "activityDate": "23-08-2024",
     "activityImagePath": "psandsd.jpg",
     "activityTitle": "Problem Solving and Skill Development",
@@ -17,6 +19,7 @@
   },
   {
     "tag": "workshop",
+    "status": "happened",
     "activityDate": "16-08-2024",
     "activityImagePath": "newtonian.jpg",
     "activityTitle": "Newtonian Mechanics",
@@ -25,6 +28,7 @@
   },
   {
     "tag": "article",
+    "status": "happened",
     "activityDate": "21-05-2024",
     "activityImagePath": "analyticalchemistry.jpg",
     "activityTitle": "Analytical Chemistry",
@@ -33,6 +37,7 @@
   },
   {
     "tag": "article",
+    "status": "happened",
     "activityDate": "30-04-2024",
     "activityImagePath": "neurogenesis.jpg",
     "activityTitle": "Neurogenesis",
@@ -41,6 +46,7 @@
   },
   {
     "tag": "article",
+    "status": "happened",
     "activityDate": "23-04-2024",
     "activityImagePath": "europa.jpg",
     "activityTitle": "ARE WE ALONE IN THE UNIVERSE?",
@@ -49,6 +55,7 @@
   },
   {
     "tag": "article",
+    "status": "happened",
     "activityDate": "21-04-2024",
     "activityImagePath": "neutronstars.jpg",
     "activityTitle": "Neutron Stars",
@@ -57,6 +64,7 @@
   },
   {
     "tag": "article",
+    "status": "happened",
     "activityDate": "20-04-2024",
     "activityImagePath": "quantumcomputer.jpg",
     "activityTitle": "Quantum Computer",
@@ -64,6 +72,7 @@
   },
   {
     "tag": "achievement",
+    "status": "happened",
     "activityDate": "22-03-2024",
     "activityImagePath": "1strunnersupbdmo.jpg",
     "activityTitle": "1st Runner Up at BDMO",
@@ -72,6 +81,7 @@
   },
   {
     "tag": "achievement",
+    "status": "happened",
     "activityDate": "22-03-2024",
     "activityImagePath": "2ndrunnersupbdbo.jpg",
     "activityTitle": "2nd Runner Up at BDBO",
@@ -80,6 +90,7 @@
   },
   {
     "tag": "achievement",
+    "status": "happened",
     "activityDate": "22-03-2024",
     "activityImagePath": "21statbdoaa.jpg",
     "activityTitle": "21st position at BDOAA",
@@ -88,6 +99,7 @@
   },
   {
     "tag": "workshop",
+    "status": "happened",
     "activityDate": "02-03-2024",
     "activityImagePath": "wave-nature.jpg",
     "activityTitle": "The Wave Nature of Light",
@@ -96,6 +108,7 @@
   },
   {
     "tag": "workshop",
+    "status": "happened",
     "activityDate": "16-12-2023",
     "activityImagePath": "logicbehindcomputers.jpg",
     "activityTitle": "Introduction to the logic behind",
@@ -104,6 +117,7 @@
   },
   {
     "tag": "article",
+    "status": "happened",
     "activityDate": "11-09-2023",
     "activityImagePath": "redshift.jpg",
     "activityTitle": "Redshift",
@@ -112,6 +126,7 @@
   },
   {
     "tag": "article",
+    "status": "happened",
     "activityDate": "23-06-2023",
     "activityImagePath": "standardmodelofparticlephysicspart2.jpg",
     "activityTitle": "Standard Model of Particle Physics Part 2",
@@ -120,6 +135,7 @@
   },
   {
     "tag": "article",
+    "status": "happened",
     "activityDate": "12-06-2023",
     "activityImagePath": "standardmodelofparticlephysicspart1.jpg",
     "activityTitle": "Standard Model of Particle Physics Part 1",
@@ -128,6 +144,7 @@
   },
   {
     "tag": "workshop",
+    "status": "happened",
     "activityDate": "05-05-2023",
     "activityImagePath": "hawkingraditionbigbangcipa.jpg",
     "activityTitle": "Hawking Radiation, Big Bang, CIPA",
@@ -136,6 +153,7 @@
   },
   {
     "tag": "article",
+    "status": "happened",
     "activityDate": "30-04-2023",
     "activityImagePath": "immortaljellyfish.jpg",
     "activityTitle": "Immortal Jellyfish",
@@ -144,6 +162,7 @@
   },
   {
     "tag": "article",
+    "status": "happened",
     "activityDate": "16-04-2023",
     "activityImagePath": "1stonetojourneyintoouterspace.jpg",
     "activityTitle": "1st Human to Journey into Outer Space",
@@ -152,6 +171,7 @@
   },
   {
     "tag": "achievement",
+    "status": "happened",
     "activityDate": "07-03-2023",
     "activityImagePath": "3rdndcmathcarnivalchampion.jpg",
     "activityTitle": "3rd NDC Math Carnival Wall Magazine Champion",
@@ -160,6 +180,7 @@
   },
   {
     "tag": "workshop",
+    "status": "happened",
     "activityDate": "24-01-2023",
     "activityImagePath": "matholympiad.jpg",
     "activityTitle": "Math Olympiad",
@@ -168,6 +189,7 @@
   },
   {
     "tag": "workshop",
+    "status": "happened",
     "activityDate": "20-01-2023",
     "activityImagePath": "projectbuilding.jpg",
     "activityTitle": "Project Building",
@@ -176,6 +198,7 @@
   },
   {
     "tag": "event",
+    "status": "happened",
     "activityDate": "26-01-2023",
     "activityImagePath": "intraschool-2023.png",
     "activityTitle": "Intraschool exploration (2023)",
@@ -184,6 +207,7 @@
   },
   {
     "tag": "achievement",
+    "status": "happened",
     "activityDate": "04-07-2024",
     "activityImagePath": "3rdinwallmagazine.jpg",
     "activityTitle": "3rd in Wall Magazine",
@@ -192,6 +216,7 @@
   },
   {
     "tag": "achievement",
+    "status": "happened",
     "activityDate": "29-06-2022",
     "activityImagePath": "1st3rdphysicsoly.png",
     "activityTitle": "1st place in Extempore Speech and 3rd in Physics Olympiad",
@@ -200,6 +225,7 @@
   },
   {
     "tag": "article",
+    "status": "happened",
     "activityDate": "04-02-2022",
     "activityImagePath": "1stmeteorshowerofthecalendar.jpg",
     "activityTitle": "1st Meteor Shower of the Calendar",
@@ -208,6 +234,7 @@
   },
   {
     "tag": "event",
+    "status": "happened",
     "activityDate": "23-09-2022",
     "activityImagePath": "scitonic2.0.jpg",
     "activityTitle": "Scitonic 2.0",
@@ -216,6 +243,7 @@
   },
   {
     "tag": "workshop",
+    "status": "happened",
     "activityDate": "19-08-2021",
     "activityImagePath": "chemistrycampaign.jpg",
     "activityTitle": "Chemistry Campaign",
@@ -224,6 +252,7 @@
   },
   {
     "tag": "workshop",
+    "status": "happened",
     "activityDate": "29-07-2021",
     "activityImagePath": "robotics.png",
     "activityTitle": "Robotics",
@@ -232,6 +261,7 @@
   },
   {
     "tag": "event",
+    "status": "happened",
     "activityDate": "07-07-2021",
     "activityImagePath": "astrocampaign.jpg",
     "activityTitle": "Astro Campaign",
@@ -240,6 +270,7 @@
   },
   {
     "tag": "achievement",
+    "status": "happened",
     "activityDate": "28-05-2021",
     "activityImagePath": "drmc2nd.png",
     "activityTitle": "2nd at DRMC Virtual National Science Carnival-2021",
@@ -248,6 +279,7 @@
   },
   {
     "tag": "event",
+    "status": "happened",
     "activityDate": "03-03-2021",
     "activityImagePath": "mathtcsquest.png",
     "activityTitle": "Mathycs Quest",
@@ -256,6 +288,7 @@
   },
   {
     "tag": "event",
+    "status": "happened",
     "activityDate": "02-10-2020",
     "activityImagePath": "science&cosmicspace.png",
     "activityTitle": "Science & Cosmic Space",
