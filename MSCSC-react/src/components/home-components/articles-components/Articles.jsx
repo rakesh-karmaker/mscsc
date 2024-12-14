@@ -2,6 +2,12 @@ import PrimaryBtn from "../../PrimaryBtn";
 import SectionHeader from "../../SectionHeader";
 import Article from "./Article";
 import "./Articles.css";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(ScrollTrigger);
 
 const Articles = ({ data }) => {
   const filteredArticles = data
@@ -9,7 +15,22 @@ const Articles = ({ data }) => {
       (activity) => activity.tag == "article" || activity.tag == "achievement"
     )
     .slice(0, 3);
-  console.log(filteredArticles);
+
+  useGSAP(() => {
+    gsap.fromTo(
+      ".articles-container",
+      {
+        y: "100px",
+        opacity: 0,
+      },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        scrollTrigger: ".articles-container",
+      }
+    );
+  });
   return (
     <section id="articles" className="page-section col-center">
       <SectionHeader
