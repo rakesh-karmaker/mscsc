@@ -60,17 +60,6 @@ sections.forEach((section) => {
   observer.observe(section);
 });
 
-// This part will add/remove the active class so that the image's orientations will change
-$(".img-2").click(() => {
-  $(".img-2").addClass("image-active-1");
-  $(".img-1").addClass("image-active-2");
-});
-
-$(".img-1").click(() => {
-  $(".img-2").removeClass("image-active-1");
-  $(".img-1").removeClass("image-active-2");
-});
-
 // The count function will count to the value of the number-value element
 const count = (ele) => {
   let number = 0;
