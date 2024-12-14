@@ -1,0 +1,30 @@
+import ClubDescription from "./ClubDesc";
+import "./About.css";
+import Departments from "./Departments";
+
+const AboutUs = () => {
+  return (
+    <section id="about" className="col-center page-section">
+      <div className="about-article-container row-center">
+        <ClubDescription />
+        <img
+          src="/about-club-section-img.jpg"
+          alt="A picture of club members"
+        />
+      </div>
+
+      <div className="dpts-section col-center">
+        <div>
+          <h2 className="section-heading">CLUB DEPARTMENTS</h2>
+          <p className="secondary-text section-sub-heading">
+            Sectors we are divided into, inside the club
+          </p>
+        </div>
+
+        <Departments />
+      </div>
+    </section>
+  );
+};
+
+export default AboutUs;

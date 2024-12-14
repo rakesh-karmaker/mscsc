@@ -27,6 +27,12 @@ body {
   --max-elements-width: 1550px;
 }
 
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 /* setting the color variables */
 :root {
   --black: rgb(17, 24, 28);

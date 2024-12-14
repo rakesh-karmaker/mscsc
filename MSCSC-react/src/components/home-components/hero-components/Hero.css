@@ -269,6 +269,12 @@
   }
 }
 
+@media screen and (max-width: 1320px) {
+  .images-container {
+    min-width: 500px;
+  }
+}
+
 @media screen and (max-width: 1080px) {
   .hero-section {
     padding-top: 0px;
@@ -316,6 +322,21 @@
   }
   .join-btn p:has(i) {
     display: none;
+  }
+
+  .images-container {
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 0px;
+    height: 100svh;
+    min-height: 100%;
+    position: absolute;
+    top: 0px;
+    z-index: -11;
+    left: 0px;
+  }
+  .images-container .swiper-slide > img {
+    height: 100svh !important;
   }
 
   .shape {

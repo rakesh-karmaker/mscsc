@@ -6,7 +6,7 @@ import { useGSAP } from "@gsap/react";
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
 
-const ClubStats = () => {
+const ClubStats = ({ mobileClass }) => {
   {
     /* <!-- Club stats is a section where we can show some stats about the club --> */
     /* <!--TODO Should change in every year --> */
@@ -46,7 +46,9 @@ const ClubStats = () => {
     });
   });
   return (
-    <div className="club-stats">
+    <div
+      className={`club-stats ${mobileClass == undefined ? "" : mobileClass}`}
+    >
       <h3>The milestones we have achieved:</h3>
       <div className="club-stats-container">
         <ClubState value="5" thousand={true}>

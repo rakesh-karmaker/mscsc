@@ -39,7 +39,9 @@ const Hero = () => {
         {window.innerWidth <= 1080 ? <HeroSectionBottomCurve /> : null}
       </section>
 
-      {window.innerWidth <= 1080 ? <ClubStats /> : null}
+      {window.innerWidth <= 1080 ? (
+        <ClubStats mobileClass={"mobile-stats"} />
+      ) : null}
     </>
   );
 };

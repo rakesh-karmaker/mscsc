@@ -125,7 +125,7 @@ menu {
   opacity: 0.9;
 }
 
-.primary-button {
+.page-activities .primary-button {
   margin-top: 10px;
   font-size: 1.1rem;
   height: 40px;
@@ -134,7 +134,7 @@ menu {
   bottom: 20px;
 }
 
-.primary-button i {
+.page-activities .primary-button i {
   margin-left: 5px;
 }
 
