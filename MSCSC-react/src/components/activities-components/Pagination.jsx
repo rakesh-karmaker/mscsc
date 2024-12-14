@@ -30,6 +30,8 @@ const Pagination = ({
             onClick={() => {
               setCurrentPage(page);
             }}
+            type="button"
+            aria-label={`Go to page ${page}`}
           >
             {page}
           </button>
@@ -52,7 +54,12 @@ const PaginationActionBtn = ({ direction, setCurrentPage, currentPage }) => {
     else setCurrentPage(currentPage + 1);
   };
   return (
-    <button className="pagination-btn row-center" onClick={handleClick}>
+    <button
+      className="pagination-btn row-center"
+      onClick={handleClick}
+      type="button"
+      aria-label={`Toggle ${direction} page`}
+    >
       <i className={`fa-solid fa-chevron-${direction}`}></i>
     </button>
   );

@@ -24,7 +24,12 @@ const Activity = ({ data, select }) => {
         </div>
         <h2 className="activity-name">{activityTitle}</h2>
         <p className="secondary-text activity-summary">{activityDesc}</p>
-        <a href={activityLink} className="primary-button">
+        <a
+          href={activityLink}
+          className="primary-button"
+          target="_blank"
+          aria-label={`Learn more about ${activityTitle}`}
+        >
           Learn More <i className="fa-solid fa-arrow-right"></i>
         </a>
       </article>

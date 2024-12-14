@@ -9,6 +9,8 @@ const ActivityNavLink = (props) => {
         onClick={() => {
           onClick(name);
         }}
+        type="button"
+        aria-label={`Sort the activities by ${capitalizeName}`}
       >
         {children} <span>{capitalizeName}</span>
       </button>

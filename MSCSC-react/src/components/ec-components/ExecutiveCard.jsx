@@ -9,7 +9,7 @@ const ExecutiveCard = ({ executiveData }) => {
             alt={`A picture of ${name}, our ${position} of MSCSC in ${panel}`}
           />
           <div className="member-socials row-center">
-            <ExecutiveSocials socials={socials} />
+            <ExecutiveSocials socials={socials} name={name} />
           </div>
         </div>
         <div className="executive-lower col-center">
@@ -21,7 +21,7 @@ const ExecutiveCard = ({ executiveData }) => {
   );
 };
 
-const ExecutiveSocials = ({ socials }) => {
+const ExecutiveSocials = ({ socials, name }) => {
   const socialsList = Object.keys(socials);
   if (socialsList.length > 0) {
     return (
@@ -33,6 +33,7 @@ const ExecutiveSocials = ({ socials }) => {
               href={socials[social]}
               target="_blank"
               title={social}
+              aria-label={`Go to ${name}'s ${social} page`}
             >
               <i className={`row-center fa-brands fa-${social}`}></i>
             </a>
