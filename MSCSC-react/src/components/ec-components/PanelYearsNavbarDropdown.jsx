@@ -1,8 +1,11 @@
 export const YearsDropdown = ({ onClick }) => {
-  if (window.innerWidth > 950) return null;
-
   return (
-    <button className="year-dropdown" onClick={onClick}>
+    <button
+      className="year-dropdown"
+      onClick={onClick}
+      aria-label="Toggle years dropdown"
+      type="button"
+    >
       <i className="fa-solid fa-angle-down"></i>
     </button>
   );
@@ -22,14 +25,4 @@ export const yearsDropdownClick = (years) => {
     "dropdown-active",
     yearsDropdownButton.classList.contains("active")
   );
-};
-
-export const orderPanelYears = (year) => {
-  const yearPanels = document.querySelectorAll(".panel-year");
-  yearPanels.forEach((yearPanel) => {
-    yearPanel.getAttribute("year") === year
-      ? (yearPanel.style.order = "-1")
-      : (yearPanel.style.order = "0");
-  });
-  yearsDropdownClick();
 };

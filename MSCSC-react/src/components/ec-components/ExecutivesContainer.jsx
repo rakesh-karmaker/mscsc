@@ -1,30 +1,27 @@
 import YearPanel from "./PanelYearBtn";
 import { useState, useEffect } from "react";
 import ExecutiveCard from "./ExecutiveCard";
-import {
-  YearsDropdown,
-  yearsDropdownClick,
-  orderPanelYears,
-} from "./PanelYearsNavbarDropdown";
+import { YearsDropdown, yearsDropdownClick } from "./PanelYearsNavbarDropdown";
 const ExecutivesContainer = ({ years, executivesData }) => {
-  // Filter executives by current year
-  let selectedExecutives = executivesData.filter(
-    (executive) => executive.panel === years[0]
-  );
-
   // Make a state for the executives panel to be rendered and re-rendered when a year panel is clicked
-  const [executivePanel, setExecutivePanel] = useState(
-    <ExecutivePanel data={selectedExecutives} />
+  const [currentYear, setCurrentYear] = useState(years[0]);
+
+  // Filter executives by current year
+  const selectedExecutives = executivesData.filter(
+    (executive) => executive.panel === currentYear
   );
 
   // Change the executives panel when a year panel is clicked
   const handlePanelClick = (year) => {
-    selectedExecutives = executivesData.filter(
-      (executive) => executive.panel === year
-    );
-    setExecutivePanel(<ExecutivePanel data={selectedExecutives} />);
+    setCurrentYear(year);
     if (window.innerWidth <= 950) {
-      orderPanelYears(year);
+      const yearPanels = document.querySelectorAll(".panel-year");
+      yearPanels.forEach((yearPanel) => {
+        yearPanel.getAttribute("year") === year
+          ? (yearPanel.style.order = "-1")
+          : (yearPanel.style.order = "0");
+      });
+      yearsDropdownClick(years);
     }
     window.scrollTo(0, 0);
   };
@@ -41,11 +38,13 @@ const ExecutivesContainer = ({ years, executivesData }) => {
   return (
     <>
       <aside dropdown-active="false">
-        <YearsDropdown
-          onClick={() => {
-            yearsDropdownClick(years);
-          }}
-        />
+        {window.innerWidth > 950 ? null : (
+          <YearsDropdown
+            onClick={() => {
+              yearsDropdownClick(years);
+            }}
+          />
+        )}
         {years.map((year) => (
           <YearPanel
             panelYear={year}
@@ -57,17 +56,13 @@ const ExecutivesContainer = ({ years, executivesData }) => {
         ))}
       </aside>
 
-      <div className="executives-container">{executivePanel}</div>
-    </>
-  );
-};
-
-const ExecutivePanel = (prams) => {
-  return (
-    <>
-      {prams.data.map((executive) => {
-        return <ExecutiveCard executiveData={executive} key={executive.name} />;
-      })}
+      <div className="executives-container">
+        {selectedExecutives.map((executive) => {
+          return (
+            <ExecutiveCard executiveData={executive} key={executive.name} />
+          );
+        })}
+      </div>
     </>
   );
 };

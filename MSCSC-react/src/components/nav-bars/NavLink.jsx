@@ -19,6 +19,7 @@ const NavLink = (prams) => {
         target="_blank"
         nav-link-name={getLinkName(innerText)}
         dropdown={prams.dropdown ?? "false"}
+        aria-label={`Navigate to ${innerText} page`}
       >
         {innerText}
       </a>

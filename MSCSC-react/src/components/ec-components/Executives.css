@@ -31,7 +31,6 @@ main {
   transition: 0.25s;
   color: var(--white);
   cursor: pointer;
-  display: none;
 }
 
 .year-dropdown:hover {

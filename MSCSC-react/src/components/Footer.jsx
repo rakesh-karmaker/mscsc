@@ -41,6 +41,7 @@ const FooterLink = (prams) => {
       target="_blank"
       className="row-center"
       title={prams.title}
+      aria-label={`Go to our ${prams.title} page`}
     >
       {prams.children}
     </a>

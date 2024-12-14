@@ -4,6 +4,7 @@ const ActivitiesNavbar = ({ topic, onClick }) => {
     if (topic === "Activities") return "Activities";
     return topic.charAt(0).toUpperCase() + topic.slice(1) + "s";
   };
+
   return (
     <>
       <div className="activities-navbar">

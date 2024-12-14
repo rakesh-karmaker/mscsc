@@ -45,7 +45,12 @@ const NavbarToggler = () => {
   };
 
   return (
-    <button className="navbar-toggler" onClick={handleNavbarTogglerClick}>
+    <button
+      className="navbar-toggler"
+      onClick={handleNavbarTogglerClick}
+      type="button"
+      aria-label="Toggle navbar"
+    >
       <i className="fa-solid fa-bars"></i>
     </button>
   );

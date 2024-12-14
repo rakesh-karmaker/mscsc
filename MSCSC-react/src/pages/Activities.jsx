@@ -10,7 +10,7 @@ const Activities = () => {
   const [topic, setTopic] = useState("Activities");
   const [userSelected, setUserSelected] = useState("false");
   const [currentPage, setCurrentPage] = useState(1);
-  const [activitiesPerPAge, setactivitiesPerPage] = useState(12);
+  const activitiesPerPAge = 12;
   const selectedData =
     topic === "Activities"
       ? activitiesData
@@ -40,7 +40,6 @@ const Activities = () => {
   const handleSetCurrentPageClick = (page) => {
     setCurrentPage(page);
     window.scrollTo(0, 0);
-    // updatePagination(page, selectedData.length);
   };
   return (
     <>
@@ -69,33 +68,6 @@ const Activities = () => {
     </>
   );
 };
-
-// const updatePagination = (currentPage, totalActivities) => {
-//   const pageNumbers = document.querySelectorAll(".page-number");
-//   const minimumPageNumber = 1;
-//   const maximumPageNumber = Math.ceil(totalActivities / 12);
-
-//   pageNumbers.forEach((page) =>
-//     page.classList.toggle(
-//       "page-active",
-//       page.getAttribute("page-number") == currentPage
-//     )
-//   );
-
-//   const nextButton = document.querySelector(".pagination-btn[action='next']");
-//   const prevButton = document.querySelector(".pagination-btn[action='prev']");
-
-//   if (currentPage === minimumPageNumber) {
-//     nextButton.classList.remove("hidden");
-//     prevButton.classList.add("hidden");
-//   } else if (currentPage === maximumPageNumber) {
-//     prevButton.classList.remove("hidden");
-//     nextButton.classList.add("hidden");
-//   } else {
-//     prevButton.classList.remove("hidden");
-//     nextButton.classList.remove("hidden");
-//   }
-// };
 
 const observeExecutiveMember = new IntersectionObserver(
   (executiveMembers) => {
