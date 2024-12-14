@@ -5,6 +5,7 @@ import AboutUs from "../components/home-components/about-components/About";
 import Events from "../components/home-components/events-components/Events";
 import Articles from "../components/home-components/articles-components/Articles";
 import HomeEcs from "../components/home-components/home-ec-components/HomeEcs";
+import Contact from "../components/home-components/contact-components/Contact";
 import activitiesData from "../api/activitiesData.json";
 import executivesData from "../api/executivesData.json";
 import "../components/home-components/Home.css";
@@ -19,6 +20,7 @@ const Home = () => {
         <Events data={activitiesData} />
         <Articles data={activitiesData} />
         <HomeEcs data={executivesData} />
+        <Contact />
       </main>
       <Footer />
     </>
