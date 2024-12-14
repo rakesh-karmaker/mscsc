@@ -113,21 +113,6 @@
   gap: 20px;
 }
 
-.images-container {
-  background-color: var(--secondary-bg);
-  max-width: 730px;
-  min-width: 600px;
-  overflow: hidden;
-  border-radius: 16px;
-}
-
-.hero-img > img {
-  width: 100%;
-  height: 600px;
-  object-fit: cover;
-  object-position: center center;
-}
-
 .join-btn {
   text-decoration: none;
   width: 100%;
@@ -227,3 +212,212 @@
 }
 
 /* ----------- hero - bottom styling ends here ------------- */
+
+@media screen and (max-width: 1650px) {
+  .club-intro > p {
+    margin-bottom: 0px;
+  }
+
+  .club-stats-container {
+    gap: 15px;
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  .hero-section-left {
+    min-height: 0px;
+    gap: 30px;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .club-intro h1 {
+    font-size: 3rem;
+    line-height: 45px;
+  }
+  .club-intro p {
+    font-size: 1.1rem;
+    line-height: 25px;
+  }
+
+  .mscsc-tag {
+    max-width: 118px;
+    height: 50px;
+    padding-left: 17px;
+  }
+
+  .mscsc-tag.active {
+    max-width: 400px;
+  }
+
+  .mscsc-tag p:not(.name) {
+    font-size: 18px;
+  }
+
+  .mscsc-tag .name {
+    width: 90px;
+    height: 30px;
+    letter-spacing: normal;
+    font-size: 17px;
+    font-weight: 450;
+    right: 13px;
+  }
+
+  .mscsc-tag .name::before {
+    width: 105px;
+    height: 42px;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .hero-section {
+    padding-top: 0px;
+    width: 100vw;
+    max-width: none;
+    min-height: 550px;
+    height: 100svh;
+    position: relative;
+  }
+  .hero-section::after {
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  .hero-section-container {
+    flex-direction: column;
+    gap: 30px;
+    height: fit-content;
+  }
+  .hero-section-left {
+    z-index: 11;
+    align-items: center;
+    text-align: center;
+  }
+  .mscsc-tag {
+    display: none;
+  }
+  .club-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .club-intro h1 {
+    color: var(--text-white);
+  }
+  .club-intro p {
+    color: var(--text-white);
+  }
+  .join-btn {
+    z-index: 99;
+  }
+  .join-btn p:has(i) {
+    display: none;
+  }
+
+  .shape {
+    width: 100%;
+    position: absolute;
+    bottom: -20px;
+    z-index: 9;
+  }
+
+  .shape path {
+    fill: var(--primary-bg);
+  }
+
+  .club-stats:not(.mobile-stats) {
+    display: none;
+  }
+  .mobile-stats {
+    display: block;
+  }
+  .club-stats {
+    width: 100%;
+    max-width: 75ch;
+    text-align: center;
+    margin-top: 20px;
+    position: relative;
+    z-index: 99;
+  }
+
+  .club-stats-container {
+    margin-top: 20px;
+    text-align: left;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .stats-number {
+    font-size: 3rem;
+    --number-value-1-digit: 29px;
+    --number-value-2-digit: 56px;
+  }
+  .stats-name {
+    font-size: 0.9rem;
+  }
+  .club-stats-container {
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .stats {
+    flex-grow: 1;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  main.page-home {
+    padding-top: 0px;
+  }
+  .hero-section {
+    padding: 0px;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+  }
+
+  .stats {
+    padding: 0px 20px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .shape {
+    bottom: -10px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .join-btn {
+    width: 220px;
+    padding: 0px;
+    justify-content: center;
+    height: 50px;
+  }
+  .join-btn p:not(:has(i)) {
+    font-size: 0.9rem;
+  }
+  .pulse {
+    display: none;
+  }
+  .about-article-right > div:has(img) {
+    gap: 10px;
+  }
+  .about-article-right > div:has(img) > img {
+    width: calc(50% - 5px);
+  }
+  p.secondary-text {
+    font-size: 0.8rem;
+    line-height: 18px;
+  }
+
+  .club-intro h1 {
+    font-size: 2.2rem;
+    line-height: 33px;
+  }
+}

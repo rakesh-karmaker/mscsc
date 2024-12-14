@@ -44,7 +44,7 @@ const Activities = () => {
   return (
     <>
       <Header />
-      <main>
+      <main className="page-activities">
         <ActivitiesNavbar topic={topic} onClick={handleTopicsClick} />
         <section className="activities-container">
           {currentActivities.map((activity) => {

@@ -1,4 +1,4 @@
-main {
+main.page-activities {
   width: 100%;
   max-width: var(--max-elements-width);
   margin-top: 150px;
@@ -85,7 +85,7 @@ menu {
   padding: 20px;
 }
 
-article div {
+.activity article > div {
   display: flex;
   justify-content: space-between;
   font-size: 0.9rem;

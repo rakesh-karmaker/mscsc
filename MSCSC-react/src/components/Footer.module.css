@@ -2,7 +2,7 @@ footer {
   padding: 20px 40px;
   height: 100px;
   width: 100vw;
-  background-color: var(--third-level-bg);
+  background-color: var(--primary-bg);
   border-top: 0.5px solid rgba(0, 0, 0, 0.1);
 }
 

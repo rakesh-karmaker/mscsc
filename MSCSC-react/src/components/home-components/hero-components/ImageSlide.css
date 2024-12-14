@@ -1,0 +1,43 @@
+.images-container {
+  background-color: var(--secondary-bg);
+  max-width: 730px;
+  min-width: 600px;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.images-container .swiper-slide > img {
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+  object-position: center center;
+}
+
+@media screen and (max-width: 1500px) {
+  .hero-img > img {
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 1320px) {
+  .images-container {
+    min-width: 500px;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .images-container {
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 0px;
+    height: 100svh;
+    min-height: 100%;
+    position: absolute;
+    top: 0px;
+    z-index: -11;
+    left: 0px;
+  }
+  .images-container .swiper-slide > img {
+    height: 100svh !important;
+  }
+}
