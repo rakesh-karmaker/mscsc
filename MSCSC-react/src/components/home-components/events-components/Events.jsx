@@ -52,7 +52,7 @@ const Events = ({ data }) => {
   const filteredEventData = filterData(status, data);
 
   return (
-    <section id="event" className="page-section col-center">
+    <section id="events" className="page-section col-center">
       <div className="col-center">
         <SectionHeader
           title={"our events"}

@@ -10,7 +10,7 @@ const Hero = () => {
 
   return (
     <>
-      <section className="hero-section row-center page-section">
+      <section id="home" className="hero-section row-center page-section">
         <div className="hero-section-container row-center">
           <article className="hero-section-left">
             <div className="mscsc-tag row-center">

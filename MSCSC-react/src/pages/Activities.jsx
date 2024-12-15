@@ -43,7 +43,7 @@ const Activities = () => {
   };
   return (
     <>
-      <Header />
+      <Header page="activities" />
       <main className="page-activities">
         <ActivitiesNavbar topic={topic} onClick={handleTopicsClick} />
         <section className="activities-container">

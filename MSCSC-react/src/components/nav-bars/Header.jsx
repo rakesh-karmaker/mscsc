@@ -2,7 +2,7 @@ import NavLink from "./NavLink";
 import $ from "jquery";
 import "./Header.css";
 
-const Header = () => {
+const Header = ({ page }) => {
   return (
     <header>
       <nav>
@@ -11,18 +11,22 @@ const Header = () => {
         </div>
 
         {window.innerWidth > 800 ? null : <NavbarToggler />}
-        <Navbar />
+        <Navbar page={page} />
       </nav>
     </header>
   );
 };
 
-const Navbar = () => {
+const Navbar = ({ page }) => {
   return (
     <ul className="nav-links-container">
       <NavLink href="/home">Home</NavLink>
       <NavLink href="/home#about">About Us</NavLink>
-      <NavLink href="/activities" dropdown="true">
+      <NavLink
+        href="/activities"
+        dropdown="true"
+        active={(page === "activities").toString()}
+      >
         Activities
         <ul className="activities">
           <NavLink href="/home#events" innerClass="events-link">
@@ -33,7 +37,9 @@ const Navbar = () => {
           </NavLink>
         </ul>
       </NavLink>
-      <NavLink href="/executives">Executives</NavLink>
+      <NavLink href="/executives" active={(page === "executives").toString()}>
+        Executives
+      </NavLink>
       <NavLink href="/contact">Contact</NavLink>
     </ul>
   );

@@ -14,7 +14,7 @@ const Executives = () => {
 
   return (
     <>
-      <Header />
+      <Header page="executives" />
       <main className="page-executives">
         <h1 className="section-heading">
           Meet Our <span className="highlighted-text">Executives</span>

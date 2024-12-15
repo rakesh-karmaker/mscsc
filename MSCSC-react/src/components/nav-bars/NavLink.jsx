@@ -11,11 +11,12 @@ const NavLink = (prams) => {
     return innerText.toLowerCase();
   };
 
+  console.log(getLinkName(innerText));
   return (
     <li className={liClassName}>
       <a
         href={prams.href}
-        className="button-link"
+        className={`button-link ${prams.active == "true" ? "active" : ""}`}
         target="_blank"
         nav-link-name={getLinkName(innerText)}
         dropdown={prams.dropdown ?? "false"}
