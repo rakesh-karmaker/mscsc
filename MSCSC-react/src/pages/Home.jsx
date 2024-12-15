@@ -46,7 +46,6 @@ const navbarLinkTrigger = () => {
     (entities) => {
       entities.forEach((entity) => {
         const id = entity.target.id;
-        console.log(id);
         if (entity.isIntersecting) {
           if (active.length > 0) {
             $(`.nav-link a[nav-link-name='${active[0]}']`).removeClass(
@@ -61,7 +60,6 @@ const navbarLinkTrigger = () => {
 
           active.push(id);
           $(`.nav-link a[nav-link-name='${id}']`).addClass("active");
-          // console.log($(`.nav-link a[nav-link-name='${id}']`));
         }
       });
     },

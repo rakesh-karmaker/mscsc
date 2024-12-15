@@ -1,5 +1,5 @@
 /* ------------ events section starts here ----------- */
-#event {
+#events {
   padding: 90px 0px;
   height: 100%;
   width: 100vw;
@@ -7,7 +7,7 @@
   gap: 20px;
 }
 
-#event > div {
+#events > div {
   width: 100%;
   max-width: var(--max-elements-width);
 }
