@@ -33,40 +33,17 @@ nav {
   cursor: pointer;
 }
 
-.activities {
-  display: block;
-  position: absolute;
-  top: 30px;
-  margin-left: -10px;
-  background-color: var(--primary-bg);
-  height: 0px;
-  padding: 0px 30px 0px 20px;
-  border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 14px 12px;
-  overflow: hidden;
+.nav-link {
+  font-size: 1.2rem;
+  line-height: normal;
+  color: var(--text-primary);
+  text-decoration: none;
   transition: 0.25s;
 }
 
-.button-link[dropdown="true"]:hover ~ .activities,
-.activities:hover {
-  padding-top: 30px;
-  padding-bottom: 20px;
-  height: calc(58px + 30px + 20px);
-}
-
-.nav-link a,
-.nav-link p {
-  font-size: 1.2rem;
-  line-height: normal;
-}
-
-.nav-link a.active {
+.nav-link.active,
+.nav-link:is(:hover, :focus) {
   color: var(--highlighted-color);
-}
-
-.nav-link i {
-  font-size: 1.05rem;
-  opacity: 0.7;
 }
 
 .navbar-toggler {
@@ -119,23 +96,6 @@ nav {
     border-radius: 5px;
     margin: 5px 0px 0px 0px;
   }
-
-  .activities {
-    position: static;
-    box-shadow: none;
-    width: 100%;
-    height: 0px;
-    margin-left: 0px;
-    overflow: hidden;
-  }
-
-  .button-link[dropdown="true"]:hover ~ .activities,
-  .activities:hover {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    height: 145px;
-  }
-
   .nav-link p:hover,
   .nav-link p:focus,
   .nav-link a:hover,
