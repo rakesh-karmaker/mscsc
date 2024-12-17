@@ -1,8 +1,31 @@
-import NavLink from "./NavLink";
+// import NavLink from "./NavLink";
+import { NavLink } from "react-router-dom";
 import $ from "jquery";
 import "./Header.css";
 
 const Header = ({ page }) => {
+  // const navLinks = [
+  //   {
+  //     to: "/",
+  //     name: "Home",
+  //   },
+  //   {
+  //     to: "/home#about",
+  //     name: "About Us",
+  //   },
+  //   {
+  //     to: "/activities",
+  //     name: "Activities",
+  //   },
+  //   {
+  //     to: "/executives",
+  //     name: "Executives",
+  //   },
+  //   {
+  //     to: "/contact",
+  //     name: "Contact",
+  //   },
+  // ];
   return (
     <header>
       <nav>
@@ -11,36 +34,79 @@ const Header = ({ page }) => {
         </div>
 
         {window.innerWidth > 800 ? null : <NavbarToggler />}
-        <Navbar page={page} />
+        {/* <ul className="nav-links-container">
+          {navLinks.map(({ to, name }, index) => {
+            <li key={index}>
+              <NavLink to={to} className="nav-link">
+                {name}
+              </NavLink>
+            </li>;
+          })}
+        </ul> */}
+        <Navbar />
       </nav>
     </header>
   );
 };
 
-const Navbar = ({ page }) => {
+const Navbar = () => {
+  // const navLinks = [
+  //   {
+  //     to: "/",
+  //     name: "Home",
+  //   },
+  //   {
+  //     to: "/home#about",
+  //     name: "About Us",
+  //   },
+  //   {
+  //     to: "/activities",
+  //     name: "Activities",
+  //   },
+  //   {
+  //     to: "/executives",
+  //     name: "Executives",
+  //   },
+  //   {
+  //     to: "/contact",
+  //     name: "Contact",
+  //   },
+  // ];
+  // console.log(navLinks);
   return (
     <ul className="nav-links-container">
-      <NavLink href="/home">Home</NavLink>
-      <NavLink href="/home#about">About Us</NavLink>
-      <NavLink
-        href="/activities"
-        dropdown="true"
-        active={(page === "activities").toString()}
-      >
-        Activities
-        <ul className="activities">
-          <NavLink href="/home#events" innerClass="events-link">
-            Events
+      {/* {navLinks.map((link) => {
+        <li key={link.name}>
+          <NavLink to={link.to} className="nav-link">
+            {link.name}
           </NavLink>
-          <NavLink href="/home#articles" innerClass="articles-link">
-            Articles
-          </NavLink>
-        </ul>
-      </NavLink>
-      <NavLink href="/executives" active={(page === "executives").toString()}>
-        Executives
-      </NavLink>
-      <NavLink href="/contact">Contact</NavLink>
+        </li>;
+      })} */}
+      <li>
+        <NavLink to="/" className="nav-link">
+          Home
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/home#about" className="nav-link">
+          About Us
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/activities" className="nav-link">
+          Activities
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/executives" className="nav-link">
+          Executives
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/contact" className="nav-link">
+          Contact
+        </NavLink>
+      </li>
     </ul>
   );
 };
