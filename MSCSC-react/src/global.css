@@ -27,6 +27,12 @@ body {
   --max-elements-width: 1550px;
 }
 
+body:has(main.page-home),
+body:has(main.page-about),
+body:has(main.page-contact) {
+  --max-elements-width: 1600px;
+}
+
 main {
   display: flex;
   flex-direction: column;
@@ -62,7 +68,6 @@ main {
 
 .secondary-text {
   color: var(--text-secondary);
-  line-height: 33px;
 }
 
 .section-header {

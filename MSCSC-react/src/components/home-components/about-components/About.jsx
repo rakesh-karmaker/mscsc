@@ -5,7 +5,7 @@ import Departments from "./Departments";
 const AboutUs = () => {
   return (
     <section id="about" className="col-center page-section">
-      <div className="about-article-container row-center">
+      <div className="about-article-container">
         <ClubDescription />
         <img
           src="/about-club-section-img.jpg"

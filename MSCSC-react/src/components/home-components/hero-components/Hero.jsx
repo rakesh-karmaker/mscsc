@@ -2,22 +2,14 @@ import ClubIntro from "./ClubIntro";
 import ClubStats from "./ClubStats";
 import ImageSlider from "./ImageSlide";
 import "./Hero.css";
-import $ from "jquery";
+import MscscTag from "../../UI/MscscTag";
 const Hero = () => {
-  setTimeout(() => {
-    $(".mscsc-tag").addClass("active");
-  }, 300);
-
   return (
     <>
       <section id="home" className="hero-section row-center page-section">
         <div className="hero-section-container row-center">
           <article className="hero-section-left">
-            <div className="mscsc-tag row-center">
-              <p>Science & Technology Club</p>
-              <span className="name row-center">MSCSC</span>
-            </div>
-
+            <MscscTag />
             <ClubIntro />
             {window.innerWidth > 1080 ? <ClubStats /> : null}
           </article>
@@ -25,7 +17,7 @@ const Hero = () => {
           <div className="hero-section-right col-center">
             <ImageSlider />
 
-            <a className="join-btn row-center" href="#">
+            <a className="join-btn" href="#">
               <div>
                 <div className="pulse row-center"></div>
                 <p>Join Us With Our Journey</p>

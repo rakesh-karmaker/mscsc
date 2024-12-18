@@ -26,6 +26,10 @@ const Header = () => {
       name: "Contact",
     },
   ];
+
+  const handelNavLinkClick = () => {
+    window.scrollTo(0, 0);
+  };
   return (
     <header>
       <nav>
@@ -38,7 +42,11 @@ const Header = () => {
           {navLinks.map(({ href, name }, index) => {
             return (
               <li key={index}>
-                <NavLink to={href} className="nav-link">
+                <NavLink
+                  to={href}
+                  className="nav-link"
+                  onClick={handelNavLinkClick}
+                >
                   {name}
                 </NavLink>
               </li>

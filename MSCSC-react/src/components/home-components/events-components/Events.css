@@ -15,7 +15,9 @@
 .event-status-nav {
   width: 400px;
   padding: 6px 6px;
+  display: flex;
   justify-content: space-between;
+  align-items: center;
   border: 0.3px solid var(--lightest-black);
   border-radius: 80px;
   margin-bottom: 50px;

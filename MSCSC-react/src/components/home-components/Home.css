@@ -1,3 +1,0 @@
-body:has(main.page-home) {
-  --max-elements-width: 1600px;
-}

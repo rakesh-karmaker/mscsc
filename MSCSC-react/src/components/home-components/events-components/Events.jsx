@@ -63,7 +63,7 @@ const Events = ({ data }) => {
           </PrimaryBtn>
         </SectionHeader>
 
-        <div className="event-status-nav row-center">
+        <div className="event-status-nav">
           {eventStatuses.map((statusLink) => (
             <button
               key={statusLink}

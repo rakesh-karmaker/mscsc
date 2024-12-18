@@ -1,5 +1,3 @@
-import Footer from "../components/Footer";
-import Header from "../components/nav-bars/Header";
 import ActivitiesNavbar from "../components/nav-bars/ActivitiesNavbar";
 import Activity from "../components/activities-components/Activity";
 import "../components/activities-components/Activities.css";
@@ -42,30 +40,26 @@ const Activities = () => {
     window.scrollTo(0, 0);
   };
   return (
-    <>
-      <Header page="activities" />
-      <main className="page-activities">
-        <ActivitiesNavbar topic={topic} onClick={handleTopicsClick} />
-        <section className="activities-container">
-          {currentActivities.map((activity) => {
-            return (
-              <Activity
-                key={activity.activityTitle}
-                data={activity}
-                select={userSelected}
-              />
-            );
-          })}
-        </section>
-        <Pagination
-          totalActivities={selectedData.length}
-          activitiesPerPAge={activitiesPerPAge}
-          setCurrentPage={handleSetCurrentPageClick}
-          currentPage={currentPage}
-        />
-      </main>
-      <Footer />
-    </>
+    <main className="page-activities">
+      <ActivitiesNavbar topic={topic} onClick={handleTopicsClick} />
+      <section className="activities-container">
+        {currentActivities.map((activity) => {
+          return (
+            <Activity
+              key={activity.activityTitle}
+              data={activity}
+              select={userSelected}
+            />
+          );
+        })}
+      </section>
+      <Pagination
+        totalActivities={selectedData.length}
+        activitiesPerPAge={activitiesPerPAge}
+        setCurrentPage={handleSetCurrentPageClick}
+        currentPage={currentPage}
+      />
+    </main>
   );
 };
 
