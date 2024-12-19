@@ -2,11 +2,11 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./pages/Home";
-import Activities from "./pages/Activities";
-import Executives from "./pages/Executives";
-import About from "./pages/About";
-import ContactPage from "./pages/Contact";
+import Home from "./Pages/Home.jsx";
+import Activities from "./Pages/Activities.jsx";
+import Executives from "./Pages/Executives.jsx";
+import About from "./Pages/About.jsx";
+import ContactPage from "./Pages/Contact.jsx";
 import "./global.css";
 import App from "./App.jsx";
 

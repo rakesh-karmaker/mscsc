@@ -1,5 +1,5 @@
-import PrimaryBtn from "../../PrimaryBtn";
-import SectionHeader from "../../SectionHeader";
+import PrimaryBtn from "../../UI/PrimaryBtn";
+import SectionHeader from "../../UI/SectionHeader";
 import Article from "./Article";
 import "./Articles.css";
 import gsap from "gsap";

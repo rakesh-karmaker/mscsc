@@ -1,5 +1,5 @@
-import PrimaryBtn from "../../PrimaryBtn";
-import SectionHeader from "../../SectionHeader";
+import PrimaryBtn from "../../UI/PrimaryBtn";
+import SectionHeader from "../../UI/SectionHeader";
 import { useState, useRef } from "react";
 import EventSwiper from "./EventSwiper";
 import gsap from "gsap";

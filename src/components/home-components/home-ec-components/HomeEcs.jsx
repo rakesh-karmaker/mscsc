@@ -1,5 +1,5 @@
-import SectionHeader from "../../SectionHeader";
-import PrimaryBtn from "../../PrimaryBtn";
+import SectionHeader from "../../UI/SectionHeader";
+import PrimaryBtn from "../../UI/PrimaryBtn";
 import ExecutiveCard from "../../ec-components/ExecutiveCard";
 import { useEffect } from "react";
 import "./HomeEcs.css";
