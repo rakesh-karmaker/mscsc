@@ -24,12 +24,6 @@ html {
 
 body {
   overflow-x: hidden;
-  --max-elements-width: 1550px;
-}
-
-body:has(main.page-home),
-body:has(main.page-about),
-body:has(main.page-contact) {
   --max-elements-width: 1600px;
 }
 
