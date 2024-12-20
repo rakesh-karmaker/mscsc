@@ -21,7 +21,7 @@ nav {
 
 #logo > img {
   width: 79px;
-  height: 75px;
+  aspect-ratio: 1;
 }
 
 .activities,
@@ -68,7 +68,6 @@ nav {
 @media screen and (max-width: 800px) {
   #logo > img {
     width: 50px;
-    height: 50px;
   }
   nav {
     position: relative;

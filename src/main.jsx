@@ -7,6 +7,7 @@ import Activities from "./Pages/Activities.jsx";
 import Executives from "./Pages/Executives.jsx";
 import About from "./Pages/About.jsx";
 import ContactPage from "./Pages/Contact.jsx";
+import Auth from "./Pages/Auth";
 import "./global.css";
 import App from "./App.jsx";
 
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
       { path: "/executives", element: <Executives /> },
 
       { path: "/contact", element: <ContactPage /> },
+      { path: "/register", element: <Auth /> },
     ],
   },
 ]);

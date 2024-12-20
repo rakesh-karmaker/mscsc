@@ -1,6 +1,6 @@
 import YearPanel from "./PanelYearBtn";
 import { useState, useEffect } from "react";
-import ExecutiveCard from "./ExecutiveCard";
+import ExecutiveCard from "../UI/ExecutiveCard";
 import { YearsDropdown, yearsDropdownClick } from "./PanelYearsNavbarDropdown";
 const ExecutivesContainer = ({ years, executivesData }) => {
   // Make a state for the executives panel to be rendered and re-rendered when a year panel is clicked

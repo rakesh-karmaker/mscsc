@@ -1,3 +1,4 @@
+import "./ExecutiveCard.css";
 const ExecutiveCard = ({ executiveData }) => {
   const { name, position, image, socials, panel } = executiveData;
   return (
@@ -42,7 +43,7 @@ const ExecutiveSocials = ({ socials, name }) => {
       </>
     );
   } else {
-    return <></>;
+    return;
   }
 };
 

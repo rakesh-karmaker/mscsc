@@ -19,7 +19,9 @@ const Hero = () => {
 
             <a className="join-btn" href="#">
               <div>
-                <div className="pulse row-center"></div>
+                {window.innerWidth > 450 ? (
+                  <div className="pulse row-center"></div>
+                ) : null}
                 <p>Join Us With Our Journey</p>
               </div>
               <p>

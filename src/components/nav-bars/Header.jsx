@@ -34,7 +34,7 @@ const Header = () => {
     <header>
       <nav>
         <div id="logo">
-          <img src="/logo.png" alt="MSCSC logo" />
+          <img src="/logo.jpeg" alt="MSCSC logo" />
         </div>
 
         {window.innerWidth > 800 ? null : <NavbarToggler />}
