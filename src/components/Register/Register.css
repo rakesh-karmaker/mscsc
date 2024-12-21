@@ -1,0 +1,92 @@
+#register {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 140px;
+  padding-top: calc(90px + 2rem);
+  padding-bottom: 2rem;
+  height: 100%;
+  width: 100%;
+  max-width: var(--max-elements-width);
+  min-height: 100svh;
+  position: relative;
+}
+
+.reg-img {
+  width: 100%;
+  max-width: 570px;
+  height: inherit;
+  background-color: rgb(70, 125, 173);
+  background: url("/hero-img-1.jpg") no-repeat center center/cover;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.register-container {
+  width: 100%;
+  min-width: 625px;
+}
+
+.register-container h1 {
+  color: var(--text-primary);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 64px;
+  line-height: 77px;
+  letter-spacing: 0.01em;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.register-container h1::after {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 5px;
+  background-color: var(--highlighted-color);
+  border-radius: 10px;
+  bottom: -13px;
+  left: 0;
+}
+
+.register-form {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.combined-inputs {
+  display: flex;
+  gap: 20px;
+}
+
+.combined-inputs > div {
+  width: 100%;
+}
+
+@media screen and (max-width: 1260px) {
+  #register {
+    gap: 2rem;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .register-container {
+    min-width: 0px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  #register {
+    padding-top: calc(70px + 2rem);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .combined-inputs {
+    flex-direction: column;
+    gap: 40px;
+  }
+}

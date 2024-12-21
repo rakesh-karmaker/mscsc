@@ -74,7 +74,7 @@ input.hidden {
   opacity: 0.8;
 }
 
-form {
+.contact-form {
   max-width: 600px;
   min-width: 450px;
   padding: 50px 40px;
@@ -89,17 +89,6 @@ form {
   width: 100%;
   display: flex;
   gap: 20px;
-}
-
-input:not([type="submit"]),
-textarea {
-  width: 100%;
-  border: none;
-  border-bottom: 1.5px solid var(--light-black);
-  padding-left: 3px;
-  font-size: 1.2rem;
-  padding-bottom: 5px;
-  background-color: transparent;
 }
 
 textarea {
@@ -123,20 +112,20 @@ textarea {
   #contact .section-heading {
     font-size: 2rem;
   }
-  form {
+  .contact-form {
     min-width: 0px;
   }
 }
 
 @media screen and (max-width: 600px) {
-  form {
+  .contact-form {
     box-shadow: none;
     padding: 0px;
   }
 }
 
 @media screen and (max-width: 450px) {
-  form {
+  .contact-form {
     width: 100%;
   }
   .name-email {

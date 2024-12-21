@@ -17,7 +17,7 @@ const Hero = () => {
           <div className="hero-section-right col-center">
             <ImageSlider />
 
-            <a className="join-btn" href="#">
+            <a className="join-btn" href="/register">
               <div>
                 {window.innerWidth > 450 ? (
                   <div className="pulse row-center"></div>

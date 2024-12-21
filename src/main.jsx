@@ -2,12 +2,12 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./Pages/Home.jsx";
-import Activities from "./Pages/Activities.jsx";
-import Executives from "./Pages/Executives.jsx";
-import About from "./Pages/About.jsx";
-import ContactPage from "./Pages/Contact.jsx";
-import Auth from "./Pages/Auth";
+import Home from "./pages/Home.jsx";
+import Activities from "./pages/Activities.jsx";
+import Executives from "./pages/Executives.jsx";
+import About from "./pages/About.jsx";
+import ContactPage from "./pages/Contact.jsx";
+import Auth from "./pages/Auth";
 import "./global.css";
 import App from "./App.jsx";
 
@@ -27,6 +27,7 @@ const router = createBrowserRouter([
       { path: "/executives", element: <Executives /> },
 
       { path: "/contact", element: <ContactPage /> },
+
       { path: "/register", element: <Auth /> },
     ],
   },

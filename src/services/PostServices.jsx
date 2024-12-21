@@ -14,7 +14,6 @@ const registerUser = (data) => {
     }
     formData.append(key, data[key]);
   }
-  console.log(formData);
   return api.post("/auth/register", formData);
 };
 
