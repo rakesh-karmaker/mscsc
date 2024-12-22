@@ -1,8 +1,8 @@
-import SectionHeader from "../../UI/SectionHeader";
-import PrimaryBtn from "../../UI/PrimaryBtn";
-import ExecutiveCard from "../../UI/ExecutiveCard/ExecutiveCard";
+import SectionHeader from "@/components/UI/SectionHeader";
+import PrimaryBtn from "@/components/UI/PrimaryBtn";
+import ExecutiveCard from "@/components/UI/ExecutiveCard/ExecutiveCard";
 import { useEffect } from "react";
-import "./HomeEcs.css";
+import "@/components/home-components/home-ec-components/HomeEcs.css";
 
 const HomeEcs = ({ data }) => {
   const filteredEcs = data.slice(0, 4);

@@ -1,7 +1,7 @@
-import PrimaryBtn from "../../UI/PrimaryBtn";
-import SectionHeader from "../../UI/SectionHeader";
+import PrimaryBtn from "@/components/UI/PrimaryBtn";
+import SectionHeader from "@/components/UI/SectionHeader";
 import { useState, useRef } from "react";
-import EventSwiper from "./EventSwiper";
+import EventSwiper from "@/components/home-components/events-components/EventSwiper";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";

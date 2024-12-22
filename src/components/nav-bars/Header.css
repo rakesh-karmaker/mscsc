@@ -84,8 +84,14 @@ nav {
     border-radius: 20px;
     padding: 20px;
     gap: 10px;
-    display: none;
+    transform: scaleY(0);
     border: 0.5px solid rgba(0, 0, 0, 0.1);
+    transition: 0.25s;
+    transform-origin: top;
+  }
+
+  .nav-links-container.open {
+    transform: scaleY(1);
   }
 
   .nav-links-container p,

@@ -8,8 +8,9 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/webp",
 ]; // Add more types as needed
 
-const MemberSchema = z.object({
+const MemberRegSchema = z.object({
   name: z.string().min(2).max(255),
+  password: z.string().min(6),
   email: z.string().email(),
   contactNumber: z.coerce.number().gte(1).lte(99999999999),
   batch: z.string(),
@@ -27,4 +28,10 @@ const MemberSchema = z.object({
   reference: z.string(),
 });
 
-export default MemberSchema;
+const MemberLoginSchema = z.object({
+  name: z.string().min(2).max(255),
+  email: z.string().email(),
+  password: z.string().min(6),
+});
+
+export { MemberRegSchema, MemberLoginSchema };

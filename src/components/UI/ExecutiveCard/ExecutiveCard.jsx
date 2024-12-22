@@ -1,4 +1,4 @@
-import "./ExecutiveCard.css";
+import "@/components/UI/ExecutiveCard/ExecutiveCard.css";
 const ExecutiveCard = ({ executiveData }) => {
   const { name, position, image, socials, panel } = executiveData;
   return (

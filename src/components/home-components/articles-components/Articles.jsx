@@ -1,7 +1,7 @@
-import PrimaryBtn from "../../UI/PrimaryBtn";
-import SectionHeader from "../../UI/SectionHeader";
-import Article from "./Article";
-import "./Articles.css";
+import PrimaryBtn from "@/components/UI/PrimaryBtn";
+import SectionHeader from "@/components/UI/SectionHeader";
+import Article from "@/components/home-components/articles-components/Article";
+import "@/components/home-components/articles-components/Articles.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";

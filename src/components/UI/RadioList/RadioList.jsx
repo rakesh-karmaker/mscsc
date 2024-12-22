@@ -1,4 +1,4 @@
-import "./RadioList.css";
+import "@/components/UI/RadioList/RadioList.css";
 
 const RadioList = ({ register, errors, dataList, children }) => {
   return (

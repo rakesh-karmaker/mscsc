@@ -1,9 +1,10 @@
-// import NavLink from "./NavLink";
 import { NavLink } from "react-router-dom";
-import $ from "jquery";
-import "./Header.css";
+import "@/components/nav-bars/Header.css";
+import { useRef } from "react";
 
 const Header = () => {
+  const navBar = useRef(null);
+
   const navLinks = [
     {
       href: "/",
@@ -37,8 +38,8 @@ const Header = () => {
           <img src="/logo.jpeg" alt="MSCSC logo" />
         </div>
 
-        {window.innerWidth > 800 ? null : <NavbarToggler />}
-        <ul className="nav-links-container">
+        {window.innerWidth > 800 ? null : <NavbarToggler navbar={navBar} />}
+        <ul className="nav-links-container" ref={navBar}>
           {navLinks.map(({ href, name }, index) => {
             return (
               <li key={index}>
@@ -58,9 +59,9 @@ const Header = () => {
   );
 };
 
-const NavbarToggler = () => {
+const NavbarToggler = ({ navbar }) => {
   const handleNavbarTogglerClick = () => {
-    $(".nav-links-container").slideToggle("fast");
+    navbar.current.classList.toggle("open");
   };
 
   return (

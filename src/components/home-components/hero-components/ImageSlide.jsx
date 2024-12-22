@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import "./ImageSlide.css";
+import "@/components/home-components/hero-components/ImageSlide.css";
 const ImageSlider = () => {
   return (
     <div className="images-container">

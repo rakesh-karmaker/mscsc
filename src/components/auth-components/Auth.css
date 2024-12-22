@@ -1,4 +1,4 @@
-#register {
+#auth {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -9,7 +9,6 @@
   height: 100%;
   width: 100%;
   max-width: var(--max-elements-width);
-  min-height: 100svh;
   position: relative;
 }
 
@@ -23,12 +22,12 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.register-container {
+.auth-container {
   width: 100%;
   min-width: 625px;
 }
 
-.register-container h1 {
+.auth-container h1 {
   color: var(--text-primary);
   font-style: normal;
   font-weight: 500;
@@ -39,7 +38,7 @@
   margin-bottom: 20px;
 }
 
-.register-container h1::after {
+.auth-container h1::after {
   content: "";
   position: absolute;
   width: 200px;
@@ -50,7 +49,7 @@
   left: 0;
 }
 
-.register-form {
+.auth-form {
   margin-top: 40px;
   display: flex;
   flex-direction: column;
@@ -66,6 +65,34 @@
   width: 100%;
 }
 
+.submission {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.state-redirect {
+  display: flex;
+  gap: 7px;
+  font-size: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.state-redirect > button {
+  background-color: transparent;
+  border: none;
+  color: var(--highlighted-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.state-redirect > button:hover {
+  opacity: 0.6;
+}
+
 @media screen and (max-width: 1260px) {
   #register {
     gap: 2rem;
@@ -73,7 +100,7 @@
 }
 
 @media screen and (max-width: 1080px) {
-  .register-container {
+  .auth-container {
     min-width: 0px;
   }
 }

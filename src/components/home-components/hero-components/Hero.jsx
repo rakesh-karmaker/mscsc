@@ -1,8 +1,8 @@
-import ClubIntro from "./ClubIntro";
-import ClubStats from "./ClubStats";
-import ImageSlider from "./ImageSlide";
-import "./Hero.css";
-import MscscTag from "../../UI/MscscTag";
+import ClubIntro from "@/components/home-components/hero-components/ClubIntro";
+import ClubStats from "@/components/home-components/hero-components/ClubStats";
+import ImageSlider from "@/components/home-components/hero-components/ImageSlide";
+import "@/components/home-components/hero-components/Hero.css";
+import MscscTag from "@/components/UI/MscscTag";
 const Hero = () => {
   return (
     <>

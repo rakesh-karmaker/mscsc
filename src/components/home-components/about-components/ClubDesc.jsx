@@ -1,5 +1,4 @@
-import { Children } from "react";
-import PrimaryBtn from "../../UI/PrimaryBtn";
+import PrimaryBtn from "@/components/UI/PrimaryBtn";
 
 const ClubDescription = () => {
   return (

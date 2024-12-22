@@ -1,4 +1,4 @@
-import ActivityNavLink from "./ActivityNavLink";
+import ActivityNavLink from "@/components/nav-bars/ActivityNavLink";
 const ActivitiesNavbar = ({ topic, onClick }) => {
   const title = (topic) => {
     if (topic === "Activities") return "Activities";

@@ -1,6 +1,7 @@
 import { useRef } from "react";
 
-import "./FileInput.css";
+import "@/components/UI/FileInput/FileInput.css";
+
 const FileInput = ({ register, errors, children }) => {
   const labelRef = useRef();
 

@@ -9,6 +9,28 @@
   transition: border-color 0.2s;
 }
 
+.input-text:has(button) > input {
+  padding-right: 40px;
+}
+
+.input-text:has(button) {
+  position: relative;
+}
+
+.input-text > input[type="password"] {
+  font-size: 1rem;
+}
+
+.type-toggle {
+  position: absolute;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--light-black);
+}
+
 .input-text > input:focus {
   outline: none;
   border-bottom-width: 2px;
