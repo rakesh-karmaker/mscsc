@@ -1,6 +1,9 @@
 import { NavLink } from "react-router-dom";
 import "@/components/nav-bars/Header.css";
 import { useRef } from "react";
+import PrimaryBtn from "@/components/UI/PrimaryBtn";
+import { useUser } from "@/Contexts/UserContext";
+import Avatar from "../Avatar";
 
 const Header = () => {
   const navBar = useRef(null);
@@ -31,6 +34,8 @@ const Header = () => {
   const handelNavLinkClick = () => {
     window.scrollTo(0, 0);
   };
+
+  const { viewer } = useUser();
   return (
     <header>
       <nav>
@@ -54,6 +59,11 @@ const Header = () => {
             );
           })}
         </ul>
+        {viewer ? (
+          <PrimaryBtn link="/register">Register</PrimaryBtn>
+        ) : (
+          <Avatar />
+        )}
       </nav>
     </header>
   );

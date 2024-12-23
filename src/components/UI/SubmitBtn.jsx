@@ -1,11 +1,12 @@
-const SubmitBtn = ({ isSubmitting, pendingText, children }) => {
+const SubmitBtn = ({ isSubmitting, pendingText, children, ...rest }) => {
+  const width = rest?.width ?? "fit-content";
   return (
     <div>
       <button
         disabled={isSubmitting}
         type="submit"
         className="primary-button"
-        style={{ width: "fit-content" }}
+        style={{ width: width }}
       >
         {isSubmitting ? `${pendingText}...` : children}
       </button>

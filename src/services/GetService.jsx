@@ -5,6 +5,16 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
+const verifyToken = (token) => {
+  // Set the AUTH token for any request
+  api.interceptors.request.use(function (config) {
+    config.headers.Authorization = token ? `Bearer ${token}` : "";
+    return config;
+  });
+
+  return api.get("/user");
+};
+
 const loginUser = (date) => {
   const formData = new FormData();
   for (const key in date) {
@@ -13,4 +23,4 @@ const loginUser = (date) => {
   return api.post("/auth/login", formData);
 };
 
-export { loginUser };
+export { verifyToken, loginUser };

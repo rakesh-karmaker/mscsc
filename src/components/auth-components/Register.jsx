@@ -23,6 +23,7 @@ const Register = ({ setForm }) => {
       loading: "Registering...",
       success: (res) => {
         if (res.status === 201) {
+          localStorage.setItem("token", res.data.token);
           setTimeout(location.reload(), 7000);
         }
         return "Registered Successfully";

@@ -17,6 +17,16 @@ const InputText = ({ register, errors, children, ...rest }) => {
   );
 };
 
+export const TextArea = ({ register, errors, children }) => {
+  return (
+    <div className="input-text">
+      <textarea {...register} placeholder={children} required />
+
+      {errors && <p className="error-message">{errors.message}</p>}
+    </div>
+  );
+};
+
 const TypeToggle = ({ type, setType }) => {
   const handleTypeToggleClick = () => {
     setType(type === "password" ? "text" : "password");

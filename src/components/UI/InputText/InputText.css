@@ -1,4 +1,5 @@
-.input-text > input {
+.input-text > input,
+.input-text > textarea {
   width: 100%;
   border: none;
   border-bottom: 1.5px solid var(--light-black);

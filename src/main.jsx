@@ -10,6 +10,7 @@ import ContactPage from "./pages/Contact.jsx";
 import Auth from "./pages/Auth";
 import "./global.css";
 import App from "./App.jsx";
+import { UserProvider } from "./Contexts/UserContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   </StrictMode>
 );

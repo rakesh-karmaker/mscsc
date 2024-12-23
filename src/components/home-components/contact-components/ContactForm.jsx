@@ -1,10 +1,23 @@
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import contactSchema from "@/utils/ContactSchema";
+import InputText, { TextArea } from "@/components/UI/InputText/InputText";
+import SubmitBtn from "@/components/UI/SubmitBtn";
+
 const ContactForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(contactSchema),
+  });
+
   // const apiKey = process.env.REACT_APP_WEB3FORM_API_KEY;
   const apiKey = import.meta.VITE_WEB3FORM_API_KEY;
 
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
+  const onSubmit = async (data) => {
+    const formData = new FormData(data);
 
     formData.append(apiKey, "YOUR_ACCESS_KEY_HERE");
 
@@ -26,25 +39,39 @@ const ContactForm = () => {
   };
 
   return (
-    <form onSubmit={onSubmit} className="contact-form">
-      <div className="name-email">
-        <input type="text" name="name" placeholder="Name" required />
-        <input type="email" name="email" placeholder="Email" required />
+    <form onSubmit={handleSubmit(onSubmit)} className="contact-form">
+      <div className="combined-inputs">
+        <InputText register={register("name")} errors={errors.name}>
+          Full Name
+        </InputText>
+        <InputText
+          type="email"
+          register={register("email")}
+          errors={errors.email}
+        >
+          Email
+        </InputText>
       </div>
 
-      <input type="text" name="subject" placeholder="Subject" required />
-      <textarea
-        name="message"
-        placeholder="Write your message"
-        required
-      ></textarea>
+      <InputText register={register("subject")} errors={errors.subject}>
+        Subject
+      </InputText>
+
+      <TextArea register={register("message")} errors={errors.message}>
+        Write your message here...
+      </TextArea>
 
       {/* <!-- Honeypot Spam Protection --> */}
       <input type="checkbox" name="botcheck" className="hidden" />
 
-      <button type="submit" className="primary-button">
+      <SubmitBtn
+        isSubmitting={isSubmitting}
+        pendingText={"Sending..."}
+        width="100%"
+      >
         Send the message
-      </button>
+      </SubmitBtn>
+      {errors.root && <p className="error-message">{errors.root.message}</p>}
     </form>
   );
 };

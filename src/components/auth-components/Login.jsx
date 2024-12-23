@@ -20,11 +20,9 @@ const Login = ({ setForm }) => {
     toast.promise(loginUser(data), {
       loading: "Logging in...",
       success: (res) => {
-        console.log(res.data);
-        if (res.status === 201) {
-          localStorage.setItem("token", res.data.token);
-          setTimeout(location.reload(), 7000);
-        }
+        localStorage.setItem("token", res.data.token);
+        setTimeout(location.reload(), 7000);
+
         return "Login Successful";
       },
       error: (err) => {

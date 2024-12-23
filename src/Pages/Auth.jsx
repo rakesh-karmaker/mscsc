@@ -2,10 +2,16 @@ import Register from "@/components/auth-components/Register";
 import Login from "@/components/auth-components/Login";
 import RegisterImage from "@/components/auth-components/RegisterImage";
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "@/Contexts/UserContext";
 
 import "@/components/auth-components/Auth.css";
 
 const Auth = () => {
+  const navigate = useNavigate();
+  if (!useUser().viewer) {
+    navigate("/");
+  }
   const registerFormContainer = useRef(null);
   const [form, setForm] = useState("Register");
 
