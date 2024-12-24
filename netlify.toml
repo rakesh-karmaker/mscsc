@@ -1,2 +1,4 @@
 [build]
-  base = "client"
+  base = /client
+  publish: /dist
+  command: bun run build
