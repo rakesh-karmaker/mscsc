@@ -25,6 +25,6 @@ dist-ssr
 
 .env
 
-server/public/activities
-server/public/executives
-server/public/members
+server/public/activities/*
+server/public/executives/*
+server/public/members/*
