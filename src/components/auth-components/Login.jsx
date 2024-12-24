@@ -39,16 +39,17 @@ const Login = ({ setForm }) => {
 
   return (
     <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
-      <InputText register={register("name")} errors={errors.name}>
+      <InputText register={register} errors={errors.name} id="name">
         Full Name
       </InputText>
-      <InputText register={register("email")} errors={errors.email}>
+      <InputText register={register} errors={errors.email} id="email">
         Email
       </InputText>
       <InputText
-        register={register("password")}
+        register={register}
         errors={errors.password}
         type="password"
+        id="password"
       >
         Password
       </InputText>

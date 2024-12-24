@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
-const AboutProfile = ({ data }) => {
+const AboutProfile = ({ data, isOwner }) => {
   const socialLink = {
     Facebook: (
       <Link to={data.socialLink} className="profile-social-link">
@@ -18,6 +19,13 @@ const AboutProfile = ({ data }) => {
     ),
   };
 
+  const [copySuccess, setCopySuccess] = useState(false);
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopySuccess(true);
+  };
+
   return (
     <div className="about-profile">
       <p className="about-profile-header">ABOUT</p>
@@ -33,6 +41,12 @@ const AboutProfile = ({ data }) => {
           <span className="dot"></span> {data.createdAt.toString().slice(0, 10)}
         </p>
       </div>
+
+      {isOwner ? (
+        <button className="primary-button user-profile-link" onClick={copyLink}>
+          {copySuccess ? "Link Copied!" : "Copy Profile Link"}
+        </button>
+      ) : null}
     </div>
   );
 };

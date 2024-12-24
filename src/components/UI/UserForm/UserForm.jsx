@@ -12,8 +12,6 @@ import SubmitBtn from "@/components/UI/SubmitBtn";
 import { Toaster } from "react-hot-toast";
 import registerToast from "@/components/auth-components/registerToast";
 import editProfileToast from "@/components/profile-components/editProfileToast";
-import Test from "@/components/UI/TimelineInputs/TimelineInputs";
-
 import "./UserForm.css";
 
 const UserForm = (props) => {
@@ -25,14 +23,12 @@ const UserForm = (props) => {
     branch: props.data.branch,
     reason: props.data.reason,
     socialLink: props.data.socialLink,
-    timeline: props.data.timeline,
   };
 
   const {
     register,
     handleSubmit,
     setError,
-    control,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(
@@ -45,25 +41,20 @@ const UserForm = (props) => {
     if (props.setForm) {
       registerToast(data, setError);
     } else {
-      console.log(data);
-      // editProfileToast(data, setError);
+      editProfileToast(data, setError);
     }
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="user-form">
       <div className="combined-inputs">
-        <InputText
-          register={register("name")}
-          errors={errors.name}
-          id="name_id"
-        >
+        <InputText register={register("name")} errors={errors.name} id="name">
           Full Name
         </InputText>
         {props?.setForm && (
           <InputText
             register={register("email")}
             errors={errors.email}
-            id="email_id"
+            id="email"
           >
             Email
           </InputText>
@@ -75,7 +66,7 @@ const UserForm = (props) => {
           register={register("password")}
           errors={errors.password}
           type="password"
-          id="password_id"
+          id="password"
           required={props?.setForm ?? false}
         >
           {props?.setForm ? "Password" : "New Password"}
@@ -84,7 +75,7 @@ const UserForm = (props) => {
           register={register("contactNumber")}
           errors={errors.contactNumber}
           type="number"
-          id="phoneNumber_id"
+          id="contactNumber"
         >
           Phone Number
         </InputText>
@@ -103,7 +94,7 @@ const UserForm = (props) => {
       <InputText
         register={register("reason")}
         errors={errors.reason}
-        id="description_id"
+        id="reason"
       >
         Why do you want to Join the club?
       </InputText>
@@ -112,7 +103,7 @@ const UserForm = (props) => {
         <InputText
           register={register("socialLink")}
           errors={errors.socialLink}
-          id="socialLink_id"
+          id="socialLink"
         >
           Facebook Link
         </InputText>
@@ -121,15 +112,12 @@ const UserForm = (props) => {
           <InputText
             register={register("reference")}
             errors={errors.reference}
-            id="reference_id"
+            id="reference"
           >
             Reference
           </InputText>
         )}
       </div>
-
-      {props?.data && <Test />}
-
       <div>
         <div className="submission">
           {props?.setForm ? (

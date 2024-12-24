@@ -11,7 +11,10 @@ const api = axios.create({
 const editUser = (data) => {
   const formData = new FormData();
   for (const key in data) {
-    formData.append(key, data[key]);
+    formData.append(
+      key,
+      key === "timeline" ? JSON.stringify(data[key]) : data[key]
+    );
   }
   console.log("data", formData);
   return api.put("/user", formData);

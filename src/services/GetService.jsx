@@ -28,4 +28,8 @@ const loginUser = (date) => {
   return api.post("/auth/login", formData);
 };
 
-export { verifyToken, loginUser };
+const getUserById = (id) => {
+  return api.get(`/user/${id}`);
+};
+
+export { verifyToken, loginUser, getUserById };

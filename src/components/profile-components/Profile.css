@@ -39,6 +39,17 @@
   gap: 20px;
 }
 
+.about-profile button.primary-button {
+  padding: 10px 20px;
+  height: fit-content;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: 0.25s;
+  border-radius: 5px;
+  background-color: var(--highlighted-color);
+  color: var(--text-white);
+}
+
 .about-profile-header {
   position: relative;
   display: flex;
@@ -222,6 +233,10 @@
   #profile > div {
     flex-direction: column;
     gap: 30px;
+  }
+
+  .about-profile button.primary-button {
+    width: fit-content;
   }
 
   .about-profile {

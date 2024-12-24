@@ -1,10 +1,13 @@
-const UserInfo = ({ data }) => {
+const UserInfo = ({ data, isOwner }) => {
   const { name, role, batch, branch, reason } = data;
   const capitalRole = role.charAt(0).toUpperCase() + role.slice(1);
+
   return (
     <div className="user-info">
       <div>
-        <h1 className="user-name">{name}</h1>
+        <div className="user-name-container">
+          <h1 className="user-name">{name}</h1>
+        </div>
         <p className="user-role">{capitalRole}</p>
       </div>
 

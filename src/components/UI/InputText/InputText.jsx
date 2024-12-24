@@ -14,6 +14,7 @@ const InputText = ({ register, errors, children, id, ...rest }) => {
     setLabelTop(document.getElementById(id).value ? "-25px" : labelTop);
   });
   const handleInputChange = (e) => {
+    // console.log(e.target.value);
     if (e.target.value !== "") {
       setLabelTop("-25px");
     } else {

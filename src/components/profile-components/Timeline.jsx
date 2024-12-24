@@ -1,3 +1,4 @@
+import "@/components/profile-components/Timeline.css";
 const Timeline = ({ timelineData }) => {
   const tagIcon = (tag) => {
     switch (tag) {
