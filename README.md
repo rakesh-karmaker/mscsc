@@ -2,7 +2,7 @@
 
 #### MSCSC - Monipur High School Science Club
 
-![rakesh-karmaker](assets/images/hero-image.jpeg)
+![rakesh-karmaker](public/hero-image.jpeg)
 
 ### Link: https://rakesh-karmaker.github.io/mscsc
 
