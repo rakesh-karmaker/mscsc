@@ -1,0 +1,149 @@
+/* ------------------ contact part starts here ------------- */
+input.hidden {
+  display: none;
+}
+
+#contact {
+  padding: 100px 0px;
+  height: 100%;
+  width: 100vw;
+  max-width: var(--max-elements-width);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 50px;
+}
+
+#contact .section-heading {
+  margin: 5px 0px 20px 0px;
+  font-size: 2.4rem;
+  font-weight: 550;
+  text-align: left;
+  text-transform: capitalize;
+  line-height: 35px;
+}
+
+#contact h3 {
+  font-weight: 450;
+}
+
+#contact .secondary-text {
+  text-align: left;
+  max-width: 39rem;
+  line-height: normal;
+}
+
+.contacts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.contact > .icon {
+  min-width: 75px;
+  height: 75px;
+  background-color: var(--highlighted-color);
+  border-radius: 10px;
+  font-size: 2rem;
+  color: var(--text-white);
+}
+
+.method-name {
+  font-size: 1.2rem;
+  font-weight: 450;
+  text-transform: uppercase;
+}
+
+.content {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: 0.25s;
+}
+
+.content:hover {
+  text-decoration: underline;
+  color: var(--highlighted-color);
+  opacity: 0.8;
+}
+
+.contact-form {
+  max-width: 600px;
+  min-width: 450px;
+  padding: 50px 40px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.name-email {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+}
+
+textarea {
+  resize: vertical;
+  height: 150px;
+}
+
+#contact button {
+  width: 100%;
+}
+
+/* ---------------------- contact section ends here -------------------------- */
+
+@media screen and (max-width: 960px) {
+  #contact,
+  #contact .section-heading {
+    flex-direction: column;
+    text-align: left;
+  }
+
+  #contact .section-heading {
+    font-size: 2rem;
+  }
+  .contact-form {
+    min-width: 0px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .contact-form {
+    box-shadow: none;
+    padding: 0px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .contact-form {
+    width: 100%;
+  }
+  .name-email {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .contact-details,
+  #contact .section-heading,
+  #contact .secondary-text {
+    text-align: center !important;
+  }
+  .contact {
+    flex-direction: column;
+  }
+  .info {
+    width: 100%;
+    text-align: center;
+  }
+}

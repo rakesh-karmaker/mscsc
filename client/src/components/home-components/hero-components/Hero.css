@@ -1,0 +1,437 @@
+/* -------- hero - top section styling starts here -------- */
+.hero-section {
+  width: 100%;
+  max-width: var(--max-elements-width);
+  height: 100%;
+  min-height: 100svh;
+  max-height: 1200px;
+  padding-top: var(--nav-height);
+}
+
+.hero-section-container {
+  width: 100%;
+  max-width: var(--max-elements-width);
+  height: 100%;
+  gap: 100px;
+  justify-content: space-between;
+  --image-slider-height: 600px;
+}
+
+.hero-section-left {
+  min-height: 680px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between !important;
+  gap: 20px;
+}
+
+.mscsc-tag {
+  width: 100%;
+  max-width: 160px;
+  height: 75px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+
+  background: var(--secondary-bg);
+  box-shadow: 0px 0px 1.1px rgba(0, 0, 0, 0.25);
+  border-radius: 43.5px;
+  padding: 0px 20px;
+  position: relative;
+  z-index: 99;
+  overflow: hidden;
+  transition: 1s;
+}
+
+.mscsc-tag.active {
+  max-width: 470px;
+}
+
+.mscsc-tag p:not(.name) {
+  font-size: 20px;
+  color: var(--black);
+  font-weight: 500;
+  min-width: fit-content;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mscsc-tag .name {
+  background-color: var(--highlighted-color);
+  width: 120px;
+  height: 40px;
+  border-radius: 20px;
+  color: var(--text-white);
+  letter-spacing: 1px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  position: absolute;
+  right: 20px;
+}
+
+.mscsc-tag .name::before {
+  content: "";
+  position: absolute;
+  width: 135px;
+  height: 56px;
+  border-radius: 95.5px;
+  background-color: inherit;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+.club-intro h1 {
+  max-width: 17ch;
+  font-size: 3.9rem;
+  text-transform: uppercase;
+  line-height: 3.5rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.club-intro .highlighted-text {
+  display: block;
+}
+
+.club-intro p {
+  max-width: 55ch;
+  font-size: 1.2rem;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  font-weight: 450;
+}
+
+.club-stats h3 {
+  font-weight: 450;
+  padding-bottom: 7px;
+}
+
+.hero-section-right {
+  gap: 20px;
+}
+
+.join-btn {
+  text-decoration: none;
+  width: 100%;
+  height: 60px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 30px;
+  background-color: var(--secondary-bg);
+  box-shadow: 0px 0px 1.1px rgba(0, 0, 0, 0.25);
+  transition: 0.25s;
+}
+
+.join-btn:hover {
+  background-color: var(--highlighted-color);
+}
+
+.join-btn:hover p {
+  color: var(--text-white);
+}
+
+.join-btn:hover .pulse {
+  background-color: var(--text-white);
+}
+
+.join-btn:hover p:has(i) {
+  transform: translateX(5px);
+}
+
+.join-btn > div {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.pulse {
+  width: 13px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: var(--highlighted-color);
+  position: relative;
+  animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+  0% {
+    box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+}
+
+.join-btn p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: 0.25s;
+}
+/* --------- hero - top section styling ends here -------- */
+
+/* -------- hero - bottom section styling starts here -------- */
+.club-stats-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  color: var(--text-primary);
+}
+
+.stats-number {
+  --number-value-1-digit: 26px;
+  --number-value-2-digit: 51px;
+  font-size: 40px;
+  font-weight: 420;
+}
+
+.number-value {
+  display: inline-block;
+  min-width: var(--number-value-2-digit);
+}
+
+.number-value:not([value="20"]) {
+  min-width: var(--number-value-1-digit);
+}
+
+.stats-name {
+  padding-left: 6px;
+  font-size: 1.1rem;
+  line-height: 22px;
+  font-weight: 500;
+}
+
+/* ----------- hero - bottom styling ends here ------------- */
+
+@media screen and (max-width: 1650px) {
+  .club-intro > p {
+    margin-bottom: 0px;
+  }
+
+  .club-stats-container {
+    gap: 15px;
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  .hero-section-left {
+    min-height: 0px;
+    gap: 30px;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .club-intro h1 {
+    font-size: 3rem;
+    line-height: 45px;
+  }
+  .club-intro p {
+    font-size: 1.1rem;
+    line-height: 25px;
+  }
+
+  .mscsc-tag {
+    max-width: 118px;
+    height: 50px;
+    padding-left: 17px;
+  }
+
+  .mscsc-tag.active {
+    max-width: 400px;
+  }
+
+  .mscsc-tag p:not(.name) {
+    font-size: 18px;
+  }
+
+  .mscsc-tag .name {
+    width: 90px;
+    height: 30px;
+    letter-spacing: normal;
+    font-size: 17px;
+    font-weight: 450;
+    right: 13px;
+  }
+
+  .mscsc-tag .name::before {
+    width: 105px;
+    height: 42px;
+  }
+}
+
+@media screen and (min-height: 1130px) {
+  .hero-section {
+    margin-top: 20px;
+    height: 100%;
+    min-height: 0px;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .hero-section {
+    padding-top: 0px;
+    width: 100vw;
+    max-width: none;
+    min-height: 550px;
+    max-height: 800px;
+    height: 100svh;
+    position: relative;
+  }
+  .hero-section::after {
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  .hero-section-container {
+    flex-direction: column;
+    gap: 30px;
+    height: fit-content;
+  }
+  .hero-section-left {
+    z-index: 11;
+    align-items: center;
+    text-align: center;
+  }
+  .mscsc-tag {
+    display: none;
+  }
+  .club-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .club-intro h1 {
+    color: var(--text-white);
+  }
+  .club-intro p {
+    color: var(--text-white);
+  }
+  .join-btn {
+    z-index: 99;
+  }
+  .join-btn p:has(i) {
+    display: none;
+  }
+  .shape {
+    width: 100%;
+    position: absolute;
+    bottom: -20px;
+    z-index: 9;
+  }
+
+  .shape path {
+    fill: var(--primary-bg);
+  }
+
+  .club-stats:not(.mobile-stats) {
+    display: none;
+  }
+  .mobile-stats {
+    display: block;
+  }
+  .club-stats {
+    width: 100%;
+    max-width: 75ch;
+    text-align: center;
+    margin-top: 20px;
+    position: relative;
+    z-index: 99;
+  }
+
+  .club-stats-container {
+    margin-top: 20px;
+    text-align: left;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .stats-number {
+    font-size: 3rem;
+    --number-value-1-digit: 29px;
+    --number-value-2-digit: 56px;
+  }
+  .stats-name {
+    font-size: 0.9rem;
+  }
+  .club-stats-container {
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .stats {
+    flex-grow: 1;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  main.page-home {
+    padding-top: 0px;
+  }
+  .hero-section {
+    padding: 0px;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+  }
+
+  .stats {
+    padding: 0px 20px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .shape {
+    bottom: -10px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .hero-section {
+    max-height: 700px;
+  }
+  .join-btn {
+    width: 220px;
+    padding: 0px;
+    justify-content: center;
+    height: 50px;
+  }
+  .join-btn p:not(:has(i)) {
+    font-size: 0.9rem;
+  }
+  .pulse {
+    display: none;
+  }
+  .about-article-right > div:has(img) {
+    gap: 10px;
+  }
+  .about-article-right > div:has(img) > img {
+    width: calc(50% - 5px);
+  }
+  p.secondary-text {
+    font-size: 0.8rem;
+    line-height: 18px;
+  }
+
+  .club-intro h1 {
+    font-size: 2.2rem;
+    line-height: 33px;
+  }
+}

@@ -1,0 +1,85 @@
+.input-text input,
+.input-text textarea {
+  width: 100%;
+  border: none;
+  border-bottom: 1.5px solid var(--light-black);
+  padding-left: 3px;
+  font-size: 1.2rem;
+  padding-bottom: 5px;
+  background-color: transparent;
+  transition: border-color 0.2s;
+}
+
+.input-text input:focus-visible,
+.input-text textarea:focus-visible {
+  outline: none;
+  border-color: var(--highlighted-color);
+}
+
+.input-container {
+  position: relative;
+  margin-top: 10px;
+}
+
+.input-container label {
+  position: absolute;
+  top: 5px;
+  left: 3px;
+  font-size: 1.2rem;
+  color: var(--light-black);
+  transition: top 0.2s ease-in-out, left 0.2s ease-in-out,
+    font-size 0.2s ease-in-out;
+  z-index: 77;
+  opacity: 0.7;
+  pointer-events: none;
+  display: -webkit-inline-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.input-container:has(input:focus) > label {
+  top: 15px;
+  /* left: 0; */
+  font-size: 1rem;
+}
+
+.input-text:has(button) > input {
+  padding-right: 40px;
+}
+
+.input-text:has(button) {
+  position: relative;
+}
+
+.input-text > input[type="password"] {
+  font-size: 1rem;
+}
+
+.type-toggle {
+  position: absolute;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--light-black);
+}
+
+.input-text > input:focus {
+  outline: none;
+  border-bottom-width: 2px;
+  border-color: var(--highlighted-color);
+  color: black;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}

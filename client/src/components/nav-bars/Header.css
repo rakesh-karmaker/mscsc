@@ -1,0 +1,115 @@
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border-bottom: 0.7px solid var(--lightest-black);
+  background-color: var(--primary-bg);
+  padding: 0px 40px;
+  z-index: 9999;
+}
+
+nav {
+  width: 100%;
+  max-width: var(--max-elements-width);
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#logo {
+  height: 60px;
+}
+
+#logo > img {
+  width: 60px;
+  aspect-ratio: 1;
+}
+
+.activities,
+.nav-links-container {
+  list-style: none;
+  display: inline-flex;
+  gap: 24px;
+  position: relative;
+  cursor: pointer;
+}
+
+.nav-link {
+  font-size: 1.12rem;
+  line-height: normal;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: 0.25s;
+}
+
+.nav-link.active,
+.nav-link:is(:hover, :focus) {
+  color: var(--highlighted-color);
+}
+
+.navbar-toggler {
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  transition: 0.25s;
+  cursor: pointer;
+  background-color: var(--highlighted-color);
+  color: var(--text-white);
+}
+#avatar {
+  height: 50px;
+}
+
+#avatar > img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center center;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+  #avatar,
+  #avatar > img {
+    width: 45px;
+    height: 45px;
+  }
+  nav {
+    position: relative;
+    height: 70px;
+  }
+
+  .nav-links-container {
+    flex-direction: column;
+    position: absolute;
+    top: 73px;
+    width: 100%;
+    height: fit-content;
+    background-color: var(--primary-bg);
+    border-radius: 10px;
+    padding: 20px;
+    gap: 17px;
+    transform: scaleY(0);
+    border: 0.5px solid rgba(0, 0, 0, 0.1);
+    transition: 0.25s;
+    transform-origin: top;
+  }
+
+  .nav-links-container.open {
+    transform: scaleY(1);
+  }
+
+  .nav-links-container p,
+  .nav-link a {
+    display: block;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin: 5px 0px 0px 0px;
+  }
+}
