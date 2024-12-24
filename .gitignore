@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 
 .env
+
+server/public/activities
+server/public/executives
+server/public/members
