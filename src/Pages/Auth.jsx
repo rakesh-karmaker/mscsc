@@ -1,4 +1,4 @@
-import Register from "@/components/auth-components/Register";
+import UserForm from "@/components/UI/UserForm/UserForm";
 import Login from "@/components/auth-components/Login";
 import RegisterImage from "@/components/auth-components/RegisterImage";
 import { useRef, useState } from "react";
@@ -9,7 +9,7 @@ import "@/components/auth-components/Auth.css";
 
 const Auth = () => {
   const navigate = useNavigate();
-  if (!useUser().viewer) {
+  if (useUser().loggedIn) {
     navigate("/");
   }
   const registerFormContainer = useRef(null);
@@ -24,7 +24,7 @@ const Auth = () => {
       <div ref={registerFormContainer} className="auth-container">
         <h1>{form}</h1>
         {form === "Register" ? (
-          <Register setForm={setForm} />
+          <UserForm setForm={setForm} />
         ) : (
           <Login setForm={setForm} />
         )}

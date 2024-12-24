@@ -8,7 +8,7 @@ const AboutUs = () => {
       <div className="about-article-container">
         <ClubDescription />
         <img
-          src="/about-club-section-img.jpg"
+          src="/about-club-section-img.webp"
           alt="A picture of club members"
         />
       </div>

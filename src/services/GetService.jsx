@@ -5,14 +5,19 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-const verifyToken = (token) => {
+const verifyToken = async (token) => {
   // Set the AUTH token for any request
   api.interceptors.request.use(function (config) {
     config.headers.Authorization = token ? `Bearer ${token}` : "";
     return config;
   });
-
-  return api.get("/user");
+  try {
+    const response = await api.get("/user");
+    return response;
+  } catch (error) {
+    console.error("Error verifying token:", error);
+    return null;
+  }
 };
 
 const loginUser = (date) => {

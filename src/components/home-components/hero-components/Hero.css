@@ -4,7 +4,8 @@
   max-width: var(--max-elements-width);
   height: 100%;
   min-height: 100svh;
-  padding-top: 90px;
+  max-height: 1200px;
+  padding-top: var(--nav-height);
 }
 
 .hero-section-container {
@@ -285,6 +286,7 @@
     width: 100vw;
     max-width: none;
     min-height: 550px;
+    max-height: 800px;
     height: 100svh;
     position: relative;
   }
@@ -402,6 +404,9 @@
 }
 
 @media screen and (max-width: 450px) {
+  .hero-section {
+    max-height: 700px;
+  }
   .join-btn {
     width: 220px;
     padding: 0px;

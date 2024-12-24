@@ -41,19 +41,24 @@ const ContactForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="contact-form">
       <div className="combined-inputs">
-        <InputText register={register("name")} errors={errors.name}>
+        <InputText register={register("name")} errors={errors.name} id="name">
           Full Name
         </InputText>
         <InputText
           type="email"
           register={register("email")}
           errors={errors.email}
+          id="email"
         >
           Email
         </InputText>
       </div>
 
-      <InputText register={register("subject")} errors={errors.subject}>
+      <InputText
+        register={register("subject")}
+        errors={errors.subject}
+        id="subject"
+      >
         Subject
       </InputText>
 

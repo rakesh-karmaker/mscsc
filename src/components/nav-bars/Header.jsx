@@ -1,12 +1,13 @@
 import { NavLink } from "react-router-dom";
 import "@/components/nav-bars/Header.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import PrimaryBtn from "@/components/UI/PrimaryBtn";
 import { useUser } from "@/Contexts/UserContext";
 import Avatar from "../Avatar";
 
 const Header = () => {
   const navBar = useRef(null);
+  const [isOpened, setIsOpened] = useState(false);
 
   const navLinks = [
     {
@@ -33,17 +34,25 @@ const Header = () => {
 
   const handelNavLinkClick = () => {
     window.scrollTo(0, 0);
+    handleNavbarTogglerClick({ navbar: navBar, isOpened, setIsOpened });
   };
 
-  const { viewer } = useUser();
+  const { loggedIn } = useUser();
   return (
     <header>
       <nav>
-        <div id="logo">
-          <img src="/logo.jpeg" alt="MSCSC logo" />
-        </div>
+        {window.innerWidth > 800 ? (
+          <div id="logo">
+            <img src="/logo.webp" alt="MSCSC logo" />
+          </div>
+        ) : (
+          <NavbarToggler
+            navbar={navBar}
+            isOpened={isOpened}
+            setIsOpened={setIsOpened}
+          />
+        )}
 
-        {window.innerWidth > 800 ? null : <NavbarToggler navbar={navBar} />}
         <ul className="nav-links-container" ref={navBar}>
           {navLinks.map(({ href, name }, index) => {
             return (
@@ -59,31 +68,40 @@ const Header = () => {
             );
           })}
         </ul>
-        {viewer ? (
-          <PrimaryBtn link="/register">Register</PrimaryBtn>
-        ) : (
+        {loggedIn ? (
           <Avatar />
+        ) : (
+          <PrimaryBtn link="/register" name="Login page" header={true}>
+            Login
+          </PrimaryBtn>
         )}
       </nav>
     </header>
   );
 };
 
-const NavbarToggler = ({ navbar }) => {
-  const handleNavbarTogglerClick = () => {
-    navbar.current.classList.toggle("open");
-  };
-
+const NavbarToggler = ({ navbar, isOpened, setIsOpened }) => {
   return (
     <button
       className="navbar-toggler"
-      onClick={handleNavbarTogglerClick}
+      onClick={() =>
+        handleNavbarTogglerClick({ navbar, isOpened, setIsOpened })
+      }
       type="button"
       aria-label="Toggle navbar"
     >
-      <i className="fa-solid fa-bars"></i>
+      {isOpened ? (
+        <i className="fa-solid fa-xmark"></i>
+      ) : (
+        <i className="fa-solid fa-bars"></i>
+      )}
     </button>
   );
+};
+
+const handleNavbarTogglerClick = ({ navbar, setIsOpened, isOpened }) => {
+  isOpened ? setIsOpened(false) : setIsOpened(true);
+  navbar.current.classList.toggle("open");
 };
 
 export default Header;

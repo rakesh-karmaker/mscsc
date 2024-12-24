@@ -1,16 +1,41 @@
 import "@/components/UI/InputText/InputText.css";
+import { useEffect } from "react";
 import { useState } from "react";
 
-const InputText = ({ register, errors, children, ...rest }) => {
+const InputText = ({ register, errors, children, id, ...rest }) => {
   const passType = rest?.type === "password";
   const inputType = rest.type ?? "text";
   const [type, setType] = useState(inputType);
 
+  const [labelTop, setLabelTop] = useState(
+    rest?.type === "date" ? "-25px" : "0"
+  );
+  useEffect(() => {
+    setLabelTop(document.getElementById(id).value ? "-25px" : labelTop);
+  });
+  const handleInputChange = (e) => {
+    if (e.target.value !== "") {
+      setLabelTop("-25px");
+    } else {
+      setLabelTop("0");
+    }
+  };
+
   return (
     <div className="input-text">
-      <input {...register} type={type} placeholder={children} required />
-
-      {passType && <TypeToggle type={type} setType={setType} />}
+      <div className="input-container">
+        <label htmlFor={id} style={{ top: labelTop }}>
+          {children}
+        </label>
+        <input
+          {...register}
+          type={type}
+          id={id}
+          onChange={handleInputChange}
+          required={rest?.required ?? true}
+        />
+        {passType && <TypeToggle type={type} setType={setType} />}
+      </div>
 
       {errors && <p className="error-message">{errors.message}</p>}
     </div>

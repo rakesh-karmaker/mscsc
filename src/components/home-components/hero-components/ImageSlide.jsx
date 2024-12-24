@@ -15,15 +15,14 @@ const ImageSlider = () => {
           disableOnInteraction: false, // don't stop autoplay on user interaction
         }}
       >
-        <SwiperSlide>
-          <img src="/hero-img-1.jpg" alt="hero image 1" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="/hero-img-2.png" alt="hero image 2" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="/hero-img-3.png" alt="hero image 3" />
-        </SwiperSlide>
+        {Array.from({ length: 3 }).map((_, index) => (
+          <SwiperSlide key={index}>
+            <img
+              src={`/hero-img-${index + 1}.webp`}
+              alt={`hero image ${index + 1}`}
+            />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );

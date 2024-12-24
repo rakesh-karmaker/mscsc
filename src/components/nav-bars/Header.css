@@ -13,14 +13,18 @@ header {
 nav {
   width: 100%;
   max-width: var(--max-elements-width);
-  height: 90px;
+  height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+#logo {
+  height: 60px;
+}
+
 #logo > img {
-  width: 79px;
+  width: 60px;
   aspect-ratio: 1;
 }
 
@@ -34,7 +38,7 @@ nav {
 }
 
 .nav-link {
-  font-size: 1.2rem;
+  font-size: 1.12rem;
   line-height: normal;
   color: var(--text-primary);
   text-decoration: none;
@@ -50,24 +54,31 @@ nav {
   width: 45px;
   height: 45px;
   border: none;
-  border-radius: 10px;
-  font-size: 19px;
+  border-radius: 50%;
+  font-size: 1.4rem;
   transition: 0.25s;
   cursor: pointer;
-}
-.navbar-toggler:is(:hover, :focus) {
-  background-color: transparent;
-  color: var(--black);
-}
-
-.navbar-toggler:not(:is(:hover, :focus)) {
   background-color: var(--highlighted-color);
   color: var(--text-white);
 }
+#avatar {
+  height: 50px;
+}
+
+#avatar > img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center center;
+  cursor: pointer;
+}
 
 @media screen and (max-width: 800px) {
-  #logo > img {
-    width: 50px;
+  #avatar,
+  #avatar > img {
+    width: 45px;
+    height: 45px;
   }
   nav {
     position: relative;
@@ -80,10 +91,10 @@ nav {
     top: 73px;
     width: 100%;
     height: fit-content;
-    background-color: var(--third-level-bg);
-    border-radius: 20px;
+    background-color: var(--primary-bg);
+    border-radius: 10px;
     padding: 20px;
-    gap: 10px;
+    gap: 17px;
     transform: scaleY(0);
     border: 0.5px solid rgba(0, 0, 0, 0.1);
     transition: 0.25s;
@@ -100,12 +111,5 @@ nav {
     padding: 10px 15px;
     border-radius: 5px;
     margin: 5px 0px 0px 0px;
-  }
-  .nav-link p:hover,
-  .nav-link p:focus,
-  .nav-link a:hover,
-  .nav-link a.active {
-    color: var(--text-white);
-    background-color: var(--highlighted-color);
   }
 }

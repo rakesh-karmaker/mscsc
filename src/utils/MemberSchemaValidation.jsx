@@ -34,4 +34,24 @@ const MemberLoginSchema = z.object({
   password: z.string().min(6),
 });
 
-export { MemberRegSchema, MemberLoginSchema };
+const MemberProfileEditSchema = z.object({
+  name: z.string().min(2).max(255),
+  email: z.string().email(),
+  password: z.string().optional(),
+  contactNumber: z.coerce.number().gte(1).lte(99999999999),
+  branch: z.string(),
+  reason: z.string(),
+  socialLink: z.string(),
+  timeLine: z
+    .object({
+      tag: z.string(),
+      date: z.date(),
+      title: z.string(),
+      description: z.string(),
+      link: z.string(),
+    })
+    .array()
+    .optional(),
+});
+
+export { MemberRegSchema, MemberLoginSchema, MemberProfileEditSchema };

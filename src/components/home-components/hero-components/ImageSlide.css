@@ -39,9 +39,20 @@
   }
   .images-container > div {
     min-height: 550px;
+    max-height: 800px;
   }
   .images-container .swiper-slide > img {
     height: 100svh !important;
     min-height: 550px;
+    max-height: 800px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .images-container > div {
+    max-height: 700px;
+  }
+  .images-container .swiper-slide > img {
+    max-height: 700px;
   }
 }

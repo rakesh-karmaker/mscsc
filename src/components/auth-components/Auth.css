@@ -4,7 +4,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 140px;
-  padding-top: calc(90px + 2rem);
+  padding-top: calc(var(--nav-height) + 2rem);
   padding-bottom: 2rem;
   height: 100%;
   width: 100%;
@@ -17,7 +17,7 @@
   max-width: 570px;
   height: inherit;
   background-color: rgb(70, 125, 173);
-  background: url("/hero-img-1.jpg") no-repeat center center/cover;
+  background: url("/hero-img-1.webp") no-repeat center center/cover;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -49,50 +49,6 @@
   left: 0;
 }
 
-.auth-form {
-  margin-top: 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-
-.combined-inputs {
-  display: flex;
-  gap: 20px;
-}
-
-.combined-inputs > div {
-  width: 100%;
-}
-
-.submission {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.state-redirect {
-  display: flex;
-  gap: 7px;
-  font-size: 1.2rem;
-  flex-wrap: wrap;
-}
-
-.state-redirect > button {
-  background-color: transparent;
-  border: none;
-  color: var(--highlighted-color);
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: 0.25s;
-}
-
-.state-redirect > button:hover {
-  opacity: 0.6;
-}
-
 @media screen and (max-width: 1260px) {
   #register {
     gap: 2rem;
@@ -108,12 +64,5 @@
 @media screen and (max-width: 800px) {
   #register {
     padding-top: calc(70px + 2rem);
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .combined-inputs {
-    flex-direction: column;
-    gap: 40px;
   }
 }

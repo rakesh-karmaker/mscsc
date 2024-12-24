@@ -6,28 +6,34 @@ const UserContext = createContext(null);
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [viewer, setViewer] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  // localStorage.setItem("token", "");
 
   useEffect(() => {
-    try {
-      const userVerify = async () => {
+    const userVerify = async () => {
+      try {
         const res = await verifyToken(localStorage.getItem("token"));
-        setViewer(res.data.viewer);
-        setUser(res.data);
-      };
-
-      if (localStorage.getItem("token")) {
-        userVerify();
+        if (res && res.data) {
+          setUser(res.data.user);
+          setLoggedIn(true);
+        } else {
+          setUser(null);
+          setLoggedIn(false);
+        }
+      } catch (err) {
+        setUser(null);
+        console.error("Failed to verify user token:", err);
       }
-    } catch (err) {
-      setUser(null);
-      setViewer(true);
-      console.log("Invalid Token");
+    };
+
+    if (localStorage.getItem("token")) {
+      userVerify();
     }
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, viewer }}>
+    <UserContext.Provider value={{ user, setUser, loggedIn }}>
       {children}
     </UserContext.Provider>
   );

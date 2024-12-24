@@ -52,6 +52,8 @@ main {
 
   --highlighted-color: rgb(59, 130, 246);
   --light-highlighted-color: rgb(219, 234, 254);
+
+  --nav-height: 80px;
 }
 
 /** utility classes */
@@ -118,6 +120,12 @@ main {
   align-items: center;
   justify-content: center;
 }
+
+.primary-button.header-btn {
+  padding: 0px 20px;
+  height: 40px;
+  font-size: 18px;
+}
 .primary-button::before {
   content: "";
   position: absolute;
@@ -180,6 +188,15 @@ main {
   color: var(--text-primary);
 }
 
+.combined-inputs {
+  display: flex;
+  gap: 20px;
+}
+
+.combined-inputs > div {
+  width: 100%;
+}
+
 .error-message {
   color: red;
   font-size: 1.1rem;
@@ -206,9 +223,18 @@ main {
     text-align: center;
   }
 }
+@media screen and (max-width: 800px) {
+  :root {
+    --nav-height: 70px;
+  }
+}
 @media screen and (max-width: 600px) {
   .section-heading {
     font-size: 2.2rem !important;
+  }
+  .combined-inputs {
+    flex-direction: column;
+    gap: 40px;
   }
 }
 @media screen and (max-width: 450px) {

@@ -1,6 +1,6 @@
 footer {
   padding: 20px 40px;
-  height: 100px;
+  height: 85px;
   width: 100vw;
   background-color: var(--primary-bg);
   border-top: 0.5px solid rgba(0, 0, 0, 0.1);
@@ -27,9 +27,9 @@ footer p {
 
 .socials a {
   text-decoration: none;
-  font-size: 1.5rem;
-  width: 50px;
-  height: 50px;
+  font-size: 1.25rem;
+  width: 45px;
+  height: 45px;
   color: var(--text-secondary);
   padding: 10px;
   background-color: rgb(233, 234, 235);
