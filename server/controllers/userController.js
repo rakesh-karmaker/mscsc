@@ -6,13 +6,13 @@ const bcrypt = require("bcryptjs");
 const getUser = async (req, res) => {
   console.log("get user");
   try {
+    // Authenticate User
     const prefix = "Bearer ";
     const token = req.header("Authorization").split(prefix)[1];
-
     if (!token) return res.status(401).send({ message: "Access Denied" });
 
-    const { id } = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await Member.findById(id);
+    const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await Member.findById(_id);
     if (!user) return res.status(404).send({ message: "User not found" });
 
     user._id = user._id.toString();
@@ -27,63 +27,67 @@ const getUser = async (req, res) => {
 
 const editUser = async (req, res) => {
   try {
-    console.log(req.body.timeline);
+    // Authenticate User
     const prefix = "Bearer ";
-    const token = req.header("Authorization").split(prefix)[1];
-
+    const authHeader = req.header("Authorization");
+    if (!authHeader) return res.status(401).send({ message: "Access Denied" });
+    const token = authHeader.split(prefix)[1];
     if (!token) return res.status(401).send({ message: "Access Denied" });
 
-    const { id } = jwt.verify(token, process.env.JWT_SECRET);
-    if (req.body?.timeline) {
-      console.log("timeline");
+    const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Edit User Timeline
+    if (req.body && req.body.timeline) {
       const timeline = JSON.parse(req.body.timeline);
       const user = await Member.findOneAndUpdate(
-        { _id: id },
+        { _id },
         { timeline },
-        {
-          new: true,
-        }
+        { new: true }
       );
       if (!user) return res.status(404).send({ message: "User not found" });
-      console.log(user);
       return res.status(200).send({ message: "Edit successful" });
     }
 
-    const previousUser = await Member.findById(id);
+    // Edit User Credentials
+    const previousUser = await Member.findById(_id);
     if (!previousUser)
       return res.status(404).send({ message: "User not found" });
-    if (req.body.password && req.body.password == "") {
+
+    if (req.body && req.body.password === "") {
       req.body.password = previousUser.password;
-      console.log("password is empty");
-    } else {
-      if (req.body?.password)
-        req.body.password = await bcrypt.hashSync(req.body.password, 10);
+    } else if (req.body && req.body.password) {
+      req.body.password = bcrypt.hashSync(req.body.password, 10);
     }
 
-    const user = await Member.findOneAndUpdate({ _id: id }, req.body, {
-      new: true, // Return the new document instead of the old one
+    const user = await Member.findOneAndUpdate({ _id }, req.body, {
+      new: true,
     });
-
-    const newUser = await Member.findById(id);
-    console.log(newUser);
 
     if (user) return res.status(200).send({ message: "Edit successful" });
     else return res.status(404).send({ message: "Edit failed" });
   } catch (err) {
-    console.log(err);
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
 
 const getUserById = async (req, res) => {
-  const id = req.params.id;
+  const _id = req.params?._id;
+  console.log("get user by id", _id);
+  if (!_id) {
+    return res.status(400).send({ message: "Invalid request" });
+  }
+
   try {
-    const user = await Member.findById(id);
-    if (!user) return res.status(404).send({ message: "User not found" });
+    const user = await Member.findById(_id);
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
     user._id = user._id.toString();
     res.send(user);
   } catch (err) {
-    res.status(500).send({ message: "Server error", error: err.message });
+    console.log(err);
+    res.status(500).send({ message: "Server error", error: err?.message });
   }
 };
 

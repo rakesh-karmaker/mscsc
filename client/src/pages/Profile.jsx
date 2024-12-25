@@ -9,6 +9,7 @@ import UserForm from "@/components/UI/UserForm/UserForm";
 import "@/components/profile-components/Profile.css";
 import TimelineInputs from "@/components/UI/TimelineInputs/TimelineInputs";
 import { getUserById } from "@/services/GetService";
+import { MemberProfileEditSchema } from "@/utils/MemberSchemaValidation";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -88,7 +89,10 @@ const Profile = () => {
               <div className="profile-timeline-edit-container">
                 {isEditing ? (
                   <>
-                    <UserForm data={profileData} />
+                    <UserForm
+                      data={profileData}
+                      schema={MemberProfileEditSchema}
+                    />
                     <TimelineInputs timeline={profileData.timeline} />
                   </>
                 ) : (

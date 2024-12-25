@@ -20,7 +20,6 @@ mongoose
 // Routes
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/user", require("./routes/userRoutes"));
-app.use("/api/executives", require("./routes/executiveRoutes"));
 app.use("/api/events", require("./routes/eventRoutes"));
 
 app.listen(process.env.PORT, () =>

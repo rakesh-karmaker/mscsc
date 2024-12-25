@@ -4,6 +4,7 @@ import RegisterImage from "@/components/auth-components/RegisterImage";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/Contexts/UserContext";
+import { MemberRegSchema } from "@/utils/MemberSchemaValidation";
 
 import "@/components/auth-components/Auth.css";
 
@@ -24,7 +25,7 @@ const Auth = () => {
       <div ref={registerFormContainer} className="auth-container">
         <h1>{form}</h1>
         {form === "Register" ? (
-          <UserForm setForm={setForm} />
+          <UserForm setForm={setForm} schema={MemberRegSchema} />
         ) : (
           <Login setForm={setForm} />
         )}

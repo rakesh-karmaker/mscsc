@@ -9,7 +9,7 @@ const router = express.Router();
 
 // Auth Routes
 router.get("/", getUser);
-router.get("/:id", getUserById);
+router.get("/:_id", getUserById);
 router.put("/", editUser);
 
 module.exports = router;

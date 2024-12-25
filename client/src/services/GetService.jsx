@@ -1,12 +1,12 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: `${import.meta.env.VITE_API_URL}/api`,
   headers: { "Content-Type": "application/json" },
 });
 
 const verifyToken = async (token) => {
-  // Set the AUTH token for any request
+  console.log(import.meta.env.VITE_API_URL);
   api.interceptors.request.use(function (config) {
     config.headers.Authorization = token ? `Bearer ${token}` : "";
     return config;

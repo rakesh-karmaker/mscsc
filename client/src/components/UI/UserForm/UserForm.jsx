@@ -1,8 +1,3 @@
-import {
-  MemberRegSchema,
-  MemberProfileEditSchema,
-} from "@/utils/MemberSchemaValidation";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { YearRadio, BranchRadio } from "@/components/UI/RegRadios";
@@ -15,16 +10,6 @@ import editProfileToast from "@/components/profile-components/editProfileToast";
 import "./UserForm.css";
 
 const UserForm = (props) => {
-  const defaultData = props?.data && {
-    name: props.data.name,
-    email: props.data.email,
-    password: "",
-    contactNumber: props.data.contactNumber,
-    branch: props.data.branch,
-    reason: props.data.reason,
-    socialLink: props.data.socialLink,
-  };
-
   const {
     register,
     handleSubmit,
@@ -33,10 +18,18 @@ const UserForm = (props) => {
     trigger,
     formState: { errors, isSubmitting },
   } = useForm({
-    resolver: zodResolver(
-      props?.setForm ? MemberRegSchema : MemberProfileEditSchema
-    ),
-    defaultValues: defaultData,
+    resolver: zodResolver(props.schema),
+    defaultValues: props?.data
+      ? {
+          name: props.data.name,
+          email: props.data.email,
+          password: "",
+          contactNumber: props.data.contactNumber,
+          branch: props.data.branch,
+          reason: props.data.reason,
+          socialLink: props.data.socialLink,
+        }
+      : undefined,
     mode: "onChange",
   });
 
@@ -48,6 +41,7 @@ const UserForm = (props) => {
       editProfileToast(data, setError);
     }
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="user-form">
       <div className="combined-inputs">
@@ -60,17 +54,15 @@ const UserForm = (props) => {
         >
           Full Name
         </InputText>
-        {props?.setForm && (
-          <InputText
-            setValue={setValue}
-            trigger={trigger}
-            register={register("email")}
-            errors={errors.email}
-            id="email"
-          >
-            Email
-          </InputText>
-        )}
+        <InputText
+          setValue={setValue}
+          trigger={trigger}
+          register={register("email")}
+          errors={errors.email}
+          id="email"
+        >
+          Email
+        </InputText>
       </div>
 
       <div className="combined-inputs">
