@@ -7,7 +7,10 @@ const { unlink } = require("fs/promises");
 // Register Member
 exports.register = async (req, res) => {
   try {
+    console.log(req.file);
+    console.log(req.body);
     const image = req.file.path;
+    console.log(image);
     const { error } = registerSchema.validate(req.body);
     if (error) {
       await unlink(image);
