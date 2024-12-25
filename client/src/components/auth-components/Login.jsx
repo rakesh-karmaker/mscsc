@@ -11,6 +11,8 @@ const Login = ({ setForm }) => {
     register,
     handleSubmit,
     setError,
+    setValue,
+    trigger,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(MemberLoginSchema),
@@ -39,13 +41,27 @@ const Login = ({ setForm }) => {
 
   return (
     <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
-      <InputText register={register} errors={errors.name} id="name">
+      <InputText
+        setValue={setValue}
+        trigger={trigger}
+        register={register}
+        errors={errors.name}
+        id="name"
+      >
         Full Name
       </InputText>
-      <InputText register={register} errors={errors.email} id="email">
+      <InputText
+        setValue={setValue}
+        trigger={trigger}
+        register={register}
+        errors={errors.email}
+        id="email"
+      >
         Email
       </InputText>
       <InputText
+        setValue={setValue}
+        trigger={trigger}
         register={register}
         errors={errors.password}
         type="password"

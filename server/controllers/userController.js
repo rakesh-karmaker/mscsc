@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 
 // Get User
 const getUser = async (req, res) => {
+  console.log("get user");
   try {
     const prefix = "Bearer ";
     const token = req.header("Authorization").split(prefix)[1];

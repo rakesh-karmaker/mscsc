@@ -15,6 +15,8 @@ const TimelineInputs = ({ timeline }) => {
     control,
     handleSubmit,
     setError,
+    setValue,
+    trigger,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
@@ -83,6 +85,8 @@ const TimelineInputs = ({ timeline }) => {
           >
             <div className="combined-inputs">
               <InputText
+                setValue={setValue}
+                trigger={trigger}
                 register={register(`timeline.${index}.title`)}
                 errors={errors[`timeline.${index}.title`]}
                 id={`timeline.${index}.title`}
@@ -91,6 +95,8 @@ const TimelineInputs = ({ timeline }) => {
               </InputText>
 
               <InputText
+                setValue={setValue}
+                trigger={trigger}
                 register={register(`timeline.${index}.date`)}
                 errors={errors[`timeline.${index}.date`]}
                 type="date"
@@ -110,6 +116,8 @@ const TimelineInputs = ({ timeline }) => {
             </RadioList>
 
             <InputText
+              setValue={setValue}
+              trigger={trigger}
               register={register(`timeline.${index}.description`)}
               errors={errors[`timeline.${index}.description`]}
               id={`timeline.${index}.description`}
@@ -118,6 +126,8 @@ const TimelineInputs = ({ timeline }) => {
             </InputText>
 
             <InputText
+              setValue={setValue}
+              trigger={trigger}
               register={register(`timeline.${index}.link`)}
               errors={errors[`timeline.${index}.link`]}
               id={`timeline.${index}.link`}

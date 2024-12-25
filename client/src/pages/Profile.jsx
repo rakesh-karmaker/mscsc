@@ -54,7 +54,7 @@ const Profile = () => {
         <div>
           <div className="profile-left-container">
             <img
-              src={`http://localhost:5000/${profileData.image}`}
+              src={profileData.image}
               alt={`Profile picture of ${profileData.name}`}
             />
             {window.innerWidth > 700 ? (

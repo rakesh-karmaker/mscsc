@@ -29,15 +29,19 @@ const UserForm = (props) => {
     register,
     handleSubmit,
     setError,
+    setValue,
+    trigger,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(
       props?.setForm ? MemberRegSchema : MemberProfileEditSchema
     ),
     defaultValues: defaultData,
+    mode: "onChange",
   });
 
   const onSubmit = async (data) => {
+    console.log(data);
     if (props.setForm) {
       registerToast(data, setError);
     } else {
@@ -47,11 +51,19 @@ const UserForm = (props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="user-form">
       <div className="combined-inputs">
-        <InputText register={register("name")} errors={errors.name} id="name">
+        <InputText
+          setValue={setValue}
+          trigger={trigger}
+          register={register("name")}
+          errors={errors.name}
+          id="name"
+        >
           Full Name
         </InputText>
         {props?.setForm && (
           <InputText
+            setValue={setValue}
+            trigger={trigger}
             register={register("email")}
             errors={errors.email}
             id="email"
@@ -63,6 +75,8 @@ const UserForm = (props) => {
 
       <div className="combined-inputs">
         <InputText
+          setValue={setValue}
+          trigger={trigger}
           register={register("password")}
           errors={errors.password}
           type="password"
@@ -72,6 +86,8 @@ const UserForm = (props) => {
           {props?.setForm ? "Password" : "New Password"}
         </InputText>
         <InputText
+          setValue={setValue}
+          trigger={trigger}
           register={register("contactNumber")}
           errors={errors.contactNumber}
           type="number"
@@ -92,6 +108,8 @@ const UserForm = (props) => {
       )}
 
       <InputText
+        setValue={setValue}
+        trigger={trigger}
         register={register("reason")}
         errors={errors.reason}
         id="reason"
@@ -101,6 +119,8 @@ const UserForm = (props) => {
 
       <div className="combined-inputs">
         <InputText
+          setValue={setValue}
+          trigger={trigger}
           register={register("socialLink")}
           errors={errors.socialLink}
           id="socialLink"
@@ -110,6 +130,8 @@ const UserForm = (props) => {
 
         {props?.setForm && (
           <InputText
+            setValue={setValue}
+            trigger={trigger}
             register={register("reference")}
             errors={errors.reference}
             id="reference"

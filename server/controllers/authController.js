@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const Member = require("../models/Member");
 const { registerSchema } = require("../utils/validation");
 const { unlink } = require("fs/promises");
+const imagekit = require("../utils/imagekit");
 
 // Register Member
 exports.register = async (req, res) => {
@@ -13,10 +14,9 @@ exports.register = async (req, res) => {
         .send({ subject: "request", message: "Invalid request" });
     }
 
-    const image = req.file.path;
+    console.log(req.file);
     const { error } = registerSchema.validate(req.body);
     if (error) {
-      if (image) await unlink(image).catch(console.error);
       return res.status(400).send({
         subject: error.details[0].context.key,
         message: error.details[0].message,
@@ -24,10 +24,28 @@ exports.register = async (req, res) => {
     }
 
     const { email } = req.body;
-    req.body.image = image.split("public\\")[1];
+    const uploadPromise = new Promise((resolve, reject) => {
+      imagekit.upload(
+        {
+          file: req.file.buffer,
+          fileName: `${Date.now()}-${req.file.originalname}`,
+        },
+        (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result);
+          }
+        }
+      );
+    });
+
+    const result = await uploadPromise;
+    req.body.image = result.url;
+    console.log(result);
+
     let member = await Member.findOne({ email });
     if (member) {
-      if (image) await unlink(image).catch(console.error);
       return res
         .status(400)
         .send({ subject: "email", message: "Email already used before" });
@@ -35,7 +53,6 @@ exports.register = async (req, res) => {
 
     const memberData = {
       ...req.body,
-      image: image,
     };
 
     console.log(memberData);
@@ -55,8 +72,6 @@ exports.register = async (req, res) => {
 
     res.status(201).send({ message: "Member registered successfully.", token });
   } catch (err) {
-    if (req.file && req.file.path)
-      await unlink(req.file.path).catch(console.error);
     console.error(err);
     res
       .status(500)

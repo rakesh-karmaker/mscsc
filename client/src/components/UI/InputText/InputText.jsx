@@ -2,7 +2,15 @@ import "@/components/UI/InputText/InputText.css";
 import { useEffect } from "react";
 import { useState } from "react";
 
-const InputText = ({ register, errors, children, id, ...rest }) => {
+const InputText = ({
+  register,
+  errors,
+  children,
+  id,
+  setValue,
+  trigger,
+  ...rest
+}) => {
   const passType = rest?.type === "password";
   const inputType = rest.type ?? "text";
   const [type, setType] = useState(inputType);
@@ -34,6 +42,10 @@ const InputText = ({ register, errors, children, id, ...rest }) => {
           id={id}
           onChange={handleInputChange}
           required={rest?.required ?? true}
+          onInput={(e) => {
+            setValue(id, e.target.value);
+            trigger(id);
+          }}
         />
         {passType && <TypeToggle type={type} setType={setType} />}
       </div>
