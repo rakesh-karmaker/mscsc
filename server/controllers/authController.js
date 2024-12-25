@@ -7,13 +7,16 @@ const { unlink } = require("fs/promises");
 // Register Member
 exports.register = async (req, res) => {
   try {
-    console.log(req.file);
-    console.log(req.body);
+    if (!req.file || !req.body) {
+      return res
+        .status(400)
+        .send({ subject: "request", message: "Invalid request" });
+    }
+
     const image = req.file.path;
-    console.log(image);
     const { error } = registerSchema.validate(req.body);
     if (error) {
-      await unlink(image);
+      if (image) await unlink(image).catch(console.error);
       return res.status(400).send({
         subject: error.details[0].context.key,
         message: error.details[0].message,
@@ -24,13 +27,21 @@ exports.register = async (req, res) => {
     req.body.image = image.split("public\\")[1];
     let member = await Member.findOne({ email });
     if (member) {
-      await unlink(image);
+      if (image) await unlink(image).catch(console.error);
       return res
         .status(400)
         .send({ subject: "email", message: "Email already used before" });
     }
-    member = new Member({
+
+    const memberData = {
       ...req.body,
+      image: image,
+    };
+
+    console.log(memberData);
+
+    member = new Member({
+      ...memberData,
     });
     await member.save();
 
@@ -40,12 +51,13 @@ exports.register = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    console.log("Member registered successfully.");
+    console.log(member);
 
     res.status(201).send({ message: "Member registered successfully.", token });
   } catch (err) {
-    await unlink(req.file.path);
-    console.log(err);
+    if (req.file && req.file.path)
+      await unlink(req.file.path).catch(console.error);
+    console.error(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: err.message });
