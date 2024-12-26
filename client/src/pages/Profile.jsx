@@ -11,11 +11,11 @@ import TimelineInputs from "@/components/UI/TimelineInputs/TimelineInputs";
 import { getUserById } from "@/services/GetService";
 import { MemberProfileEditSchema } from "@/utils/MemberSchemaValidation";
 
-const Profile = () => {
+const ProfilePage = () => {
   const navigate = useNavigate();
-  const id = useParams().id;
+  const { id } = useParams();
   const { user } = useUser();
-  const isOwner = user ? user._id === id : false;
+  const isOwner = user?._id === id;
 
   const [profileData, setProfileData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -24,22 +24,20 @@ const Profile = () => {
     if (isOwner) {
       setProfileData(user);
     } else {
-      const getProfileData = async (id) => {
+      (async () => {
         try {
-          const data = await getUserById(id);
-          if (data && data.data) {
-            setProfileData(data.data);
+          const response = await getUserById(id);
+          const data = response.data;
+          if (data) {
+            setProfileData(data);
           } else {
-            console.error("Failed to get profile data");
             setProfileData("failed");
           }
-        } catch (err) {
-          console.error("Failed to get profile data", err);
+        } catch (error) {
+          console.error("Failed to get profile data", error);
           setProfileData("failed");
         }
-      };
-
-      getProfileData(id, isOwner, user);
+      })();
     }
   }, [id, isOwner, user]);
 
@@ -47,22 +45,19 @@ const Profile = () => {
     if (profileData === "failed") {
       navigate("/404");
     }
-  }, [profileData]);
+  }, [profileData, navigate]);
 
   return (
     <main id="profile" className="row-center">
       {profileData && profileData !== "failed" ? (
-        <div>
-          <div className="profile-left-container">
-            <img
-              src={profileData.image}
-              alt={`Profile picture of ${profileData.name}`}
-            />
+        <div className="profile-container">
+          <div className="profile-left">
+            <img src={profileData.image} alt={profileData.name} />
             {window.innerWidth > 700 ? (
               <AboutProfile data={profileData} isOwner={isOwner} />
             ) : null}
           </div>
-          <div className="profile-right-container">
+          <div className="profile-right">
             <UserInfo data={profileData} />
             {window.innerWidth <= 700 ? (
               <AboutProfile data={profileData} isOwner={isOwner} />
@@ -109,4 +104,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfilePage;

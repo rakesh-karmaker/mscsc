@@ -3,7 +3,7 @@ const Joi = require("joi");
 const registerSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().email().required(),
-  contactNumber: Joi.number().greater(1).less(99999999999).required(),
+  contactNumber: Joi.string().required(),
   batch: Joi.string().required(),
   branch: Joi.string().required(),
   reason: Joi.string().required(),

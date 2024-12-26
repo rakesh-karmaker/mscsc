@@ -27,8 +27,8 @@
 
 .mscsc-tag {
   width: 100%;
-  max-width: 160px;
-  height: 75px;
+  max-width: 137px;
+  height: 55px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -45,7 +45,7 @@
 }
 
 .mscsc-tag.active {
-  max-width: 470px;
+  max-width: 300px;
 }
 
 .mscsc-tag p:not(.name) {
@@ -62,13 +62,13 @@
 
 .mscsc-tag .name {
   background-color: var(--highlighted-color);
-  width: 120px;
-  height: 40px;
+  width: 100px;
+  height: 35px;
   border-radius: 20px;
   color: var(--text-white);
   letter-spacing: 1px;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 1rem;
   line-height: 22px;
   position: absolute;
   right: 20px;
@@ -77,8 +77,8 @@
 .mscsc-tag .name::before {
   content: "";
   position: absolute;
-  width: 135px;
-  height: 56px;
+  width: 115px;
+  height: 47px;
   border-radius: 95.5px;
   background-color: inherit;
   opacity: 0.2;
@@ -250,7 +250,7 @@
   }
 
   .mscsc-tag.active {
-    max-width: 400px;
+    max-width: 264px;
   }
 
   .mscsc-tag p:not(.name) {

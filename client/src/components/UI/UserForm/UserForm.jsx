@@ -82,7 +82,6 @@ const UserForm = (props) => {
           trigger={trigger}
           register={register("contactNumber")}
           errors={errors.contactNumber}
-          type="number"
           id="contactNumber"
         >
           Phone Number

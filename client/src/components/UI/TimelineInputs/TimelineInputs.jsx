@@ -53,6 +53,7 @@ const TimelineInputs = ({ timeline }) => {
   };
 
   const tags = ["Certificate", "Article", "Project"];
+  const maxTimelineLimit = 6;
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -137,12 +138,12 @@ const TimelineInputs = ({ timeline }) => {
           </div>
         </div>
       ))}
-      {timelineLength < 3 ? (
+      {timelineLength < maxTimelineLimit ? (
         <button type="button" onClick={handleAddClick} className="add">
           Add Event to Timeline
         </button>
       ) : (
-        <p className="secondary-text">Maximum 3 events</p>
+        <p className="secondary-text">Maximum {maxTimelineLimit} events</p>
       )}
       <button
         type="submit"

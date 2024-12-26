@@ -8,7 +8,7 @@ const registerToast = async (data, setError) => {
         localStorage.setItem("token", res.data.token);
         setTimeout(() => {
           location.reload();
-        }, 3000); // 3 seconds wait time to reload the page
+        }, 2000); // 3 seconds wait time to reload the page
       }
       return "Registered Successfully";
     },

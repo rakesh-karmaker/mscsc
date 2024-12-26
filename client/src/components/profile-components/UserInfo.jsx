@@ -7,6 +7,7 @@ const UserInfo = ({ data, isOwner }) => {
       <div>
         <div className="user-name-container">
           <h1 className="user-name">{name}</h1>
+          {isOwner && <i className="fa-solid fa-pen-to-square"></i>}
         </div>
         <p className="user-role">{capitalRole}</p>
       </div>

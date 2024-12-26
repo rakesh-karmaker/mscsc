@@ -6,6 +6,12 @@
   border-radius: 16px;
 }
 
+.images-container .swiper-slide {
+  max-height: 600px;
+  position: relative;
+  overflow-y: hidden;
+}
+
 .images-container .swiper-slide > img {
   width: 100%;
   height: 600px;
@@ -15,11 +21,14 @@
 
 @media screen and (max-width: 1500px) {
   .images-container .swiper-slide > img {
-    height: 100%;
+    height: 500px;
+  }
+  .images-container .swiper-slide {
+    max-height: 500px;
   }
 }
 
-@media screen and (max-width: 1320px) {
+@media screen and (max-width: 1200px) {
   .images-container {
     min-width: 500px;
   }
@@ -27,6 +36,7 @@
 
 @media screen and (max-width: 1080px) {
   .images-container {
+    background-color: var(--primary-bg);
     width: 100vw;
     max-width: 100vw;
     min-width: 0px;
@@ -39,6 +49,9 @@
   }
   .images-container > div {
     min-height: 550px;
+    max-height: 800px;
+  }
+  .images-container .swiper-slide {
     max-height: 800px;
   }
   .images-container .swiper-slide > img {

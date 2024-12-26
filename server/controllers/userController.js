@@ -66,6 +66,12 @@ const editUser = async (req, res) => {
     if (user) return res.status(200).send({ message: "Edit successful" });
     else return res.status(404).send({ message: "Edit failed" });
   } catch (err) {
+    console.log(err);
+    if (err.codeName === "DuplicateKey") {
+      return res
+        .status(400)
+        .send({ message: "Email has already been taken", subject: "email" });
+    }
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };

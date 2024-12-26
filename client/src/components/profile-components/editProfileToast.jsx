@@ -5,10 +5,18 @@ const editProfileToast = async (data, setError) => {
     loading: "Editing...",
     success: (res) => {
       if (res.status === 200) {
-        return res.data.message + ". Reload the page";
+        setTimeout(() => {
+          location.reload();
+        }, 2000);
       }
+      return res.data.message;
     },
     error: (err) => {
+      if (err.response.data.subject === "email") {
+        setError("email", {
+          message: err.response.data.message,
+        });
+      }
       setError("root", {
         message: err.response.data.message,
       });

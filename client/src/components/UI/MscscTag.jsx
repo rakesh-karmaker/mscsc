@@ -9,7 +9,7 @@ const MscscTag = () => {
   }, [tagRef]);
   return (
     <div ref={tagRef} className="mscsc-tag">
-      <p>Science & Technology Club</p>
+      <p>Science Club</p>
       <span className="name row-center">MSCSC</span>
     </div>
   );

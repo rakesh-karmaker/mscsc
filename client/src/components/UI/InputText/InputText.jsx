@@ -71,7 +71,11 @@ const TypeToggle = ({ type, setType }) => {
   };
 
   return (
-    <button onClick={handleTypeToggleClick} className="type-toggle">
+    <button
+      onClick={handleTypeToggleClick}
+      className="type-toggle"
+      type="button"
+    >
       {type === "password" ? (
         <i className="fa-solid fa-eye-slash"></i>
       ) : (
