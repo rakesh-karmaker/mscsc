@@ -17,4 +17,16 @@ const registerUser = (data) => {
   return api.post("/auth/register", formData);
 };
 
-export { registerUser };
+const loginUser = (date) => {
+  api.interceptors.request.use(function (config) {
+    config.headers["Content-Type"] = "application/json";
+    return config;
+  });
+  const formData = new FormData();
+  for (const key in date) {
+    formData.append(key, date[key]);
+  }
+  return api.post("/auth/login", formData);
+};
+
+export { registerUser, loginUser };

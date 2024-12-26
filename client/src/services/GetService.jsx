@@ -6,7 +6,6 @@ const api = axios.create({
 });
 
 const verifyToken = async (token) => {
-  console.log(import.meta.env.VITE_API_URL);
   api.interceptors.request.use(function (config) {
     config.headers.Authorization = token ? `Bearer ${token}` : "";
     return config;
@@ -20,16 +19,8 @@ const verifyToken = async (token) => {
   }
 };
 
-const loginUser = (date) => {
-  const formData = new FormData();
-  for (const key in date) {
-    formData.append(key, date[key]);
-  }
-  return api.post("/auth/login", formData);
-};
-
 const getUserById = (id) => {
   return api.get(`/user/${id}`);
 };
 
-export { verifyToken, loginUser, getUserById };
+export { verifyToken, getUserById };

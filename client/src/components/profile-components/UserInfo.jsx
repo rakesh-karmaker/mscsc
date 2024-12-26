@@ -1,3 +1,5 @@
+import { Link, NavLink } from "react-router-dom";
+
 const UserInfo = ({ data, isOwner }) => {
   const { name, role, batch, branch, reason } = data;
   const capitalRole = role.charAt(0).toUpperCase() + role.slice(1);
@@ -7,7 +9,11 @@ const UserInfo = ({ data, isOwner }) => {
       <div>
         <div className="user-name-container">
           <h1 className="user-name">{name}</h1>
-          {isOwner && <i className="fa-solid fa-pen-to-square"></i>}
+          {isOwner && (
+            <NavLink to="/admin" className="primary-button">
+              Admin Panel
+            </NavLink>
+          )}
         </div>
         <p className="user-role">{capitalRole}</p>
       </div>

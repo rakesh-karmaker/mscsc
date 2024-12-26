@@ -58,7 +58,7 @@ const ProfilePage = () => {
             ) : null}
           </div>
           <div className="profile-right">
-            <UserInfo data={profileData} />
+            <UserInfo data={profileData} isOwner />
             {window.innerWidth <= 700 ? (
               <AboutProfile data={profileData} isOwner={isOwner} />
             ) : null}
