@@ -1,7 +1,7 @@
 import UserForm from "@/components/UI/UserForm/UserForm";
 import Login from "@/components/auth-components/Login";
 import RegisterImage from "@/components/auth-components/RegisterImage";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/Contexts/UserContext";
 import { MemberRegSchema } from "@/utils/MemberSchemaValidation";
@@ -10,9 +10,13 @@ import "@/components/auth-components/Auth.css";
 
 const Auth = () => {
   const navigate = useNavigate();
-  if (useUser().loggedIn) {
-    navigate("/");
-  }
+  const { user } = useUser();
+  useEffect(() => {
+    if (user !== null) {
+      navigate("/", { replace: true });
+    }
+  }, [navigate, user]);
+
   const registerFormContainer = useRef(null);
   const [form, setForm] = useState("Register");
 

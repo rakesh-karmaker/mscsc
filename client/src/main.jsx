@@ -12,6 +12,9 @@ import "@/global.css";
 import App from "@/App.jsx";
 import { UserProvider } from "@/Contexts/UserContext.jsx";
 import Profile from "@/pages/Profile.jsx";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import Admin from "@/admin/AdminPanel";
+import { MemberProvider } from "./admin/contexts/MemberContext";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +37,16 @@ const router = createBrowserRouter([
 
       { path: "/profile/:id", element: <Profile /> },
     ],
+  },
+  {
+    path: "/admin",
+    element: (
+      <ProtectedRoute>
+        <MemberProvider>
+          <Admin />
+        </MemberProvider>
+      </ProtectedRoute>
+    ),
   },
 ]);
 

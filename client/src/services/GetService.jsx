@@ -11,7 +11,7 @@ const verifyToken = async (token) => {
     return config;
   });
   try {
-    const response = await api.get("/user");
+    const response = await api.get("/member");
     return response;
   } catch (error) {
     console.error("Error verifying token:", error);
@@ -20,7 +20,11 @@ const verifyToken = async (token) => {
 };
 
 const getUserById = (id) => {
-  return api.get(`/user/${id}`);
+  return api.get(`/member/${id}`);
 };
 
-export { verifyToken, getUserById };
+const getAllMembers = () => {
+  return api.get("/member/all");
+};
+
+export { verifyToken, getUserById, getAllMembers };

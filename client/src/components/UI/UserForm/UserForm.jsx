@@ -48,7 +48,7 @@ const UserForm = (props) => {
         <InputText
           setValue={setValue}
           trigger={trigger}
-          register={register("name")}
+          register={register}
           errors={errors.name}
           id="name"
         >
@@ -57,7 +57,7 @@ const UserForm = (props) => {
         <InputText
           setValue={setValue}
           trigger={trigger}
-          register={register("email")}
+          register={register}
           errors={errors.email}
           id="email"
         >
@@ -69,7 +69,7 @@ const UserForm = (props) => {
         <InputText
           setValue={setValue}
           trigger={trigger}
-          register={register("password")}
+          register={register}
           errors={errors.password}
           type="password"
           id="password"
@@ -80,7 +80,7 @@ const UserForm = (props) => {
         <InputText
           setValue={setValue}
           trigger={trigger}
-          register={register("contactNumber")}
+          register={register}
           errors={errors.contactNumber}
           id="contactNumber"
         >
@@ -101,7 +101,7 @@ const UserForm = (props) => {
       <InputText
         setValue={setValue}
         trigger={trigger}
-        register={register("reason")}
+        register={register}
         errors={errors.reason}
         id="reason"
       >
@@ -112,7 +112,7 @@ const UserForm = (props) => {
         <InputText
           setValue={setValue}
           trigger={trigger}
-          register={register("socialLink")}
+          register={register}
           errors={errors.socialLink}
           id="socialLink"
         >
@@ -123,7 +123,7 @@ const UserForm = (props) => {
           <InputText
             setValue={setValue}
             trigger={trigger}
-            register={register("reference")}
+            register={register}
             errors={errors.reference}
             id="reference"
           >

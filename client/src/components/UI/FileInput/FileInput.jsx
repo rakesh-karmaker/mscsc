@@ -21,7 +21,7 @@ const FileInput = ({ register, errors, children }) => {
         {...register}
         id="file"
         type="file"
-        required
+        accept="image/*"
         onInput={(e) => handleFileInput(e)}
       />
       <label

@@ -3,7 +3,7 @@ import "@/components/nav-bars/Header.css";
 import { useRef, useState } from "react";
 import PrimaryBtn from "@/components/UI/PrimaryBtn";
 import { useUser } from "@/Contexts/UserContext";
-import Avatar from "../Avatar";
+import Avatar from "../UI/Avatar";
 
 const Header = () => {
   const navBar = useRef(null);
@@ -33,11 +33,11 @@ const Header = () => {
   ];
 
   const handelNavLinkClick = () => {
-    window.scrollTo(0, 0);
     handleNavbarTogglerClick({ navbar: navBar, isOpened, setIsOpened });
   };
 
-  const { loggedIn } = useUser();
+  const { user } = useUser();
+
   return (
     <header>
       <nav>
@@ -68,7 +68,7 @@ const Header = () => {
             );
           })}
         </ul>
-        {loggedIn ? (
+        {user !== null ? (
           <Avatar />
         ) : (
           <PrimaryBtn link="/register" name="Login page" header={true}>

@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const UserInfo = ({ data, isOwner }) => {
   const { name, role, batch, branch, reason } = data;
@@ -9,7 +9,7 @@ const UserInfo = ({ data, isOwner }) => {
       <div>
         <div className="user-name-container">
           <h1 className="user-name">{name}</h1>
-          {isOwner && (
+          {role === "admin" && isOwner && (
             <NavLink to="/admin" className="primary-button">
               Admin Panel
             </NavLink>

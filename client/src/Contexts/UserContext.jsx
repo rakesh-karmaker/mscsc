@@ -6,7 +6,9 @@ const UserContext = createContext(null);
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setLoggedIn] = useState(
+    localStorage.getItem("token") ? true : false
+  );
 
   // localStorage.setItem("token", "");
 
@@ -16,14 +18,14 @@ const UserProvider = ({ children }) => {
         const res = await verifyToken(localStorage.getItem("token"));
         if (res && res.data) {
           setUser(res.data.user);
-          setLoggedIn(true);
         } else {
           setUser(null);
-          setLoggedIn(false);
         }
       } catch (err) {
-        setUser(null);
         console.error("Failed to verify user token:", err);
+        setUser(null);
+      } finally {
+        setLoggedIn(false);
       }
     };
 
@@ -33,7 +35,7 @@ const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, loggedIn }}>
+    <UserContext.Provider value={{ user, setUser, isLoading }}>
       {children}
     </UserContext.Provider>
   );

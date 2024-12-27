@@ -14,31 +14,23 @@ import { MemberProfileEditSchema } from "@/utils/MemberSchemaValidation";
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
   const isOwner = user?._id === id;
 
   const [profileData, setProfileData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    if (isOwner) {
-      setProfileData(user);
-    } else {
-      (async () => {
-        try {
-          const response = await getUserById(id);
-          const data = response.data;
-          if (data) {
-            setProfileData(data);
-          } else {
-            setProfileData("failed");
-          }
-        } catch (error) {
-          console.error("Failed to get profile data", error);
-          setProfileData("failed");
-        }
-      })();
-    }
+    const fetchProfileData = async () => {
+      try {
+        const response = isOwner ? { data: user } : await getUserById(id);
+        setProfileData(response.data || "failed");
+      } catch (error) {
+        console.error("Failed to fetch profile data", error);
+        setProfileData("failed");
+      }
+    };
+    fetchProfileData();
   }, [id, isOwner, user]);
 
   useEffect(() => {
@@ -47,59 +39,64 @@ const ProfilePage = () => {
     }
   }, [profileData, navigate]);
 
-  return (
-    <main id="profile" className="row-center">
-      {profileData && profileData !== "failed" ? (
-        <div className="profile-container">
-          <div className="profile-left">
-            <img src={profileData.image} alt={profileData.name} />
-            {window.innerWidth > 700 ? (
-              <AboutProfile data={profileData} isOwner={isOwner} />
-            ) : null}
-          </div>
-          <div className="profile-right">
-            <UserInfo data={profileData} isOwner />
-            {window.innerWidth <= 700 ? (
-              <AboutProfile data={profileData} isOwner={isOwner} />
-            ) : null}
-            <div className="profile-actions-container">
-              <div className="profile-actions">
-                <button
-                  onClick={() => setIsEditing(false)}
-                  className={isEditing ? "" : "active"}
-                >
-                  <i className="fa-solid fa-eye"></i> <span>Timeline</span>
-                </button>
-                {isOwner ? (
-                  <button
-                    onClick={() => setIsEditing(true)}
-                    className={isEditing ? "active" : ""}
-                  >
-                    <i className="fa-solid fa-pencil"></i>
-                    <span>Edit Profile</span>
-                  </button>
-                ) : null}
-              </div>
+  const renderProfileContent = () => {
+    if (isLoading || profileData === "failed" || profileData === null) {
+      return <p>Loading profile...</p>;
+    }
 
-              <div className="profile-timeline-edit-container">
-                {isEditing ? (
-                  <>
-                    <UserForm
-                      data={profileData}
-                      schema={MemberProfileEditSchema}
-                    />
-                    <TimelineInputs timeline={profileData.timeline} />
-                  </>
-                ) : (
-                  <Timeline timelineData={profileData.timeline} />
-                )}
-              </div>
+    return (
+      <div className="profile-container">
+        <div className="profile-left">
+          <img src={profileData.image} alt={profileData.name} />
+          {window.innerWidth > 700 && (
+            <AboutProfile data={profileData} isOwner={isOwner} />
+          )}
+        </div>
+        <div className="profile-right">
+          <UserInfo data={profileData} isOwner={isOwner} />
+          {window.innerWidth <= 700 && (
+            <AboutProfile data={profileData} isOwner={isOwner} />
+          )}
+          <div className="profile-actions-container">
+            <div className="profile-actions">
+              <button
+                onClick={() => setIsEditing(false)}
+                className={isEditing ? "" : "active"}
+              >
+                <i className="fa-solid fa-eye"></i> <span>Timeline</span>
+              </button>
+              {isOwner && (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className={isEditing ? "active" : ""}
+                >
+                  <i className="fa-solid fa-pencil"></i>
+                  <span>Edit Profile</span>
+                </button>
+              )}
+            </div>
+            <div className="profile-timeline-edit-container">
+              {isEditing ? (
+                <>
+                  <UserForm
+                    data={profileData}
+                    schema={MemberProfileEditSchema}
+                  />
+                  <TimelineInputs timeline={profileData.timeline} />
+                </>
+              ) : (
+                <Timeline timelineData={profileData.timeline} />
+              )}
             </div>
           </div>
         </div>
-      ) : (
-        <p>Loading profile...</p>
-      )}
+      </div>
+    );
+  };
+
+  return (
+    <main id="profile" className="row-center">
+      {renderProfileContent()}
     </main>
   );
 };

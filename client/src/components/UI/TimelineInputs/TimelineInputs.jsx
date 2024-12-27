@@ -69,15 +69,19 @@ const TimelineInputs = ({ timeline }) => {
               onClick={() => setActiveIndex(index)}
               className={index === activeIndex ? "active" : ""}
             >
-              Timeline Event {index + 1}
+              {fields[index].title
+                ? fields[index].title.slice(0, 25) + "..."
+                : `Event ${index + 1}`}
             </button>
-            <button
-              type="button"
-              onClick={() => handleRemoveClick(index)}
-              className="remove"
-            >
-              Remove Event
-            </button>
+            {timelineLength > 1 && (
+              <button
+                type="button"
+                onClick={() => handleRemoveClick(index)}
+                className="remove"
+              >
+                Remove Event
+              </button>
+            )}
           </div>
           <div
             className={`timeline-input-fields ${
@@ -88,8 +92,8 @@ const TimelineInputs = ({ timeline }) => {
               <InputText
                 setValue={setValue}
                 trigger={trigger}
-                register={register(`timeline.${index}.title`)}
-                errors={errors[`timeline.${index}.title`]}
+                register={register}
+                errors={errors?.timeline?.[index]?.title}
                 id={`timeline.${index}.title`}
               >
                 Event Title
@@ -98,8 +102,8 @@ const TimelineInputs = ({ timeline }) => {
               <InputText
                 setValue={setValue}
                 trigger={trigger}
-                register={register(`timeline.${index}.date`)}
-                errors={errors[`timeline.${index}.date`]}
+                register={register}
+                errors={errors?.timeline?.[index]?.date}
                 type="date"
                 id={`timeline.${index}.date`}
               >
@@ -110,7 +114,7 @@ const TimelineInputs = ({ timeline }) => {
             <RadioList
               register={register(`timeline.${index}.tag`)}
               dataList={tags}
-              errors={errors[`timeline.${index}.tag`]}
+              errors={errors?.timeline?.[index]?.tag}
               id={`timeline.${index}.tag`}
             >
               Event Tag:
@@ -119,8 +123,8 @@ const TimelineInputs = ({ timeline }) => {
             <InputText
               setValue={setValue}
               trigger={trigger}
-              register={register(`timeline.${index}.description`)}
-              errors={errors[`timeline.${index}.description`]}
+              register={register}
+              errors={errors?.timeline?.[index]?.description}
               id={`timeline.${index}.description`}
             >
               Event Description
@@ -129,8 +133,8 @@ const TimelineInputs = ({ timeline }) => {
             <InputText
               setValue={setValue}
               trigger={trigger}
-              register={register(`timeline.${index}.link`)}
-              errors={errors[`timeline.${index}.link`]}
+              register={register}
+              errors={errors?.timeline?.[index]?.link}
               id={`timeline.${index}.link`}
             >
               Event Link

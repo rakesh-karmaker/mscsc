@@ -19,13 +19,6 @@ const AboutProfile = ({ data, isOwner }) => {
     ),
   };
 
-  const [copySuccess, setCopySuccess] = useState(false);
-
-  const copyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopySuccess(true);
-  };
-
   return (
     <div className="about-profile">
       <p className="about-profile-header">ABOUT</p>
@@ -42,11 +35,7 @@ const AboutProfile = ({ data, isOwner }) => {
         </p>
       </div>
 
-      {isOwner ? (
-        <button className="primary-button user-profile-link" onClick={copyLink}>
-          {copySuccess ? "Link Copied!" : "Copy Profile Link"}
-        </button>
-      ) : null}
+      {isOwner ? <UtilityBtns /> : null}
     </div>
   );
 };
@@ -70,6 +59,39 @@ const InformationItem = ({ info }) => {
         </p>
       ))}
     </>
+  );
+};
+
+const UtilityBtns = () => {
+  const [copySuccess, setCopySuccess] = useState(false);
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopySuccess(true);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  };
+
+  return (
+    <div className="utility-btns">
+      <button
+        className="primary-button user-profile-link"
+        onClick={copyLink}
+        type="button"
+      >
+        {copySuccess ? "Link Copied!" : "Copy Profile Link"}
+      </button>
+      <button
+        className="primary-button user-profile-link sign-out"
+        onClick={logout}
+        type="button"
+      >
+        Sign Out
+      </button>
+    </div>
   );
 };
 

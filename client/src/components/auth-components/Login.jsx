@@ -23,7 +23,9 @@ const Login = ({ setForm }) => {
       loading: "Logging in...",
       success: (res) => {
         localStorage.setItem("token", res.data.token);
-        setTimeout(location.reload(), 7000);
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 2000);
 
         return "Login Successful";
       },

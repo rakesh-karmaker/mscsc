@@ -9,6 +9,7 @@ const api = axios.create({
 });
 
 const editUser = (data) => {
+  console.log("data", data);
   const formData = new FormData();
   for (const key in data) {
     formData.append(
@@ -17,7 +18,7 @@ const editUser = (data) => {
     );
   }
   console.log("data", formData);
-  return api.put("/user", formData);
+  return api.put("/member", formData);
 };
 
 export { editUser };

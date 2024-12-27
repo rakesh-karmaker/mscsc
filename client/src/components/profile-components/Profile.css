@@ -29,6 +29,8 @@
 .profile-left > img {
   width: 100%;
   max-width: 380px;
+  object-fit: cover;
+  object-position: center center;
   aspect-ratio: 1;
 }
 
@@ -39,6 +41,11 @@
   gap: 20px;
 }
 
+.utility-btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
 .about-profile button.primary-button {
   padding: 10px 20px;
   height: fit-content;
@@ -48,6 +55,11 @@
   border-radius: 5px;
   background-color: var(--highlighted-color);
   color: var(--text-white);
+  flex-grow: 1;
+}
+
+.about-profile button.primary-button.sign-out::before {
+  background-color: red;
 }
 
 .about-profile-header {

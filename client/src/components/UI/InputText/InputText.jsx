@@ -11,8 +11,8 @@ const InputText = ({
   trigger,
   ...rest
 }) => {
-  const passType = rest?.type === "password";
   const inputType = rest.type ?? "text";
+  const isRequired = rest?.required ? rest?.required : true;
   const [type, setType] = useState(inputType);
 
   const [labelTop, setLabelTop] = useState(
@@ -37,17 +37,19 @@ const InputText = ({
           {children}
         </label>
         <input
-          {...register}
+          {...register(id)}
           type={type}
           id={id}
           onChange={handleInputChange}
-          required={rest?.required ?? true}
+          required={isRequired}
           onInput={(e) => {
             setValue(id, e.target.value);
             trigger(id);
           }}
         />
-        {passType && <TypeToggle type={type} setType={setType} />}
+        {inputType === "password" && (
+          <TypeToggle type={type} setType={setType} />
+        )}
       </div>
 
       {errors && <p className="error-message">{errors.message}</p>}
