@@ -6,7 +6,7 @@ const Sidebar = ({ name, image }) => {
     <aside id="sidebar">
       <nav>
         <div className="mscsc-name">
-          <h1>MSCSC</h1>
+          <h2>MSCSC</h2>
           <p className="sub-text">Admin Panel</p>
         </div>
 

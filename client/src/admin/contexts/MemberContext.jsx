@@ -1,25 +1,18 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext } from "react";
 import { getAllMembers } from "@/services/GetService";
+import { useQuery } from "@tanstack/react-query";
 
 const MemberContext = createContext(null);
 
 const MemberProvider = ({ children }) => {
-  const [members, setMembers] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: members, isLoading } = useQuery({
+    queryKey: ["members"],
+    queryFn: getAllMembers,
+  });
 
-  useEffect(() => {
-    const fetchMembers = async () => {
-      try {
-        const response = await getAllMembers();
-        setMembers(response.data);
-      } catch (error) {
-        console.error("Failed to get members", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchMembers();
-  }, []);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <MemberContext.Provider value={{ members, isLoading }}>

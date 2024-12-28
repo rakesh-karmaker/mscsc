@@ -1,0 +1,34 @@
+.admin-dashboard {
+  flex-grow: 1;
+  height: 100%;
+  min-height: 100svh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  justify-content: flex-start;
+}
+
+.dashboard-header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.dashboard-header h1 {
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 2.5rem;
+  line-height: 39px;
+  text-transform: uppercase;
+
+  color: var(--text-primary);
+}
+
+.dashboard-header p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: rgba(0, 0, 0, 0.79);
+}

@@ -5,7 +5,8 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-const verifyToken = async (token) => {
+const verifyToken = async () => {
+  const token = localStorage.getItem("token");
   api.interceptors.request.use(function (config) {
     config.headers.Authorization = token ? `Bearer ${token}` : "";
     return config;

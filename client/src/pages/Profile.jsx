@@ -1,50 +1,49 @@
 import { useUser } from "@/Contexts/UserContext";
 import { useParams, useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import AboutProfile from "@/components/profile-components/AboutProfile";
 import UserInfo from "@/components/profile-components/UserInfo";
 import Timeline from "@/components/profile-components/Timeline";
-import UserForm from "@/components/UI/UserForm/UserForm";
+import UserForm from "@/components/UserForm/UserForm";
 
 import "@/components/profile-components/Profile.css";
 import TimelineInputs from "@/components/UI/TimelineInputs/TimelineInputs";
 import { getUserById } from "@/services/GetService";
 import { MemberProfileEditSchema } from "@/utils/MemberSchemaValidation";
+import { useQuery } from "@tanstack/react-query";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { user, isLoading } = useUser();
+  const { user } = useUser();
   const isOwner = user?._id === id;
-
-  const [profileData, setProfileData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const response = isOwner ? { data: user } : await getUserById(id);
-        setProfileData(response.data || "failed");
-      } catch (error) {
-        console.error("Failed to fetch profile data", error);
-        setProfileData("failed");
+  const {
+    data: profileData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["user", id],
+    queryFn: () => {
+      if (isOwner) {
+        return user;
+      } else {
+        return getUserById(id).data.user;
       }
-    };
-    fetchProfileData();
-  }, [id, isOwner, user]);
+    },
+  });
 
-  useEffect(() => {
-    if (profileData === "failed") {
-      navigate("/404");
-    }
-  }, [profileData, navigate]);
+  if (isLoading) {
+    return <p>Loading profile...</p>;
+  }
 
-  const renderProfileContent = () => {
-    if (isLoading || profileData === "failed" || profileData === null) {
-      return <p>Loading profile...</p>;
-    }
+  if (isError) {
+    navigate("/404");
+  }
 
-    return (
+  return (
+    <main id="profile" className="row-center">
       <div className="profile-container">
         <div className="profile-left">
           <img src={profileData.image} alt={profileData.name} />
@@ -91,12 +90,6 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-    );
-  };
-
-  return (
-    <main id="profile" className="row-center">
-      {renderProfileContent()}
     </main>
   );
 };

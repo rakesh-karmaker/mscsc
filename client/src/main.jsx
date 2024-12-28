@@ -13,8 +13,12 @@ import App from "@/App.jsx";
 import { UserProvider } from "@/Contexts/UserContext.jsx";
 import Profile from "@/pages/Profile.jsx";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import Admin from "@/admin/AdminPanel";
+import Admin from "@/admin/AdminPanel/AdminPanel";
 import { MemberProvider } from "./admin/contexts/MemberContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import AdminDashboard from "@/admin/AdminDashboard/AdminDashboard";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -47,13 +51,21 @@ const router = createBrowserRouter([
         </MemberProvider>
       </ProtectedRoute>
     ),
+    children: [
+      {
+        path: "/admin",
+        element: <AdminDashboard />,
+      },
+    ],
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <UserProvider>
-      <RouterProvider router={router} />
-    </UserProvider>
+    <QueryClientProvider client={queryClient}>
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
+    </QueryClientProvider>
   </StrictMode>
 );

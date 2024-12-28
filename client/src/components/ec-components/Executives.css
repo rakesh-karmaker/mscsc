@@ -74,11 +74,12 @@ main.page-executives {
   background-color: var(--light-highlighted-color);
 }
 
-.executives-container {
+.page-executives .executives-container {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 60px;
+  margin-top: 0rem;
 }
 
 @media screen and (max-width: 950px) {
