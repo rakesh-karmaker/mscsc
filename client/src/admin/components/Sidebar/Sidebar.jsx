@@ -1,21 +1,49 @@
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
 import "./Sidebar.css";
 
 const Sidebar = ({ name, image }) => {
+  const [sidebarState, setSidebarState] = useState(false);
+
   return (
-    <aside id="sidebar">
-      <nav>
-        <div className="mscsc-name">
-          <h2>MSCSC</h2>
-          <p className="sub-text">Admin Panel</p>
+    <aside className="sidebar-container">
+      {window.innerWidth <= 1530 && (
+        <div className="sidebar-header">
+          <button
+            className="sidebar-toggle mobile"
+            onClick={() => setSidebarState(!sidebarState)}
+          >
+            <i className="fa-solid fa-bars"></i>
+          </button>
+          <NavLink to="/" className="primary-button">
+            Home Page
+          </NavLink>
         </div>
+      )}
+      <div id="sidebar" className={sidebarState ? "sidebar-active" : ""}>
+        <nav>
+          <div className="mscsc-name">
+            <div className="mscsc-name-container">
+              <h2>MSCSC</h2>
+              {window.innerWidth <= 1530 && (
+                <button
+                  className="sidebar-toggle"
+                  onClick={() => setSidebarState(!sidebarState)}
+                >
+                  <i className="fa-solid fa-times"></i>
+                </button>
+              )}
+            </div>
+            <p className="sub-text">Admin Panel</p>
+          </div>
 
-        <Welcome name={name} image={image} />
+          <Welcome name={name} image={image} />
 
-        <SidebarLinks />
-      </nav>
+          <SidebarLinks />
+        </nav>
 
-      <p className="copyright">© 2024 MSCSC</p>
+        <p className="copyright">© 2024 MSCSC</p>
+      </div>
     </aside>
   );
 };

@@ -1,11 +1,12 @@
 import { createContext, useContext } from "react";
 import { getAllMembers } from "@/services/GetService";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { editUser } from "@/services/PutService";
 
 const MemberContext = createContext(null);
 
 const MemberProvider = ({ children }) => {
-  const { data: members, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["members"],
     queryFn: getAllMembers,
   });
@@ -13,6 +14,8 @@ const MemberProvider = ({ children }) => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
+
+  const members = data?.data;
 
   return (
     <MemberContext.Provider value={{ members, isLoading }}>

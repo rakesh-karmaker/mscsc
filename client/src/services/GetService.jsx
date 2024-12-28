@@ -20,8 +20,9 @@ const verifyToken = async () => {
   }
 };
 
-const getUserById = (id) => {
-  return api.get(`/member/${id}`);
+const getUserById = async (id) => {
+  const response = await api.get(`/member/${id}`);
+  return response.data;
 };
 
 const getAllMembers = () => {

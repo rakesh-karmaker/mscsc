@@ -26,20 +26,22 @@ const ProfilePage = () => {
   } = useQuery({
     queryKey: ["user", id],
     queryFn: () => {
-      if (isOwner) {
+      if (user && user._id === id) {
         return user;
       } else {
-        return getUserById(id).data.user;
+        return getUserById(id);
       }
     },
   });
+
+  console.log(profileData);
 
   if (isLoading) {
     return <p>Loading profile...</p>;
   }
 
   if (isError) {
-    navigate("/404");
+    console.log("Error fetching profile data" + isError);
   }
 
   return (

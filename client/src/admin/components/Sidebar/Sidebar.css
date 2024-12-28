@@ -1,6 +1,6 @@
 #sidebar {
   background-color: var(--black);
-  width: 275px;
+  min-width: 275px;
   height: 100%;
   min-height: 100svh;
   padding: 30px;
@@ -9,6 +9,26 @@
   justify-content: space-between;
   gap: 30px;
   color: var(--text-white);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.sidebar-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-header > .primary-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 22px;
+  height: fit-content;
+  width: fit-content;
 }
 
 #sidebar > nav {
@@ -18,7 +38,39 @@
   align-items: flex-start;
 }
 
-.mscsc-name > h2 {
+.mscsc-name {
+  width: 100%;
+}
+
+.mscsc-name-container {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-toggle {
+  background-color: transparent;
+  border: none;
+  color: var(--text-white);
+  font-size: 2rem;
+  cursor: pointer;
+  transition: 0.25s;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.sidebar-toggle.mobile {
+  color: var(--text-primary);
+}
+
+.sidebar-toggle:hover {
+  color: var(--highlighted-color);
+}
+
+.mscsc-name h2 {
   font-weight: 500;
   font-size: 28px;
   line-height: 34px;
@@ -109,4 +161,17 @@
 
 .sidebar-link:hover {
   color: var(--highlighted-color);
+}
+
+@media screen and (max-width: 1530px) {
+  #sidebar {
+    transform: translateX(-100%);
+    transition: 0.25s;
+  }
+  .sidebar-active {
+    transform: translateX(0) !important;
+  }
+  .sidebar-container {
+    width: 100%;
+  }
 }

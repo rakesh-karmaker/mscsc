@@ -1,17 +1,20 @@
 const express = require("express");
 const {
-  getUser,
-  editUser,
-  getUserById,
+  getMemberById,
+  editMember,
   getAllMembers,
+  verifyUser,
+  deleteMember,
 } = require("../controllers/memberController");
+const { isAuthorized, isAdmin } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 // Auth Routes
-router.get("/all", getAllMembers);
-router.get("/", getUser);
-router.get("/:_id", getUserById);
-router.put("/", editUser);
+router.get("/all", isAuthorized, isAdmin, getAllMembers);
+router.get("/", isAuthorized, verifyUser);
+router.get("/:_id", getMemberById);
+router.put("/", isAuthorized, isAdmin, editMember);
+router.delete("/", isAuthorized, isAdmin, deleteMember);
 
 module.exports = router;
