@@ -29,4 +29,13 @@ const getAllMembers = () => {
   return api.get("/member/all");
 };
 
-export { verifyToken, getUserById, getAllMembers };
+const getAllMessages = () => {
+  const token = localStorage.getItem("token");
+  api.interceptors.request.use(function (config) {
+    config.headers.Authorization = token ? `Bearer ${token}` : "";
+    return config;
+  });
+  return api.get("/message");
+};
+
+export { verifyToken, getUserById, getAllMembers, getAllMessages };

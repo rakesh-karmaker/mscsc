@@ -1,50 +1,18 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./AdminDashboard.css";
 import { useMember } from "@/admin/contexts/MemberContext";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editUser } from "@/services/PutService";
 import { deleteMember } from "@/services/DeleteService";
 import Table from "@/components/UI/Table/Table";
 
-const AdminDashboard = () => {
-  const memberTableHeader = [
-    {
-      title: "Name",
-      key: "name",
-      break: false,
-    },
-    {
-      title: "SSC Batch",
-      key: "batch",
-      break: false,
-    },
-    {
-      title: "Branch",
-      key: "branch",
-      break: true,
-    },
-    {
-      title: "Reference",
-      key: "reference",
-      break: true,
-    },
-    {
-      title: "Social Link",
-      key: "social",
-      break: false,
-    },
-    {
-      title: "Profile",
-      key: "btn",
-      break: false,
-    },
-    {
-      title: "Action",
-      key: "btn",
-      break: false,
-    },
-  ];
+import toast, { Toaster } from "react-hot-toast";
+import DashboardTagsContainer from "@/admin/components/DashboadTags/DashboardTags";
+import DashboardHeader from "@/admin/components/DashboardHeader/DashboardHeader";
 
+const AdminDashboard = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const memberMutation = useMutation({
     mutationFn: (data) => {
       const { isDelete, ...rest } = data;
@@ -54,12 +22,21 @@ const AdminDashboard = () => {
         return editUser(rest);
       }
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries("members");
+      toast.success("Member Deleted Successfully!");
+    },
+    onError: (err) => {
+      console.log(err);
+      toast.error("Operation failed!");
+    },
   });
 
   const { members } = useMember();
 
-  const onNewClick = (id) => {
-    memberMutation.mutate({ newMember: false, _id: id, isDelete: false });
+  const onViewClick = (id) => {
+    memberMutation.mutate({ new: false, _id: id, isDelete: false });
+    navigate(`/profile/${id}`);
   };
 
   const onDelete = (id) => {
@@ -67,83 +44,69 @@ const AdminDashboard = () => {
   };
 
   return (
-    <section id="admin-dashboard">
-      <div className="admin-dashboard-container">
-        <DashboardHeader />
-        <div className="dashboard-info">
-          <QuickAccess />
-          <DashboardTagsContainer
-            memberLength={members?.length}
-            adminLength={
-              members?.filter((member) => member.role === "admin").length
-            }
-          />
-        </div>
-        <div className="members-example-table">
-          <Table
-            headers={memberTableHeader}
-            data={members}
-            onNewClick={onNewClick}
-            onDelete={onDelete}
-          />
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const DashboardTagsContainer = ({ memberLength, adminLength }) => {
-  const tags = [
-    {
-      title: "Total Members",
-      icon: "fa-solid fa-users",
-      value: memberLength,
-    },
-    {
-      title: "Total Messages",
-      icon: "fa-solid fa-envelope",
-      value: 107,
-    },
-    {
-      title: "Total Activities",
-      icon: "fa-solid fa-calendar-days",
-      value: 57,
-    },
-    {
-      title: "Total Admins",
-      icon: "fa-solid fa-user-tie",
-      value: adminLength,
-    },
-  ];
-
-  return (
     <>
-      <div className="dashboard-tags-container">
-        <DashboardTag data={tags[0]} />
-        <DashboardTag data={tags[1]} />
+      <DashboardHeader title={"Dashboard"}>
+        Welcome to the admin dashboard
+      </DashboardHeader>
+      <div className="dashboard-info">
+        <QuickAccess />
+        <DashboardTagsContainer
+          memberLength={members?.length}
+          adminLength={
+            members?.filter((member) => member.role === "admin").length
+          }
+        />
       </div>
-      <div className="dashboard-tags-container">
-        <DashboardTag data={tags[2]} />
-        <DashboardTag data={tags[3]} />
+      <div className="members-example-table">
+        <Table
+          headers={memberTableHeader}
+          data={members.slice(0, 6)}
+          onViewClick={onViewClick}
+          onDelete={onDelete}
+        />
       </div>
+      <Toaster position="top-right" />
     </>
   );
 };
 
-const DashboardTag = ({ data }) => {
-  const { title, icon, value } = data;
-  return (
-    <div className="dashboard-tag">
-      <div>
-        <p className="dashboard-tag-title">{title}</p>
-        <p className="dashboard-tag-icon">
-          <i className={icon}></i>
-        </p>
-      </div>
-      <p className="dashboard-tag-value">{value}</p>
-    </div>
-  );
-};
+const memberTableHeader = [
+  {
+    title: "Name",
+    key: "name",
+    break: false,
+  },
+  {
+    title: "Batch",
+    key: "batch",
+    break: false,
+  },
+  {
+    title: "Branch",
+    key: "branch",
+    break: true,
+  },
+  {
+    title: "Reference",
+    key: "reference",
+    break: true,
+  },
+  {
+    title: "Social Link",
+    key: "social",
+    break: false,
+  },
+  {
+    title: "Profile",
+    key: "btn",
+    break: false,
+  },
+  {
+    title: "Action",
+    key: "btn",
+    break: false,
+  },
+];
 
 const QuickAccess = () => {
   const quickAccessData = [
@@ -195,22 +158,6 @@ const QuickAccessCard = ({ data }) => {
       <NavLink to={link} className="primary-button quick-access-card-link">
         {linkText}
       </NavLink>
-    </div>
-  );
-};
-
-const DashboardHeader = () => {
-  return (
-    <div className="dashboard-header">
-      <div>
-        <h1>Dashboard</h1>
-        <p>Welcome to the Admin Dashboard</p>
-      </div>
-      {window.innerWidth > 1530 && (
-        <NavLink to="/" className="primary-button">
-          Home Page
-        </NavLink>
-      )}
     </div>
   );
 };

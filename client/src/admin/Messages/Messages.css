@@ -1,0 +1,11 @@
+.admin-messages {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.search {
+  max-width: 400px;
+}

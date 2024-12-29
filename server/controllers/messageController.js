@@ -20,14 +20,31 @@ const createMessage = async (req, res) => {
   }
 };
 
-const deleteMessage = async (req, res) => {
+const editMessage = async (req, res) => {
   try {
     const id = req.body._id;
-    const message = await Message.findById(id);
+    const message = await Message.findByIdAndUpdate(
+      id,
+      { new: false },
+      { new: true }
+    );
     if (!message) {
       return res.status(404).send({ message: "Message not found" });
     }
-    await message.remove();
+    res.status(200).send({ message: "Message updated" });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
+
+const deleteMessage = async (req, res) => {
+  try {
+    console.log(req.body._id);
+    const id = req.body._id;
+    const message = await Message.findByIdAndDelete(id);
+    if (!message) {
+      return res.status(404).send({ message: "Message not found" });
+    }
     res.status(200).send({ message: "Message deleted" });
   } catch (err) {
     res.status(500).send({ message: err.message });
@@ -37,5 +54,6 @@ const deleteMessage = async (req, res) => {
 module.exports = {
   createMessage,
   getAllMessages,
+  editMessage,
   deleteMessage,
 };

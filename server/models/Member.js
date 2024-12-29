@@ -10,6 +10,7 @@ const MemberSchema = new mongoose.Schema(
     batch: { type: Number, required: true },
     branch: { type: String, required: true },
     image: { type: String, required: true },
+    imgId: { type: String, required: true },
     reason: { type: String, required: true },
     socialLink: { type: String, required: true },
     timeline: {
@@ -25,7 +26,7 @@ const MemberSchema = new mongoose.Schema(
     },
     reference: { type: String, required: true },
     role: { type: String, default: "member" },
-    newMember: { type: Boolean, default: true },
+    new: { type: Boolean, default: true },
   },
   { timestamps: true }
 );

@@ -27,12 +27,15 @@ exports.register = async (req, res) => {
       fileName: `${Date.now()}-${file.originalname}`,
     });
 
-    const { url } = await uploadPromise;
+    const imgRes = await uploadPromise;
+    console.log(imgRes);
+    const url = imgRes.url;
     if (!url) {
       throw new Error("No image URL found");
     }
 
     body.image = url;
+    body.imgId = imgRes.fileId;
 
     const existingMember = await Member.findOne({ email: body.email });
     if (existingMember) {

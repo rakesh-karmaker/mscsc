@@ -1,6 +1,6 @@
-const jwt = require("jsonwebtoken");
 const Member = require("../models/Member");
 const bcrypt = require("bcryptjs");
+const imagekit = require("../utils/imagekit");
 
 // Get All Members
 const getAllMembers = async (req, res) => {
@@ -105,7 +105,15 @@ const deleteMember = async (req, res) => {
     const member = await Member.findByIdAndDelete(id);
     if (!member) return res.status(404).send({ message: "Member not found" });
 
-    res.status(200).send({ message: "Member deleted" });
+    imagekit.deleteFile(member.imgId, (error, result) => {
+      if (error) {
+        return res.status(500).send({ error: "Failed to delete image." });
+      }
+
+      res.status(200).send({
+        message: "Image deleted successfully.",
+      });
+    });
   } catch (err) {
     res.status(500).send({ message: "Server error", error: err.message });
   }

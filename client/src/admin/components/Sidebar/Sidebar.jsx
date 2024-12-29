@@ -39,7 +39,10 @@ const Sidebar = ({ name, image }) => {
 
           <Welcome name={name} image={image} />
 
-          <SidebarLinks />
+          <SidebarLinks
+            sidebarState={sidebarState}
+            setSidebarState={setSidebarState}
+          />
         </nav>
 
         <p className="copyright">© 2024 MSCSC</p>
@@ -60,12 +63,12 @@ const Welcome = ({ name, image }) => {
   );
 };
 
-const SidebarLinks = () => {
+const SidebarLinks = ({ sidebarState, setSidebarState }) => {
   const links = [
     {
       name: "Dashboard",
       icon: "fa-solid fa-house",
-      to: "/admin",
+      to: "/admin/dashboard",
     },
     {
       name: "Members",
@@ -86,28 +89,48 @@ const SidebarLinks = () => {
 
   return (
     <menu className="sidebar-links">
-      <SidebarLink data={links[0]} />
+      <SidebarLink
+        data={links[0]}
+        sidebarState={sidebarState}
+        setSidebarState={setSidebarState}
+      />
       <li>
         <p className="sub-text">Club Data</p>
         <ul>
-          <SidebarLink data={links[1]} />
-          <SidebarLink data={links[2]} />
+          <SidebarLink
+            data={links[1]}
+            sidebarState={sidebarState}
+            setSidebarState={setSidebarState}
+          />
+          <SidebarLink
+            data={links[2]}
+            sidebarState={sidebarState}
+            setSidebarState={setSidebarState}
+          />
         </ul>
       </li>
       <li>
         <p className="sub-text">Club Inbox</p>
         <ul>
-          <SidebarLink data={links[3]} />
+          <SidebarLink
+            data={links[3]}
+            sidebarState={sidebarState}
+            setSidebarState={setSidebarState}
+          />
         </ul>
       </li>
     </menu>
   );
 };
 
-const SidebarLink = ({ data }) => {
+const SidebarLink = ({ data, sidebarState, setSidebarState }) => {
   return (
     <li>
-      <NavLink to={data.to} className="sidebar-link">
+      <NavLink
+        to={data.to}
+        className="sidebar-link"
+        onClick={() => setSidebarState(!sidebarState)}
+      >
         <i className={data.icon}></i>
         <span>{data.name}</span>
       </NavLink>

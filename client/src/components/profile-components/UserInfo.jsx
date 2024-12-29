@@ -10,7 +10,7 @@ const UserInfo = ({ data, isOwner }) => {
         <div className="user-name-container">
           <h1 className="user-name">{name}</h1>
           {role === "admin" && isOwner && (
-            <NavLink to="/admin" className="primary-button">
+            <NavLink to="/admin/dashboard" className="primary-button">
               Admin Panel
             </NavLink>
           )}

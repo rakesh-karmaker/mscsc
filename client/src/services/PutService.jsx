@@ -21,4 +21,14 @@ const editUser = (data) => {
   return api.put("/member", formData);
 };
 
-export { editUser };
+const editMessage = (data) => {
+  console.log("data", data);
+  const formData = new FormData();
+  for (const key in data) {
+    formData.append(key, data[key]);
+  }
+  console.log("data", formData);
+  return api.put("/message", formData);
+};
+
+export { editUser, editMessage };

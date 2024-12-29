@@ -4,15 +4,19 @@ import Sidebar from "../components/Sidebar/Sidebar";
 
 import "./AdminPanel.css";
 
-const Admin = () => {
+const AdminPanel = () => {
   const { user } = useUser();
 
   return (
     <main id="admin">
       <Sidebar name={user?.name} image={user?.image} />
-      <Outlet />
+      <div className="admin-panel-container">
+        <div>
+          <Outlet />
+        </div>
+      </div>
     </main>
   );
 };
 
-export default Admin;
+export default AdminPanel;
