@@ -1,3 +1,7 @@
+.table-container {
+  width: 100%;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -68,7 +72,7 @@ tr:last-child td {
 }
 
 @media screen and (max-width: 800px) {
-  .table-container {
+  .table-container > div {
     overflow-x: auto;
   }
   table {

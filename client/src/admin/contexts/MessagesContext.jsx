@@ -14,7 +14,6 @@ const MessagesProvider = ({ children }) => {
   }
 
   const messages = data?.data;
-  console.log(messages);
 
   return (
     <MessagesContext.Provider value={{ messages, isLoading }}>

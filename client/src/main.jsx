@@ -13,7 +13,7 @@ import App from "@/App.jsx";
 import { UserProvider } from "@/Contexts/UserContext.jsx";
 import Profile from "@/pages/Profile.jsx";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import { MemberProvider } from "./admin/contexts/MemberContext";
+import { MemberProvider } from "./admin/contexts/MembersContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AdminDashboard from "@/admin/AdminDashboard/AdminDashboard";
 import { MessagesProvider } from "@/admin/contexts/MessagesContext";

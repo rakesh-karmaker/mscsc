@@ -2,8 +2,16 @@ import "@/components/UI/InputText/InputText.css";
 import { useEffect } from "react";
 import { useState } from "react";
 
-const InputText = ({ children, id, ...rest }) => {
-  const inputType = rest?.type ?? "text";
+const InputText = ({
+  register,
+  errors,
+  children,
+  id,
+  setValue,
+  trigger,
+  ...rest
+}) => {
+  const inputType = rest.type ?? "text";
   const isRequired = rest?.required ? rest?.required : true;
   const [type, setType] = useState(inputType);
 
@@ -14,6 +22,7 @@ const InputText = ({ children, id, ...rest }) => {
     setLabelTop(document.getElementById(id).value ? "-25px" : labelTop);
   });
   const handleInputChange = (e) => {
+    // console.log(e.target.value);
     if (e.target.value !== "") {
       setLabelTop("-25px");
     } else {
@@ -28,18 +37,14 @@ const InputText = ({ children, id, ...rest }) => {
           {children}
         </label>
         <input
-          {...rest}
+          {...register(id)}
           type={type}
           id={id}
           onChange={handleInputChange}
           required={isRequired}
           onInput={(e) => {
-            if (rest?.setSearch) {
-              rest.setSearch(e.target.value);
-            } else {
-              rest.setValue(id, e.target.value);
-              rest.trigger(id);
-            }
+            setValue(id, e.target.value);
+            trigger(id);
           }}
         />
         {inputType === "password" && (
@@ -47,7 +52,7 @@ const InputText = ({ children, id, ...rest }) => {
         )}
       </div>
 
-      {rest?.errors && <p className="error-message">{rest.errors.message}</p>}
+      {errors && <p className="error-message">{errors.message}</p>}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import "./AdminDashboard.css";
-import { useMember } from "@/admin/contexts/MemberContext";
+import { useMember } from "@/admin/contexts/MembersContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editUser } from "@/services/PutService";
 import { deleteMember } from "@/services/DeleteService";
@@ -34,8 +34,10 @@ const AdminDashboard = () => {
 
   const { members } = useMember();
 
-  const onViewClick = (id) => {
-    memberMutation.mutate({ new: false, _id: id, isDelete: false });
+  const onViewClick = (id, isNew) => {
+    if (isNew) {
+      memberMutation.mutate({ new: false, _id: id, isDelete: false });
+    }
     navigate(`/profile/${id}`);
   };
 

@@ -2,7 +2,7 @@ const Message = require("../models/Message");
 
 const getAllMessages = async (req, res) => {
   try {
-    const messages = await Message.find();
+    const messages = await Message.find().sort({ _id: -1 });
     res.status(200).send(messages);
   } catch (err) {
     res.status(500).send({ message: err.message });
@@ -22,6 +22,7 @@ const createMessage = async (req, res) => {
 
 const editMessage = async (req, res) => {
   try {
+    console.log(req.body);
     const id = req.body._id;
     const message = await Message.findByIdAndUpdate(
       id,
