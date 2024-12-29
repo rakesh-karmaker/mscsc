@@ -1,5 +1,20 @@
+import { useEffect, useState } from "react";
+
 const SubmitBtn = ({ isSubmitting, pendingText, children, ...rest }) => {
   const width = rest?.width ?? "fit-content";
+  // console.log(isSubmitting);
+  // console.log(isSubmitting ? `${pendingText}...` : children);
+  const [innerText, setInnerText] = useState(children);
+
+  useEffect(() => {
+    if (isSubmitting) {
+      setInnerText(`${pendingText}...`);
+    } else {
+      setInnerText(children);
+    }
+  }, [isSubmitting]);
+
+  console.log("innerText", innerText);
   return (
     <div>
       <button
@@ -8,7 +23,7 @@ const SubmitBtn = ({ isSubmitting, pendingText, children, ...rest }) => {
         className="primary-button"
         style={{ width: width }}
       >
-        {isSubmitting ? `${pendingText}...` : children}
+        {innerText}
       </button>
     </div>
   );

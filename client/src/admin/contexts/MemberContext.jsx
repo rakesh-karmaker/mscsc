@@ -1,8 +1,6 @@
 import { createContext, useContext } from "react";
 import { getAllMembers } from "@/services/GetService";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { editUser } from "@/services/PutService";
-
+import { useQuery } from "@tanstack/react-query";
 const MemberContext = createContext(null);
 
 const MemberProvider = ({ children }) => {

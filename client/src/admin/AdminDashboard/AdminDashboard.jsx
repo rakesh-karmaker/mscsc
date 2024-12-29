@@ -4,22 +4,46 @@ import { useMember } from "@/admin/contexts/MemberContext";
 import { useMutation } from "@tanstack/react-query";
 import { editUser } from "@/services/PutService";
 import { deleteMember } from "@/services/DeleteService";
+import Table from "@/components/UI/Table/Table";
 
 const AdminDashboard = () => {
-  const memberTableHeader =
-    window.innerWidth > 1240
-      ? [
-          "Name",
-          "SSC Batch",
-          "School Branch",
-          "Reference",
-          "Social Link",
-          "Profile",
-          "Action",
-        ]
-      : ["Name", "SSC Batch", "Social Link", "Profile", "Action"];
-
-  console.log(memberTableHeader);
+  const memberTableHeader = [
+    {
+      title: "Name",
+      key: "name",
+      break: false,
+    },
+    {
+      title: "SSC Batch",
+      key: "batch",
+      break: false,
+    },
+    {
+      title: "Branch",
+      key: "branch",
+      break: true,
+    },
+    {
+      title: "Reference",
+      key: "reference",
+      break: true,
+    },
+    {
+      title: "Social Link",
+      key: "social",
+      break: false,
+    },
+    {
+      title: "Profile",
+      key: "btn",
+      break: false,
+    },
+    {
+      title: "Action",
+      key: "btn",
+      break: false,
+    },
+  ];
 
   const memberMutation = useMutation({
     mutationFn: (data) => {
@@ -65,62 +89,6 @@ const AdminDashboard = () => {
         </div>
       </div>
     </section>
-  );
-};
-
-const Table = ({ headers, data, onNewClick, onDelete }) => {
-  const rows = data?.slice(0, 6);
-  return (
-    <table>
-      <thead>
-        <tr>
-          {headers.map((header) => (
-            <th key={header}>{header}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {rows?.map((row) => {
-          return (
-            <tr key={row._id}>
-              <td>{row.name}</td>
-              <td>{row.batch}</td>
-              {window.innerWidth > 1240 && (
-                <>
-                  <td>{row.branch}</td>
-                  <td>{row.reference}</td>
-                </>
-              )}
-              <td>
-                <Link to={row.socialLink} className="profile-link">
-                  Facebook
-                </Link>
-              </td>
-              <td>
-                {/* TODO: change the newMember to new when resting the DB */}
-                <NavLink
-                  to={`/profile/${row._id}`}
-                  className={`primary-button profile-btn ${
-                    row?.newMember ? "new" : ""
-                  }`}
-                  onClick={() => onNewClick(row._id)}
-                >
-                  View
-                </NavLink>
-              </td>
-              <td>
-                <button
-                  className="primary-button danger-button"
-                  onClick={() => onDelete(row._id)}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
   );
 };
 
@@ -194,7 +162,13 @@ const QuickAccess = () => {
       linkText: "View Now",
     },
   ];
-  return (
+  return window.innerWidth <= 1240 ? (
+    <div className="quick-access">
+      {quickAccessData.map((data) => (
+        <QuickAccessCard data={data} key={data.heading} />
+      ))}
+    </div>
+  ) : (
     <>
       {quickAccessData.map((data) => (
         <QuickAccessCard data={data} key={data.heading} />

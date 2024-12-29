@@ -2,10 +2,14 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: `${import.meta.env.VITE_API_URL}/api`,
-  headers: { "Content-Type": "multipart/form-data" },
+  headers: { "Content-Type": "application/json" },
 });
 
 const registerUser = (data) => {
+  api.interceptors.request.use(function (config) {
+    config.headers["Content-Type"] = "multipart/form-data";
+    return config;
+  });
   const formData = new FormData();
   for (const key in data) {
     if (key === "image") {
@@ -17,16 +21,22 @@ const registerUser = (data) => {
   return api.post("/auth/register", formData);
 };
 
-const loginUser = (date) => {
-  api.interceptors.request.use(function (config) {
-    config.headers["Content-Type"] = "application/json";
-    return config;
-  });
+const loginUser = (data) => {
   const formData = new FormData();
-  for (const key in date) {
-    formData.append(key, date[key]);
+  for (const key in data) {
+    formData.append(key, data[key]);
   }
   return api.post("/auth/login", formData);
 };
 
-export { registerUser, loginUser };
+const sendMessage = (data) => {
+  console.log("data", data);
+
+  const formData = new FormData();
+  for (const key in data) {
+    formData.append(key, data[key]);
+  }
+  return api.post("/message", formData);
+};
+
+export { registerUser, loginUser, sendMessage };

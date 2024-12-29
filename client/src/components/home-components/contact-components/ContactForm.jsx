@@ -3,58 +3,68 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import contactSchema from "@/utils/ContactSchema";
 import InputText, { TextArea } from "@/components/UI/InputText/InputText";
 import SubmitBtn from "@/components/UI/SubmitBtn";
+import { sendMessage } from "@/services/PostService";
+import toast, { Toaster } from "react-hot-toast";
+import { useRef } from "react";
 
 const ContactForm = () => {
+  const contactForm = useRef(null);
   const {
     register,
     handleSubmit,
+    setValue,
+    trigger,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(contactSchema),
   });
 
-  // const apiKey = process.env.REACT_APP_WEB3FORM_API_KEY;
-  const apiKey = import.meta.VITE_WEB3FORM_API_KEY;
-
   const onSubmit = async (data) => {
-    const formData = new FormData(data);
-
-    formData.append(apiKey, "YOUR_ACCESS_KEY_HERE");
-
-    const object = Object.fromEntries(formData);
-    const json = JSON.stringify(object);
-
-    const res = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: json,
-    }).then((res) => res.json());
-
-    if (res.success) {
-      console.log("Success", res);
+    const res = await sendMessage(data);
+    if (res.status === 200) {
+      toast.success("Message sent");
+    } else {
+      toast.error("Failed to send message");
     }
+    contactForm.current.reset();
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="contact-form">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="contact-form"
+      ref={contactForm}
+    >
       <div className="combined-inputs">
-        <InputText register={register} errors={errors.name} id="name">
+        <InputText
+          register={register}
+          errors={errors.name}
+          id="name"
+          setValue={setValue}
+          trigger={trigger}
+        >
           Full Name
         </InputText>
+
         <InputText
           type="email"
           register={register}
           errors={errors.email}
           id="email"
+          setValue={setValue}
+          trigger={trigger}
         >
           Email
         </InputText>
       </div>
 
-      <InputText register={register} errors={errors.subject} id="subject">
+      <InputText
+        register={register}
+        errors={errors.subject}
+        id="subject"
+        setValue={setValue}
+        trigger={trigger}
+      >
         Subject
       </InputText>
 
@@ -62,17 +72,23 @@ const ContactForm = () => {
         Write your message here...
       </TextArea>
 
-      {/* <!-- Honeypot Spam Protection --> */}
-      <input type="checkbox" name="botcheck" className="hidden" />
-
       <SubmitBtn
         isSubmitting={isSubmitting}
-        pendingText={"Sending..."}
+        pendingText={"Sending"}
         width="100%"
       >
         Send the message
       </SubmitBtn>
+      {/* <button
+        disabled={isSubmitting}
+        type="submit"
+        className="primary-button"
+        style={{ width: "100%" }}
+      >
+        {isSubmitting ? "Sending..." : "Send the message"}
+      </button> */}
       {errors.root && <p className="error-message">{errors.root.message}</p>}
+      <Toaster position="top-right" />
     </form>
   );
 };
