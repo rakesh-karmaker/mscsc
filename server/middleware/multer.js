@@ -1,5 +1,4 @@
 const multer = require("multer");
-const path = require("path");
 
 exports.uploadSingle = (folderName) => {
   try {

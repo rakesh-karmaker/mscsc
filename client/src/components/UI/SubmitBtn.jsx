@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 
 const SubmitBtn = ({ isSubmitting, pendingText, children, ...rest }) => {
   const width = rest?.width ?? "fit-content";
-  // console.log(isSubmitting);
-  // console.log(isSubmitting ? `${pendingText}...` : children);
   const [innerText, setInnerText] = useState(children);
 
   useEffect(() => {
@@ -14,7 +12,6 @@ const SubmitBtn = ({ isSubmitting, pendingText, children, ...rest }) => {
     }
   }, [isSubmitting]);
 
-  console.log("innerText", innerText);
   return (
     <div>
       <button

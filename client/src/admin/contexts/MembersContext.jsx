@@ -1,22 +1,38 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { getAllMembers } from "@/services/GetService";
 import { useQuery } from "@tanstack/react-query";
 const MemberContext = createContext(null);
 
 const MemberProvider = ({ children }) => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["members"],
-    queryFn: getAllMembers,
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [role, setRole] = useState("");
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["members", page, search, role],
+    queryFn: () => getAllMembers(page, 10, search, role, role),
   });
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    refetch();
+  }, [page, search, role, refetch]);
 
-  const members = data?.data;
+  const response = data?.data;
+  const members = data?.data.results;
 
   return (
-    <MemberContext.Provider value={{ members, isLoading }}>
+    <MemberContext.Provider
+      value={{
+        response,
+        members,
+        isLoading,
+        search,
+        setSearch,
+        page,
+        setPage,
+        setRole,
+      }}
+    >
       {children}
     </MemberContext.Provider>
   );

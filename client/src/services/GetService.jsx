@@ -25,17 +25,29 @@ const getUserById = async (id) => {
   return response.data;
 };
 
-const getAllMembers = () => {
-  return api.get("/member/all");
+const getAllMembers = (page, limit, search, role) => {
+  return api.get(
+    "/member/all?page=" +
+      page +
+      "&limit=" +
+      limit +
+      "&search=" +
+      search +
+      "&role=" +
+      role
+  );
 };
 
-const getAllMessages = () => {
+const getAllMessages = (page, limit, search) => {
   const token = localStorage.getItem("token");
   api.interceptors.request.use(function (config) {
     config.headers.Authorization = token ? `Bearer ${token}` : "";
     return config;
   });
-  return api.get("/message");
+
+  return api.get(
+    "/message?page=" + page + "&limit=" + limit + "&search=" + search
+  );
 };
 
 export { verifyToken, getUserById, getAllMembers, getAllMessages };

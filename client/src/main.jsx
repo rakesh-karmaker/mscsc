@@ -19,7 +19,8 @@ import AdminDashboard from "@/admin/AdminDashboard/AdminDashboard";
 import { MessagesProvider } from "@/admin/contexts/MessagesContext";
 import Messages from "@/admin/Messages/Messages";
 import AdminPanel from "@/admin/AdminPanel/AdminPanel";
-import Admin from "./pages/Admin";
+import Admin from "@/pages/Admin";
+import Members from "@/admin/Members/Members";
 
 const queryClient = new QueryClient();
 
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
       {
         path: "/admin/dashboard",
         element: <AdminDashboard />,
+      },
+      {
+        path: "/admin/members",
+        element: <Members />,
       },
       {
         path: "/admin/messages",

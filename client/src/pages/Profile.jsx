@@ -34,8 +34,6 @@ const ProfilePage = () => {
     },
   });
 
-  console.log(profileData);
-
   if (isLoading) {
     return <p>Loading profile...</p>;
   }

@@ -1,0 +1,120 @@
+.dialog-container {
+  width: 100%;
+  height: 100%;
+  min-height: 100svh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  transition: 0.25s;
+}
+
+.dialog-container.open {
+  pointer-events: all;
+  backdrop-filter: blur(5px);
+  background-color: rgba(240, 248, 255, 0.24);
+}
+
+.message-dialog[open] {
+  opacity: 1;
+}
+.message-dialog {
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -ms-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  transition: 0.25s;
+  transition: all 0.25s allow-discrete;
+  border: none;
+  background-color: var(--primary-bg);
+  min-width: 800px;
+  max-width: 800px;
+  /* min-height: 600px; */
+  padding: 50px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.23);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+@starting-style {
+  .message-dialog[open] {
+    opacity: 0;
+  }
+}
+
+.message-name-container {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap-reverse;
+}
+
+.message-name-container > h2 {
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 48px;
+
+  color: var(--text-primary);
+}
+
+.close {
+  background-color: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 2rem;
+  cursor: pointer;
+  transition: 0.25s;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.25s;
+}
+
+.close:hover {
+  color: var(--highlighted-color);
+}
+
+.subject > h3,
+.message > h3 {
+  font-weight: 500;
+  font-size: 32px;
+  color: var(--text-primary);
+}
+
+.subject > p {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--text-primary);
+}
+
+.message > p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--text-primary);
+  opacity: 0.8;
+}
+
+.message-dialog > .primary-button {
+  width: fit-content;
+  gap: 10px;
+}
+
+@media screen and (max-width: 900px) {
+  .message-dialog {
+    min-width: 70vw;
+    padding: 25px;
+  }
+}

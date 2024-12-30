@@ -1,22 +1,37 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { getAllMessages } from "@/services/GetService";
 import { useQuery } from "@tanstack/react-query";
 const MessagesContext = createContext(null);
 
 const MessagesProvider = ({ children }) => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["messages"],
-    queryFn: getAllMessages,
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["messages", page, search],
+    queryFn: () => getAllMessages(page, 10, search),
+    staleTime: 1000 * 60 * 5,
   });
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    refetch();
+  }, [page, search, refetch]);
 
-  const messages = data?.data;
+  const response = data?.data;
+  const messages = data?.data?.results;
 
   return (
-    <MessagesContext.Provider value={{ messages, isLoading }}>
+    <MessagesContext.Provider
+      value={{
+        response,
+        messages,
+        isLoading,
+        search,
+        setSearch,
+        page,
+        setPage,
+      }}
+    >
       {children}
     </MessagesContext.Provider>
   );

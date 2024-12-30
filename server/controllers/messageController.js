@@ -1,17 +1,22 @@
 const Message = require("../models/Message");
+const { paginatedResults } = require("../utils/paginatedResults");
 
 const getAllMessages = async (req, res) => {
   try {
-    const messages = await Message.find().sort({ _id: -1 });
+    const regex = {
+      name: new RegExp(req.query.search, "i"),
+    };
+    const length = await Message.find({ ...regex }).countDocuments();
+    const messages = await paginatedResults(req, Message, regex, length);
     res.status(200).send(messages);
   } catch (err) {
+    console.log(err);
     res.status(500).send({ message: err.message });
   }
 };
 
 const createMessage = async (req, res) => {
   try {
-    console.log(req.body);
     const message = await Message.create(req.body);
     console.log(message);
     res.status(200).send({ message: "Message sent" });

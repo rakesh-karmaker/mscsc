@@ -62,9 +62,10 @@ const AdminDashboard = () => {
       <div className="members-example-table">
         <Table
           headers={memberTableHeader}
-          data={members.slice(0, 6)}
+          data={members?.slice(0, 6)}
           onViewClick={onViewClick}
           onDelete={onDelete}
+          needPagination={false}
         />
       </div>
       <Toaster position="top-right" />

@@ -1,13 +1,22 @@
 const Member = require("../models/Member");
 const bcrypt = require("bcryptjs");
 const imagekit = require("../utils/imagekit");
+const { paginatedResults } = require("../utils/paginatedResults");
 
 // Get All Members
 const getAllMembers = async (req, res) => {
   try {
-    const members = await Member.find().sort({ _id: -1 }).select("-password");
-    res.send(members);
+    const regex = {
+      name: new RegExp(req.query.search, "i"),
+      role: new RegExp(req.query.role, "i"),
+    };
+    const length = await Member.find({
+      ...regex,
+    }).countDocuments();
+    const members = await paginatedResults(req, Member, regex, length);
+    res.status(200).send(members);
   } catch (err) {
+    console.log(err);
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };

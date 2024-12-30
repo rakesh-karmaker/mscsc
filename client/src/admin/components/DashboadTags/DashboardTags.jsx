@@ -2,7 +2,7 @@ import { useMessages } from "@/admin/contexts/MessagesContext";
 import "./DashboardTags.css";
 
 const DashboardTagsContainer = ({ memberLength, adminLength }) => {
-  const { messages } = useMessages();
+  const { response } = useMessages();
   const tags = [
     {
       title: "Total Members",
@@ -12,7 +12,7 @@ const DashboardTagsContainer = ({ memberLength, adminLength }) => {
     {
       title: "Total Messages",
       icon: "fa-solid fa-envelope",
-      value: messages?.length,
+      value: response?.totalLength,
     },
     {
       title: "Total Activities",
