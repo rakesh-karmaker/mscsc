@@ -1,5 +1,6 @@
 const Message = require("../models/Message");
 const { paginatedResults } = require("../utils/paginatedResults");
+const { messageSchema } = require("../utils/validation");
 
 const getAllMessages = async (req, res) => {
   try {
@@ -17,10 +18,19 @@ const getAllMessages = async (req, res) => {
 
 const createMessage = async (req, res) => {
   try {
+    console.log(req.body);
+    const { error: validationResult } = messageSchema.validate(req.body);
+    if (validationResult) {
+      return res.status(400).send({
+        subject: validationResult.details[0].context.key,
+        message: validationResult.details[0].message,
+      });
+    }
     const message = await Message.create(req.body);
     console.log(message);
     res.status(200).send({ message: "Message sent" });
   } catch (err) {
+    console.log(err);
     res.status(500).send({ message: err.message });
   }
 };

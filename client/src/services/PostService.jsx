@@ -22,6 +22,10 @@ const registerUser = (data) => {
 };
 
 const loginUser = (data) => {
+  api.interceptors.request.use(function (config) {
+    config.headers["Content-Type"] = "application/json";
+    return config;
+  });
   const formData = new FormData();
   for (const key in data) {
     formData.append(key, data[key]);
@@ -30,6 +34,10 @@ const loginUser = (data) => {
 };
 
 const sendMessage = (data) => {
+  api.interceptors.request.use(function (config) {
+    config.headers["Content-Type"] = "application/json";
+    return config;
+  });
   console.log("data", data);
 
   const formData = new FormData();
@@ -39,4 +47,23 @@ const sendMessage = (data) => {
   return api.post("/message", formData);
 };
 
-export { registerUser, loginUser, sendMessage };
+const addActivity = (data) => {
+  api.interceptors.request.use(function (config) {
+    config.headers["Content-Type"] = "multipart/form-data";
+    config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
+    return config;
+  });
+  const formData = new FormData();
+  for (const key in data) {
+    console.log(key);
+    if (key === "activityImage") {
+      formData.append(key, data[key][0]);
+      continue;
+    }
+    formData.append(key, data[key]);
+  }
+  console.log("data", formData);
+  return api.post("/activity", formData);
+};
+
+export { registerUser, loginUser, sendMessage, addActivity };

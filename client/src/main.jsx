@@ -21,6 +21,8 @@ import Messages from "@/admin/Messages/Messages";
 import AdminPanel from "@/admin/AdminPanel/AdminPanel";
 import Admin from "@/pages/Admin";
 import Members from "@/admin/Members/Members";
+import AdminActivities from "./admin/AdminActivities/AdminActivities";
+import { ActivitiesProvider } from "./contexts/ActivitiesContext";
 
 const queryClient = new QueryClient();
 
@@ -71,6 +73,10 @@ const router = createBrowserRouter([
         element: <Members />,
       },
       {
+        path: "/admin/activities",
+        element: <AdminActivities />,
+      },
+      {
         path: "/admin/messages",
         element: <Messages />,
       },
@@ -81,9 +87,11 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <UserProvider>
-        <RouterProvider router={router} />
-      </UserProvider>
+      <ActivitiesProvider>
+        <UserProvider>
+          <RouterProvider router={router} />
+        </UserProvider>
+      </ActivitiesProvider>
     </QueryClientProvider>
   </StrictMode>
 );

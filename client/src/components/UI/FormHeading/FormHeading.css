@@ -1,0 +1,21 @@
+.form-heading {
+  color: var(--text-primary);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 64px;
+  line-height: 77px;
+  letter-spacing: 0.01em;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.form-heading::after {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 5px;
+  background-color: var(--highlighted-color);
+  border-radius: 10px;
+  bottom: -13px;
+  left: 0;
+}

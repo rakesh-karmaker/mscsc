@@ -13,6 +13,7 @@ const UserProvider = ({ children }) => {
       }
       return null;
     },
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
   const user = data ? data.data.user : null;
 

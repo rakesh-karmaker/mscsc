@@ -1,63 +1,52 @@
 import ActivitiesNavbar from "../components/nav-bars/ActivitiesNavbar";
 import Activity from "../components/activities-components/Activity";
 import "../components/activities-components/Activities.css";
-import activitiesData from "../api/activitiesData.json";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Pagination from "../components/activities-components/Pagination";
+import { useActivities } from "@/contexts/ActivitiesContext";
 const Activities = () => {
-  const [topic, setTopic] = useState("Activities");
-  const [userSelected, setUserSelected] = useState("false");
-  const [currentPage, setCurrentPage] = useState(1);
-  const activitiesPerPAge = 12;
-  const selectedData =
-    topic === "Activities"
-      ? activitiesData
-      : activitiesData.filter((data) => data.tag == topic);
-  const handleTopicsClick = (topic) => {
-    setTopic(topic);
-    setUserSelected("true");
-    setCurrentPage(1);
-    document.querySelectorAll(".activities-nav-link").forEach((navLink) => {
-      navLink.classList.remove("active");
-      if (navLink.getAttribute("nav-type") === topic) {
-        navLink.classList.add("active");
-      }
-    });
-  };
-  // Observe the executive members
+  const {
+    activities,
+    length,
+    topic,
+    setTopic,
+    search,
+    setSearch,
+    page,
+    setPage,
+  } = useActivities();
+
+  const elementsPerPage = 12;
+
   useEffect(() => {
     document.querySelectorAll(".activity").forEach((executiveMember) => {
       observeExecutiveMember.observe(executiveMember);
     });
-  });
-
-  const lastPageIndex = currentPage * activitiesPerPAge;
-  const firstPageIndex = lastPageIndex - activitiesPerPAge;
-  const currentActivities = selectedData.slice(firstPageIndex, lastPageIndex);
+  }, [activities]);
 
   const handleSetCurrentPageClick = (page) => {
-    setCurrentPage(page);
+    setPage(page);
     window.scrollTo(0, 0);
   };
   return (
     <main className="page-activities">
-      <ActivitiesNavbar topic={topic} onClick={handleTopicsClick} />
+      <ActivitiesNavbar topic={topic} setTopic={setTopic} />
       <section className="activities-container">
-        {currentActivities.map((activity) => {
+        {activities?.map((activity) => {
           return (
             <Activity
               key={activity.activityTitle}
               data={activity}
-              select={userSelected}
+              select={topic}
             />
           );
         })}
       </section>
       <Pagination
-        totalActivities={selectedData.length}
-        activitiesPerPAge={activitiesPerPAge}
-        setCurrentPage={handleSetCurrentPageClick}
-        currentPage={currentPage}
+        length={length}
+        elementsPerPage={elementsPerPage}
+        setPage={handleSetCurrentPageClick}
+        currentPage={page}
       />
     </main>
   );
@@ -73,7 +62,7 @@ const observeExecutiveMember = new IntersectionObserver(
     });
   },
   {
-    threshold: 0.3,
+    threshold: 0.1,
   }
 );
 export default Activities;

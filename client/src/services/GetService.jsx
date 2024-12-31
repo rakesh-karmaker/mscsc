@@ -25,16 +25,20 @@ const getUserById = async (id) => {
   return response.data;
 };
 
-const getAllMembers = (page, limit, search, role) => {
+const getAllActivities = (page, limit, topic, search) => {
   return api.get(
-    "/member/all?page=" +
-      page +
-      "&limit=" +
-      limit +
-      "&search=" +
-      search +
-      "&role=" +
-      role
+    `/activity?limit=${limit}&page=${page}&topic=${topic}&search=${search}`
+  );
+};
+
+const getAllMembers = (page, limit, search, role) => {
+  const token = localStorage.getItem("token");
+  api.interceptors.request.use(function (config) {
+    config.headers.Authorization = token ? `Bearer ${token}` : "";
+    return config;
+  });
+  return api.get(
+    `/member?page=${page}&limit=${limit}&search=${search}&role=${role}`
   );
 };
 
@@ -45,9 +49,13 @@ const getAllMessages = (page, limit, search) => {
     return config;
   });
 
-  return api.get(
-    "/message?page=" + page + "&limit=" + limit + "&search=" + search
-  );
+  return api.get(`/message?page=${page}&limit=${limit}&search=${search}`);
 };
 
-export { verifyToken, getUserById, getAllMembers, getAllMessages };
+export {
+  verifyToken,
+  getUserById,
+  getAllMembers,
+  getAllMessages,
+  getAllActivities,
+};

@@ -94,6 +94,9 @@ menu {
 
 .activity-tag {
   color: var(--highlighted-color);
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .activity-date {

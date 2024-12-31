@@ -1,4 +1,4 @@
-const Activity = ({ data, select }) => {
+const Activity = ({ data, topic }) => {
   const {
     tag,
     activityDate,
@@ -16,7 +16,7 @@ const Activity = ({ data, select }) => {
 
       <article>
         <div>
-          {select == "false" ? <Tag tag={tag} /> : ""}
+          {topic !== "" ? <Tag tag={tag} /> : ""}
           <p className="activity-date">
             <i className="fa-regular fa-calendar"></i>{" "}
             <span>{activityDate}</span>
@@ -38,10 +38,11 @@ const Activity = ({ data, select }) => {
 };
 
 const Tag = ({ tag }) => {
+  const capitalizeTag = tag.charAt(0).toUpperCase() + tag.slice(1);
   return (
     <p className="activity-tag">
       <i className="fa-solid fa-chalkboard-user"></i>
-      <span>{tag}</span>
+      <span>{capitalizeTag}</span>
     </p>
   );
 };

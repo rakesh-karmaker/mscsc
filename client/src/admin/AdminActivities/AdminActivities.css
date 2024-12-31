@@ -1,0 +1,15 @@
+.admin-activities {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.admin-activities .page-activities {
+  margin-top: 0px;
+}
+
+.admin-activities .activities-container {
+  margin-top: 0px;
+}

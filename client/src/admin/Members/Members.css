@@ -5,3 +5,20 @@
   flex-direction: column;
   gap: 50px;
 }
+
+.members-filter {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.members-filter > .checkbox-container > label {
+  font-size: 1.3rem;
+}
+
+.members-filter > .checkbox-container > input {
+  width: 18px;
+  height: 18px;
+}

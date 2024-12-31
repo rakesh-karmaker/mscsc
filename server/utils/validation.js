@@ -19,5 +19,25 @@ const executiveSchema = Joi.object({
   image: Joi.string().required(),
 });
 
+const messageSchema = Joi.object({
+  name: Joi.string().required(),
+  email: Joi.string().email().required(),
+  subject: Joi.string().required(),
+  message: Joi.string().required(),
+});
+
+const activitySchema = Joi.object({
+  tag: Joi.string().required(),
+  title: Joi.string().required(),
+  description: Joi.string().required(),
+  date: Joi.date().required(),
+  link: Joi.string().required(),
+});
+
 // Add more schemas as needed
-module.exports = { registerSchema, executiveSchema };
+module.exports = {
+  registerSchema,
+  executiveSchema,
+  messageSchema,
+  activitySchema,
+};

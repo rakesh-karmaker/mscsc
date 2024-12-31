@@ -11,6 +11,7 @@ const MemberProvider = ({ children }) => {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["members", page, search, role],
     queryFn: () => getAllMembers(page, 10, search, role, role),
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   useEffect(() => {

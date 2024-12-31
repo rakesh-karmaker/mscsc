@@ -21,7 +21,7 @@ mongoose
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/member", require("./routes/memberRoutes"));
 app.use("/api/message", require("./routes/messageRoutes"));
-app.use("/api/events", require("./routes/eventRoutes"));
+app.use("/api/activity", require("./routes/activityRoutes"));
 
 app.listen(process.env.PORT, () =>
   console.log(`Server running on port ${process.env.PORT}`)

@@ -1,29 +1,35 @@
 import ActivityNavLink from "@/components/nav-bars/ActivityNavLink";
-const ActivitiesNavbar = ({ topic, onClick }) => {
-  const title = (topic) => {
-    if (topic === "Activities") return "Activities";
-    return topic.charAt(0).toUpperCase() + topic.slice(1) + "s";
+const ActivitiesNavbar = ({ topic, setTopic }) => {
+  const capitalizeName = topic.charAt(0).toUpperCase() + topic.slice(1) + "s";
+  const icons = {
+    event: "fa-calendar-days",
+    workshop: "fa-chalkboard-user",
+    article: "fa-newspaper",
+    achievement: "fa-trophy",
   };
 
   return (
     <>
       <div className="activities-navbar">
         <h1>
-          All <span className="highlighted-text">{title(topic)}</span>
+          All{" "}
+          <span className="highlighted-text">
+            {topic === "" ? "Activities" : capitalizeName}
+          </span>
         </h1>
         <menu>
-          <ActivityNavLink name="event" onClick={onClick}>
-            <i className="fa-solid fa-calendar-days"></i>
-          </ActivityNavLink>
-          <ActivityNavLink name="workshop" onClick={onClick}>
-            <i className="fa-solid fa-chalkboard-user"></i>
-          </ActivityNavLink>
-          <ActivityNavLink name="article" onClick={onClick}>
-            <i className="fa-solid fa-newspaper"></i>
-          </ActivityNavLink>
-          <ActivityNavLink name="achievement" onClick={onClick}>
-            <i className="fa-solid fa-trophy"></i>
-          </ActivityNavLink>
+          {Object.keys(icons).map((icon) => {
+            return (
+              <ActivityNavLink
+                name={icon}
+                setTopic={setTopic}
+                key={icon}
+                active={topic === icon}
+              >
+                <i className={`fa-solid ${icons[icon]}`}></i>
+              </ActivityNavLink>
+            );
+          })}
         </menu>
       </div>
     </>

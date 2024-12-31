@@ -8,11 +8,13 @@ import DashboardHeader from "../components/DashboardHeader/DashboardHeader";
 import SearchInput from "../components/SearchInput/SearchInput";
 import Table from "@/components/UI/Table/Table";
 import "./Members.css";
+import CheckBox from "@/components/UI/Checkbox/Checkbox";
 
 const Members = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { response, members, search, setSearch, page, setPage } = useMember();
+  const { response, members, search, setSearch, setRole, page, setPage } =
+    useMember();
 
   const membersMutation = useMutation({
     mutationFn: (data) => {
@@ -44,12 +46,29 @@ const Members = () => {
     membersMutation.mutate({ _id: id, isDelete: true });
   };
 
+  const onRoleClick = (id, role) => {
+    membersMutation.mutate({
+      _id: id,
+      role: role === "admin" ? "member" : "admin",
+    });
+  };
+
   return (
     <div className="admin-members">
       <DashboardHeader title={"Members"}>
         View all the members of the club
       </DashboardHeader>
-      <SearchInput search={search} setSearch={setSearch} />
+      <div className="members-filter">
+        <SearchInput search={search} setSearch={setSearch} />
+        <CheckBox
+          id="admin-only"
+          onChange={(e) => {
+            e.target.checked ? setRole("admin") : setRole("");
+          }}
+        >
+          Admin Only
+        </CheckBox>
+      </div>
       <Table
         headers={memberTableHeader}
         data={members}
@@ -58,6 +77,7 @@ const Members = () => {
         setPage={setPage}
         onViewClick={onViewClick}
         onDelete={onDelete}
+        onRoleClick={onRoleClick}
       />
     </div>
   );
@@ -70,7 +90,7 @@ const memberTableHeader = [
     break: false,
   },
   {
-    title: "SSC Batch",
+    title: "Batch",
     key: "batch",
     break: false,
   },
@@ -96,6 +116,11 @@ const memberTableHeader = [
   },
   {
     title: "Action",
+    key: "btn",
+    break: false,
+  },
+  {
+    title: "Change Role",
     key: "btn",
     break: false,
   },

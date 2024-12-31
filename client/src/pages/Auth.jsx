@@ -7,6 +7,7 @@ import { useUser } from "@/Contexts/UserContext";
 import { MemberRegSchema } from "@/utils/MemberSchemaValidation";
 
 import "@/components/auth-components/Auth.css";
+import FormHeading from "@/components/UI/FormHeading/FormHeading";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -25,9 +26,8 @@ const Auth = () => {
       {window.innerWidth >= 1080 ? (
         <RegisterImage registerFormContainer={registerFormContainer} />
       ) : null}
-
+      <FormHeading>{form}</FormHeading>
       <div ref={registerFormContainer} className="auth-container">
-        <h1>{form}</h1>
         {form === "Register" ? (
           <UserForm setForm={setForm} schema={MemberRegSchema} />
         ) : (

@@ -34,10 +34,6 @@ td {
   padding-right: 1.5rem;
 }
 
-tr.admin > .name {
-  color: rgb(246, 59, 59);
-}
-
 tr:last-child td {
   border-bottom: none;
 }
@@ -53,7 +49,8 @@ tr:last-child td {
 }
 
 .profile-btn,
-.danger-button {
+.danger-button,
+.role-btn {
   padding: 7px 15px;
   border-radius: 5px;
   font-weight: 500;
@@ -63,11 +60,23 @@ tr:last-child td {
   line-height: 22px;
 }
 
+.role-btn {
+  width: 150px;
+}
+
 .primary-button.profile-btn.new::before {
   background-color: #379337;
 }
 
 .danger-button::before {
+  background-color: red;
+}
+
+tr.admin > .name {
+  color: rgb(246, 59, 59);
+}
+
+tr.admin .role-btn::before {
   background-color: red;
 }
 

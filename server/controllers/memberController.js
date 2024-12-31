@@ -14,6 +14,7 @@ const getAllMembers = async (req, res) => {
       ...regex,
     }).countDocuments();
     const members = await paginatedResults(req, Member, regex, length);
+    // console.log(members);
     res.status(200).send(members);
   } catch (err) {
     console.log(err);
