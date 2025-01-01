@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const Member = require("../models/Member");
 
 // Verify if user is admin
 exports.isAuthorized = async (req, res, next) => {
@@ -16,7 +17,9 @@ exports.isAuthorized = async (req, res, next) => {
 };
 
 exports.isAdmin = async (req, res, next) => {
-  if (req.user.role !== "admin")
+  const member = await Member.findById(req.user._id);
+  if (!member) return res.status(404).send({ message: "Member not found" });
+  if (member.role !== "admin")
     return res.status(403).send({ message: "Access Denied" });
   next();
 };
