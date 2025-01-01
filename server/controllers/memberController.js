@@ -55,6 +55,7 @@ const getMemberById = async (req, res) => {
     }
 
     member._id = member._id.toString();
+    console.log("member fetched");
     res.send(member);
   } catch (err) {
     console.log(err);
@@ -75,6 +76,7 @@ const editMember = async (req, res) => {
         { new: true }
       );
       if (!member) return res.status(404).send({ message: "Member not found" });
+      console.log("user edited");
       return res.status(200).send({ message: "Edit successful" });
     }
 
@@ -94,6 +96,7 @@ const editMember = async (req, res) => {
       new: true,
     });
 
+    console.log("user edited");
     if (user) return res.status(200).send({ message: "Edit successful" });
     else return res.status(404).send({ message: "Edit failed" });
   } catch (err) {
@@ -122,6 +125,7 @@ const deleteMember = async (req, res) => {
         return res.status(500).send({ error: "Failed to delete image." });
       }
 
+      console.log("Image deleted successfully.");
       res.status(200).send({
         message: "Image deleted successfully.",
       });

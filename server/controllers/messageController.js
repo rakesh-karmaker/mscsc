@@ -16,6 +16,7 @@ const getAllMessages = async (req, res) => {
       length,
       sorted
     );
+    console.log("fetched all messages");
     res.status(200).send(messages);
   } catch (err) {
     console.log(err);
@@ -34,7 +35,7 @@ const createMessage = async (req, res) => {
       });
     }
     const message = await Message.create(req.body);
-    console.log(message);
+    console.log("Message sent successfully.");
     res.status(200).send({ message: "Message sent" });
   } catch (err) {
     console.log(err);
@@ -54,6 +55,7 @@ const editMessage = async (req, res) => {
     if (!message) {
       return res.status(404).send({ message: "Message not found" });
     }
+    console.log("Message updated successfully.");
     res.status(200).send({ message: "Message updated" });
   } catch (err) {
     res.status(500).send({ message: err.message });
@@ -68,6 +70,7 @@ const deleteMessage = async (req, res) => {
     if (!message) {
       return res.status(404).send({ message: "Message not found" });
     }
+    console.log("Message deleted successfully.");
     res.status(200).send({ message: "Message deleted" });
   } catch (err) {
     res.status(500).send({ message: err.message });

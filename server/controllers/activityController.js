@@ -19,6 +19,7 @@ exports.getAllActivities = async (req, res) => {
       length,
       sorted
     );
+    console.log("fetched all activities");
     res.status(200).send(activities);
   } catch (err) {
     console.log(err);
@@ -54,7 +55,7 @@ exports.addActivity = async (req, res) => {
     req.body.coverImageId = imgRes.fileId;
 
     const activity = await Activity.create(req.body);
-    console.log(activity);
+    console.log("Activity added successfully.");
     res.status(200).send({ message: "Activity added" });
   } catch (error) {
     console.log(error);
@@ -90,7 +91,6 @@ exports.editActivity = async (req, res) => {
       });
 
       const imgRes = await uploadPromise;
-      console.log(imgRes);
       updates.coverImageUrl = imgRes.url;
       updates.coverImageId = imgRes.fileId;
     }
@@ -100,6 +100,7 @@ exports.editActivity = async (req, res) => {
     if (!activity) {
       return res.status(404).send({ message: "Activity not found" });
     }
+    console.log("Activity updated successfully.");
     res.status(200).send({ message: "Activity updated" });
   } catch (err) {
     console.log(err);

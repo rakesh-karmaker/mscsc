@@ -39,7 +39,10 @@ const editActivity = (data) => {
 
   const formData = new FormData();
   for (const key in data) {
-    if (key === "activityImage" && data[key][0] !== undefined) {
+    if (key === "activityImage") {
+      if (data[key].length === 0) {
+        continue;
+      }
       formData.append(key, data[key][0]);
       continue;
     }
