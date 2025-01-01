@@ -10,10 +10,12 @@ const getAllMembers = async (req, res) => {
       name: new RegExp(req.query.search, "i"),
       role: new RegExp(req.query.role, "i"),
     };
+
+    const sorted = { _id: -1 };
     const length = await Member.find({
       ...regex,
     }).countDocuments();
-    const members = await paginatedResults(req, Member, regex, length);
+    const members = await paginatedResults(req, Member, regex, length, sorted);
     // console.log(members);
     res.status(200).send(members);
   } catch (err) {

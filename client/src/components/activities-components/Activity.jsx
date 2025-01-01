@@ -1,37 +1,41 @@
-const Activity = ({ data, topic }) => {
-  const {
-    tag,
-    activityDate,
-    activityImagePath,
-    activityTitle,
-    activityDesc,
-    activityLink,
-  } = data;
+const Activity = ({ data, selectedTag, admin, ...rest }) => {
+  const { tag, date, coverImageUrl, title, description, link } = data;
+
   return (
     <div className="activity" tag={tag}>
-      <img
-        src={`/activities/${tag}/${activityImagePath}`}
-        alt={`The image of ${activityTitle}`}
-      />
+      <img src={`${coverImageUrl}`} alt={`The image of ${title}`} />
 
       <article>
-        <div>
-          {topic !== "" ? <Tag tag={tag} /> : ""}
+        <div className="activity-meta">
+          {selectedTag === "" ? <Tag tag={data.tag} /> : ""}
           <p className="activity-date">
-            <i className="fa-regular fa-calendar"></i>{" "}
-            <span>{activityDate}</span>
+            <i className="fa-regular fa-calendar"></i> <span>{date}</span>
           </p>
         </div>
-        <h2 className="activity-name">{activityTitle}</h2>
-        <p className="secondary-text activity-summary">{activityDesc}</p>
-        <a
-          href={activityLink}
-          className="primary-button"
-          target="_blank"
-          aria-label={`Learn more about ${activityTitle}`}
-        >
-          Learn More <i className="fa-solid fa-arrow-right"></i>
-        </a>
+        <h2 className="activity-name">{title}</h2>
+        <p className="secondary-text activity-summary">{description}</p>
+        <div className="activity-actions">
+          <a
+            href={link}
+            className="primary-button"
+            target="_blank"
+            aria-label={`Learn more about ${title}`}
+          >
+            Learn More <i className="fa-solid fa-arrow-right"></i>
+          </a>
+
+          {admin && (
+            <button
+              className="secondary-button primary-button"
+              aria-label="Edit this activity"
+              type="button"
+              onClick={() => rest.setSelectedActivity(data)}
+            >
+              <i className="fa-solid fa-pencil"></i>
+              <span>Edit</span>
+            </button>
+          )}
+        </div>
       </article>
     </div>
   );

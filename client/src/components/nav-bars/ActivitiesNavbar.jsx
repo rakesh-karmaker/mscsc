@@ -1,11 +1,11 @@
 import ActivityNavLink from "@/components/nav-bars/ActivityNavLink";
-const ActivitiesNavbar = ({ topic, setTopic }) => {
-  const capitalizeName = topic.charAt(0).toUpperCase() + topic.slice(1) + "s";
+const ActivitiesNavbar = ({ tag, setTag }) => {
+  const capitalizeName = tag.charAt(0).toUpperCase() + tag.slice(1) + "s";
   const icons = {
-    event: "fa-calendar-days",
-    workshop: "fa-chalkboard-user",
-    article: "fa-newspaper",
-    achievement: "fa-trophy",
+    Event: "fa-calendar-days",
+    Workshop: "fa-chalkboard-user",
+    Article: "fa-newspaper",
+    Achievement: "fa-trophy",
   };
 
   return (
@@ -14,7 +14,7 @@ const ActivitiesNavbar = ({ topic, setTopic }) => {
         <h1>
           All{" "}
           <span className="highlighted-text">
-            {topic === "" ? "Activities" : capitalizeName}
+            {tag === "" ? "Activities" : capitalizeName}
           </span>
         </h1>
         <menu>
@@ -22,9 +22,9 @@ const ActivitiesNavbar = ({ topic, setTopic }) => {
             return (
               <ActivityNavLink
                 name={icon}
-                setTopic={setTopic}
+                setTag={setTag}
                 key={icon}
-                active={topic === icon}
+                active={tag === icon}
               >
                 <i className={`fa-solid ${icons[icon]}`}></i>
               </ActivityNavLink>

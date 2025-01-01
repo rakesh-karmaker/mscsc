@@ -7,13 +7,18 @@ const { activitySchema } = require("../utils/validation");
 exports.getAllActivities = async (req, res) => {
   try {
     const regex = {
-      //Todo: change activityTitle to title when resetting the BD
-      activityTitle: new RegExp(req.query.search, "i"),
-      tag: new RegExp(req.query.topic, "i"),
+      title: new RegExp(req.query.search, "i"),
+      tag: new RegExp(req.query.tag, "i"),
     };
+    const sorted = { date: -1 };
     const length = await Activity.find({ ...regex }).countDocuments();
-    const activities = await paginatedResults(req, Activity, regex, length);
-    console.log(activities);
+    const activities = await paginatedResults(
+      req,
+      Activity,
+      regex,
+      length,
+      sorted
+    );
     res.status(200).send(activities);
   } catch (err) {
     console.log(err);
@@ -60,15 +65,16 @@ exports.addActivity = async (req, res) => {
 // Edit Activity
 exports.editActivity = async (req, res) => {
   try {
-    const id = req.body._id;
-    const { error: validationResult } = activitySchema.validate(req.body);
+    console.log(req.body);
+    const { _id, ...updates } = req.body;
+    const { error: validationResult } = activitySchema.validate(updates);
     if (validationResult) {
       return res
         .status(400)
         .send({ message: validationResult.details[0].message });
     }
     if (req.file) {
-      const previousActivity = await Activity.findById(id);
+      const previousActivity = await Activity.findById(_id);
       if (!previousActivity) {
         return res.status(404).send({ message: "Activity not found" });
       }
@@ -85,10 +91,10 @@ exports.editActivity = async (req, res) => {
 
       const imgRes = await uploadPromise;
       console.log(imgRes);
-      req.body.coverImageUrl = imgRes.url;
-      req.body.coverImageId = imgRes.fileId;
+      updates.coverImageUrl = imgRes.url;
+      updates.coverImageId = imgRes.fileId;
     }
-    const activity = await Activity.findByIdAndUpdate(id, req.body, {
+    const activity = await Activity.findByIdAndUpdate(_id, updates, {
       new: true,
     });
     if (!activity) {
@@ -96,6 +102,7 @@ exports.editActivity = async (req, res) => {
     }
     res.status(200).send({ message: "Activity updated" });
   } catch (err) {
+    console.log(err);
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
@@ -103,6 +110,7 @@ exports.editActivity = async (req, res) => {
 // Delete Activity
 exports.deleteActivity = async (req, res) => {
   try {
+    console.log(req.body);
     const id = req.body._id;
     const activity = await Activity.findByIdAndDelete(id);
     if (!activity) {
@@ -110,8 +118,11 @@ exports.deleteActivity = async (req, res) => {
     }
     imagekit.deleteFile(activity.coverImageId, (error, result) => {
       if (error) {
+        console.log(error);
+        console.log("Failed to delete image.");
         return res.status(500).send({ error: "Failed to delete image." });
       }
+      console.log("Activity deleted successfully.");
       res.status(200).send({ message: "Activity deleted" });
     });
   } catch (error) {

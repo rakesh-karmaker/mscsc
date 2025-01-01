@@ -8,24 +8,53 @@ import "./ActivityForm.css";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import { addActivity } from "@/services/PostService";
 import toast, { Toaster } from "react-hot-toast";
+import { editActivity } from "@/services/PutService";
+import { useQueryClient } from "@tanstack/react-query";
 
-const ActivityForm = () => {
+const ActivityForm = (props) => {
+  const queryClient = useQueryClient();
+  const defaultValues = props?.defaultValues
+    ? {
+        title: props.defaultValues.title,
+        description: props.defaultValues.description,
+        date: new Date(props.defaultValues.date).toISOString().split("T")[0],
+        link: props.defaultValues.link,
+        tag: props.defaultValues.tag,
+      }
+    : {};
+
   const {
     register,
     handleSubmit,
     setValue,
     trigger,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({
+    defaultValues: defaultValues,
+  });
 
   const tags = ["Event", "Workshop", "Article", "Achievement"];
 
   const onSubmit = async (data) => {
-    const res = await addActivity(data);
-    if (res.status === 200) {
-      toast.success("Activity added successfully");
+    let res = null;
+    if (props?.defaultValues) {
+      res = await editActivity({ ...data, _id: props.defaultValues._id });
+      if (res.status === 200) {
+        toast.success("Activity edited successfully");
+        queryClient.invalidateQueries("activities");
+        props?.setSelectedActivity(null);
+      } else {
+        toast.error("Failed to edit activity");
+      }
     } else {
-      toast.error("Failed to add activity");
+      res = await addActivity(data);
+      if (res.status === 200) {
+        toast.success("Activity added successfully");
+        queryClient.invalidateQueries("activities");
+        props?.setCreateActivity(false);
+      } else {
+        toast.error("Failed to add activity");
+      }
     }
   };
 
@@ -67,7 +96,9 @@ const ActivityForm = () => {
         </RadioList>
 
         <FileInput register={register("activityImage")} errors={errors.image}>
-          Activity Cover Image:
+          {props?.defaultValues
+            ? "Change Activity Cover Image"
+            : "Activity Cover Image:"}
         </FileInput>
 
         <TextArea
@@ -87,9 +118,26 @@ const ActivityForm = () => {
           Activity Facebook Post Link
         </InputText>
 
-        <SubmitBtn isSubmitting={isSubmitting} pendingText="Adding">
-          Add Activity
-        </SubmitBtn>
+        <div className="combined-btns">
+          <SubmitBtn
+            isSubmitting={isSubmitting}
+            pendingText={props?.defaultValues ? "Editing" : "Adding"}
+          >
+            {props?.defaultValues ? "Edit" : "Add"} Activity
+          </SubmitBtn>
+          {props?.defaultValues && (
+            <button
+              type="button"
+              className="primary-button secondary-button"
+              onClick={() => {
+                props?.deleteActivity(props.defaultValues._id);
+              }}
+            >
+              <i className="fa-solid fa-trash"></i>
+              <span>Delete Activity</span>
+            </button>
+          )}
+        </div>
         <Toaster position="top-right" />
       </form>
     </div>

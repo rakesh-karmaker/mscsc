@@ -1,4 +1,4 @@
-exports.paginatedResults = async (req, model, regex, length) => {
+exports.paginatedResults = async (req, model, regex, length, sorted) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || null;
   const startIndex = (page - 1) * limit;
@@ -21,7 +21,7 @@ exports.paginatedResults = async (req, model, regex, length) => {
       .find({ ...regex })
       .limit(limit)
       .skip(startIndex)
-      .sort({ _id: -1 })
+      .sort({ ...sorted })
       .exec();
     results.totalLength = length;
     return results;

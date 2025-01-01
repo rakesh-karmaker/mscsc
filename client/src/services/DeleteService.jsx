@@ -16,4 +16,8 @@ const deleteMessage = (id) => {
   return api.delete("/message", { data: id });
 };
 
-export { deleteMember, deleteMessage };
+const deleteActivity = (_id) => {
+  return api.delete("/activity", { data: { _id: _id } });
+};
+
+export { deleteMember, deleteMessage, deleteActivity };

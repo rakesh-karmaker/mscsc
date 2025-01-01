@@ -1,6 +1,22 @@
 .activity-form {
-  margin-top: 50px;
+  margin-top: 60px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 50px;
+}
+
+.activity-form .combined-btns {
+  display: flex;
+  gap: 20px;
+}
+
+.activity-form .combined-btns > .secondary-button {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.activity-form .combined-btns > .secondary-button::before {
+  background-color: red;
 }

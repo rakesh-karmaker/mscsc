@@ -30,4 +30,22 @@ const editMessage = (data) => {
   return api.put("/message", formData);
 };
 
-export { editUser, editMessage };
+const editActivity = (data) => {
+  api.interceptors.request.use(function (config) {
+    config.headers["Content-Type"] = "multipart/form-data";
+    config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
+    return config;
+  });
+
+  const formData = new FormData();
+  for (const key in data) {
+    if (key === "activityImage" && data[key][0] !== undefined) {
+      formData.append(key, data[key][0]);
+      continue;
+    }
+    formData.append(key, data[key]);
+  }
+  return api.put("/activity", formData);
+};
+
+export { editUser, editMessage, editActivity };

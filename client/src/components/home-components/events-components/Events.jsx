@@ -1,6 +1,6 @@
 import PrimaryBtn from "@/components/UI/PrimaryBtn";
 import SectionHeader from "@/components/UI/SectionHeader";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import EventSwiper from "@/components/home-components/events-components/EventSwiper";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,11 +10,14 @@ gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
 
 import "./Events.css";
+import { getAllActivities } from "@/services/GetService";
 
-const Events = ({ data }) => {
+const Events = () => {
   const eventStatuses = ["happened", "all", "upcoming"];
   const [status, setStatus] = useState("all");
   const eventSwiperRef = useRef(null);
+  const [events, setEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
 
   useGSAP(() => {
     gsap.fromTo(
@@ -32,24 +35,40 @@ const Events = ({ data }) => {
     );
   });
 
-  const filterData = (status, data) => {
-    const eventData = data
-      .filter(
-        (activity) => activity.tag == "event" || activity.tag == "workshop"
-      )
-      .slice(0, 7);
+  useEffect(() => {
+    const getData = async () => {
+      const workshopData = await getAllActivities(1, 5, "Workshop", "");
+      const eventData = await getAllActivities(1, 5, "Event", "");
+      const combinedData = [
+        ...workshopData.data.results,
+        ...eventData.data.results,
+      ];
+      const sortedData = combinedData.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
 
+      setEvents(sortedData);
+      setFilteredEvents(sortedData);
+    };
+
+    getData();
+  }, []);
+
+  useEffect(() => {
     if (status === "all") {
-      return eventData;
+      setFilteredEvents(events);
+    } else if (status === "happened") {
+      const filteredByStatusData = events.filter(
+        (event) => new Date(event.date) < new Date()
+      );
+      setFilteredEvents(filteredByStatusData);
+    } else if (status === "upcoming") {
+      const filteredByStatusData = events.filter(
+        (event) => new Date(event.date) > new Date()
+      );
+      setFilteredEvents(filteredByStatusData);
     }
-
-    const filteredByStatusData = eventData.filter(
-      (event) => event.status == status
-    );
-    return filteredByStatusData.length == 0 ? false : filteredByStatusData;
-  };
-
-  const filteredEventData = filterData(status, data);
+  }, [status]);
 
   return (
     <section id="events" className="page-section col-center">
@@ -73,16 +92,16 @@ const Events = ({ data }) => {
               status-name={statusLink}
               onClick={() => setStatus(statusLink)}
             >
-              {statusLink}
+              {statusLink.charAt(0).toUpperCase() + statusLink.slice(1)}
             </button>
           ))}
         </div>
 
         <div ref={eventSwiperRef} className="events-container">
-          {filteredEventData == false ? (
+          {filteredEvents.length === 0 ? (
             <p className="secondary-text">No events to show</p>
           ) : (
-            <EventSwiper filterEventsData={filteredEventData} />
+            <EventSwiper filteredEvents={filteredEvents} />
           )}
         </div>
       </div>

@@ -5,16 +5,21 @@ import "@/components/home-components/articles-components/Articles.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { useEffect, useState } from "react";
+import { getAllActivities } from "@/services/GetService";
 
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
 
-const Articles = ({ data }) => {
-  const filteredArticles = data
-    .filter(
-      (activity) => activity.tag == "article" || activity.tag == "achievement"
-    )
-    .slice(0, 3);
+const Articles = () => {
+  const [articles, setArticles] = useState([]);
+  useEffect(() => {
+    const fetchArticles = async () => {
+      const response = await getAllActivities(1, 3, "Article", "");
+      setArticles(response.data.results);
+    };
+    fetchArticles();
+  }, []);
 
   useGSAP(() => {
     gsap.fromTo(
@@ -42,8 +47,8 @@ const Articles = ({ data }) => {
         </PrimaryBtn>
       </SectionHeader>
       <div className="articles-container">
-        {filteredArticles.map((article) => (
-          <Article key={article.activityTitle} article={article} />
+        {articles?.map((article) => (
+          <Article key={article._id} article={article} />
         ))}
       </div>
     </section>

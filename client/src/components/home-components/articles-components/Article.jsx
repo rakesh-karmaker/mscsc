@@ -1,27 +1,16 @@
 const Article = ({ article }) => {
-  const {
-    tag,
-    activityDate,
-    activityImagePath,
-    activityTitle,
-    activityDesc,
-    activityLink,
-  } = article;
+  const { tag, date, coverImageUrl, title, description, link } = article;
 
-  const capitalizedTag = tag.charAt(0).toUpperCase() + tag.slice(1);
   return (
     <article className="article">
-      <img
-        src={`/activities/${tag}/${activityImagePath}`}
-        alt={`Became ${activityTitle}`}
-      />
+      <img src={coverImageUrl} alt={`${title} - ${tag} on ${date}`} />
       <div className="category-date">
-        <p className="category">{capitalizedTag}</p>
-        <p className="date">{activityDate}</p>
+        <p className="category">{tag}</p>
+        <p className="date">{date}</p>
       </div>
-      <h3>{activityTitle}</h3>
-      <p className="secondary-text">{activityDesc}</p>
-      <a href={activityLink} target="_blank">
+      <h3>{title}</h3>
+      <p className="secondary-text">{description}</p>
+      <a href={link} target="_blank">
         Learn more <i className="fa-solid fa-arrow-right"></i>
       </a>
     </article>

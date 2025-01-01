@@ -25,9 +25,9 @@ const getUserById = async (id) => {
   return response.data;
 };
 
-const getAllActivities = (page, limit, topic, search) => {
+const getAllActivities = (page, limit, tag, search) => {
   return api.get(
-    `/activity?limit=${limit}&page=${page}&topic=${topic}&search=${search}`
+    `/activity?limit=${limit}&page=${page}&tag=${tag}&search=${search}`
   );
 };
 
@@ -38,7 +38,7 @@ const getAllMembers = (page, limit, search, role) => {
     return config;
   });
   return api.get(
-    `/member?page=${page}&limit=${limit}&search=${search}&role=${role}`
+    `/member/all?page=${page}&limit=${limit}&search=${search}&role=${role}`
   );
 };
 

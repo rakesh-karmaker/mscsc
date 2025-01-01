@@ -5,27 +5,26 @@ import { getAllActivities } from "@/services/GetService";
 const ActivitiesContext = createContext();
 
 const ActivitiesProvider = ({ children }) => {
-  const [topic, setTopic] = useState("");
+  const [tag, setTag] = useState("");
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const { data } = useQuery({
-    queryKey: ["activities", page, topic, search],
+    queryKey: ["activities", page, tag, search],
     queryFn: () => {
-      return getAllActivities(page, 12, topic, search);
+      return getAllActivities(page, 12, tag, search);
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   const activities = data?.data ? data.data.results : [];
   const length = data?.data?.totalLength || 0;
-  console.log(activities);
   return (
     <ActivitiesContext.Provider
       value={{
         activities,
         length,
-        topic,
-        setTopic,
+        tag,
+        setTag,
         search,
         setSearch,
         page,

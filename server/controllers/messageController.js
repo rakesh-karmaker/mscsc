@@ -7,8 +7,15 @@ const getAllMessages = async (req, res) => {
     const regex = {
       name: new RegExp(req.query.search, "i"),
     };
+    const sorted = { _id: -1 };
     const length = await Message.find({ ...regex }).countDocuments();
-    const messages = await paginatedResults(req, Message, regex, length);
+    const messages = await paginatedResults(
+      req,
+      Message,
+      regex,
+      length,
+      sorted
+    );
     res.status(200).send(messages);
   } catch (err) {
     console.log(err);

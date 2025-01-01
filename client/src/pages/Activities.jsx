@@ -4,17 +4,9 @@ import "../components/activities-components/Activities.css";
 import { useEffect } from "react";
 import Pagination from "../components/activities-components/Pagination";
 import { useActivities } from "@/contexts/ActivitiesContext";
-const Activities = () => {
-  const {
-    activities,
-    length,
-    topic,
-    setTopic,
-    search,
-    setSearch,
-    page,
-    setPage,
-  } = useActivities();
+const Activities = ({ admin, ...rest }) => {
+  const { activities, length, tag, setTag, search, setSearch, page, setPage } =
+    useActivities();
 
   const elementsPerPage = 12;
 
@@ -30,14 +22,16 @@ const Activities = () => {
   };
   return (
     <main className="page-activities">
-      <ActivitiesNavbar topic={topic} setTopic={setTopic} />
+      <ActivitiesNavbar tag={tag} setTag={setTag} />
       <section className="activities-container">
         {activities?.map((activity) => {
           return (
             <Activity
-              key={activity.activityTitle}
+              key={activity._id}
               data={activity}
-              select={topic}
+              selectedTag={tag}
+              admin={admin}
+              {...rest}
             />
           );
         })}

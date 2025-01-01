@@ -2,7 +2,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 
 import Event from "@/components/home-components/events-components/Event";
-const EventSwiper = ({ filterEventsData }) => {
+const EventSwiper = ({ filteredEvents }) => {
   return (
     <Swiper
       modules={[Autoplay]}
@@ -26,7 +26,7 @@ const EventSwiper = ({ filterEventsData }) => {
       }}
       className="event-swiper"
     >
-      {filterEventsData.map((event) => (
+      {filteredEvents?.map((event) => (
         <SwiperSlide className="activity-demo" key={event.activityTitle}>
           <Event eventData={event} />
         </SwiperSlide>

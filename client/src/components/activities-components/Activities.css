@@ -85,7 +85,7 @@ menu {
   padding: 20px;
 }
 
-.activity article > div {
+.activity-meta {
   display: flex;
   justify-content: space-between;
   font-size: 0.9rem;
@@ -133,12 +133,29 @@ menu {
   font-size: 1.1rem;
   height: 40px;
   padding: 0px 20px;
+}
+
+.activity-actions {
+  display: flex;
+  gap: 10px;
   position: absolute;
   bottom: 20px;
 }
 
 .page-activities .primary-button i {
   margin-left: 5px;
+}
+
+.activity-actions > .secondary-button > i {
+  margin-left: 0px;
+  margin-right: 5px;
+}
+.activity-actions > .primary-button.secondary-button::before {
+  background-color: var(--black);
+}
+
+.activity-actions > .primary-button.secondary-button::after {
+  background-color: var(--highlighted-color);
 }
 
 .pagination {
@@ -204,5 +221,17 @@ menu {
   menu {
     flex-wrap: wrap;
     justify-content: center;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .activity {
+    height: 100%;
+  }
+  .activity-actions {
+    position: relative;
+    flex-direction: column;
+    bottom: 0px;
+    gap: 5px;
   }
 }
