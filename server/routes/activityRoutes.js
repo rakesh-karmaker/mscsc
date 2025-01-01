@@ -16,14 +16,14 @@ router.post(
   "/",
   isAuthorized,
   isAdmin,
-  uploadSingle("activity").single("activityImage"),
+  uploadSingle("activities").single("activityImage"),
   addActivity
 );
 router.put(
   "/",
   isAuthorized,
   isAdmin,
-  uploadSingle("activity").single("activityImage"),
+  uploadSingle("activities").single("activityImage"),
   editActivity
 );
 router.delete("/", isAuthorized, isAdmin, deleteActivity);
