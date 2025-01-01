@@ -42,9 +42,9 @@ const Header = () => {
     <header>
       <nav>
         {window.innerWidth > 800 ? (
-          <div id="logo">
+          <NavLink to="/" id="logo">
             <img src="/logo.webp" alt="MSCSC logo" />
-          </div>
+          </NavLink>
         ) : (
           <NavbarToggler
             navbar={navBar}

@@ -12,6 +12,12 @@
   position: relative;
 }
 
+#auth:has(.login-container) {
+  justify-content: center;
+  align-items: center;
+  height: calc(100svh - var(--nav-height));
+}
+
 .reg-img {
   width: 100%;
   max-width: 570px;
@@ -27,33 +33,26 @@
   min-width: 625px;
 }
 
-.auth-container h1 {
-  color: var(--text-primary);
-  font-style: normal;
-  font-weight: 500;
-  font-size: 64px;
-  line-height: 77px;
-  letter-spacing: 0.01em;
-  position: relative;
-  margin-bottom: 20px;
-}
-
-.auth-container h1::after {
-  content: "";
-  position: absolute;
-  width: 200px;
-  height: 5px;
-  background-color: var(--highlighted-color);
-  border-radius: 10px;
-  bottom: -13px;
-  left: 0;
-}
-
 .auth-form {
   margin-top: 3rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+}
+
+.login-container {
+  max-width: 500px;
+  min-width: 0px;
+
+  padding: 50px 40px;
+  border-radius: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.login-form {
+  margin-top: 60px;
+  justify-self: center;
+  gap: 2.5rem;
 }
 @media screen and (max-width: 1260px) {
   #register {

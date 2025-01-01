@@ -18,40 +18,11 @@ const Login = ({ setForm }) => {
     resolver: zodResolver(MemberLoginSchema),
   });
 
-  const onSubmit = async (data) => {
-    toast.promise(loginUser(data), {
-      loading: "Logging in...",
-      success: (res) => {
-        localStorage.setItem("token", res.data.token);
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 2000);
-
-        return "Login Successful";
-      },
-      error: (err) => {
-        setError(err.response.data.subject, {
-          message: err.response.data.message,
-        });
-        setError("root", {
-          message: "Invalid Credentials",
-        });
-        return err.response.data.message;
-      },
-    });
-  };
-
   return (
-    <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
-      <InputText
-        setValue={setValue}
-        trigger={trigger}
-        register={register}
-        errors={errors.name}
-        id="name"
-      >
-        Full Name
-      </InputText>
+    <form
+      className="auth-form login-form"
+      onSubmit={handleSubmit((data) => onSubmit(data, setError))}
+    >
       <InputText
         setValue={setValue}
         trigger={trigger}
@@ -93,6 +64,29 @@ const Login = ({ setForm }) => {
       <Toaster position="top-right" />
     </form>
   );
+};
+
+const onSubmit = async (data, setError) => {
+  toast.promise(loginUser(data), {
+    loading: "Logging in...",
+    success: (res) => {
+      localStorage.setItem("token", res.data.token);
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 2000);
+
+      return "Login Successful";
+    },
+    error: (err) => {
+      setError(err.response.data.subject, {
+        message: err.response.data.message,
+      });
+      setError("root", {
+        message: "Invalid Credentials",
+      });
+      return err.response.data.message;
+    },
+  });
 };
 
 export default Login;

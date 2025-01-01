@@ -10,6 +10,8 @@ main.page-activities {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .activities-navbar h1 {

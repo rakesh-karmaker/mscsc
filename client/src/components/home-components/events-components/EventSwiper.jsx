@@ -27,7 +27,7 @@ const EventSwiper = ({ filteredEvents }) => {
       className="event-swiper"
     >
       {filteredEvents?.map((event) => (
-        <SwiperSlide className="activity-demo" key={event.activityTitle}>
+        <SwiperSlide className="activity-demo" key={event._id + "event"}>
           <Event eventData={event} />
         </SwiperSlide>
       ))}

@@ -48,7 +48,7 @@ const Articles = () => {
       </SectionHeader>
       <div className="articles-container">
         {articles?.map((article) => (
-          <Article key={article._id} article={article} />
+          <Article key={article._id + "article"} article={article} />
         ))}
       </div>
     </section>

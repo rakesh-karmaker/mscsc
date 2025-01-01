@@ -63,7 +63,8 @@ input.hidden {
 
 .content {
   font-size: 1.05rem;
-  color: var(--text-secondary);
+  color: var(--highlighted-color);
+  opacity: 0.8;
   text-decoration: none;
   transition: 0.25s;
 }
@@ -71,7 +72,7 @@ input.hidden {
 .content:hover {
   text-decoration: underline;
   color: var(--highlighted-color);
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .contact-form {

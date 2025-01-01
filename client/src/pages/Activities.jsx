@@ -22,7 +22,12 @@ const Activities = ({ admin, ...rest }) => {
   };
   return (
     <main className="page-activities">
-      <ActivitiesNavbar tag={tag} setTag={setTag} />
+      <ActivitiesNavbar
+        tag={tag}
+        setTag={setTag}
+        search={search}
+        setSearch={setSearch}
+      />
       <section className="activities-container">
         {activities?.map((activity) => {
           return (

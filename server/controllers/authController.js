@@ -66,12 +66,12 @@ exports.register = async (req, res) => {
 // Login Member
 exports.login = async (req, res) => {
   try {
-    const { name: memberName, email, password } = req.body;
-    const member = await Member.findOne({
-      $or: [{ name: memberName }, { email }],
-    });
+    const { email, password } = req.body;
+    const member = await Member.findOne({ email });
     if (!member) {
-      return res.status(404).send({ message: "Invalid credentials" });
+      return res
+        .status(404)
+        .send({ subject: "email", message: "Invalid email" });
     }
 
     const isPasswordMatch = await bcrypt.compare(password, member.password);

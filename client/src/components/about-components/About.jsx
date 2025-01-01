@@ -1,6 +1,6 @@
-import ClubDescription from "@/components/home-components/about-components/ClubDesc";
-import "@/components/home-components/about-components/About.css";
-import Departments from "@/components/home-components/about-components/Departments";
+import ClubDescription from "@/components/about-components/ClubDesc";
+import "@/components/about-components/About.css";
+import Departments from "@/components/about-components/Departments";
 
 const AboutUs = () => {
   return (

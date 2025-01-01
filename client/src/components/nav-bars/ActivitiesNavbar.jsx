@@ -1,5 +1,6 @@
+import SearchInput from "@/admin/components/SearchInput/SearchInput";
 import ActivityNavLink from "@/components/nav-bars/ActivityNavLink";
-const ActivitiesNavbar = ({ tag, setTag }) => {
+const ActivitiesNavbar = ({ tag, setTag, search, setSearch }) => {
   const capitalizeName = tag.charAt(0).toUpperCase() + tag.slice(1) + "s";
   const icons = {
     Event: "fa-calendar-days",
@@ -31,6 +32,9 @@ const ActivitiesNavbar = ({ tag, setTag }) => {
             );
           })}
         </menu>
+        <SearchInput search={search} setSearch={setSearch}>
+          Search Activity
+        </SearchInput>
       </div>
     </>
   );

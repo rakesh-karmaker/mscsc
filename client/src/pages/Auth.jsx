@@ -23,11 +23,14 @@ const Auth = () => {
 
   return (
     <main id="auth">
-      {window.innerWidth >= 1080 ? (
+      {window.innerWidth >= 1080 && form === "Register" ? (
         <RegisterImage registerFormContainer={registerFormContainer} />
       ) : null}
-      <FormHeading>{form}</FormHeading>
-      <div ref={registerFormContainer} className="auth-container">
+      <div
+        ref={registerFormContainer}
+        className={`auth-container ${form.toLocaleLowerCase()}-container`}
+      >
+        <FormHeading>{form}</FormHeading>
         {form === "Register" ? (
           <UserForm setForm={setForm} schema={MemberRegSchema} />
         ) : (

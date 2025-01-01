@@ -28,7 +28,7 @@ const AdminActivities = () => {
         View and manage all the activities of the club
       </DashboardHeader>
       <button
-        className="primary-button"
+        className="primary-button activity-action"
         onClick={() => {
           selectedActivity === null && setCreateActivity((prev) => !prev);
           setSelectedActivity(null);

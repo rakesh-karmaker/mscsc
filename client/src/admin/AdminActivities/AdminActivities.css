@@ -6,15 +6,12 @@
   gap: 50px;
 }
 
-.admin-activities .page-activities {
-  margin-top: 0px;
-}
-
+.admin-activities .page-activities,
 .admin-activities .activities-container {
   margin-top: 0px;
 }
 
-.admin-activities .primary-button {
+.admin-activities .activity-action {
   /* margin-top: 10px; */
   font-size: 1.1rem;
   height: 40px;
