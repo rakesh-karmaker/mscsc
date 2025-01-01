@@ -1,5 +1,5 @@
 import "../components/ec-components/Executives.css";
-import executivesData from "../api/executivesData.json";
+import executivesData from "@/services/api/executivesData";
 import ExecutivesContainer from "../components/ec-components/ExecutivesContainer";
 
 const Executives = () => {
