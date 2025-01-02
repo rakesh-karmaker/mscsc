@@ -22,6 +22,10 @@ const editUser = (data) => {
 };
 
 const editMessage = (data) => {
+  api.interceptors.request.use(function (config) {
+    config.headers["Content-Type"] = "application/json";
+    return config;
+  });
   const formData = new FormData();
   for (const key in data) {
     formData.append(key, data[key]);

@@ -1,4 +1,5 @@
 const Activity = require("../models/Activity");
+const { uploadImage, deleteImage } = require("../utils/imagekit");
 const imagekit = require("../utils/imagekit");
 const { paginatedResults } = require("../utils/paginatedResults");
 const { activitySchema } = require("../utils/validation");
@@ -31,7 +32,6 @@ exports.getAllActivities = async (req, res) => {
 exports.addActivity = async (req, res) => {
   try {
     const { file, body } = req;
-    console.log("body", body, "\nfile", file);
     if (!file || !body) {
       return res.status(400).send({ message: "Invalid request" });
     }
@@ -44,17 +44,11 @@ exports.addActivity = async (req, res) => {
       });
     }
 
-    const uploadPromise = imagekit.upload({
-      file: file.buffer,
-      fileName: `${Date.now()}-${file.originalname}`,
-    });
+    const { url, imgId } = await uploadImage(res, file);
+    body.coverImageUrl = url;
+    body.coverImageId = imgId;
 
-    const imgRes = await uploadPromise;
-    console.log(imgRes);
-    req.body.coverImageUrl = imgRes.url;
-    req.body.coverImageId = imgRes.fileId;
-
-    const activity = await Activity.create(req.body);
+    const activity = await Activity.create(body);
     console.log("Activity added successfully.");
     res.status(200).send({ message: "Activity added" });
   } catch (error) {
@@ -74,32 +68,25 @@ exports.editActivity = async (req, res) => {
         .status(400)
         .send({ message: validationResult.details[0].message });
     }
-    if (req.file) {
+
+    if (req?.file) {
       const previousActivity = await Activity.findById(_id);
       if (!previousActivity) {
         return res.status(404).send({ message: "Activity not found" });
       }
-
-      imagekit.deleteFile(previousActivity.coverImageId, (error, result) => {
-        if (error) {
-          return res.status(500).send({ error: "Failed to delete image." });
-        }
-      });
-      const uploadPromise = imagekit.upload({
-        file: req.file.buffer,
-        fileName: `${Date.now()}-${req.file.originalname}`,
-      });
-
-      const imgRes = await uploadPromise;
-      updates.coverImageUrl = imgRes.url;
-      updates.coverImageId = imgRes.fileId;
+      deleteImage(res, previousActivity.coverImageId);
+      const { url, imgId } = await uploadImage(res, req.file);
+      updates.coverImageUrl = url;
+      updates.coverImageId = imgId;
     }
+
     const activity = await Activity.findByIdAndUpdate(_id, updates, {
       new: true,
     });
     if (!activity) {
       return res.status(404).send({ message: "Activity not found" });
     }
+
     console.log("Activity updated successfully.");
     res.status(200).send({ message: "Activity updated" });
   } catch (err) {
@@ -117,15 +104,9 @@ exports.deleteActivity = async (req, res) => {
     if (!activity) {
       return res.status(404).send({ message: "Activity not found" });
     }
-    imagekit.deleteFile(activity.coverImageId, (error, result) => {
-      if (error) {
-        console.log(error);
-        console.log("Failed to delete image.");
-        return res.status(500).send({ error: "Failed to delete image." });
-      }
-      console.log("Activity deleted successfully.");
-      res.status(200).send({ message: "Activity deleted" });
-    });
+    deleteImage(res, activity.coverImageId);
+    console.log("Activity deleted successfully.");
+    res.status(200).send({ message: "Activity deleted" });
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: "Server error", error: err.message });

@@ -5,7 +5,7 @@ const ClubDescription = () => {
     <div className="club-description">
       <p>Join</p>
       <h2>
-        Unlock Your Potential with
+        Unlock Your Potential with{" "}
         <span className="highlighted-text">MSCSC</span>
       </h2>
       <p className="secondary-text">

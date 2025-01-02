@@ -6,11 +6,11 @@ const ProtectedRoute = ({ children }) => {
   const { user } = useUser();
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (user === null || user?.role !== "admin") {
-  //     navigate("/", { replace: true });
-  //   }
-  // }, [user, navigate]);
+  useEffect(() => {
+    if (user === null || user?.role !== "admin") {
+      navigate("/", { replace: true });
+    }
+  }, [user, navigate]);
 
   return children;
 };

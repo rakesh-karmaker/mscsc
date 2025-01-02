@@ -1,7 +1,7 @@
 const Member = require("../models/Member");
 const bcrypt = require("bcryptjs");
-const imagekit = require("../utils/imagekit");
 const { paginatedResults } = require("../utils/paginatedResults");
+const { deleteImage } = require("../utils/imagekit");
 
 // Get All Members
 const getAllMembers = async (req, res) => {
@@ -120,16 +120,8 @@ const deleteMember = async (req, res) => {
     const member = await Member.findByIdAndDelete(id);
     if (!member) return res.status(404).send({ message: "Member not found" });
 
-    imagekit.deleteFile(member.imgId, (error, result) => {
-      if (error) {
-        return res.status(500).send({ error: "Failed to delete image." });
-      }
-
-      console.log("Image deleted successfully.");
-      res.status(200).send({
-        message: "Image deleted successfully.",
-      });
-    });
+    deleteImage(res, member.imgId);
+    res.status(200).send({ message: "Member deleted successfully" });
   } catch (err) {
     res.status(500).send({ message: "Server error", error: err.message });
   }

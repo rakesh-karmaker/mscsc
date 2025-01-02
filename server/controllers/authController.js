@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Member = require("../models/Member");
 const { registerSchema } = require("../utils/validation");
-const imagekit = require("../utils/imagekit");
+const { uploadImage } = require("../utils/imagekit");
 
 // Register Member
 exports.register = async (req, res) => {
@@ -22,20 +22,13 @@ exports.register = async (req, res) => {
       });
     }
 
-    const uploadPromise = imagekit.upload({
-      file: file.buffer,
-      fileName: `${Date.now()}-${file.originalname}`,
-    });
-
-    const imgRes = await uploadPromise;
-    console.log(imgRes);
-    const url = imgRes.url;
+    const { url, imgId } = await uploadImage(res, file);
     if (!url) {
       throw new Error("No image URL found");
     }
 
     body.image = url;
-    body.imgId = imgRes.fileId;
+    body.imgId = imgId;
 
     const existingMember = await Member.findOne({ email: body.email });
     if (existingMember) {
@@ -47,11 +40,9 @@ exports.register = async (req, res) => {
     const newMember = new Member(body);
     await newMember.save();
 
-    const token = jwt.sign(
-      { _id: newMember._id, role: newMember.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    const token = jwt.sign({ _id: newMember._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
     console.log("Member registered successfully.");
 
@@ -81,11 +72,9 @@ exports.login = async (req, res) => {
         .send({ subject: "password", message: "Invalid password" });
     }
 
-    const token = jwt.sign(
-      { _id: member._id, role: member.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    const token = jwt.sign({ _id: member._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
     console.log("Member logged in successfully.");
     res.send({ token });

@@ -59,7 +59,7 @@ const TableRow = ({ row, headers, ...rest }) => {
 const getTableCell = (row, header, { onViewClick, onDelete, ...rest }) => {
   if (header.key === "social") {
     return (
-      <Link to={row[header.key]} className="profile-link">
+      <Link to={row["socialLink"]} className="profile-link">
         Facebook
       </Link>
     );

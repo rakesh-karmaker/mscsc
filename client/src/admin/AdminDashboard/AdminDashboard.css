@@ -54,6 +54,9 @@
 }
 
 @media screen and (max-width: 1240px) {
+  .dashboard-info {
+    flex-wrap: wrap;
+  }
   .quick-access {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

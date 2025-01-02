@@ -1,10 +1,10 @@
 [
   {
-    "name": "Alvi Adib",
+    "name": "Alvi Abid",
     "position": "President",
     "image": "2024-2025/alvipfp.jpg",
     "socials": {
-      "facebook": "https://www.facebook.com/Higashi.Yagami",
+      "facebook": "https://www.facebook.com/Alvi.abid.realest/",
       "linkedin": "https://www.linkedin.com/in/alvi-abid-2076012a6/"
     },
     "panel": "2024-2025"
@@ -22,7 +22,9 @@
     "name": "Muhammad Saad",
     "position": "VP of Learning & Head of Physics and Math Dpt.",
     "image": "2023-2024/saadpfp.jpg",
-    "socials": {},
+    "socials": {
+      "facebook": "https://www.facebook.com/MD.SDBS"
+    },
     "panel": "2024-2025"
   },
   {
@@ -96,6 +98,24 @@
     "image": "2024-2025/zannatulpfp.jpg",
     "socials": {
       "facebook": "https://www.facebook.com/profile.php?id=100058734297302"
+    },
+    "panel": "2024-2025"
+  },
+  {
+    "name": "Fayruj Humayra Binta Hashib",
+    "position": "Head of Eco and Space Dpt.",
+    "image": "2024-2025/fayrujpfp.png",
+    "socials": {
+      "facebook": "https://www.facebook.com/sharaban.tohura.108"
+    },
+    "panel": "2024-2025"
+  },
+  {
+    "name": "Ahana Rahman",
+    "position": "Assistant Head of Eco and Space Dpt.",
+    "image": "2024-2025/ahanapfp.webp",
+    "socials": {
+      "facebook": "https://www.facebook.com/karima.khanam.186"
     },
     "panel": "2024-2025"
   },

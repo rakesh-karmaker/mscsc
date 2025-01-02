@@ -6,7 +6,7 @@ const {
   deleteActivity,
 } = require("../controllers/activityController");
 const { isAdmin, isAuthorized } = require("../middleware/authMiddleware");
-const { uploadSingle } = require("../middleware/multer");
+const uploadSingle = require("../middleware/multer");
 
 const router = express.Router();
 
@@ -16,14 +16,14 @@ router.post(
   "/",
   isAuthorized,
   isAdmin,
-  uploadSingle("activities").single("activityImage"),
+  uploadSingle.single("activityImage"),
   addActivity
 );
 router.put(
   "/",
   isAuthorized,
   isAdmin,
-  uploadSingle("activities").single("activityImage"),
+  uploadSingle.single("activityImage"),
   editActivity
 );
 router.delete("/", isAuthorized, isAdmin, deleteActivity);
