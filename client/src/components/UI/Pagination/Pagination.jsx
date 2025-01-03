@@ -1,3 +1,5 @@
+import "./Pagination.css";
+
 const Pagination = ({ length, elementsPerPage, setPage, currentPage }) => {
   let pages = [];
   for (let i = 1; i <= Math.ceil(length / elementsPerPage); i++) {

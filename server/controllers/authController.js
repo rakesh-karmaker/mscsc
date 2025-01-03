@@ -79,6 +79,7 @@ exports.login = async (req, res) => {
     console.log("Member logged in successfully.");
     res.send({ token });
   } catch (err) {
+    console.log(err);
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };

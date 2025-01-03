@@ -1,0 +1,44 @@
+.pagination {
+  margin-top: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination[available="false"] {
+  display: none;
+}
+
+.pagination-btn,
+.page-number {
+  width: 40px;
+  height: 40px;
+  border: none;
+  font-size: 20px;
+  color: var(--text-black);
+  transition: 0.25s;
+  cursor: pointer;
+  background-color: transparent;
+  font-size: 1rem;
+}
+
+.pagination-btn:hover,
+.page-number:hover {
+  background-color: var(--light-highlighted-color);
+  color: var(--highlighted-color);
+}
+
+.page-number.page-active {
+  background-color: var(--highlighted-color);
+  color: var(--text-white);
+}
+
+.pagination-btn.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.page-nav-container {
+  display: flex;
+}

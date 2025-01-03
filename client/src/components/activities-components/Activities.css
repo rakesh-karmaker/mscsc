@@ -33,8 +33,7 @@ menu {
   font-weight: 450;
   cursor: pointer;
   background-color: var(--primary-bg);
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
-    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-radius: 10px;
   transition: 0.25s;
   color: var(--text-black);
@@ -158,51 +157,6 @@ menu {
 
 .activity-actions > .primary-button.secondary-button::after {
   background-color: var(--highlighted-color);
-}
-
-.pagination {
-  margin-top: 50px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.pagination[available="false"] {
-  display: none;
-}
-
-.pagination-btn,
-.page-number {
-  width: 40px;
-  height: 40px;
-  border: none;
-  font-size: 20px;
-  color: var(--text-black);
-  transition: 0.25s;
-  cursor: pointer;
-  background-color: transparent;
-  font-size: 1rem;
-}
-
-.pagination-btn:hover,
-.page-number:hover {
-  background-color: var(--light-highlighted-color);
-  color: var(--highlighted-color);
-}
-
-.page-number.page-active {
-  background-color: var(--highlighted-color);
-  color: var(--text-white);
-}
-
-.pagination-btn.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.page-nav-container {
-  display: flex;
 }
 
 @media screen and (max-width: 1000px) {

@@ -36,6 +36,7 @@ const deleteImage = async (res, imageId) => {
   try {
     imagekit.deleteFile(imageId, (error, result) => {
       if (error) {
+        console.log("Failed to delete image. ", error);
         return res.status(500).send({ error: "Failed to delete image." });
       }
     });

@@ -4,7 +4,7 @@ const YearRadio = ({ register, errors }) => {
   const date = new Date();
   const currentYear = date.getFullYear() - 1;
   const years = [];
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 6; i++) {
     years.push(currentYear + i);
   }
 

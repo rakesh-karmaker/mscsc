@@ -7,10 +7,11 @@ const MemberProvider = ({ children }) => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [role, setRole] = useState("");
+  const [branch, setBranch] = useState("");
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["members", page, search, role],
-    queryFn: () => getAllMembers(page, 10, search, role, role),
+    queryFn: () => getAllMembers(page, 16, search, role, role, branch),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
@@ -32,6 +33,8 @@ const MemberProvider = ({ children }) => {
         page,
         setPage,
         setRole,
+        branch,
+        setBranch,
       }}
     >
       {children}

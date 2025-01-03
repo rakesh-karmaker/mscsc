@@ -2,7 +2,7 @@ import ActivitiesNavbar from "../components/nav-bars/ActivitiesNavbar";
 import Activity from "../components/activities-components/Activity";
 import "../components/activities-components/Activities.css";
 import { useEffect } from "react";
-import Pagination from "../components/activities-components/Pagination";
+import Pagination from "../components/UI/Pagination/Pagination";
 import { useActivities } from "@/contexts/ActivitiesContext";
 const Activities = ({ admin, ...rest }) => {
   const { activities, length, tag, setTag, search, setSearch, page, setPage } =

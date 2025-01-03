@@ -1,5 +1,5 @@
 import { useUser } from "@/Contexts/UserContext";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import React, { useState } from "react";
 import AboutProfile from "@/components/profile-components/AboutProfile";
 import UserInfo from "@/components/profile-components/UserInfo";
@@ -13,7 +13,6 @@ import { MemberProfileEditSchema } from "@/utils/MemberSchemaValidation";
 import { useQuery } from "@tanstack/react-query";
 
 const ProfilePage = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useUser();
   const isOwner = user?._id === id;

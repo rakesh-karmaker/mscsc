@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import "./AdminDashboard.css";
-import { useMember } from "@/admin/contexts/MembersContext";
+import { useMember } from "@/contexts/MembersContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editUser } from "@/services/PutService";
 import { deleteMember } from "@/services/DeleteService";

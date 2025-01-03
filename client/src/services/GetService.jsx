@@ -31,14 +31,14 @@ const getAllActivities = (page, limit, tag, search) => {
   );
 };
 
-const getAllMembers = (page, limit, search, role) => {
+const getAllMembers = (page, limit, search, role, branch) => {
   const token = localStorage.getItem("token");
   api.interceptors.request.use(function (config) {
     config.headers.Authorization = token ? `Bearer ${token}` : "";
     return config;
   });
   return api.get(
-    `/member/all?page=${page}&limit=${limit}&search=${search}&role=${role}`
+    `/member/all?page=${page}&limit=${limit}&search=${search}&role=${role}&branch=${branch}`
   );
 };
 

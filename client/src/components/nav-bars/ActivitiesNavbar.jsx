@@ -1,4 +1,4 @@
-import SearchInput from "@/admin/components/SearchInput/SearchInput";
+import SearchInput from "@/components/UI/SearchInput/SearchInput";
 import ActivityNavLink from "@/components/nav-bars/ActivityNavLink";
 const ActivitiesNavbar = ({ tag, setTag, search, setSearch }) => {
   const capitalizeName = tag.charAt(0).toUpperCase() + tag.slice(1) + "s";

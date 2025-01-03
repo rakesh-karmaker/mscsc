@@ -1,9 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./Table.css";
-import Pagination from "@/components/activities-components/Pagination";
+import Pagination from "@/components/UI/Pagination/Pagination";
 
 const Table = ({ headers, data, length, page, setPage, ...rest }) => {
-  const tHeaders = headers.map((header) => header.title);
   const elementsPerPage = 10;
 
   return (
@@ -97,13 +96,13 @@ const getTableCell = (row, header, { onViewClick, onDelete, ...rest }) => {
 
   if (header.key === "btn") {
     return (
-      <button
-        to={`/profile/${row._id}`}
+      <NavLink
+        to={`/member/${row._id}`}
         className={`primary-button profile-btn ${row?.new ? "new" : ""}`}
         onClick={() => onViewClick(row._id, row?.new)}
       >
         View
-      </button>
+      </NavLink>
     );
   }
 

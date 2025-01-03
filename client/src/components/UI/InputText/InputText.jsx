@@ -41,7 +41,7 @@ const InputText = ({
           type={type}
           id={id}
           onChange={handleInputChange}
-          required={isRequired}
+          {...(isRequired && { required: true })}
           onInput={(e) => {
             setValue(id, e.target.value);
             trigger(id);

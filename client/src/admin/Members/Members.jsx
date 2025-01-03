@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useMember } from "@/admin/contexts/MembersContext";
+import { useMember } from "@/contexts/MembersContext";
 import { deleteMember } from "@/services/DeleteService";
 import { editUser } from "@/services/PutService";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import DashboardHeader from "../components/DashboardHeader/DashboardHeader";
-import SearchInput from "../components/SearchInput/SearchInput";
+import SearchInput from "@/components/UI/SearchInput/SearchInput";
 import Table from "@/components/UI/Table/Table";
 import "./Members.css";
 import CheckBox from "@/components/UI/Checkbox/Checkbox";
@@ -59,7 +59,9 @@ const Members = () => {
         View all the members of the club
       </DashboardHeader>
       <div className="members-filter">
-        <SearchInput search={search} setSearch={setSearch} />
+        <SearchInput search={search} setSearch={setSearch}>
+          Search Members
+        </SearchInput>
         <CheckBox
           id="admin-only"
           onChange={(e) => {

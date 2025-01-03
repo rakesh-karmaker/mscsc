@@ -8,7 +8,7 @@ import DashboardHeader from "@/admin/components/DashboardHeader/DashboardHeader"
 import "./Messages.css";
 import { useState } from "react";
 import Dialog from "@/admin/components/Dialog/Dialog";
-import SearchInput from "@/admin/components/SearchInput/SearchInput";
+import SearchInput from "@/components/UI/SearchInput/SearchInput";
 
 const Messages = () => {
   const queryClient = useQueryClient();

@@ -3,7 +3,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: 140px;
+  gap: 6.5rem;
   padding-top: calc(var(--nav-height) + 2rem);
   padding-bottom: 2rem;
   height: 100%;
@@ -20,7 +20,7 @@
 
 .reg-img {
   width: 100%;
-  max-width: 570px;
+  max-width: 600px;
   height: inherit;
   background-color: rgb(70, 125, 173);
   background: url("/hero-img-1.webp") no-repeat center center/cover;
@@ -54,6 +54,16 @@
   justify-self: center;
   gap: 2.5rem;
 }
+
+@media screen and (max-width: 1550px) {
+  #auth {
+    gap: 4rem;
+  }
+  .reg-img {
+    max-width: 570px;
+  }
+}
+
 @media screen and (max-width: 1260px) {
   #register {
     gap: 2rem;

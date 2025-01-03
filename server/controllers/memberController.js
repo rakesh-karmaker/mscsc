@@ -9,6 +9,7 @@ const getAllMembers = async (req, res) => {
     const regex = {
       name: new RegExp(req.query.search, "i"),
       role: new RegExp(req.query.role, "i"),
+      branch: new RegExp(req.query.branch, "i"),
     };
 
     const sorted = { _id: -1 };

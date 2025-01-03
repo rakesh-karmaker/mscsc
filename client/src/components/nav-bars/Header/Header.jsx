@@ -1,9 +1,9 @@
 import { NavLink } from "react-router-dom";
-import "@/components/nav-bars/Header.css";
+import "./Header.css";
 import { useRef, useState } from "react";
 import PrimaryBtn from "@/components/UI/PrimaryBtn";
 import { useUser } from "@/Contexts/UserContext";
-import Avatar from "../UI/Avatar";
+import Avatar from "../../UI/Avatar";
 
 const Header = () => {
   const navBar = useRef(null);
@@ -19,12 +19,12 @@ const Header = () => {
       name: "About Us",
     },
     {
-      href: "/activities",
-      name: "Activities",
+      href: "/members",
+      name: "Members",
     },
     {
-      href: "/executives",
-      name: "Executives",
+      href: "/activities",
+      name: "Activities",
     },
     {
       href: "/contact",
