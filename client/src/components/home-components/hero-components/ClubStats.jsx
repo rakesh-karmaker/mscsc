@@ -49,7 +49,7 @@ const ClubStats = ({ mobileClass }) => {
     <div
       className={`club-stats ${mobileClass == undefined ? "" : mobileClass}`}
     >
-      <h3>The milestones we have achieved:</h3>
+      <h3>The milestones we have achieved</h3>
       <div className="club-stats-container">
         <ClubState value="5" thousand={true}>
           Past club <br /> Members

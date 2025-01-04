@@ -3,40 +3,79 @@ import ClubStats from "@/components/home-components/hero-components/ClubStats";
 import ImageSlider from "@/components/home-components/hero-components/ImageSlide";
 import "@/components/home-components/hero-components/Hero.css";
 import MscscTag from "@/components/UI/MscscTag";
+import { NavLink } from "react-router-dom";
+// const Hero = () => {
+//   return (
+//     <>
+//       <section id="home" className="hero-section row-center page-section">
+//         <div className="hero-section-container row-center">
+//           <article className="hero-section-left">
+//             <MscscTag />
+//             <ClubIntro />
+//             {window.innerWidth > 1080 ? <ClubStats /> : null}
+//           </article>
+
+//           <div className="hero-section-right col-center">
+//             <ImageSlider />
+
+//             <a className="join-btn" href="/register">
+//               <div>
+//                 {window.innerWidth > 450 ? (
+//                   <div className="pulse row-center"></div>
+//                 ) : null}
+//                 <p>Join Us With Our Journey</p>
+//               </div>
+//               <p>
+//                 <i className="fa-solid fa-arrow-right-long"></i>
+//               </p>
+//             </a>
+//           </div>
+//         </div>
+//         {window.innerWidth <= 1080 ? <HeroSectionBottomCurve /> : null}
+//       </section>
+
+//       {window.innerWidth <= 1080 ? (
+//         <ClubStats mobileClass={"mobile-stats"} />
+//       ) : null}
+//     </>
+//   );
+// };
+
 const Hero = () => {
   return (
-    <>
-      <section id="home" className="hero-section row-center page-section">
-        <div className="hero-section-container row-center">
-          <article className="hero-section-left">
-            <MscscTag />
-            <ClubIntro />
-            {window.innerWidth > 1080 ? <ClubStats /> : null}
-          </article>
-
-          <div className="hero-section-right col-center">
-            <ImageSlider />
-
-            <a className="join-btn" href="/register">
-              <div>
-                {window.innerWidth > 450 ? (
-                  <div className="pulse row-center"></div>
-                ) : null}
-                <p>Join Us With Our Journey</p>
-              </div>
-              <p>
-                <i className="fa-solid fa-arrow-right-long"></i>
-              </p>
-            </a>
+    <section id="hero" className="hero-section col-center page-section">
+      <div className="hero-info-container">
+        <div className="club-full-name">
+          <i className="fa-solid fa-location-dot"></i>{" "}
+          <p>Monipur High School Science Club</p>
+        </div>
+        <div className="hero-text col-center">
+          <h1>
+            WHERE{" "}
+            <span className="highlighted-text">
+              SCIENCE & TECH ENTHUSIASTS{" "}
+            </span>
+            COME TOGETHER
+          </h1>
+          <p className="secondary-text">
+            Connect with like-minded individuals and expand your knowledge in
+            math, science, biology, astronomy and IT. Let's be the best together
+          </p>
+          <div className="hero-btns">
+            <NavLink to="/register" className="primary-button">
+              Join Now
+            </NavLink>
+            <NavLink to="/members" className="primary-button secondary-button">
+              See Others
+            </NavLink>
           </div>
         </div>
-        {window.innerWidth <= 1080 ? <HeroSectionBottomCurve /> : null}
-      </section>
 
-      {window.innerWidth <= 1080 ? (
-        <ClubStats mobileClass={"mobile-stats"} />
-      ) : null}
-    </>
+        <ClubStats />
+
+        <div className="blob"></div>
+      </div>
+    </section>
   );
 };
 

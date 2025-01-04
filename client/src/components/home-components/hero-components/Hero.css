@@ -1,4 +1,10 @@
 /* -------- hero - top section styling starts here -------- */
+/* #hero {
+  width: 100%;
+  height: 100%;
+  max-width: var(--max-elements-width);
+} */
+
 .hero-section {
   width: 100%;
   max-width: var(--max-elements-width);
@@ -8,7 +14,7 @@
   padding-top: var(--nav-height);
 }
 
-.hero-section-container {
+/* .hero-section-container {
   width: 100%;
   max-width: var(--max-elements-width);
   height: 100%;
@@ -54,7 +60,7 @@
   font-weight: 500;
   min-width: fit-content;
   display: -webkit-box;
-  -webkit-line-clamp: 1; /* number of lines to show */
+  -webkit-line-clamp: 1; 
   line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -173,10 +179,133 @@
   font-weight: 500;
   color: var(--text-primary);
   transition: 0.25s;
+} */
+
+.hero-info-container {
+  width: 100%;
+  max-width: var(--max-elements-width);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
 }
+
+.club-full-name {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.club-full-name i {
+  font-size: 1.2rem;
+  color: #5c5c5c;
+}
+
+.club-full-name p {
+  font-weight: 500;
+  font-size: 23px;
+  line-height: 28px;
+
+  color: #5c5c5c;
+}
+
+.hero-text {
+  gap: 15px;
+}
+
+.hero-text h1 {
+  font-weight: 600;
+  font-size: 59px;
+  line-height: 71px;
+  text-align: center;
+  max-width: 20ch;
+
+  color: var(--text-primary);
+}
+
+.hero-text p {
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 30px;
+  /* or 138% */
+  text-align: center;
+  max-width: 60ch;
+  color: rgba(0, 0, 0, 0.7);
+
+  margin-bottom: 10px;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-btns > .secondary-button {
+  border: 2px solid var(--highlighted-color);
+  color: var(--text-primary);
+  font-weight: 500;
+  border-radius: 6px;
+  transition: 0.25s;
+}
+.hero-btns > .secondary-button::before {
+  background-color: transparent;
+}
+.hero-btns > .secondary-button::after {
+  background-color: var(--highlighted-color);
+  border: 0px solid var(--highlighted-color);
+  border-radius: 0px;
+}
+
+.hero-btns > .secondary-button:hover::after {
+  border-width: 2px;
+}
+
+.hero-btns > .secondary-button:hover {
+  color: var(--text-white);
+}
+
+.blob {
+  /* Ellipse 17 */
+
+  position: absolute;
+  width: 611px;
+  height: 611px;
+  z-index: -1;
+  transform: translateY(-40px);
+
+  background: radial-gradient(
+      74.85% 74.85% at 50.11% 50.11%,
+      rgba(59, 130, 246, 0.16) 0%,
+      rgba(59, 130, 246, 0) 100%
+    )
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  filter: blur(84.25px);
+}
+
 /* --------- hero - top section styling ends here -------- */
 
 /* -------- hero - bottom section styling starts here -------- */
+.club-stats {
+  width: 100%;
+  max-width: calc(var(--max-elements-width) - 100px);
+  margin-top: 70px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.club-stats h3 {
+  font-weight: 500;
+  font-size: 1.5rem;
+  /* line-height: 28px; */
+  color: var(--text-primary);
+}
+
 .club-stats-container {
   width: 100%;
   display: flex;
@@ -194,8 +323,8 @@
 .stats-number {
   --number-value-1-digit: 26px;
   --number-value-2-digit: 51px;
-  font-size: 40px;
-  font-weight: 420;
+  font-size: 3.7rem;
+  font-weight: 400;
 }
 
 .number-value {
@@ -208,9 +337,10 @@
 }
 
 .stats-name {
+  text-align: left;
   padding-left: 6px;
-  font-size: 1.1rem;
-  line-height: 22px;
+  font-size: 1.3rem;
+  line-height: 26px;
   font-weight: 500;
 }
 
@@ -272,6 +402,40 @@
   }
 }
 
+@media screen and (max-width: 1250px) {
+  #hero {
+    padding-top: 0px;
+    padding-top: calc(var(--nav-height) + 30px);
+  }
+  .club-full-name p {
+    font-size: 20px;
+  }
+  .club-full-name i {
+    font-size: 1rem;
+  }
+  .hero-text h1 {
+    font-size: 3.5rem;
+    line-height: 4.25rem;
+  }
+  .hero-text p {
+    font-size: 1.3rem;
+    line-height: 1.8rem;
+  }
+  .club-stats {
+    margin-top: 50px;
+  }
+  .club-stats h3 {
+    font-size: 1.3rem;
+  }
+  .stats-number {
+    font-size: 3rem;
+  }
+
+  .stats-name {
+    font-size: 1.2rem;
+    line-height: 24px;
+  }
+}
 @media screen and (min-height: 1130px) {
   .hero-section {
     margin-top: 20px;
@@ -281,7 +445,7 @@
 }
 
 @media screen and (max-width: 1080px) {
-  .hero-section {
+  /* .hero-section {
     padding-top: 0px;
     width: 100vw;
     max-width: none;
@@ -358,10 +522,13 @@
   .club-stats-container {
     margin-top: 20px;
     text-align: left;
-  }
+  } */
 }
 
 @media screen and (max-width: 960px) {
+  .club-stats {
+    max-width: var(--max-elements-width);
+  }
   .stats-number {
     font-size: 3rem;
     --number-value-1-digit: 29px;
@@ -378,6 +545,10 @@
   .stats {
     flex-grow: 1;
     justify-content: center;
+  }
+  .blob {
+    width: 300px;
+    aspect-ratio: 1;
   }
 }
 
@@ -397,16 +568,73 @@
   }
 }
 
+@media screen and (max-width: 860px) {
+  .hero-text h1 {
+    font-size: 3.2rem;
+    line-height: 3.8rem;
+  }
+  .hero-text p {
+    font-size: 1.2rem;
+    line-height: 1.7rem;
+  }
+
+  .club-stats h3 {
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-height: 800px) {
+  #hero {
+    min-height: 730px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .hero-text h1 {
+    font-size: 2.8rem;
+    line-height: 3.2rem;
+  }
+  .hero-text p {
+    font-size: 1.1rem;
+    line-height: 1.6rem;
+  }
+}
+
 @media screen and (max-width: 520px) {
+  #hero {
+    min-height: 100%;
+  }
+  .hero-info-container {
+    gap: 5px;
+  }
+  .club-full-name p {
+    font-size: 16px;
+  }
+  .club-full-name i {
+    font-size: 0.8rem;
+  }
+  .hero-text h1 {
+    font-size: 2.2rem;
+    line-height: 2.8rem;
+  }
+  .hero-text p {
+    font-size: 1rem;
+    line-height: 1.35rem;
+  }
+  .hero-btns {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .blob {
+    width: 220px;
+  }
   .shape {
     bottom: -10px;
   }
 }
 
 @media screen and (max-width: 450px) {
-  .hero-section {
-    max-height: 700px;
-  }
   .join-btn {
     width: 220px;
     padding: 0px;
