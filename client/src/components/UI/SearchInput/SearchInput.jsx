@@ -1,8 +1,8 @@
 import "./SearchInput.css";
 
-const SearchInput = ({ search, setSearch, children }) => {
+const SearchInput = ({ setSearch, children, ...rest }) => {
   return (
-    <div className="search">
+    <div className="search" {...rest}>
       <div className="search-container">
         <div className="search-icon">
           <i className="fa-solid fa-search"></i>

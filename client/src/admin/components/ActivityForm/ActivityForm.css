@@ -10,13 +10,16 @@
   gap: 20px;
 }
 
-.activity-form .combined-btns > .secondary-button {
+.activity-form .combined-btns > * > .danger-button {
   width: fit-content;
   display: flex;
   align-items: center;
   gap: 5px;
+  padding: 0px 29px;
+  font-size: 20px;
+  height: 50px;
 }
 
-.activity-form .combined-btns > .secondary-button::before {
+.activity-form .combined-btns .danger-button::before {
   background-color: red;
 }

@@ -9,9 +9,13 @@ const MemberProvider = ({ children }) => {
   const [role, setRole] = useState("");
   const [branch, setBranch] = useState("");
 
+  useEffect(() => {
+    setBranch("");
+  }, [search]);
+
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["members", page, search, role],
-    queryFn: () => getAllMembers(page, 16, search, role, role, branch),
+    queryKey: ["members", page, search, role, branch],
+    queryFn: () => getAllMembers(page, 12, search, role, branch),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
@@ -21,6 +25,7 @@ const MemberProvider = ({ children }) => {
 
   const response = data?.data;
   const members = data?.data.results;
+  const length = data?.data?.selectedLength || 0;
 
   return (
     <MemberContext.Provider
@@ -35,6 +40,7 @@ const MemberProvider = ({ children }) => {
         setRole,
         branch,
         setBranch,
+        length,
       }}
     >
       {children}

@@ -1,6 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import "./Table.css";
 import Pagination from "@/components/UI/Pagination/Pagination";
+import DeleteBtn from "../DeleteBtn/DeleteBtn";
 
 const Table = ({ headers, data, length, page, setPage, ...rest }) => {
   const elementsPerPage = 10;
@@ -56,56 +57,54 @@ const TableRow = ({ row, headers, ...rest }) => {
 };
 
 const getTableCell = (row, header, { onViewClick, onDelete, ...rest }) => {
-  if (header.key === "social") {
-    return (
-      <Link to={row["socialLink"]} className="profile-link">
-        Facebook
-      </Link>
-    );
+  switch (header.key) {
+    case "social":
+      return (
+        <Link to={row["socialLink"]} className="profile-link">
+          Facebook
+        </Link>
+      );
+    case "email":
+      return (
+        <Link to={`mailto:${row[header.key]}`} className="profile-link">
+          {row[header.key].slice(0, 20)}...
+        </Link>
+      );
+    case "btn":
+      if (header.title === "Action") {
+        return header?.action === "delete" ? (
+          <DeleteBtn id={row._id} deleteFunc={onDelete}>
+            Are you sure you want to delete this member?
+          </DeleteBtn>
+        ) : (
+          <button
+            className="primary-button profile-btn danger-button"
+            onClick={() => onDelete(row._id)}
+          >
+            Delete
+          </button>
+        );
+      } else if (header.title === "Change Role") {
+        return (
+          <button
+            className="primary-button role-btn"
+            onClick={() => rest.onRoleClick(row._id, row?.role)}
+          >
+            {row?.role === "admin" ? "Make Member" : "Make Admin"}
+          </button>
+        );
+      } else {
+        return (
+          <button
+            className={`primary-button profile-btn ${row?.new ? "new" : ""}`}
+            onClick={() => onViewClick(row._id)}
+          >
+            View
+          </button>
+        );
+      }
+    default:
+      return row[header.key];
   }
-
-  if (header.key === "email") {
-    return (
-      <Link to={`mailto:${row[header.key]}`} className="profile-link">
-        {row[header.key].slice(0, 20)}...
-      </Link>
-    );
-  }
-
-  if (header.key === "btn" && header.title === "Action") {
-    return (
-      <button
-        className="primary-button danger-button"
-        onClick={() => onDelete(row._id)}
-      >
-        Delete
-      </button>
-    );
-  }
-
-  if (header.key === "btn" && header.title === "Change Role") {
-    return (
-      <button
-        className="primary-button role-btn"
-        onClick={() => rest.onRoleClick(row._id, row?.role)}
-      >
-        {row?.role === "admin" ? "Make Member" : "Make Admin"}
-      </button>
-    );
-  }
-
-  if (header.key === "btn") {
-    return (
-      <NavLink
-        to={`/member/${row._id}`}
-        className={`primary-button profile-btn ${row?.new ? "new" : ""}`}
-        onClick={() => onViewClick(row._id, row?.new)}
-      >
-        View
-      </NavLink>
-    );
-  }
-
-  return row[header.key];
 };
 export default Table;

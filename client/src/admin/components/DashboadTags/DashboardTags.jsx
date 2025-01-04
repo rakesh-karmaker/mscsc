@@ -3,8 +3,8 @@ import "./DashboardTags.css";
 import { useActivities } from "@/contexts/ActivitiesContext";
 
 const DashboardTagsContainer = ({ memberLength, adminLength }) => {
-  const { response } = useMessages();
-  const { length } = useActivities();
+  const { length: messagesLength } = useMessages();
+  const { length: activitiesLength } = useActivities();
   const tags = [
     {
       title: "Total Members",
@@ -14,12 +14,12 @@ const DashboardTagsContainer = ({ memberLength, adminLength }) => {
     {
       title: "Total Messages",
       icon: "fa-solid fa-envelope",
-      value: response?.totalLength,
+      value: messagesLength,
     },
     {
       title: "Total Activities",
       icon: "fa-solid fa-calendar-days",
-      value: length,
+      value: activitiesLength,
     },
     {
       title: "Total Admins",

@@ -5,10 +5,9 @@ import { editUser } from "@/services/PutService";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import DashboardHeader from "../components/DashboardHeader/DashboardHeader";
-import SearchInput from "@/components/UI/SearchInput/SearchInput";
-import Table from "@/components/UI/Table/Table";
 import "./Members.css";
 import CheckBox from "@/components/UI/Checkbox/Checkbox";
+import MemberPage from "@/pages/Member";
 
 const Members = () => {
   const queryClient = useQueryClient();
@@ -34,16 +33,9 @@ const Members = () => {
       toast.error("Operation failed!");
     },
   });
-
-  const onViewClick = (id, isNew) => {
-    if (isNew) {
-      membersMutation.mutate({ _id: id, new: false, isDelete: false });
-    }
-    navigate(`/profile/${id}`);
-  };
-
   const onDelete = (id) => {
     membersMutation.mutate({ _id: id, isDelete: true });
+    console.log("Delete member");
   };
 
   const onRoleClick = (id, role) => {
@@ -58,74 +50,14 @@ const Members = () => {
       <DashboardHeader title={"Members"}>
         View all the members of the club
       </DashboardHeader>
-      <div className="members-filter">
-        <SearchInput search={search} setSearch={setSearch}>
-          Search Members
-        </SearchInput>
-        <CheckBox
-          id="admin-only"
-          onChange={(e) => {
-            e.target.checked ? setRole("admin") : setRole("");
-          }}
-        >
-          Admin Only
-        </CheckBox>
-      </div>
-      <Table
-        headers={memberTableHeader}
-        data={members}
-        length={response?.totalLength}
-        page={page}
-        setPage={setPage}
-        onViewClick={onViewClick}
-        onDelete={onDelete}
-        onRoleClick={onRoleClick}
+
+      <MemberPage
+        isAdmin={true}
+        deleteMember={onDelete}
+        changeRole={onRoleClick}
       />
     </div>
   );
 };
-
-const memberTableHeader = [
-  {
-    title: "Name",
-    key: "name",
-    break: false,
-  },
-  {
-    title: "Batch",
-    key: "batch",
-    break: false,
-  },
-  {
-    title: "Branch",
-    key: "branch",
-    break: true,
-  },
-  {
-    title: "Reference",
-    key: "reference",
-    break: true,
-  },
-  {
-    title: "Social Link",
-    key: "social",
-    break: false,
-  },
-  {
-    title: "Profile",
-    key: "btn",
-    break: false,
-  },
-  {
-    title: "Action",
-    key: "btn",
-    break: false,
-  },
-  {
-    title: "Change Role",
-    key: "btn",
-    break: false,
-  },
-];
 
 export default Members;

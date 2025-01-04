@@ -10,6 +10,7 @@ import { addActivity } from "@/services/PostService";
 import toast, { Toaster } from "react-hot-toast";
 import { editActivity } from "@/services/PutService";
 import { useQueryClient } from "@tanstack/react-query";
+import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 
 const ActivityForm = (props) => {
   const queryClient = useQueryClient();
@@ -126,16 +127,13 @@ const ActivityForm = (props) => {
             {props?.defaultValues ? "Edit" : "Add"} Activity
           </SubmitBtn>
           {props?.defaultValues && (
-            <button
-              type="button"
-              className="primary-button secondary-button"
-              onClick={() => {
-                props?.deleteActivity(props.defaultValues._id);
-              }}
+            <DeleteBtn
+              id={props.defaultValues._id}
+              deleteFunc={props.delete}
+              btnText="Delete Activity"
             >
-              <i className="fa-solid fa-trash"></i>
-              <span>Delete Activity</span>
-            </button>
+              Are you sure you want to delete this activity?
+            </DeleteBtn>
           )}
         </div>
         <Toaster position="top-right" />

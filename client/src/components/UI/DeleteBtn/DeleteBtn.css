@@ -1,0 +1,39 @@
+.delete-btn-container .primary-button {
+  padding: 7px 15px;
+  border-radius: 5px;
+  font-weight: 500;
+  font-size: 1rem;
+  width: fit-content;
+  height: fit-content;
+  line-height: 22px;
+}
+
+.delete-dialog {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.delete-dialog h2 {
+  font-size: 1.5rem;
+  margin-bottom: 3px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.delete-dialog p {
+  font-size: 1rem;
+  max-width: 30ch;
+  font-weight: 400;
+  color: var(--text-primary);
+  opacity: 0.7;
+}
+
+.delete-dialog-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}

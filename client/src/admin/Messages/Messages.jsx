@@ -12,8 +12,7 @@ import SearchInput from "@/components/UI/SearchInput/SearchInput";
 
 const Messages = () => {
   const queryClient = useQueryClient();
-  const { response, messages, search, setSearch, page, setPage } =
-    useMessages();
+  const { length, messages, search, setSearch, page, setPage } = useMessages();
   const [currentMessage, setCurrentMessage] = useState(null);
 
   const messagesMutation = useMutation({
@@ -52,11 +51,13 @@ const Messages = () => {
       <DashboardHeader title={"Messages"}>
         View all the messages sent by members
       </DashboardHeader>
-      <SearchInput search={search} setSearch={setSearch} />
+      <SearchInput search={search} setSearch={setSearch}>
+        Search Messages
+      </SearchInput>
       <Table
         headers={messageTableHeader}
         data={messages}
-        length={response?.totalLength}
+        length={length}
         page={page}
         setPage={setPage}
         onViewClick={onViewClick}

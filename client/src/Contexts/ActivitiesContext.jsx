@@ -17,7 +17,8 @@ const ActivitiesProvider = ({ children }) => {
   });
 
   const activities = data?.data ? data.data.results : [];
-  const length = data?.data?.totalLength || 0;
+  const length = data?.data?.selectedLength || 0;
+  console.log(data);
   return (
     <ActivitiesContext.Provider
       value={{

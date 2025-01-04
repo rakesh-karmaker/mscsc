@@ -19,6 +19,7 @@ const MessagesProvider = ({ children }) => {
 
   const response = data?.data;
   const messages = data?.data?.results;
+  const length = data?.data?.selectedLength || 0;
 
   return (
     <MessagesContext.Provider
@@ -30,6 +31,7 @@ const MessagesProvider = ({ children }) => {
         setSearch,
         page,
         setPage,
+        length,
       }}
     >
       {children}

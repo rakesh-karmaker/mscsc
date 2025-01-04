@@ -32,13 +32,13 @@ const AdminDashboard = () => {
     },
   });
 
-  const { members } = useMember();
+  const { response, members } = useMember();
 
   const onViewClick = (id, isNew) => {
     if (isNew) {
       memberMutation.mutate({ new: false, _id: id, isDelete: false });
     }
-    navigate(`/profile/${id}`);
+    navigate(`/member/${id}`);
   };
 
   const onDelete = (id) => {
@@ -53,10 +53,8 @@ const AdminDashboard = () => {
       <div className="dashboard-info">
         <QuickAccess />
         <DashboardTagsContainer
-          memberLength={members?.length}
-          adminLength={
-            members?.filter((member) => member.role === "admin").length
-          }
+          memberLength={response?.totalLength}
+          adminLength={response.adminLength}
         />
       </div>
       <div className="members-example-table">
@@ -107,6 +105,7 @@ const memberTableHeader = [
   {
     title: "Action",
     key: "btn",
+    action: "delete",
     break: false,
   },
 ];

@@ -209,6 +209,54 @@ main {
   align-items: center;
 }
 
+/** Dialogs global styles */
+.dialog-container {
+  width: 100%;
+  height: 100%;
+  min-height: 100svh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  transition: 0.25s;
+}
+
+.dialog-container.open {
+  pointer-events: all;
+  backdrop-filter: blur(5px);
+  background-color: rgba(240, 248, 255, 0.24);
+}
+
+dialog[open] {
+  opacity: 1;
+}
+
+dialog {
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -ms-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  transition: 0.25s;
+  transition: all 0.25s allow-discrete;
+  border: none;
+  background-color: var(--primary-bg);
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.23);
+  border-radius: 14px;
+}
+
+@starting-style {
+  .message-dialog[open] {
+    opacity: 0;
+  }
+}
+
 @media screen and (max-width: 1650px) {
   body {
     --max-elements-width: 94vw !important;

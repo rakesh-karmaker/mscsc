@@ -1,6 +1,5 @@
 const Activity = require("../models/Activity");
 const { uploadImage, deleteImage } = require("../utils/imagekit");
-const imagekit = require("../utils/imagekit");
 const { paginatedResults } = require("../utils/paginatedResults");
 const { activitySchema } = require("../utils/validation");
 
@@ -12,12 +11,12 @@ exports.getAllActivities = async (req, res) => {
       tag: new RegExp(req.query.tag, "i"),
     };
     const sorted = { date: -1 };
-    const length = await Activity.find({ ...regex }).countDocuments();
+
     const activities = await paginatedResults(
       req,
+      res,
       Activity,
       regex,
-      length,
       sorted
     );
     console.log("fetched all activities");
