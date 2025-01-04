@@ -129,7 +129,7 @@ const ActivityForm = (props) => {
           {props?.defaultValues && (
             <DeleteBtn
               id={props.defaultValues._id}
-              deleteFunc={props.delete}
+              deleteFunc={props.deleteActivity}
               btnText="Delete Activity"
             >
               Are you sure you want to delete this activity?

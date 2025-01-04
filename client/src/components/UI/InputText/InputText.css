@@ -44,7 +44,7 @@
   font-size: 1rem;
 }
 
-.input-text:has(button) > input {
+.input-container:has(button) > input {
   padding-right: 40px;
 }
 

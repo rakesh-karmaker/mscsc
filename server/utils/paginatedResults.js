@@ -9,6 +9,7 @@ exports.paginatedResults = async (req, res, model, regex, sorted) => {
       .sort({ ...sorted })
       .exec();
 
+    //* Filter data based on query and regex
     const startsWithData = allData.filter((item) => {
       return Object.keys(regex).every(
         (key) =>

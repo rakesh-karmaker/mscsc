@@ -38,7 +38,6 @@ const sendMessage = (data) => {
     config.headers["Content-Type"] = "application/json";
     return config;
   });
-  console.log("data", data);
 
   const formData = new FormData();
   for (const key in data) {
@@ -55,14 +54,12 @@ const addActivity = (data) => {
   });
   const formData = new FormData();
   for (const key in data) {
-    console.log(key);
     if (key === "activityImage") {
       formData.append(key, data[key][0]);
       continue;
     }
     formData.append(key, data[key]);
   }
-  console.log("data", formData);
   return api.post("/activity", formData);
 };
 
