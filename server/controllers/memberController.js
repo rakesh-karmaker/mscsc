@@ -7,7 +7,7 @@ const { deleteImage } = require("../utils/imagekit");
 const getAllMembers = async (req, res) => {
   try {
     const regex = {
-      name: new RegExp(req.query.search, "i"),
+      name: new RegExp(req.query.name, "i"),
       role: new RegExp(req.query.role, "i"),
       branch: new RegExp(req.query.branch, "i"),
     };

@@ -9,9 +9,17 @@ exports.paginatedResults = async (req, res, model, regex, sorted) => {
       .sort({ ...sorted })
       .exec();
 
-    const selectedData = allData.filter((item) => {
+    const startsWithData = allData.filter((item) => {
+      return Object.keys(regex).every(
+        (key) =>
+          regex[key].test(item[key]) &&
+          item[key].toLowerCase().startsWith(req.query[key].toLowerCase())
+      );
+    });
+    const includesData = allData.filter((item) => {
       return Object.keys(regex).every((key) => regex[key].test(item[key]));
     });
+    const selectedData = [...new Set([...startsWithData, ...includesData])];
 
     results.totalLength = allData.length;
     results.results = selectedData.slice(startIndex, startIndex + limit);

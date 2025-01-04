@@ -7,7 +7,7 @@ const { activitySchema } = require("../utils/validation");
 exports.getAllActivities = async (req, res) => {
   try {
     const regex = {
-      title: new RegExp(req.query.search, "i"),
+      title: new RegExp(req.query.title, "i"),
       tag: new RegExp(req.query.tag, "i"),
     };
     const sorted = { date: -1 };

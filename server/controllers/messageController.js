@@ -5,7 +5,7 @@ const { messageSchema } = require("../utils/validation");
 const getAllMessages = async (req, res) => {
   try {
     const regex = {
-      name: new RegExp(req.query.search, "i"),
+      name: new RegExp(req.query.name, "i"),
     };
     const sorted = { _id: -1 };
 
