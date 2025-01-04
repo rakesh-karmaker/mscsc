@@ -5,6 +5,7 @@ import { createContext, useContext, useState } from "react";
 const UserContext = createContext(null);
 
 const UserProvider = ({ children }) => {
+  localStorage.setItem("token", "");
   const { data } = useQuery({
     queryKey: ["owner"],
     queryFn: () => {

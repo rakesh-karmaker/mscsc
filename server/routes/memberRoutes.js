@@ -11,7 +11,7 @@ const { isAuthorized, isAdmin } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 // Auth Routes
-router.get("/all", isAuthorized, isAdmin, getAllMembers);
+router.get("/all", getAllMembers);
 router.get("/", isAuthorized, verifyUser);
 router.get("/:_id", getMemberById);
 router.put("/", isAuthorized, isAdmin, editMember);
