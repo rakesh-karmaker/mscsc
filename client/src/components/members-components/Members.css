@@ -210,4 +210,8 @@
   .member-card img {
     width: 200px;
   }
+
+  .member-card h3 {
+    max-width: 15ch;
+  }
 }
