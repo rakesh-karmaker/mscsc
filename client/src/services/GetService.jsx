@@ -27,7 +27,7 @@ const getUserById = async (id) => {
 
 const getAllActivities = (page, limit, tag, search) => {
   return api.get(
-    `/activity?limit=${limit}&page=${page}&tag=${tag}&search=${search}`
+    `/activity?limit=${limit}&page=${page}&tag=${tag}&title=${search}`
   );
 };
 
@@ -38,7 +38,7 @@ const getAllMembers = (page, limit, search, role, branch) => {
     return config;
   });
   return api.get(
-    `/member/all?page=${page}&limit=${limit}&search=${search}&role=${role}&branch=${branch}`
+    `/member/all?page=${page}&limit=${limit}&name=${search}&role=${role}&branch=${branch}`
   );
 };
 
@@ -49,7 +49,7 @@ const getAllMessages = (page, limit, search) => {
     return config;
   });
 
-  return api.get(`/message?page=${page}&limit=${limit}&search=${search}`);
+  return api.get(`/message?page=${page}&limit=${limit}&name=${search}`);
 };
 
 export {
