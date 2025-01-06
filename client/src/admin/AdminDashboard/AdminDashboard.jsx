@@ -33,6 +33,7 @@ const AdminDashboard = () => {
   });
 
   const { response, members } = useMember();
+  console.log("members", members);
 
   const onViewClick = (id, isNew) => {
     if (isNew) {
@@ -54,7 +55,7 @@ const AdminDashboard = () => {
         <QuickAccess />
         <DashboardTagsContainer
           memberLength={response?.totalLength}
-          adminLength={response.adminLength}
+          adminLength={response?.adminLength}
         />
       </div>
       <div className="members-example-table">

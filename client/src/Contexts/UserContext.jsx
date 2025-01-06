@@ -6,7 +6,7 @@ const UserContext = createContext(null);
 
 const UserProvider = ({ children }) => {
   // localStorage.setItem("token", "");
-  const { data } = useQuery({
+  const { data, error } = useQuery({
     queryKey: ["owner"],
     queryFn: () => {
       if (localStorage.getItem("token")) {
@@ -16,6 +16,9 @@ const UserProvider = ({ children }) => {
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
+
+  if (error) console.log(error);
+
   const user = data ? data.data.user : null;
 
   return (

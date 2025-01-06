@@ -6,20 +6,18 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { useEffect, useState } from "react";
-import { getAllActivities } from "@/services/GetService";
 
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
 
-const Articles = () => {
+const Articles = ({ activities, isLoading }) => {
   const [articles, setArticles] = useState([]);
   useEffect(() => {
-    const fetchArticles = async () => {
-      const response = await getAllActivities(1, 3, "Article", "");
-      setArticles(response.data.results);
-    };
-    fetchArticles();
-  }, []);
+    const filteredData = activities
+      ?.filter((event) => event.tag === "Article")
+      .slice(0, 3);
+    setArticles(filteredData);
+  }, [activities]);
 
   useGSAP(() => {
     gsap.fromTo(

@@ -20,6 +20,6 @@ exports.isAdmin = async (req, res, next) => {
   const member = await Member.findById(req.user._id);
   if (!member) return res.status(404).send({ message: "Member not found" });
   if (member.role !== "admin")
-    return res.status(403).send({ message: "Access Denied" });
+    return res.status(401).send({ message: "Access Denied" });
   next();
 };

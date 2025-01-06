@@ -6,8 +6,10 @@ import SubmitBtn from "@/components/UI/SubmitBtn";
 import { sendMessage } from "@/services/PostService";
 import toast, { Toaster } from "react-hot-toast";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ContactForm = () => {
+  const navigate = useNavigate();
   const contactForm = useRef(null);
   const {
     register,
@@ -20,13 +22,20 @@ const ContactForm = () => {
   });
 
   const onSubmit = async (data) => {
-    const res = await sendMessage(data);
-    if (res.status === 200) {
-      toast.success("Message sent");
-    } else {
+    try {
+      const res = await sendMessage(data);
+      if (res.status === 200) {
+        toast.success("Message sent");
+      } else {
+        throw new Error("Failed to send message");
+      }
+    } catch (error) {
+      console.log(error);
       toast.error("Failed to send message");
+      navigate("/server-error", { replace: true });
+    } finally {
+      contactForm.current.reset();
     }
-    contactForm.current.reset();
   };
 
   return (
@@ -79,14 +88,6 @@ const ContactForm = () => {
       >
         Send the message
       </SubmitBtn>
-      {/* <button
-        disabled={isSubmitting}
-        type="submit"
-        className="primary-button"
-        style={{ width: "100%" }}
-      >
-        {isSubmitting ? "Sending..." : "Send the message"}
-      </button> */}
       {errors.root && <p className="error-message">{errors.root.message}</p>}
       <Toaster position="top-right" />
     </form>

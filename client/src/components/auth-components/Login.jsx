@@ -5,6 +5,7 @@ import { loginUser } from "@/services/PostService";
 import InputText from "@/components/UI/InputText/InputText";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import toast, { Toaster } from "react-hot-toast";
+import filterError from "@/utils/FilterError";
 
 const Login = ({ setForm }) => {
   const {
@@ -78,6 +79,7 @@ const onSubmit = async (data, setError) => {
       return "Login Successful";
     },
     error: (err) => {
+      if (err.status === 500) filterError(err);
       setError(err.response.data.subject, {
         message: err.response.data.message,
       });

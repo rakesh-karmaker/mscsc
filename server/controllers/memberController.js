@@ -2,6 +2,7 @@ const Member = require("../models/Member");
 const bcrypt = require("bcryptjs");
 const { paginatedResults } = require("../utils/paginatedResults");
 const { deleteImage } = require("../utils/imagekit");
+const { default: mongoose } = require("mongoose");
 
 // Get All Members
 const getAllMembers = async (req, res) => {
@@ -41,14 +42,16 @@ const verifyUser = async (req, res) => {
 
 const getMemberById = async (req, res) => {
   const _id = req.params?._id;
-  console.log("get user by id", _id);
-  if (!_id) {
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
     return res.status(400).send({ message: "Invalid request" });
   }
 
   try {
-    const member = await Member.findById(_id).select("-password");
+    console.log(_id);
+    const member = await Member.findById(_id.toString()).select("-password");
+    console.log(member, "member\n");
     if (!member) {
+      console.log("Member not found");
       return res.status(404).send({ message: "Member not found" });
     }
 
@@ -117,6 +120,7 @@ const deleteMember = async (req, res) => {
 
     const member = await Member.findByIdAndDelete(id);
     if (!member) return res.status(404).send({ message: "Member not found" });
+    console.log("Member deleted successfully.");
 
     deleteImage(res, member.imgId);
     res.status(200).send({ message: "Member deleted successfully" });

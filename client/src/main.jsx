@@ -1,6 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  useNavigate,
+} from "react-router-dom";
 import Home from "@/pages/Home.jsx";
 import Activities from "@/pages/Activities.jsx";
 import Executives from "@/pages/Executives.jsx";
@@ -23,8 +27,25 @@ import Members from "@/admin/Members/Members";
 import AdminActivities from "./admin/AdminActivities/AdminActivities";
 import { ActivitiesProvider } from "./contexts/ActivitiesContext";
 import MemberPage from "@/pages/Member";
+import NotFound from "./pages/Errors/NotFound";
+import ServerError from "./pages/Errors/ServerError";
+import BadRequest from "./pages/Errors/BadRequest";
+import Unauthorized from "./pages/Errors/Unauthorized";
 
-const queryClient = new QueryClient();
+// Create a single QueryClient instance
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      onError: (error) => {
+        const navigate = useNavigate();
+        if (error.response?.status === 400) navigate("/400");
+        if (error.response?.status === 401) navigate("/401");
+        if (error.response?.status === 404) navigate("/404");
+        if (error.response?.status === 500) navigate("/500");
+      },
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
@@ -32,21 +53,13 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: "/", element: <Home /> },
-
       { path: "/home", element: <Home /> },
-
       { path: "/about", element: <About /> },
-
       { path: "/activities", element: <Activities /> },
-
       { path: "/executives", element: <Executives /> },
-
       { path: "/contact", element: <ContactPage /> },
-
       { path: "/register", element: <Auth /> },
-
       { path: "/members", element: <MemberPage /> },
-
       { path: "/member/:id", element: <Profile /> },
     ],
   },
@@ -60,28 +73,17 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      {
-        path: "/admin",
-        element: <Admin />,
-      },
-      {
-        path: "/admin/dashboard",
-        element: <AdminDashboard />,
-      },
-      {
-        path: "/admin/members",
-        element: <Members />,
-      },
-      {
-        path: "/admin/activities",
-        element: <AdminActivities />,
-      },
-      {
-        path: "/admin/messages",
-        element: <Messages />,
-      },
+      { path: "/admin", element: <Admin /> },
+      { path: "/admin/dashboard", element: <AdminDashboard /> },
+      { path: "/admin/members", element: <Members /> },
+      { path: "/admin/activities", element: <AdminActivities /> },
+      { path: "/admin/messages", element: <Messages /> },
     ],
   },
+  { path: "400", element: <BadRequest /> },
+  { path: "401", element: <Unauthorized /> },
+  { path: "500", element: <ServerError /> },
+  { path: "*", element: <NotFound /> },
 ]);
 
 createRoot(document.getElementById("root")).render(

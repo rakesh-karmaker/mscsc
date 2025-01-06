@@ -11,17 +11,20 @@ import TimelineInputs from "@/components/UI/TimelineInputs/TimelineInputs";
 import { getUserById } from "@/services/GetService";
 import { MemberProfileEditSchema } from "@/utils/MemberSchemaValidation";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import FilterError from "@/utils/FilterError";
 
 const ProfilePage = () => {
   const { id } = useParams();
   const { user } = useUser();
+  const navigate = useNavigate();
   const isOwner = user?._id === id;
   const [isEditing, setIsEditing] = useState(false);
 
   const {
     data: profileData,
     isLoading,
-    isError,
+    error,
   } = useQuery({
     queryKey: ["user", id],
     queryFn: () => {
@@ -37,8 +40,9 @@ const ProfilePage = () => {
     return <p>Loading profile...</p>;
   }
 
-  if (isError) {
-    console.log("Error fetching profile data" + isError);
+  if (error) {
+    <FilterError error={error} />;
+    return null;
   }
 
   return (

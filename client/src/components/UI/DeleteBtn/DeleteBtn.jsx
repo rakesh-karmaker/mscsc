@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import "./DeleteBtn.css";
 
 const DeleteBtn = ({ id, deleteFunc, btnText, children }) => {
-  console.log(id);
   const deleteDialog = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 

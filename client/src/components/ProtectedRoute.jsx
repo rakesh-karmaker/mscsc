@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     if (user === null || user?.role !== "admin") {
-      navigate("/", { replace: true });
+      navigate("/401", { replace: true });
     }
   }, [user, navigate]);
 

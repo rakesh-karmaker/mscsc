@@ -10,14 +10,13 @@ gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
 
 import "./Events.css";
-import { getAllActivities } from "@/services/GetService";
 
-const Events = () => {
+const Events = ({ activities, isLoading }) => {
   const eventStatuses = ["happened", "all", "upcoming"];
   const [status, setStatus] = useState("all");
   const eventSwiperRef = useRef(null);
-  const [events, setEvents] = useState([]);
-  const [filteredEvents, setFilteredEvents] = useState([]);
+  const [filteredActivities, setFilteredEvents] = useState(null);
+  const [events, setEvents] = useState(null);
 
   useGSAP(() => {
     gsap.fromTo(
@@ -36,37 +35,27 @@ const Events = () => {
   });
 
   useEffect(() => {
-    const getData = async () => {
-      const workshopData = await getAllActivities(1, 5, "Workshop", "");
-      const eventData = await getAllActivities(1, 5, "Event", "");
-      const combinedData = [
-        ...workshopData.data.results,
-        ...eventData.data.results,
-      ];
-      const sortedData = combinedData.sort(
-        (a, b) => new Date(b.date) - new Date(a.date)
-      );
+    const filteredData = activities
+      ?.filter((event) => event.tag === "Event" || event.tag === "Workshop")
+      .slice(0, 8);
 
-      setEvents(sortedData);
-      setFilteredEvents(sortedData);
-    };
-
-    getData();
-  }, []);
+    setFilteredEvents(filteredData);
+    setEvents(filteredData);
+  }, [activities]);
 
   useEffect(() => {
     if (status === "all") {
-      setFilteredEvents(events);
+      setEvents(filteredActivities);
     } else if (status === "happened") {
-      const filteredByStatusData = events.filter(
+      const filteredByStatusData = filteredActivities.filter(
         (event) => new Date(event.date) < new Date()
       );
-      setFilteredEvents(filteredByStatusData);
+      setEvents(filteredByStatusData);
     } else if (status === "upcoming") {
-      const filteredByStatusData = events.filter(
+      const filteredByStatusData = filteredActivities.filter(
         (event) => new Date(event.date) > new Date()
       );
-      setFilteredEvents(filteredByStatusData);
+      setEvents(filteredByStatusData);
     }
   }, [status]);
 
@@ -98,10 +87,10 @@ const Events = () => {
         </div>
 
         <div ref={eventSwiperRef} className="events-container">
-          {filteredEvents.length === 0 ? (
+          {events?.length === 0 ? (
             <p className="secondary-text">No events to show</p>
           ) : (
-            <EventSwiper filteredEvents={filteredEvents} />
+            <EventSwiper filteredEvents={events} />
           )}
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { getAllMembers } from "@/services/GetService";
 import { useQuery } from "@tanstack/react-query";
+import FilterError from "@/utils/FilterError";
 const MemberContext = createContext(null);
 
 const MemberProvider = ({ children }) => {
@@ -13,11 +14,16 @@ const MemberProvider = ({ children }) => {
     setBranch("");
   }, [search]);
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["members", page, search, role, branch],
     queryFn: () => getAllMembers(page, 12, search, role, branch),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
+
+  if (error) {
+    <FilterError error={error} />;
+    return;
+  }
 
   useEffect(() => {
     refetch();

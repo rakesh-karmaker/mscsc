@@ -12,15 +12,22 @@ exports.getAllActivities = async (req, res) => {
     };
     const sorted = { date: -1 };
 
-    const activities = await paginatedResults(
-      req,
-      res,
-      Activity,
-      regex,
-      sorted
-    );
-    console.log("fetched all activities");
-    res.status(200).send(activities);
+    console.log(req.query.limit);
+    if (req.query.limit === "all") {
+      const activities = await Activity.find().sort({ ...sorted });
+      console.log("fetched all activities hihafwihfdha");
+      res.status(200).send(activities);
+    } else {
+      const activities = await paginatedResults(
+        req,
+        res,
+        Activity,
+        regex,
+        sorted
+      );
+      console.log("fetched all activities");
+      res.status(200).send(activities);
+    }
   } catch (err) {
     console.log(err);
     res.status(500).send({ message: "Server error", error: err.message });
