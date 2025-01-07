@@ -10,7 +10,7 @@ lerna-debug.log*
 node_modules
 .vite
 .env
-.env.production
+./client/.env.production
 .env*
 dist
 dist-ssr
