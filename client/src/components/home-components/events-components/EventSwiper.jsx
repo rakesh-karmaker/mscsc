@@ -3,6 +3,7 @@ import { Autoplay } from "swiper/modules";
 
 import Event from "@/components/home-components/events-components/Event";
 const EventSwiper = ({ filteredEvents }) => {
+  console.log(filteredEvents);
   return (
     <Swiper
       modules={[Autoplay]}

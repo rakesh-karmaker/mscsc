@@ -16,6 +16,7 @@ exports.getAllActivities = async (req, res) => {
     if (req.query.limit === "all") {
       const activities = await Activity.find().sort({ ...sorted });
       console.log("fetched all activities hihafwihfdha");
+      // throw new Error("hihafwihfdha");
       res.status(200).send(activities);
     } else {
       const activities = await paginatedResults(
@@ -26,6 +27,7 @@ exports.getAllActivities = async (req, res) => {
         sorted
       );
       console.log("fetched all activities");
+      // throw new Error("hihafwihfdha");
       res.status(200).send(activities);
     }
   } catch (err) {

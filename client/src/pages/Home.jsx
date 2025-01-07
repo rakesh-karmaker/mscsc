@@ -5,22 +5,11 @@ import Articles from "@/components/home-components/articles-components/Articles"
 import HomeEcs from "@/components/home-components/home-ec-components/HomeEcs";
 import Contact from "@/components/contact-components/Contact";
 import executivesData from "@/services/api/executivesData";
-import { useQuery } from "@tanstack/react-query";
-import { getAllActivities } from "@/services/GetService";
-import FilterError from "@/utils/FilterError";
+import { useActivities } from "@/contexts/ActivitiesContext";
 
 const Home = () => {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["allActivities", 1, "all", "", ""],
-    queryFn: () => getAllActivities(1, "all", "", ""),
-    staleTime: 1000 * 60 * 5,
-  });
-  if (error) {
-    <FilterError error={error} />;
-    return;
-  }
-
-  const activities = data?.data;
+  const { allActivities: activities, allActivitiesIsLoading: isLoading } =
+    useActivities();
 
   return (
     <main className="page-home">

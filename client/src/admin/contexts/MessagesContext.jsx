@@ -3,23 +3,20 @@ import { getAllMessages } from "@/services/GetService";
 import { useQuery } from "@tanstack/react-query";
 const MessagesContext = createContext(null);
 import { useNavigate } from "react-router-dom";
-import FilterError from "@/utils/FilterError";
+import useErrorNavigator from "@/hooks/useErrorNavigator";
 
 const MessagesProvider = ({ children }) => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
 
-  const { data, isLoading, refetch, error } = useQuery({
+  const { data, isLoading, refetch, error, isError } = useQuery({
     queryKey: ["messages", page, search],
     queryFn: () => getAllMessages(page, 10, search),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
-  if (error) {
-    <FilterError error={error} />;
-    return;
-  }
+  useErrorNavigator(isError, error);
 
   useEffect(() => {
     refetch();

@@ -12,11 +12,12 @@ gsap.registerPlugin(ScrollTrigger);
 import "./Events.css";
 
 const Events = ({ activities, isLoading }) => {
+  console.log(activities, "activities");
   const eventStatuses = ["happened", "all", "upcoming"];
   const [status, setStatus] = useState("all");
   const eventSwiperRef = useRef(null);
-  const [filteredActivities, setFilteredEvents] = useState(null);
-  const [events, setEvents] = useState(null);
+  const [filteredActivities, setFilteredActivities] = useState([]);
+  const [events, setEvents] = useState([]);
 
   useGSAP(() => {
     gsap.fromTo(
@@ -39,7 +40,7 @@ const Events = ({ activities, isLoading }) => {
       ?.filter((event) => event.tag === "Event" || event.tag === "Workshop")
       .slice(0, 8);
 
-    setFilteredEvents(filteredData);
+    setFilteredActivities(filteredData);
     setEvents(filteredData);
   }, [activities]);
 
@@ -57,7 +58,9 @@ const Events = ({ activities, isLoading }) => {
       );
       setEvents(filteredByStatusData);
     }
-  }, [status]);
+  }, [status, filteredActivities]);
+
+  console.log(events, "events");
 
   return (
     <section id="events" className="page-section col-center">
