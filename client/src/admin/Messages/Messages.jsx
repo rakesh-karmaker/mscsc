@@ -9,10 +9,13 @@ import "./Messages.css";
 import { useState } from "react";
 import Dialog from "@/admin/components/Dialog/Dialog";
 import SearchInput from "@/components/UI/SearchInput/SearchInput";
+import Loader from "@/components/UI/Loader/Loader";
+import EmptyData from "@/components/UI/EmptyData/EmptyData";
 
 const Messages = () => {
   const queryClient = useQueryClient();
-  const { length, messages, search, setSearch, page, setPage } = useMessages();
+  const { length, messages, search, setSearch, isLoading, page, setPage } =
+    useMessages();
   const [currentMessage, setCurrentMessage] = useState(null);
 
   const messagesMutation = useMutation({
@@ -54,15 +57,23 @@ const Messages = () => {
       <SearchInput search={search} setSearch={setSearch}>
         Search Messages
       </SearchInput>
-      <Table
-        headers={messageTableHeader}
-        data={messages}
-        length={length}
-        page={page}
-        setPage={setPage}
-        onViewClick={onViewClick}
-        onDelete={onDelete}
-      />
+
+      <div className="messages-container">
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <Table
+            headers={messageTableHeader}
+            data={messages}
+            length={length}
+            page={page}
+            setPage={setPage}
+            onViewClick={onViewClick}
+            onDelete={onDelete}
+          />
+        )}
+      </div>
+
       <Dialog data={currentMessage} setData={setCurrentMessage} />
       <Toaster position="top-right" />
     </div>

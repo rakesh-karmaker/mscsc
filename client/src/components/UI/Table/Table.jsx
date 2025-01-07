@@ -1,9 +1,11 @@
 import { Link, NavLink } from "react-router-dom";
 import "./Table.css";
 import Pagination from "@/components/UI/Pagination/Pagination";
-import DeleteBtn from "../DeleteBtn/DeleteBtn";
+import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
+import EmptyData from "@/components/UI/EmptyData/EmptyData";
 
 const Table = ({ headers, data, length, page, setPage, ...rest }) => {
+  if (length === 0) return <EmptyData />;
   const elementsPerPage = 10;
 
   return (

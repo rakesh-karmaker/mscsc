@@ -10,9 +10,9 @@ gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
 
 import "./Events.css";
+import Loader from "@/components/UI/Loader/Loader";
 
 const Events = ({ activities, isLoading }) => {
-  console.log(activities, "activities");
   const eventStatuses = ["happened", "all", "upcoming"];
   const [status, setStatus] = useState("all");
   const eventSwiperRef = useRef(null);
@@ -60,8 +60,6 @@ const Events = ({ activities, isLoading }) => {
     }
   }, [status, filteredActivities]);
 
-  console.log(events, "events");
-
   return (
     <section id="events" className="page-section col-center">
       <div className="col-center">
@@ -90,11 +88,7 @@ const Events = ({ activities, isLoading }) => {
         </div>
 
         <div ref={eventSwiperRef} className="events-container">
-          {events?.length === 0 ? (
-            <p className="secondary-text">No events to show</p>
-          ) : (
-            <EventSwiper filteredEvents={events} />
-          )}
+          {isLoading ? <Loader /> : <EventSwiper filteredEvents={events} />}
         </div>
       </div>
     </section>

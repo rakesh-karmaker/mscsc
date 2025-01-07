@@ -1,0 +1,49 @@
+import { useNavigate } from "react-router-dom";
+import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
+
+const MemberCard = ({ member, ...props }) => {
+  const navigate = useNavigate();
+  const { _id: id, name, branch, batch, image } = member;
+  return (
+    <div onClick={() => navigate(`/member/${id}`)} className="member-card">
+      <div className="role-icon">
+        {member.role === "admin" ? (
+          <i className="fa-solid fa-user-tie admin"></i>
+        ) : (
+          <i className="fas fa-user"></i>
+        )}
+      </div>
+      <div className="member-image-container">
+        <img src={image} alt={name} />
+      </div>
+      <div className="member-info">
+        <h3>{name}</h3>
+        <p>{branch}</p>
+        <p>{batch}</p>
+      </div>
+      {props?.isAdmin && <MemberActions member={member} {...props} />}
+    </div>
+  );
+};
+
+const MemberActions = ({ member, deleteMember, changeRole }) => {
+  return (
+    <div className="member-actions">
+      <button
+        type="button"
+        className={`primary-button role-btn ${member?.role}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          changeRole(member._id, member.role);
+        }}
+      >
+        {member?.role === "admin" ? "Make Member" : "Make Admin"}
+      </button>
+      <DeleteBtn id={member._id} deleteFunc={deleteMember}>
+        Are you sure you want to delete this member?
+      </DeleteBtn>
+    </div>
+  );
+};
+
+export default MemberCard;

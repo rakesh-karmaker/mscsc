@@ -4,9 +4,20 @@ import "../components/activities-components/Activities.css";
 import { useEffect } from "react";
 import Pagination from "../components/UI/Pagination/Pagination";
 import { useActivities } from "@/contexts/ActivitiesContext";
+import Loader from "@/components/UI/Loader/Loader";
+import EmptyData from "@/components/UI/EmptyData/EmptyData";
 const Activities = ({ admin, ...rest }) => {
-  const { activities, length, tag, setTag, search, setSearch, page, setPage } =
-    useActivities();
+  const {
+    activities,
+    length,
+    tag,
+    setTag,
+    search,
+    setSearch,
+    page,
+    isLoading,
+    setPage,
+  } = useActivities();
 
   const elementsPerPage = 12;
 
@@ -29,17 +40,23 @@ const Activities = ({ admin, ...rest }) => {
         setSearch={setSearch}
       />
       <section className="activities-container">
-        {activities?.map((activity) => {
-          return (
-            <Activity
-              key={activity._id}
-              data={activity}
-              selectedTag={tag}
-              admin={admin}
-              {...rest}
-            />
-          );
-        })}
+        {isLoading ? (
+          <Loader />
+        ) : length === 0 ? (
+          <EmptyData />
+        ) : (
+          activities?.map((activity) => {
+            return (
+              <Activity
+                key={activity._id}
+                data={activity}
+                selectedTag={tag}
+                admin={admin}
+                {...rest}
+              />
+            );
+          })
+        )}
       </section>
       <Pagination
         length={length}

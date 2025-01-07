@@ -38,6 +38,14 @@
   color: var(--text-white);
 }
 
+.events-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
 .event-swiper > div {
   width: 100%;
   max-width: var(--max-elements-width);

@@ -2,8 +2,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 
 import Event from "@/components/home-components/events-components/Event";
+import EmptyData from "@/components/UI/EmptyData/EmptyData";
 const EventSwiper = ({ filteredEvents }) => {
-  console.log(filteredEvents);
+  if (filteredEvents?.length === 0) {
+    return <EmptyData />;
+  }
+
   return (
     <Swiper
       modules={[Autoplay]}

@@ -1,10 +1,11 @@
 import Pagination from "@/components/UI/Pagination/Pagination";
 import SearchInput from "@/components/UI/SearchInput/SearchInput";
 import { useMember } from "@/contexts/MembersContext";
-import { useNavigate } from "react-router-dom";
-
 import "@/components/members-components/Members.css";
-import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
+import Loader from "@/components/UI/Loader/Loader";
+import EmptyData from "@/components/UI/EmptyData/EmptyData";
+import MemberCard from "@/components/members-components/MemberCard";
+import MembersContainer from "@/components/members-components/MembersContainer";
 
 const MemberPage = (props) => {
   const {
@@ -16,6 +17,7 @@ const MemberPage = (props) => {
     branch,
     setBranch,
     length,
+    isLoading,
   } = useMember();
 
   return (
@@ -36,70 +38,19 @@ const MemberPage = (props) => {
       </div>
 
       <section className="members-list-container">
-        <div className="members-container">
-          {members?.map((member) => {
-            return (
-              <MemberCard
-                key={member._id + member.name}
-                member={member}
-                {...props}
-              />
-            );
-          })}
-        </div>
-        <Pagination
-          length={length}
-          elementsPerPage={12}
-          currentPage={page}
-          setPage={setPage}
-        />
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <MembersContainer
+            members={members}
+            length={length}
+            page={page}
+            setPage={setPage}
+            {...props}
+          />
+        )}
       </section>
     </main>
-  );
-};
-
-const MemberCard = ({ member, ...props }) => {
-  const navigate = useNavigate();
-  const { _id: id, name, branch, batch, image } = member;
-  return (
-    <div onClick={() => navigate(`/member/${id}`)} className="member-card">
-      <div className="role-icon">
-        {member.role === "admin" ? (
-          <i className="fa-solid fa-user-tie admin"></i>
-        ) : (
-          <i className="fas fa-user"></i>
-        )}
-      </div>
-      <div className="member-image-container">
-        <img src={image} alt={name} />
-      </div>
-      <div className="member-info">
-        <h3>{name}</h3>
-        <p>{branch}</p>
-        <p>{batch}</p>
-      </div>
-      {props?.isAdmin && <MemberActions member={member} {...props} />}
-    </div>
-  );
-};
-
-const MemberActions = ({ member, deleteMember, changeRole }) => {
-  return (
-    <div className="member-actions">
-      <button
-        type="button"
-        className={`primary-button role-btn ${member?.role}`}
-        onClick={(e) => {
-          e.stopPropagation();
-          changeRole(member._id, member.role);
-        }}
-      >
-        {member?.role === "admin" ? "Make Member" : "Make Admin"}
-      </button>
-      <DeleteBtn id={member._id} deleteFunc={deleteMember}>
-        Are you sure you want to delete this member?
-      </DeleteBtn>
-    </div>
   );
 };
 

@@ -5,19 +5,17 @@ import AboutProfile from "@/components/profile-components/AboutProfile";
 import UserInfo from "@/components/profile-components/UserInfo";
 import Timeline from "@/components/profile-components/Timeline";
 import UserForm from "@/components/UserForm/UserForm";
-
 import "@/components/profile-components/Profile.css";
 import TimelineInputs from "@/components/UI/TimelineInputs/TimelineInputs";
 import { getUserById } from "@/services/GetService";
 import { MemberProfileEditSchema } from "@/utils/MemberSchemaValidation";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-import FilterError from "@/utils/FilterError";
+import useErrorNavigator from "@/hooks/useErrorNavigator";
+import Loader from "@/components/UI/Loader/Loader";
 
 const ProfilePage = () => {
   const { id } = useParams();
   const { user } = useUser();
-  const navigate = useNavigate();
   const isOwner = user?._id === id;
   const [isEditing, setIsEditing] = useState(false);
 
@@ -25,6 +23,7 @@ const ProfilePage = () => {
     data: profileData,
     isLoading,
     error,
+    isError,
   } = useQuery({
     queryKey: ["user", id],
     queryFn: () => {
@@ -35,14 +34,18 @@ const ProfilePage = () => {
       }
     },
   });
-
-  if (isLoading) {
-    return <p>Loading profile...</p>;
-  }
+  useErrorNavigator(isError, error);
 
   if (error) {
-    <FilterError error={error} />;
     return null;
+  }
+
+  if (isLoading) {
+    return (
+      <div style={{ height: "100vh" }} className="row-center">
+        <Loader />
+      </div>
+    );
   }
 
   return (

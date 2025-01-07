@@ -1,12 +1,11 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { getAllMessages } from "@/services/GetService";
 import { useQuery } from "@tanstack/react-query";
-const MessagesContext = createContext(null);
-import { useNavigate } from "react-router-dom";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
 
+const MessagesContext = createContext(null);
+
 const MessagesProvider = ({ children }) => {
-  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
 
@@ -25,8 +24,6 @@ const MessagesProvider = ({ children }) => {
   const response = data?.data;
   const messages = data?.data?.results;
   const length = data?.data?.selectedLength || 0;
-
-  console.log(length);
 
   return (
     <MessagesContext.Provider

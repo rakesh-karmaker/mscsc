@@ -6,6 +6,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { useEffect, useState } from "react";
+import Loader from "@/components/UI/Loader/Loader";
+import EmptyData from "@/components/UI/EmptyData/EmptyData";
 
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
@@ -45,9 +47,15 @@ const Articles = ({ activities, isLoading }) => {
         </PrimaryBtn>
       </SectionHeader>
       <div className="articles-container">
-        {articles?.map((article) => (
-          <Article key={article._id + "article"} article={article} />
-        ))}
+        {isLoading ? (
+          <Loader />
+        ) : articles?.length == 0 ? (
+          <EmptyData />
+        ) : (
+          articles?.map((article) => (
+            <Article key={article._id + "article"} article={article} />
+          ))
+        )}
       </div>
     </section>
   );

@@ -9,7 +9,7 @@ const ActivitiesProvider = ({ children }) => {
   const [tag, setTag] = useState("");
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const { data, error, isError, refetch } = useQuery({
+  const { data, error, isError, isLoading, refetch } = useQuery({
     queryKey: ["activities", page, tag, search],
     queryFn: () => {
       return getAllActivities(page, 12, tag, search);
@@ -57,6 +57,7 @@ const ActivitiesProvider = ({ children }) => {
         setSearch,
         page,
         setPage,
+        isLoading,
         allActivities,
         allActivitiesIsLoading,
       }}

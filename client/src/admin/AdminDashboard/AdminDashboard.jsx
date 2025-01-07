@@ -9,6 +9,7 @@ import Table from "@/components/UI/Table/Table";
 import toast, { Toaster } from "react-hot-toast";
 import DashboardTagsContainer from "@/admin/components/DashboadTags/DashboardTags";
 import DashboardHeader from "@/admin/components/DashboardHeader/DashboardHeader";
+import { useEffect } from "react";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -32,8 +33,7 @@ const AdminDashboard = () => {
     },
   });
 
-  const { response, members } = useMember();
-  console.log("members", members);
+  const { response, members, setSearch } = useMember();
 
   const onViewClick = (id, isNew) => {
     if (isNew) {
@@ -45,6 +45,10 @@ const AdminDashboard = () => {
   const onDelete = (id) => {
     memberMutation.mutate({ _id: id, isDelete: true });
   };
+
+  useEffect(() => {
+    setSearch("");
+  }, []);
 
   return (
     <>
