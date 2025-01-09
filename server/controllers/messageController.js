@@ -43,7 +43,7 @@ const editMessage = async (req, res) => {
     const id = req.body._id;
     const message = await Message.findByIdAndUpdate(
       id,
-      { new: false },
+      { ...req.body },
       { new: true }
     );
     if (!message) {

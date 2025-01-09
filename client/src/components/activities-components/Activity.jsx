@@ -19,7 +19,7 @@ const Activity = ({ data, selectedTag, admin, ...rest }) => {
             href={link}
             className="primary-button"
             target="_blank"
-            aria-label={`Learn more about ${title}`}
+            aria-label={`Learn more about ${title} - ${tag} on ${date} at our Facebook page.`}
           >
             Learn More <i className="fa-solid fa-arrow-right"></i>
           </a>

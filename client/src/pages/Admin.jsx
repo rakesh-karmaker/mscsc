@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
   const navigate = useNavigate();
-  console.log("Admin.jsx");
   useEffect(() => {
     navigate("/admin/dashboard");
   });

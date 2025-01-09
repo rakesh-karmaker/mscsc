@@ -99,7 +99,7 @@ const getTableCell = (row, header, { onViewClick, onDelete, ...rest }) => {
         return (
           <button
             className={`primary-button profile-btn ${row?.new ? "new" : ""}`}
-            onClick={() => onViewClick(row._id)}
+            onClick={() => onViewClick(row._id, row?.new)}
           >
             View
           </button>

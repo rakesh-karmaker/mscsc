@@ -16,7 +16,7 @@
 }
 
 .club-description {
-  max-width: 75ch;
+  max-width: 79ch;
 }
 
 .club-description > p:not(.secondary-text) {
@@ -40,6 +40,7 @@
   margin: 60px 0px 33px 0px;
   gap: 30px;
   justify-content: space-between;
+  align-items: flex-start !important;
 }
 
 .benefit img {
@@ -53,7 +54,7 @@
 }
 
 .about-article-container > img {
-  max-width: 680px;
+  max-width: 690px;
   height: 650px;
   object-fit: cover;
   object-position: center center;
@@ -131,9 +132,53 @@
 
 /* ----------- about us section ends here ---------  */
 
+@media screen and (max-width: 1500px) {
+  .about-article-container > img {
+    max-width: 600px;
+    height: 540px;
+  }
+  .club-description > p:not(.secondary-text) {
+    font-size: 1.3rem;
+    margin-bottom: 0px;
+  }
+  .club-description > h2 {
+    font-size: 3rem;
+    line-height: 50px;
+  }
+
+  .club-description p.secondary-text {
+    font-size: 0.9rem;
+  }
+}
+
 @media screen and (max-width: 1400px) {
   .about-article-container > img {
-    max-width: 520px;
+    max-width: 570px;
+    height: 580px;
+  }
+  .club-description > h2 {
+    font-size: 2.5rem;
+    line-height: 50px;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .about-article-container > img {
+    max-width: 500px;
+    height: 530px;
+  }
+  .benefits-container {
+    margin-top: 35px;
+  }
+  .benefit img {
+    width: 43px;
+    height: 39px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .about-article-container > img {
+    max-width: 450px;
   }
 }
 

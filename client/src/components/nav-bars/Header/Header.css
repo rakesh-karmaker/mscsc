@@ -13,7 +13,7 @@ header {
 nav {
   width: 100%;
   max-width: var(--max-elements-width);
-  height: 80px;
+  height: var(--nav-height);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -51,8 +51,8 @@ nav {
 }
 
 .navbar-toggler {
-  width: 45px;
-  height: 45px;
+  width: 40px;
+  height: 40px;
   border: none;
   border-radius: 50%;
   font-size: 1.4rem;
@@ -74,21 +74,92 @@ nav {
   cursor: pointer;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1650px) {
+  #logo {
+    height: 50px;
+  }
+  #logo > img {
+    width: 50px;
+  }
+  .nav-links-container {
+    gap: 18px;
+  }
+  .nav-link {
+    font-size: 1rem;
+  }
   #avatar,
   #avatar > img {
     width: 45px;
     height: 45px;
   }
+  .primary-button.header-btn {
+    padding: 0px 17px;
+    height: 36px;
+    font-size: 15px;
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  #logo {
+    height: 45px;
+  }
+  #logo > img {
+    width: 45px;
+  }
+  .nav-links-container {
+    gap: 17px;
+  }
+  .nav-link {
+    font-size: 0.95rem;
+  }
+  #avatar,
+  #avatar > img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media screen and (max-width: 1450px) {
+  #logo {
+    height: 40px;
+  }
+  #logo > img {
+    width: 40px;
+  }
+  .nav-links-container {
+    gap: 15px;
+  }
+  .nav-link {
+    font-size: 0.85rem;
+  }
+  #avatar,
+  #avatar > img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .primary-button.header-btn {
+    padding: 0px 15px;
+    height: 32px;
+    font-size: 13px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  #avatar,
+  #avatar > img {
+    width: 40px;
+    height: 40px;
+  }
   nav {
     position: relative;
-    height: 70px;
+    height: 65px;
   }
 
   .nav-links-container {
     flex-direction: column;
     position: absolute;
-    top: 73px;
+    top: 68px;
     width: 100%;
     height: fit-content;
     background-color: var(--primary-bg);

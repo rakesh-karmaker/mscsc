@@ -39,7 +39,8 @@ const Messages = () => {
 
   const onViewClick = (id, isNew) => {
     if (isNew) {
-      messagesMutation.mutate({ _id: id, isDelete: false });
+      console.log("new");
+      messagesMutation.mutate({ _id: id, isDelete: false, new: false });
     }
     const message = messages.find((message) => message._id === id);
     setCurrentMessage(message);

@@ -48,12 +48,12 @@ const Events = ({ activities, isLoading }) => {
     if (status === "all") {
       setEvents(filteredActivities);
     } else if (status === "happened") {
-      const filteredByStatusData = filteredActivities.filter(
+      const filteredByStatusData = filteredActivities?.filter(
         (event) => new Date(event.date) < new Date()
       );
       setEvents(filteredByStatusData);
     } else if (status === "upcoming") {
-      const filteredByStatusData = filteredActivities.filter(
+      const filteredByStatusData = filteredActivities?.filter(
         (event) => new Date(event.date) > new Date()
       );
       setEvents(filteredByStatusData);

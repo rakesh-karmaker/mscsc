@@ -3,6 +3,7 @@ import ClubStats from "@/components/home-components/hero-components/ClubStats";
 import ImageSlider from "@/components/home-components/hero-components/ImageSlide";
 import "@/components/home-components/hero-components/Hero.css";
 import MscscTag from "@/components/UI/MscscTag";
+import { NavLink } from "react-router-dom";
 const Hero = () => {
   return (
     <>
@@ -11,6 +12,7 @@ const Hero = () => {
           <article className="hero-section-left">
             <MscscTag />
             <ClubIntro />
+
             {window.innerWidth > 1080 ? <ClubStats /> : null}
           </article>
 

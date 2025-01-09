@@ -2,7 +2,7 @@ main.page-activities {
   width: 100%;
   min-height: calc(100vh);
   max-width: var(--max-elements-width);
-  padding-top: 150px;
+  padding-top: calc(var(--nav-height) + 3rem);
   padding-bottom: 100px;
 
   display: flex;
@@ -54,12 +54,12 @@ menu {
 }
 
 .activities-container {
+  width: 100%;
   margin-top: 50px;
-  display: flex;
-  /* justify-content: space-between; */
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  gap: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  justify-items: center;
+  gap: 20px;
   flex: 1;
 }
 

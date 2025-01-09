@@ -1,8 +1,7 @@
 #sidebar {
   background-color: var(--black);
   min-width: 275px;
-  height: 100%;
-  min-height: 100svh;
+  height: clamp(500px, 100svh, 100%);
   padding: 30px;
   display: flex;
   flex-direction: column;

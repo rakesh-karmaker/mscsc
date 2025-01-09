@@ -8,10 +8,10 @@ const Contact = () => {
         <h3 className="highlighted-text">Contact us</h3>
         <h2 className="section-heading">DROP US A MESSAGE</h2>
         <p className="secondary-text">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it
+          We’re here to help you at anytime ! Drop us a message, and our club
+          will get back to you as soon as possible. Whether you have inquiries,
+          feedback, or just want to say how can we help you, it would be our
+          pleasure to hear from you!
         </p>
         <div className="contacts-container">
           <ContactInfo

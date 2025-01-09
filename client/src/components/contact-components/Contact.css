@@ -5,13 +5,18 @@ input.hidden {
 
 #contact {
   padding: 100px 0px;
-  height: 100%;
+  max-height: 100%;
   width: 100vw;
   max-width: var(--max-elements-width);
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 50px;
+}
+
+.page-contact #contact {
+  padding: 0px;
+  max-height: 100%;
 }
 
 #contact .section-heading {
@@ -115,6 +120,12 @@ textarea {
   }
   .contact-form {
     min-width: 0px;
+  }
+}
+
+@media screen and (max-height: 800px) {
+  .page-contact #contact {
+    padding: 50px 0px;
   }
 }
 
