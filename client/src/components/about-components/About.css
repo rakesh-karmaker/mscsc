@@ -45,7 +45,7 @@
 
 .benefit img {
   width: 53px;
-  height: 49px;
+  height: 53px;
 }
 
 .benefit h3 {
@@ -172,7 +172,7 @@
   }
   .benefit img {
     width: 43px;
-    height: 39px;
+    height: 43px;
   }
 }
 
@@ -192,6 +192,7 @@
   }
   .about-article-container > img {
     max-width: 100%;
+    width: fit-content;
   }
 }
 

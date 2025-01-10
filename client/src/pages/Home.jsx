@@ -6,20 +6,27 @@ import HomeEcs from "@/components/home-components/home-ec-components/HomeEcs";
 import Contact from "@/components/contact-components/Contact";
 import executivesData from "@/services/api/executivesData";
 import { useActivities } from "@/contexts/ActivitiesContext";
+import MetaTags from "@/layout/MetaTags";
 
 const Home = () => {
   const { allActivities: activities, allActivitiesIsLoading: isLoading } =
     useActivities();
 
   return (
-    <main className="page-home">
-      <Hero />
-      <AboutUs />
-      <Events activities={activities} isLoading={isLoading} />
-      <Articles activities={activities} isLoading={isLoading} />
-      <HomeEcs data={executivesData} />
-      <Contact />
-    </main>
+    <>
+      <MetaTags
+        title="MSCSC - Monipur School and College Science Club"
+        description="MSCSC is the ideal place for Math, Science, Biology, IT, and Astronomy enthusiasts, offering top-notch learning, hands-on experiences, and expert guidance."
+      />
+      <main className="page-home">
+        <Hero />
+        <AboutUs />
+        <Events activities={activities} isLoading={isLoading} />
+        <Articles activities={activities} isLoading={isLoading} />
+        <HomeEcs data={executivesData} />
+        <Contact />
+      </main>
+    </>
   );
 };
 export default Home;

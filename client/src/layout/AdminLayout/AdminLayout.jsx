@@ -1,10 +1,9 @@
 import { useUser } from "@/Contexts/UserContext";
 import { Outlet } from "react-router-dom";
-import Sidebar from "../components/Sidebar/Sidebar";
+import Sidebar from "@/layout/Sidebar/Sidebar";
 
-import "./AdminPanel.css";
-
-const AdminPanel = () => {
+import "./AdminLayout.css";
+const AdminLayout = () => {
   const { user } = useUser();
 
   return (
@@ -19,4 +18,4 @@ const AdminPanel = () => {
   );
 };
 
-export default AdminPanel;
+export default AdminLayout;

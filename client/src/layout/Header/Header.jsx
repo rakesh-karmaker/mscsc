@@ -3,7 +3,7 @@ import "./Header.css";
 import { useRef, useState } from "react";
 import PrimaryBtn from "@/components/UI/PrimaryBtn";
 import { useUser } from "@/Contexts/UserContext";
-import Avatar from "../../UI/Avatar";
+import Avatar from "@/components/UI/Avatar";
 
 const Header = () => {
   const navBar = useRef(null);

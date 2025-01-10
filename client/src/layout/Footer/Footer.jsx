@@ -1,4 +1,4 @@
-import styles from "@/components/UI/Footer/Footer.module.css";
+import "@/layout/Footer/Footer.css";
 
 const Footer = () => {
   return (
@@ -6,7 +6,7 @@ const Footer = () => {
       <div>
         <p>© 2024 MSCSC || All Rights Reserved</p>
 
-        <div className={`${styles.socials} row-center`}>
+        <div className="socials row-center">
           <FooterLink
             link="https://www.facebook.com/MSCSC2014"
             title="Facebook"

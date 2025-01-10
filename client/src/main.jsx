@@ -17,7 +17,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AdminDashboard from "@/admin/AdminDashboard/AdminDashboard";
 import { MessagesProvider } from "@/admin/contexts/MessagesContext";
 import Messages from "@/admin/Messages/Messages";
-import AdminPanel from "@/admin/AdminPanel/AdminPanel";
 import Admin from "@/pages/Admin";
 import Members from "@/admin/Members/Members";
 import AdminActivities from "./admin/AdminActivities/AdminActivities";
@@ -27,7 +26,8 @@ import NotFound from "./pages/Errors/NotFound";
 import ServerError from "./pages/Errors/ServerError";
 import BadRequest from "./pages/Errors/BadRequest";
 import Unauthorized from "./pages/Errors/Unauthorized";
-import UserLayout from "./components/UserLayout";
+import UserLayout from "@/layout/UserLayout";
+import AdminLayout from "@/layout/AdminLayout/AdminLayout";
 
 const queryClient = new QueryClient();
 
@@ -70,7 +70,7 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MessagesProvider>
-              <AdminPanel />
+              <AdminLayout />
             </MessagesProvider>
           </ProtectedRoute>
         ),

@@ -1,4 +1,4 @@
-import Header from "@/components/nav-bars/Header/Header";
+import Header from "@/layout/Header/Header";
 import { Error, ErrorContent } from "@/components/UI/Error/Error";
 import { useUser } from "@/Contexts/UserContext";
 import { useNavigate } from "react-router-dom";

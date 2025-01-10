@@ -1,7 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
-import Header from "./components/nav-bars/Header/Header";
-import Footer from "./components/UI/Footer/Footer";
 import { useEffect } from "react";
+import { HelmetProvider } from "react-helmet-async";
 
 function App() {
   const location = useLocation();
@@ -11,7 +10,9 @@ function App() {
 
   return (
     <>
-      <Outlet />
+      <HelmetProvider>
+        <Outlet />
+      </HelmetProvider>
     </>
   );
 }

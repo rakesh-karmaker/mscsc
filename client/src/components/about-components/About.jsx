@@ -10,6 +10,8 @@ const AboutUs = () => {
         <img
           src="/about-club-section-img.webp"
           alt="A picture of club members"
+          width={"690px"}
+          height={"650px"}
         />
       </div>
 
