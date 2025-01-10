@@ -10,6 +10,8 @@ import toast, { Toaster } from "react-hot-toast";
 import DashboardTagsContainer from "@/admin/components/DashboadTags/DashboardTags";
 import DashboardHeader from "@/admin/components/DashboardHeader/DashboardHeader";
 import { useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import MetaTags from "@/layout/MetaTags";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -52,6 +54,10 @@ const AdminDashboard = () => {
 
   return (
     <>
+      <MetaTags
+        title="Admin - Dashboard"
+        description="MSCSC is the ideal place for Math, Science, Biology, IT, and Astronomy enthusiasts, offering top-notch learning, hands-on experiences, and expert guidance."
+      />
       <DashboardHeader title={"Dashboard"}>
         Welcome to the admin dashboard
       </DashboardHeader>
@@ -118,14 +124,14 @@ const memberTableHeader = [
 const QuickAccess = () => {
   const quickAccessData = [
     {
-      icon: "fa-solid fa-calendar-days",
+      icon: "fa-regular fa-calendar-days",
       heading: "Add a new Activity",
       text: "You can add a new workshop details, article, a member’s achievement and new upcoming events. So the users can see them, learn about them and join the activities to expand their domain of knowledge and learn about several things.",
       link: "/admin/activities",
       linkText: "Add Now",
     },
     {
-      icon: "fa-solid fa-envelope",
+      icon: "fa-regular fa-envelope",
       heading: "View Messages",
       text: "You can view the messages sent by the users where they can asy a question or identify a problem. The users can send messages through the contact form in the contact section located in the home page and in the contact page.",
       link: "/admin/messages",
@@ -153,7 +159,7 @@ const QuickAccessCard = ({ data }) => {
   return (
     <div className="quick-access-card">
       <p className="quick-access-card-icon">
-        <i className={icon}></i>
+        <FontAwesomeIcon icon={icon} />
       </p>
 
       <div>

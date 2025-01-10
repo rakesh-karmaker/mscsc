@@ -226,7 +226,7 @@
     max-width: 270px;
     gap: 0.3rem;
   }
-  .role-icon i {
+  .role-icon svg {
     font-size: 1rem;
   }
   .member-image-container {

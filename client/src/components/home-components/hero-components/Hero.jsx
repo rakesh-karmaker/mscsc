@@ -4,6 +4,7 @@ import ImageSlider from "@/components/home-components/hero-components/ImageSlide
 import "@/components/home-components/hero-components/Hero.css";
 import MscscTag from "@/components/UI/MscscTag";
 import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Hero = () => {
   return (
     <>
@@ -27,7 +28,7 @@ const Hero = () => {
                 <p>Join Us With Our Journey</p>
               </div>
               <p>
-                <i className="fa-solid fa-arrow-right-long"></i>
+                <FontAwesomeIcon icon="fa-solid fa-arrow-right" />
               </p>
             </a>
           </div>

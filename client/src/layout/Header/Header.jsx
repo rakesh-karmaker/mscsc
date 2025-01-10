@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import PrimaryBtn from "@/components/UI/PrimaryBtn";
 import { useUser } from "@/Contexts/UserContext";
 import Avatar from "@/components/UI/Avatar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Header = () => {
   const navBar = useRef(null);
@@ -91,9 +92,9 @@ const NavbarToggler = ({ navbar, isOpened, setIsOpened }) => {
       aria-label="Toggle navbar"
     >
       {isOpened ? (
-        <i className="fa-solid fa-xmark"></i>
+        <FontAwesomeIcon icon="fa-solid fa-xmark" />
       ) : (
-        <i className="fa-solid fa-bars"></i>
+        <FontAwesomeIcon icon="fa-solid fa-bars" />
       )}
     </button>
   );

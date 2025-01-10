@@ -6,6 +6,7 @@ import Pagination from "../components/UI/Pagination/Pagination";
 import { useActivities } from "@/contexts/ActivitiesContext";
 import Loader from "@/components/UI/Loader/Loader";
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
+import MetaTags from "@/layout/MetaTags";
 const Activities = ({ admin, ...rest }) => {
   const {
     activities,
@@ -32,39 +33,45 @@ const Activities = ({ admin, ...rest }) => {
     window.scrollTo(0, 0);
   };
   return (
-    <main className="page-activities">
-      <ActivitiesNavbar
-        tag={tag}
-        setTag={setTag}
-        search={search}
-        setSearch={setSearch}
+    <>
+      <MetaTags
+        title="MSCSC - Activities"
+        description="MSCSC is the ideal place for Math, Science, Biology, IT, and Astronomy enthusiasts, offering top-notch learning, hands-on experiences, and expert guidance."
       />
-      <section className="activities-container">
-        {isLoading ? (
-          <Loader />
-        ) : length === 0 ? (
-          <EmptyData />
-        ) : (
-          activities?.map((activity) => {
-            return (
-              <Activity
-                key={activity._id}
-                data={activity}
-                selectedTag={tag}
-                admin={admin}
-                {...rest}
-              />
-            );
-          })
-        )}
-      </section>
-      <Pagination
-        length={length}
-        elementsPerPage={elementsPerPage}
-        setPage={handleSetCurrentPageClick}
-        currentPage={page}
-      />
-    </main>
+      <main className="page-activities">
+        <ActivitiesNavbar
+          tag={tag}
+          setTag={setTag}
+          search={search}
+          setSearch={setSearch}
+        />
+        <section className="activities-container">
+          {isLoading ? (
+            <Loader />
+          ) : length === 0 ? (
+            <EmptyData />
+          ) : (
+            activities?.map((activity) => {
+              return (
+                <Activity
+                  key={activity._id}
+                  data={activity}
+                  selectedTag={tag}
+                  admin={admin}
+                  {...rest}
+                />
+              );
+            })
+          )}
+        </section>
+        <Pagination
+          length={length}
+          elementsPerPage={elementsPerPage}
+          setPage={handleSetCurrentPageClick}
+          currentPage={page}
+        />
+      </main>
+    </>
   );
 };
 

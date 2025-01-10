@@ -1,5 +1,6 @@
 import ContactForm from "@/components/contact-components/ContactForm";
 import "@/components/contact-components/Contact.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Contact = () => {
   return (
@@ -19,21 +20,21 @@ const Contact = () => {
             href="tel: 01329-600430"
             content="+880 1329-600430"
           >
-            <i className="fa-solid fa-phone"></i>
+            <FontAwesomeIcon icon="fa-solid fa-phone" />
           </ContactInfo>
           <ContactInfo
             methodName="Email us"
             href="mailto:mscscofficial17@gmail"
             content="mscscofficial17@gmail.com"
           >
-            <i className="fa-solid fa-envelope"></i>
+            <FontAwesomeIcon icon="fa-regular fa-envelope" />
           </ContactInfo>
           <ContactInfo
             methodName="Facebook"
             href="https://www.facebook.com/MSCSC2014"
             content="Monipur School & College Science Club - MSCSC"
           >
-            <i className="fa-brands fa-facebook"></i>
+            <FontAwesomeIcon icon="fa-brands fa-facebook" />
           </ContactInfo>
         </div>
       </div>

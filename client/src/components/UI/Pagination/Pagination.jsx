@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Pagination.css";
 
 const Pagination = ({ length, elementsPerPage, setPage, currentPage }) => {
@@ -57,7 +58,7 @@ const PaginationActionBtn = ({ direction, setPage, currentPage }) => {
       type="button"
       aria-label={`Toggle ${direction} page`}
     >
-      <i className={`fa-solid fa-chevron-${direction}`}></i>
+      <FontAwesomeIcon icon={`fa-solid fa-chevron-${direction}`} />
     </button>
   );
 };

@@ -1,6 +1,7 @@
 import { useRef } from "react";
 
 import "@/components/UI/FileInput/FileInput.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const FileInput = ({ register, errors, children }) => {
   const labelRef = useRef();
@@ -29,7 +30,7 @@ const FileInput = ({ register, errors, children }) => {
         htmlFor="file"
         className="highlighted-text file-label"
       >
-        <i className="fa-solid fa-upload"></i> <span>Upload File</span>
+        <FontAwesomeIcon icon="fa-solid fa-upload" /> <span>Upload File</span>
       </label>
 
       {errors && <p className="error-message">{errors.message}</p>}

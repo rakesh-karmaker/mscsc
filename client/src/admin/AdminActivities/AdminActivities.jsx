@@ -6,6 +6,7 @@ import { useState } from "react";
 import { deleteActivity } from "@/services/DeleteService";
 import { useQueryClient } from "@tanstack/react-query";
 import toast, { Toaster } from "react-hot-toast";
+import MetaTags from "@/layout/MetaTags";
 
 const AdminActivities = () => {
   const queryClient = useQueryClient();
@@ -23,31 +24,37 @@ const AdminActivities = () => {
   };
 
   return (
-    <div className="admin-activities">
-      <DashboardHeader title={"Activities"}>
-        View and manage all the activities of the club
-      </DashboardHeader>
-      <button
-        className="primary-button activity-action"
-        onClick={() => {
-          selectedActivity === null && setCreateActivity((prev) => !prev);
-          setSelectedActivity(null);
-        }}
-      >
-        {createActivity || selectedActivity ? "Cancel" : "Create Activity"}
-      </button>
-      {createActivity || selectedActivity != null ? (
-        <ActivityForm
-          defaultValues={selectedActivity}
-          setSelectedActivity={setSelectedActivity}
-          setCreateActivity={setCreateActivity}
-          deleteActivity={handleDeleteActivity}
-        />
-      ) : (
-        <Activities admin={true} setSelectedActivity={setSelectedActivity} />
-      )}
-      <Toaster position="top-right" />
-    </div>
+    <>
+      <MetaTags
+        title="Admin - Activities"
+        description="MSCSC is the ideal place for Math, Science, Biology, IT, and Astronomy enthusiasts, offering top-notch learning, hands-on experiences, and expert guidance."
+      />
+      <div className="admin-activities">
+        <DashboardHeader title={"Activities"}>
+          View and manage all the activities of the club
+        </DashboardHeader>
+        <button
+          className="primary-button activity-action"
+          onClick={() => {
+            selectedActivity === null && setCreateActivity((prev) => !prev);
+            setSelectedActivity(null);
+          }}
+        >
+          {createActivity || selectedActivity ? "Cancel" : "Create Activity"}
+        </button>
+        {createActivity || selectedActivity != null ? (
+          <ActivityForm
+            defaultValues={selectedActivity}
+            setSelectedActivity={setSelectedActivity}
+            setCreateActivity={setCreateActivity}
+            deleteActivity={handleDeleteActivity}
+          />
+        ) : (
+          <Activities admin={true} setSelectedActivity={setSelectedActivity} />
+        )}
+        <Toaster position="top-right" />
+      </div>
+    </>
   );
 };
 

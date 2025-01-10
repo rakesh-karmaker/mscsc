@@ -1,9 +1,9 @@
 import Hero from "@/components/home-components/hero-components/Hero";
-import AboutUs from "@/components/about-components/About";
+import AboutUs from "@/components/about-components/AboutSection";
 import Events from "@/components/home-components/events-components/Events";
 import Articles from "@/components/home-components/articles-components/Articles";
 import HomeEcs from "@/components/home-components/home-ec-components/HomeEcs";
-import Contact from "@/components/contact-components/Contact";
+import Contact from "@/components/contact-components/ContactSection";
 import executivesData from "@/services/api/executivesData";
 import { useActivities } from "@/contexts/ActivitiesContext";
 import MetaTags from "@/layout/MetaTags";

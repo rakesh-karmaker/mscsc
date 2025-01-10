@@ -76,7 +76,7 @@
   color: var(--highlighted-color);
 }
 
-.articles-container a i {
+.articles-container a svg {
   transition: 0.25s;
 }
 

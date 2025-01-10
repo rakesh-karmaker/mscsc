@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const MemberCard = ({ member, ...props }) => {
   const navigate = useNavigate();
@@ -8,9 +9,9 @@ const MemberCard = ({ member, ...props }) => {
     <div onClick={() => navigate(`/member/${id}`)} className="member-card">
       <div className="role-icon">
         {member.role === "admin" ? (
-          <i className="fa-solid fa-user-tie admin"></i>
+          <FontAwesomeIcon icon="fa-solid fa-user-tie" className="admin" />
         ) : (
-          <i className="fas fa-user"></i>
+          <FontAwesomeIcon icon="fa-solid fa-user" />
         )}
       </div>
       <div className="member-image-container">

@@ -106,6 +106,9 @@ menu {
 }
 
 .activity-date {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   color: var(--text-secondary);
 }
 
@@ -148,11 +151,11 @@ menu {
   bottom: 20px;
 }
 
-.page-activities .primary-button i {
+.page-activities .primary-button svg {
   margin-left: 5px;
 }
 
-.activity-actions > .secondary-button > i {
+.activity-actions > .secondary-button > svg {
   margin-left: 0px;
   margin-right: 5px;
 }

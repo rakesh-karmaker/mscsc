@@ -47,7 +47,7 @@ main.page-executives {
   background-color: var(--highlighted-color);
 }
 
-.year-dropdown.active i {
+.year-dropdown.active svg {
   transform: rotate(180deg);
 }
 

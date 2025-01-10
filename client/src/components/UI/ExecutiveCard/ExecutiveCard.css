@@ -55,19 +55,19 @@
   text-decoration: none;
   opacity: 0;
   transition: 0.25s;
-}
-
-.member-socials i {
-  font-size: 1.5rem;
-  background-color: var(--highlighted-color);
-  color: var(--white);
   width: 50px;
   height: 50px;
-  transition: 0.25s;
+  background-color: var(--highlighted-color);
   border-radius: 50%;
 }
 
-.member-socials i:hover {
+.member-socials svg {
+  color: var(--white);
+  transition: 0.25s;
+  font-size: 1.5rem;
+}
+
+.member-socials a:hover svg {
   color: var(--light-black);
 }
 

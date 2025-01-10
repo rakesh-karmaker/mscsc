@@ -1,4 +1,5 @@
 import "@/layout/Footer/Footer.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Footer = () => {
   return (
@@ -11,22 +12,22 @@ const Footer = () => {
             link="https://www.facebook.com/MSCSC2014"
             title="Facebook"
           >
-            <i className="fa-brands fa-facebook"></i>
+            <FontAwesomeIcon icon="fa-brands fa-facebook" />
           </FooterLink>
 
           <FooterLink
             link="https://www.instagram.com/_mscsclub_/"
             title="Instagram"
           >
-            <i className="fa-brands fa-instagram"></i>
+            <FontAwesomeIcon icon="fa-brands fa-instagram" />
           </FooterLink>
 
           <FooterLink link="mailto:mscscofficial17@gmail" title="Email us">
-            <i className="fa-solid fa-envelope"></i>
+            <FontAwesomeIcon icon="fa-regular fa-envelope" />
           </FooterLink>
 
           <FooterLink link="tel: 01329-600430" title="Call us">
-            <i className="fa-solid fa-phone"></i>
+            <FontAwesomeIcon icon="fa-solid fa-phone" />
           </FooterLink>
         </div>
       </div>

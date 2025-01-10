@@ -1,15 +1,16 @@
 import "@/components/profile-components/Timeline.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Timeline = ({ timelineData }) => {
   const tagIcon = (tag) => {
     switch (tag) {
       case "Project":
-        return <i className="fa-solid fa-project-diagram"></i>;
+        return <FontAwesomeIcon icon="fa-solid fa-project-diagram" />;
       case "Article":
-        return <i className="fa-solid fa-newspaper"></i>;
+        return <FontAwesomeIcon icon="fa-regular fa-newspaper" />;
       case "Certificate":
-        return <i className="fa-solid fa-certificate"></i>;
+        return <FontAwesomeIcon icon="fa-solid fa-certificate" />;
       default:
-        return <i className="fa-solid fa-chalkboard-user"></i>;
+        return <FontAwesomeIcon icon="fa-solid fa-chalkboard-user" />;
     }
   };
 
@@ -27,7 +28,7 @@ const Timeline = ({ timelineData }) => {
                 {tagIcon(item.tag)} <span>{item.tag}</span>
               </p>
               <p className="timeline-date">
-                <i className="fa-regular fa-calendar"></i>{" "}
+                <FontAwesomeIcon icon="fa-regular fa-calendar" />{" "}
                 <span>{item.date}</span>
               </p>
             </div>
@@ -41,7 +42,7 @@ const Timeline = ({ timelineData }) => {
               target="_blank"
               aria-label={`Learn more about ${item.title}`}
             >
-              Learn More <i className="fa-solid fa-arrow-right"></i>
+              Learn More <FontAwesomeIcon icon="fa-solid fa-arrow-right" />
             </a>
           </div>
         );

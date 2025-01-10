@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "./Dialog.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Dialog = ({ data, setData }) => {
   return (
@@ -9,7 +10,7 @@ const Dialog = ({ data, setData }) => {
           <div className="message-name-container">
             <h2>{data?.name}</h2>
             <button onClick={() => setData(null)} className="close">
-              <i className="fa-solid fa-x"></i>
+              <FontAwesomeIcon icon="fa-solid fa-x" />
             </button>
           </div>
           <p className="message-email highlighted-text">{data?.email}</p>
@@ -25,7 +26,7 @@ const Dialog = ({ data, setData }) => {
         <Link to={`mailto:${data?.email}`} className="reply primary-button">
           Reply
           <span className="reply-icon">
-            <i className="fa-solid fa-reply fa-flip-horizontal"></i>
+            <FontAwesomeIcon icon="fa-solid fa-reply" flip="horizontal" />
           </span>
         </Link>
       </dialog>

@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 const Activity = ({ data, selectedTag, admin, ...rest }) => {
   const { tag, date, coverImageUrl, title, description, link } = data;
 
@@ -9,7 +11,8 @@ const Activity = ({ data, selectedTag, admin, ...rest }) => {
         <div className="activity-meta">
           {selectedTag === "" ? <Tag tag={data.tag} /> : ""}
           <p className="activity-date">
-            <i className="fa-regular fa-calendar"></i> <span>{date}</span>
+            <FontAwesomeIcon icon="fa-regular fa-calendar" />
+            <span>{date}</span>
           </p>
         </div>
         <h2 className="activity-name">{title}</h2>
@@ -21,7 +24,7 @@ const Activity = ({ data, selectedTag, admin, ...rest }) => {
             target="_blank"
             aria-label={`Learn more about ${title} - ${tag} on ${date} at our Facebook page.`}
           >
-            Learn More <i className="fa-solid fa-arrow-right"></i>
+            Learn More <FontAwesomeIcon icon="fa-solid fa-arrow-right" />
           </a>
 
           {admin && (
@@ -31,7 +34,7 @@ const Activity = ({ data, selectedTag, admin, ...rest }) => {
               type="button"
               onClick={() => rest.setSelectedActivity(data)}
             >
-              <i className="fa-solid fa-pencil"></i>
+              <FontAwesomeIcon icon="fa-solid fa-pencil" />
               <span>Edit</span>
             </button>
           )}
@@ -45,7 +48,7 @@ const Tag = ({ tag }) => {
   const capitalizeTag = tag.charAt(0).toUpperCase() + tag.slice(1);
   return (
     <p className="activity-tag">
-      <i className="fa-solid fa-chalkboard-user"></i>
+      <FontAwesomeIcon icon="fa-solid fa-chalkboard-user" />
       <span>{capitalizeTag}</span>
     </p>
   );

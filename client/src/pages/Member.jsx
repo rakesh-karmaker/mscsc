@@ -1,11 +1,9 @@
-import Pagination from "@/components/UI/Pagination/Pagination";
 import SearchInput from "@/components/UI/SearchInput/SearchInput";
 import { useMember } from "@/contexts/MembersContext";
 import "@/components/members-components/Members.css";
 import Loader from "@/components/UI/Loader/Loader";
-import EmptyData from "@/components/UI/EmptyData/EmptyData";
-import MemberCard from "@/components/members-components/MemberCard";
 import MembersContainer from "@/components/members-components/MembersContainer";
+import MetaTags from "@/layout/MetaTags";
 
 const MemberPage = (props) => {
   const {
@@ -21,36 +19,42 @@ const MemberPage = (props) => {
   } = useMember();
 
   return (
-    <main className="page-members">
-      <h2 className="section-heading">
-        Club <span className="highlighted-text">Members</span>
-      </h2>
+    <>
+      <MetaTags
+        title="MSCSC - Members"
+        description="MSCSC is the ideal place for Math, Science, Biology, IT, and Astronomy enthusiasts, offering top-notch learning, hands-on experiences, and expert guidance."
+      />
+      <main className="page-members">
+        <h2 className="section-heading">
+          Club <span className="highlighted-text">Members</span>
+        </h2>
 
-      <div className="filter-members">
-        <SearchInput
-          search={search}
-          setSearch={setSearch}
-          style={{ maxWidth: "100%", flex: "1" }}
-        >
-          Search members
-        </SearchInput>
-        <BranchTags branch={branch} setBranch={setBranch} />
-      </div>
+        <div className="filter-members">
+          <SearchInput
+            search={search}
+            setSearch={setSearch}
+            style={{ maxWidth: "100%", flex: "1" }}
+          >
+            Search members
+          </SearchInput>
+          <BranchTags branch={branch} setBranch={setBranch} />
+        </div>
 
-      <section className="members-list-container">
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <MembersContainer
-            members={members}
-            length={length}
-            page={page}
-            setPage={setPage}
-            {...props}
-          />
-        )}
-      </section>
-    </main>
+        <section className="members-list-container">
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <MembersContainer
+              members={members}
+              length={length}
+              page={page}
+              setPage={setPage}
+              {...props}
+            />
+          )}
+        </section>
+      </main>
+    </>
   );
 };
 

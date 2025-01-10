@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import "./Sidebar.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Sidebar = ({ name, image }) => {
   const [sidebarState, setSidebarState] = useState(false);
@@ -13,7 +14,7 @@ const Sidebar = ({ name, image }) => {
             className="sidebar-toggle mobile"
             onClick={() => setSidebarState(!sidebarState)}
           >
-            <i className="fa-solid fa-bars"></i>
+            <FontAwesomeIcon icon="fa-solid fa-bars" />
           </button>
           <NavLink to="/" className="primary-button">
             Home Page
@@ -30,7 +31,7 @@ const Sidebar = ({ name, image }) => {
                   className="sidebar-toggle"
                   onClick={() => setSidebarState(!sidebarState)}
                 >
-                  <i className="fa-solid fa-times"></i>
+                  <FontAwesomeIcon icon="fa-solid fa-times" />
                 </button>
               )}
             </div>
@@ -77,7 +78,7 @@ const SidebarLinks = ({ sidebarState, setSidebarState }) => {
     },
     {
       name: "Activities",
-      icon: "fa-solid fa-calendar-days",
+      icon: "fa-regular fa-calendar-days",
       to: "/admin/activities",
     },
     {
@@ -131,7 +132,7 @@ const SidebarLink = ({ data, sidebarState, setSidebarState }) => {
         className="sidebar-link"
         onClick={() => setSidebarState(!sidebarState)}
       >
-        <i className={data.icon}></i>
+        <FontAwesomeIcon icon={data.icon} />
         <span>{data.name}</span>
       </NavLink>
     </li>

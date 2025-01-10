@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 export const YearsDropdown = ({ onClick }) => {
   return (
     <button
@@ -6,7 +8,7 @@ export const YearsDropdown = ({ onClick }) => {
       aria-label="Toggle years dropdown"
       type="button"
     >
-      <i className="fa-solid fa-angle-down"></i>
+      <FontAwesomeIcon icon="fa-solid fa-angle-down" />
     </button>
   );
 };

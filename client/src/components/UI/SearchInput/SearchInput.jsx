@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./SearchInput.css";
 
 const SearchInput = ({ setSearch, children, ...rest }) => {
@@ -5,7 +6,7 @@ const SearchInput = ({ setSearch, children, ...rest }) => {
     <div className="search" {...rest}>
       <div className="search-container">
         <div className="search-icon">
-          <i className="fa-solid fa-search"></i>
+          <FontAwesomeIcon icon="fa-solid fa-search" />
         </div>
         <input
           placeholder={children}

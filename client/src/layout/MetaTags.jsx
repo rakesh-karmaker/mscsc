@@ -10,6 +10,7 @@ const MetaTags = ({ title = "", description = "" }) => {
         content="math, science, biology, astronomy, IT, science club, club, mubc, mubcsc, mscsc, monipur high school and college science club, monipur high school and college club"
       />
       <meta name="description" content={description} />
+      <link rel="shortcut icon" href="/logo.webp" type="image/x-icon" />
       <meta name="og:site_name" content="MSCSC" />
       <meta name="subject" content="Science Club" />
       <link rel="canonical" href={window.location.href} />

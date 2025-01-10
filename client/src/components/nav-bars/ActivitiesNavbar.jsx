@@ -1,12 +1,13 @@
 import SearchInput from "@/components/UI/SearchInput/SearchInput";
 import ActivityNavLink from "@/components/nav-bars/ActivityNavLink";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ActivitiesNavbar = ({ tag, setTag, search, setSearch }) => {
   const capitalizeName = tag.charAt(0).toUpperCase() + tag.slice(1) + "s";
   const icons = {
-    Event: "fa-calendar-days",
-    Workshop: "fa-chalkboard-user",
-    Article: "fa-newspaper",
-    Achievement: "fa-trophy",
+    Event: "fa-regular fa-calendar-days",
+    Workshop: "fa-solid fa-chalkboard-user",
+    Article: "fa-solid fa-newspaper",
+    Achievement: "fa-solid fa-trophy",
   };
 
   return (
@@ -27,7 +28,7 @@ const ActivitiesNavbar = ({ tag, setTag, search, setSearch }) => {
                 key={icon}
                 active={tag === icon}
               >
-                <i className={`fa-solid ${icons[icon]}`}></i>
+                <FontAwesomeIcon icon={icons[icon]} />
               </ActivityNavLink>
             );
           })}

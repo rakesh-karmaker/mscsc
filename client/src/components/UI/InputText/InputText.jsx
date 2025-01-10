@@ -1,6 +1,6 @@
 import "@/components/UI/InputText/InputText.css";
-import { useEffect } from "react";
-import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
 
 const InputText = ({
   register,
@@ -79,9 +79,9 @@ const TypeToggle = ({ type, setType }) => {
       type="button"
     >
       {type === "password" ? (
-        <i className="fa-solid fa-eye-slash"></i>
+        <FontAwesomeIcon icon="fa-regular fa-eye-slash" />
       ) : (
-        <i className="fa-solid fa-eye"></i>
+        <FontAwesomeIcon icon="fa-regular fa-eye" />
       )}
     </button>
   );

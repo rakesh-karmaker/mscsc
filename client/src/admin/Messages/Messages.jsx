@@ -10,7 +10,7 @@ import { useState } from "react";
 import Dialog from "@/admin/components/Dialog/Dialog";
 import SearchInput from "@/components/UI/SearchInput/SearchInput";
 import Loader from "@/components/UI/Loader/Loader";
-import EmptyData from "@/components/UI/EmptyData/EmptyData";
+import MetaTags from "@/layout/MetaTags";
 
 const Messages = () => {
   const queryClient = useQueryClient();
@@ -51,33 +51,40 @@ const Messages = () => {
   };
 
   return (
-    <div className="admin-messages">
-      <DashboardHeader title={"Messages"}>
-        View all the messages sent by members
-      </DashboardHeader>
-      <SearchInput search={search} setSearch={setSearch}>
-        Search Messages
-      </SearchInput>
+    <>
+      <MetaTags
+        title="Admin - Messages"
+        description="MSCSC is the ideal place for Math, Science, Biology, IT, and Astronomy enthusiasts, offering top-notch learning, hands-on experiences, and expert guidance."
+      />
 
-      <div className="messages-container">
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <Table
-            headers={messageTableHeader}
-            data={messages}
-            length={length}
-            page={page}
-            setPage={setPage}
-            onViewClick={onViewClick}
-            onDelete={onDelete}
-          />
-        )}
+      <div className="admin-messages">
+        <DashboardHeader title={"Messages"}>
+          View all the messages sent by members
+        </DashboardHeader>
+        <SearchInput search={search} setSearch={setSearch}>
+          Search Messages
+        </SearchInput>
+
+        <div className="messages-container">
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <Table
+              headers={messageTableHeader}
+              data={messages}
+              length={length}
+              page={page}
+              setPage={setPage}
+              onViewClick={onViewClick}
+              onDelete={onDelete}
+            />
+          )}
+        </div>
+
+        <Dialog data={currentMessage} setData={setCurrentMessage} />
+        <Toaster position="top-right" />
       </div>
-
-      <Dialog data={currentMessage} setData={setCurrentMessage} />
-      <Toaster position="top-right" />
-    </div>
+    </>
   );
 };
 

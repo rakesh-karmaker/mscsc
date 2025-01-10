@@ -12,6 +12,8 @@ import { MemberProfileEditSchema } from "@/utils/MemberSchemaValidation";
 import { useQuery } from "@tanstack/react-query";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
 import Loader from "@/components/UI/Loader/Loader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import MetaTags from "@/layout/MetaTags";
 
 const ProfilePage = () => {
   const { id } = useParams();
@@ -49,54 +51,62 @@ const ProfilePage = () => {
   }
 
   return (
-    <main id="profile" className="row-center">
-      <div className="profile-container">
-        <div className="profile-left">
-          <img src={profileData.image} alt={profileData.name} />
-          {window.innerWidth > 700 && (
-            <AboutProfile data={profileData} isOwner={isOwner} />
-          )}
-        </div>
-        <div className="profile-right">
-          <UserInfo data={profileData} isOwner={isOwner} />
-          {window.innerWidth <= 700 && (
-            <AboutProfile data={profileData} isOwner={isOwner} />
-          )}
-          <div className="profile-actions-container">
-            <div className="profile-actions">
-              <button
-                onClick={() => setIsEditing(false)}
-                className={isEditing ? "" : "active"}
-              >
-                <i className="fa-solid fa-eye"></i> <span>Timeline</span>
-              </button>
-              {isOwner && (
+    <>
+      <MetaTags
+        title={`${profileData.name} - MSCSC`}
+        description={`Profile of ${profileData.name}`}
+      />
+
+      <main id="profile" className="row-center">
+        <div className="profile-container">
+          <div className="profile-left">
+            <img src={profileData.image} alt={profileData.name} />
+            {window.innerWidth > 700 && (
+              <AboutProfile data={profileData} isOwner={isOwner} />
+            )}
+          </div>
+          <div className="profile-right">
+            <UserInfo data={profileData} isOwner={isOwner} />
+            {window.innerWidth <= 700 && (
+              <AboutProfile data={profileData} isOwner={isOwner} />
+            )}
+            <div className="profile-actions-container">
+              <div className="profile-actions">
                 <button
-                  onClick={() => setIsEditing(true)}
-                  className={isEditing ? "active" : ""}
+                  onClick={() => setIsEditing(false)}
+                  className={isEditing ? "" : "active"}
                 >
-                  <i className="fa-solid fa-pencil"></i>
-                  <span>Edit Profile</span>
+                  <FontAwesomeIcon icon="fa-regular fa-eye" />{" "}
+                  <span>Timeline</span>
                 </button>
-              )}
-            </div>
-            <div className="profile-timeline-edit-container">
-              {isEditing ? (
-                <>
-                  <UserForm
-                    data={profileData}
-                    schema={MemberProfileEditSchema}
-                  />
-                  <TimelineInputs timeline={profileData.timeline} />
-                </>
-              ) : (
-                <Timeline timelineData={profileData.timeline} />
-              )}
+                {isOwner && (
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className={isEditing ? "active" : ""}
+                  >
+                    <FontAwesomeIcon icon="fa-solid fa-pencil" />
+                    <span>Edit Profile</span>
+                  </button>
+                )}
+              </div>
+              <div className="profile-timeline-edit-container">
+                {isEditing ? (
+                  <>
+                    <UserForm
+                      data={profileData}
+                      schema={MemberProfileEditSchema}
+                    />
+                    <TimelineInputs timeline={profileData.timeline} />
+                  </>
+                ) : (
+                  <Timeline timelineData={profileData.timeline} />
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 };
 

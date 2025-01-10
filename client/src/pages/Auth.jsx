@@ -8,6 +8,7 @@ import { MemberRegSchema } from "@/utils/MemberSchemaValidation";
 
 import "@/components/auth-components/Auth.css";
 import FormHeading from "@/components/UI/FormHeading/FormHeading";
+import MetaTags from "@/layout/MetaTags";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -22,22 +23,25 @@ const Auth = () => {
   const [form, setForm] = useState("Register");
 
   return (
-    <main id="auth">
-      {window.innerWidth >= 1080 && form === "Register" ? (
-        <RegisterImage registerFormContainer={registerFormContainer} />
-      ) : null}
-      <div
-        ref={registerFormContainer}
-        className={`auth-container ${form.toLocaleLowerCase()}-container`}
-      >
-        <FormHeading>{form}</FormHeading>
-        {form === "Register" ? (
-          <UserForm setForm={setForm} schema={MemberRegSchema} />
-        ) : (
-          <Login setForm={setForm} />
-        )}
-      </div>
-    </main>
+    <>
+      <MetaTags title="MSCSC - Register" description="Register for MSCSC" />
+      <main id="auth">
+        {window.innerWidth >= 1080 && form === "Register" ? (
+          <RegisterImage registerFormContainer={registerFormContainer} />
+        ) : null}
+        <div
+          ref={registerFormContainer}
+          className={`auth-container ${form.toLocaleLowerCase()}-container`}
+        >
+          <FormHeading>{form}</FormHeading>
+          {form === "Register" ? (
+            <UserForm setForm={setForm} schema={MemberRegSchema} />
+          ) : (
+            <Login setForm={setForm} />
+          )}
+        </div>
+      </main>
+    </>
   );
 };
 

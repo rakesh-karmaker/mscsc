@@ -1,6 +1,7 @@
 import { useMessages } from "@/admin/contexts/MessagesContext";
 import "./DashboardTags.css";
 import { useActivities } from "@/contexts/ActivitiesContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const DashboardTagsContainer = ({ memberLength, adminLength }) => {
   const { length: messagesLength } = useMessages();
@@ -13,12 +14,12 @@ const DashboardTagsContainer = ({ memberLength, adminLength }) => {
     },
     {
       title: "Total Messages",
-      icon: "fa-solid fa-envelope",
+      icon: "fa-regular fa-envelope",
       value: messagesLength,
     },
     {
       title: "Total Activities",
-      icon: "fa-solid fa-calendar-days",
+      icon: "fa-regular fa-calendar-days",
       value: activitiesLength,
     },
     {
@@ -49,7 +50,7 @@ const DashboardTag = ({ data }) => {
       <div>
         <p className="dashboard-tag-title">{title}</p>
         <p className="dashboard-tag-icon">
-          <i className={icon}></i>
+          <FontAwesomeIcon icon={icon} />
         </p>
       </div>
       <p className="dashboard-tag-value">{value}</p>

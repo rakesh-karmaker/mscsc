@@ -59,6 +59,7 @@
 .type-toggle {
   position: absolute;
   right: 10px;
+  bottom: 3px;
   background-color: transparent;
   border: none;
   cursor: pointer;

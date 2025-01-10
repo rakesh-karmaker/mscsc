@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 const Article = ({ article }) => {
   const { tag, date, coverImageUrl, title, description, link } = article;
 
@@ -11,7 +13,7 @@ const Article = ({ article }) => {
       <h3>{title}</h3>
       <p className="secondary-text">{description}</p>
       <a href={link} target="_blank">
-        Learn more <i className="fa-solid fa-arrow-right"></i>
+        Learn more <FontAwesomeIcon icon="fa-solid fa-arrow-right" />
       </a>
     </article>
   );

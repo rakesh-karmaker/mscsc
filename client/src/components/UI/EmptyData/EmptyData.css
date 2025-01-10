@@ -7,7 +7,7 @@
   gap: 1rem;
 }
 
-.empty-data i {
+.empty-data svg {
   font-size: 6rem;
   color: var(--highlighted-color);
 }
@@ -23,7 +23,7 @@
   .empty-data {
     gap: 0.5rem;
   }
-  .empty-data i {
+  .empty-data svg {
     font-size: 4rem;
   }
   .empty-data p {

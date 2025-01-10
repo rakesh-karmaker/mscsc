@@ -1,4 +1,5 @@
 import "@/components/UI/ExecutiveCard/ExecutiveCard.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ExecutiveCard = ({ executiveData }) => {
   const { name, position, image, socials, panel } = executiveData;
   return (
@@ -32,11 +33,12 @@ const ExecutiveSocials = ({ socials, name }) => {
             <a
               key={social}
               href={socials[social]}
+              className="row-center"
               target="_blank"
               title={social}
               aria-label={`Go to ${name}'s ${social} page`}
             >
-              <i className={`row-center fa-brands fa-${social}`}></i>
+              <FontAwesomeIcon icon={`fa-brands fa-${social}`} />
             </a>
           );
         })}
