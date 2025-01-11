@@ -1,4 +1,7 @@
 [build]
-  base = "/client"
-  publish= "/build"
-  command= "bun run build"
+  base = "client"
+  command = "npm run build"
+  publish = "client/build"
+
+[build.environment]
+  NODE_VERSION = "18.20.5"
