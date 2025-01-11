@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import "./Header.css";
 import { useRef, useState } from "react";
 import PrimaryBtn from "@/components/UI/PrimaryBtn";
-import { useUser } from "@/Contexts/UserContext";
+import { useUser } from "@/contexts/UserContext";
 import Avatar from "@/components/UI/Avatar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

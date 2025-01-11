@@ -1,6 +1,6 @@
 import Header from "@/layout/Header/Header";
 import { Error, ErrorContent } from "@/components/UI/Error/Error";
-import { useUser } from "@/Contexts/UserContext";
+import { useUser } from "@/contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
