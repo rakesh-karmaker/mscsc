@@ -1,6 +1,6 @@
 import { useMessages } from "@/admin/contexts/MessagesContext";
 import "./DashboardTags.css";
-import { useActivities } from "@/ontexts/ActivitiesContext";
+import { useActivities } from "@/contexts/ActivitiesContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const DashboardTagsContainer = ({ memberLength, adminLength }) => {

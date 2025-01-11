@@ -1,4 +1,4 @@
-import { useUser } from "@/ontexts/UserContext";
+import { useUser } from "@/contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 

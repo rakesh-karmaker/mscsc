@@ -1,4 +1,4 @@
-import { useUser } from "@/ontexts/UserContext";
+import { useUser } from "@/contexts/UserContext";
 import { Outlet } from "react-router-dom";
 import Sidebar from "@/layout/Sidebar/Sidebar";
 

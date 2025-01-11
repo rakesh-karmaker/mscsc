@@ -2,7 +2,7 @@ import ActivitiesNavbar from "@/layout/activitiesNavBar/ActivitiesNavbar";
 import "./Activities.css";
 import { useEffect } from "react";
 import Pagination from "@/components/UI/Pagination/Pagination";
-import { useActivities } from "@/ontexts/ActivitiesContext";
+import { useActivities } from "@/contexts/ActivitiesContext";
 import Loader from "@/components/UI/Loader/Loader";
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
 import ActivityCard from "@/components/UI/activityCard/ActivityCard";
