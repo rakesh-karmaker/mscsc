@@ -1,4 +1,4 @@
-import { useUser } from "@/contexts/UserContext";
+import { useUser } from "@/ontexts/UserContext";
 import { useParams } from "react-router-dom";
 import React, { useState } from "react";
 import AboutProfile from "@/components/profile-components/aboutProfile/AboutProfile";

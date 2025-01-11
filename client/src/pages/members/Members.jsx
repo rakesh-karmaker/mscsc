@@ -1,5 +1,5 @@
 import SearchInput from "@/components/UI/SearchInput/SearchInput";
-import { useMember } from "@/contexts/MembersContext";
+import { useMember } from "@/ontexts/MembersContext";
 import "./Members.css";
 import Loader from "@/components/UI/Loader/Loader";
 import MembersContainer from "@/components/members-components/MembersContainer";

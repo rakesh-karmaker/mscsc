@@ -5,7 +5,7 @@ import Articles from "@/components/home-components/articles-components/Articles/
 import HomeEcs from "@/components/home-components/home-ec-components/HomeEcs";
 import Contact from "@/components/contact-components/ContactSection";
 import executivesData from "@/services/api/executivesData";
-import { useActivities } from "@/contexts/ActivitiesContext";
+import { useActivities } from "@/ontexts/ActivitiesContext";
 
 const Home = () => {
   const { allActivities: activities, allActivitiesIsLoading: isLoading } =

@@ -1,4 +1,4 @@
-import { useUser } from "@/contexts/UserContext";
+import { useUser } from "@/ontexts/UserContext";
 import { NavLink } from "react-router-dom";
 
 const Avatar = () => {
