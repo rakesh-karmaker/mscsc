@@ -1,4 +1,4 @@
-import ContactForm from "@/components/contact-components/ContactForm";
+import ContactForm from "@/components/contact-components/contactForm/ContactForm";
 import "@/components/contact-components/Contact.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

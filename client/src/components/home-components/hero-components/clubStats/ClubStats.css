@@ -1,0 +1,135 @@
+.club-stats h3 {
+  font-weight: 450;
+  padding-bottom: 7px;
+}
+
+.club-stats-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  color: var(--text-primary);
+}
+
+.stats-number {
+  --number-value-1-digit: 26px;
+  --number-value-2-digit: 51px;
+  font-size: 40px;
+  font-weight: 420;
+}
+
+.number-value {
+  display: inline-block;
+  min-width: var(--number-value-2-digit);
+}
+
+.number-value:not([value="20"]) {
+  min-width: var(--number-value-1-digit);
+}
+
+.stats-name {
+  padding-left: 6px;
+  font-size: 1.1rem;
+  line-height: 22px;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 1650px) {
+  .club-stats-container {
+    gap: 15px;
+  }
+
+  .stats-number {
+    --number-value-1-digit: 22px;
+    --number-value-2-digit: 45px;
+    font-size: 2rem;
+  }
+
+  .stats-name {
+    font-size: 0.85rem;
+    line-height: 20px;
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  .stats-name {
+    font-size: 0.85rem;
+    font-weight: 400;
+  }
+}
+
+@media screen and (max-width: 1370px) {
+  .club-stats h3 {
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .stats-number {
+    --number-value-1-digit: 16px;
+    --number-value-2-digit: 31px;
+    font-size: 1.6rem;
+  }
+
+  .stats-name {
+    font-size: 0.7rem;
+    line-height: 16px;
+  }
+
+  .club-stats-container {
+    gap: 10px;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .club-stats:not(.mobile-stats) {
+    display: none;
+  }
+  .mobile-stats {
+    display: block;
+  }
+  .club-stats {
+    width: 100%;
+    max-width: 80ch;
+    text-align: center;
+    margin-top: 20px;
+    position: relative;
+    z-index: 99;
+  }
+
+  .club-stats-container {
+    margin-top: 20px;
+    text-align: left;
+  }
+  .stats-number {
+    font-size: 3.1rem;
+    --number-value-1-digit: 29px;
+    --number-value-2-digit: 56px;
+  }
+  .stats-name {
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .club-stats-container {
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .stats {
+    flex-grow: 1;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .stats {
+    padding: 0px 20px;
+  }
+}

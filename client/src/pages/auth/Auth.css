@@ -1,0 +1,51 @@
+#auth {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6.5rem;
+  padding-top: calc(var(--nav-height) + 2rem);
+  padding-bottom: 2rem;
+  height: 100%;
+  min-height: 700px;
+  width: 100%;
+  max-width: var(--max-elements-width);
+  position: relative;
+}
+
+.reg-img {
+  width: 100%;
+  max-width: 600px;
+  height: inherit;
+  background-color: rgb(70, 125, 173);
+  background: url("/hero-img-1.webp") no-repeat center center/cover;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.auth-container {
+  width: 100%;
+  min-width: 625px;
+}
+
+.auth-form {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+@media screen and (max-width: 1550px) {
+  #auth {
+    gap: 4rem;
+  }
+  .reg-img {
+    max-width: 570px;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .auth-container {
+    min-width: 0px;
+  }
+}

@@ -10,4 +10,6 @@ export default defineConfig({
       // "@components": path.resolve(__dirname, "./src/components"),
     },
   },
+  build: { outDir: "build" },
+  server: { mimeTypes: { "application/javascript": ["js"] } },
 });

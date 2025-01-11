@@ -3,7 +3,6 @@ import { Error, ErrorContent } from "@/components/UI/Error/Error";
 import { useUser } from "@/Contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import MetaTags from "@/layout/MetaTags";
 
 const Unauthorized = () => {
   const { user } = useUser();
@@ -16,10 +15,6 @@ const Unauthorized = () => {
   }, [user, navigate]);
   return (
     <>
-      <MetaTags
-        title="MSCSC - Unauthorized"
-        description="You are not authorized to access this page. Please login to access this page"
-      />
       <Header />
       <main className="page-error">
         <Error

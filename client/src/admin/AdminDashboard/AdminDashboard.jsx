@@ -11,7 +11,6 @@ import DashboardTagsContainer from "@/admin/components/DashboadTags/DashboardTag
 import DashboardHeader from "@/admin/components/DashboardHeader/DashboardHeader";
 import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import MetaTags from "@/layout/MetaTags";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -54,10 +53,6 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <MetaTags
-        title="Admin - Dashboard"
-        description="MSCSC is the ideal place for Math, Science, Biology, IT, and Astronomy enthusiasts, offering top-notch learning, hands-on experiences, and expert guidance."
-      />
       <DashboardHeader title={"Dashboard"}>
         Welcome to the admin dashboard
       </DashboardHeader>

@@ -80,32 +80,6 @@ input.hidden {
   opacity: 0.9;
 }
 
-.contact-form {
-  max-width: 600px;
-  min-width: 450px;
-  padding: 50px 40px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
-.name-email {
-  width: 100%;
-  display: flex;
-  gap: 20px;
-}
-
-textarea {
-  resize: vertical;
-  height: 150px;
-}
-
-#contact button {
-  width: 100%;
-}
-
 /* ---------------------- contact section ends here -------------------------- */
 
 @media screen and (max-width: 960px) {
@@ -118,21 +92,11 @@ textarea {
   #contact .section-heading {
     font-size: 2rem;
   }
-  .contact-form {
-    min-width: 0px;
-  }
 }
 
 @media screen and (max-height: 800px) {
   .page-contact #contact {
     padding: 50px 0px;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .contact-form {
-    box-shadow: none;
-    padding: 0px;
   }
 }
 

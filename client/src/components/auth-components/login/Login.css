@@ -1,0 +1,20 @@
+#auth:has(.login-container) {
+  justify-content: center;
+  align-items: center;
+  height: calc(100svh - var(--nav-height));
+}
+
+.login-container {
+  max-width: 500px !important;
+  min-width: 0px;
+
+  padding: 50px 40px;
+  border-radius: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.login-form {
+  margin-top: 60px;
+  justify-self: center;
+  gap: 2.5rem;
+}

@@ -4,8 +4,7 @@ import { editUser } from "@/services/PutService";
 import toast, { Toaster } from "react-hot-toast";
 import DashboardHeader from "../components/DashboardHeader/DashboardHeader";
 import "./Members.css";
-import MemberPage from "@/pages/Member";
-import MetaTags from "@/layout/MetaTags";
+import MemberPage from "@/pages/members/Members";
 
 const Members = () => {
   const queryClient = useQueryClient();
@@ -41,10 +40,6 @@ const Members = () => {
 
   return (
     <>
-      <MetaTags
-        title="Admin - Members"
-        description="MSCSC is the ideal place for Math, Science, Biology, IT, and Astronomy enthusiasts, offering top-notch learning, hands-on experiences, and expert guidance."
-      />
       <div className="admin-members">
         <DashboardHeader title={"Members"}>
           View all the members of the club

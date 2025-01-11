@@ -1,6 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { HelmetProvider } from "react-helmet-async";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faFacebook,
@@ -88,9 +87,7 @@ function App() {
 
   return (
     <>
-      <HelmetProvider>
-        <Outlet />
-      </HelmetProvider>
+      <Outlet />
     </>
   );
 }

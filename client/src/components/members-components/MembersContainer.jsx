@@ -1,5 +1,5 @@
 import Pagination from "@/components/UI/Pagination/Pagination";
-import MemberCard from "./MemberCard";
+import MemberCard from "@/components/members-components/memberCard/MemberCard";
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
 
 const MembersContainer = ({ members, length, page, setPage, ...props }) => {
