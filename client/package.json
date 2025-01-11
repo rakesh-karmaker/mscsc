@@ -27,7 +27,6 @@
     "react-hot-toast": "^2.4.1",
     "react-lazy-load-image-component": "^1.6.3",
     "react-router-dom": "^7.0.2",
-    "react-span": "^0.0.1",
     "swiper": "^11.1.15",
     "zod": "^3.24.1"
   },
