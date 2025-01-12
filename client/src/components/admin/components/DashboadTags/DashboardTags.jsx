@@ -1,4 +1,4 @@
-import { useMessages } from "@/admin/contexts/MessagesContext";
+import { useMessages } from "@/components/admin/contexts/MessagesContext";
 import "./DashboardTags.css";
 import { useActivities } from "@/contexts/ActivitiesContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

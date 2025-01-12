@@ -7,8 +7,8 @@ import { deleteMember } from "@/services/DeleteService";
 import Table from "@/components/UI/Table/Table";
 
 import toast, { Toaster } from "react-hot-toast";
-import DashboardTagsContainer from "@/admin/components/DashboadTags/DashboardTags";
-import DashboardHeader from "@/admin/components/DashboardHeader/DashboardHeader";
+import DashboardTagsContainer from "@/components/admin/components/DashboadTags/DashboardTags";
+import DashboardHeader from "@/components/admin/components/DashboardHeader/DashboardHeader";
 import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

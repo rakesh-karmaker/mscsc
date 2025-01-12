@@ -18,10 +18,10 @@ import Auth from "@/pages/auth/Auth";
 
 //admin pages
 import Admin from "@/pages/Admin";
-import AdminDashboard from "@/admin/adminDashboard/AdminDashboard";
-import MembersDashboard from "@/admin/membersDashboard/MembersDashboard";
-import ActivitiesDashboard from "@/admin/activitiesDashboard/ActivitiesDashboard";
-import MessagesDashboard from "@/admin/messagesDashboard/MessagesDashboard";
+import AdminDashboard from "@/components/admin/adminDashboard/AdminDashboard";
+import MembersDashboard from "@/components/admin/membersDashboard/MembersDashboard";
+import ActivitiesDashboard from "@/components/admin/activitiesDashboard/ActivitiesDashboard";
+import MessagesDashboard from "@/components/admin/messagesDashboard/MessagesDashboard";
 
 //error pages
 import NotFound from "@/pages/Errors/NotFound";
@@ -32,7 +32,7 @@ import Unauthorized from "@/pages/Errors/Unauthorized";
 //contexts
 import { UserProvider } from "@/contexts/UserContext.jsx";
 import { MemberProvider } from "@/contexts/MembersContext";
-import { MessagesProvider } from "@/admin/contexts/MessagesContext";
+import { MessagesProvider } from "@/components/admin/contexts/MessagesContext";
 import { ActivitiesProvider } from "@/contexts/ActivitiesContext";
 
 //layouts

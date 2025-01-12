@@ -1,13 +1,13 @@
-import { useMessages } from "@/admin/contexts/MessagesContext";
+import { useMessages } from "@/components/admin/contexts/MessagesContext";
 import Table from "@/components/UI/Table/Table";
 import { deleteMessage } from "@/services/DeleteService";
 import { editMessage } from "@/services/PutService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast, { Toaster } from "react-hot-toast";
-import DashboardHeader from "@/admin/components/DashboardHeader/DashboardHeader";
+import DashboardHeader from "@/components/admin/components/DashboardHeader/DashboardHeader";
 import "./MessagesDashboard.css";
 import { useState } from "react";
-import Dialog from "@/admin/components/Dialog/Dialog";
+import Dialog from "@/components/admin/components/Dialog/Dialog";
 import SearchInput from "@/components/UI/SearchInput/SearchInput";
 import Loader from "@/components/UI/Loader/Loader";
 

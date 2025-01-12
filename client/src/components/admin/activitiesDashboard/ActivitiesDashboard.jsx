@@ -1,7 +1,7 @@
 import Activities from "@/pages/activities/Activities";
-import DashboardHeader from "@/admin/components/DashboardHeader/DashboardHeader";
+import DashboardHeader from "@/components/admin/components/DashboardHeader/DashboardHeader";
 import "./ActivitiesDashboard.css";
-import ActivityForm from "@/admin/components/ActivityForm/ActivityForm";
+import ActivityForm from "@/components/admin/components/ActivityForm/ActivityForm";
 import { useState } from "react";
 import { deleteActivity } from "@/services/DeleteService";
 import { useQueryClient } from "@tanstack/react-query";
