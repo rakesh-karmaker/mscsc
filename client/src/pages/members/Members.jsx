@@ -2,7 +2,7 @@ import SearchInput from "@/components/UI/SearchInput/SearchInput";
 import { useMember } from "@/contexts/MembersContext";
 import "./Members.css";
 import Loader from "@/components/UI/Loader/Loader";
-import MembersContainer from "@/components/members-components/MembersContainer";
+import MembersContainer from "@/components/membersComponents/MembersContainer";
 
 const MemberPage = (props) => {
   const {

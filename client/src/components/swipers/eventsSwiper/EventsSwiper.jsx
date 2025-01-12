@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
-import EventCard from "@/components/home-components/events-components/EventCard/EventCard";
+import EventCard from "@/components/homeComponents/eventsComponents/EventCard/EventCard";
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
 import "./EventsSwiper.css";
 const EventSwiper = ({ filteredEvents }) => {

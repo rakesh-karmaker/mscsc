@@ -5,8 +5,8 @@ import FileInput from "@/components/UI/FileInput/FileInput";
 import InputText from "@/components/UI/InputText/InputText";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import { Toaster } from "react-hot-toast";
-import registerToast from "@/components/auth-components/registerToast";
-import editProfileToast from "@/components/profile-components/editProfileToast";
+import registerToast from "@/components/authComponents/registerToast";
+import editProfileToast from "@/components/profileComponents/editProfileToast";
 import "./UserForm.css";
 
 const UserForm = (props) => {

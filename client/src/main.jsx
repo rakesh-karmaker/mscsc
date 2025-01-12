@@ -1,36 +1,47 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "@/pages/home/Home.jsx";
-import Activities from "@/pages/activities/Activities.jsx";
-import Executives from "@/pages/executives/Executives.jsx";
-import About from "@/pages/about/About.jsx";
-import ContactPage from "@/pages/contact/Contact.jsx";
-import Auth from "@/pages/auth/Auth";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@/global.css";
 import App from "@/App.jsx";
-import { UserProvider } from "@/contexts/UserContext.jsx";
-import Profile from "@/pages/profile/Profile.jsx";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import { MemberProvider } from "@/contexts/MembersContext";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import AdminDashboard from "@/admin/AdminDashboard/AdminDashboard";
-import { MessagesProvider } from "@/admin/contexts/MessagesContext";
-import Messages from "@/admin/Messages/Messages";
-import Admin from "@/pages/admin/Admin";
-import Members from "@/admin/Members/Members";
-import AdminActivities from "@/admin/AdminActivities/AdminActivities";
-import { ActivitiesProvider } from "@/contexts/ActivitiesContext";
+
+// pages
+import Home from "@/pages/home/Home.jsx";
+import About from "@/pages/about/About.jsx";
 import MemberPage from "@/pages/members/Members";
+import Activities from "@/pages/activities/Activities.jsx";
+import ContactPage from "@/pages/contact/Contact.jsx";
+import Executives from "@/pages/executives/Executives.jsx";
+import Profile from "@/pages/profile/Profile.jsx";
+import Auth from "@/pages/auth/Auth";
+
+//admin pages
+import Admin from "@/pages/Admin";
+import AdminDashboard from "@/admin/adminDashboard/AdminDashboard";
+import MembersDashboard from "@/admin/membersDashboard/MembersDashboard";
+import ActivitiesDashboard from "@/admin/activitiesDashboard/ActivitiesDashboard";
+import MessagesDashboard from "@/admin/messagesDashboard/MessagesDashboard";
+
+//error pages
 import NotFound from "@/pages/Errors/NotFound";
 import ServerError from "@/pages/Errors/ServerError";
 import BadRequest from "@/pages/Errors/BadRequest";
 import Unauthorized from "@/pages/Errors/Unauthorized";
-import UserLayout from "@/layout/UserLayout";
-import AdminLayout from "@/layout/AdminLayout/AdminLayout";
+
+//contexts
+import { UserProvider } from "@/contexts/UserContext.jsx";
+import { MemberProvider } from "@/contexts/MembersContext";
+import { MessagesProvider } from "@/admin/contexts/MessagesContext";
+import { ActivitiesProvider } from "@/contexts/ActivitiesContext";
+
+//layouts
+import UserLayout from "@/layouts/UserLayout";
+import AdminLayout from "@/layouts/AdminLayout/AdminLayout";
 
 const queryClient = new QueryClient();
 
+// router configuration for navigating between pages
 const router = createBrowserRouter([
   {
     path: "/",
@@ -79,11 +90,11 @@ const router = createBrowserRouter([
 
           { path: "/admin/dashboard", element: <AdminDashboard /> },
 
-          { path: "/admin/members", element: <Members /> },
+          { path: "/admin/members", element: <MembersDashboard /> },
 
-          { path: "/admin/activities", element: <AdminActivities /> },
+          { path: "/admin/activities", element: <ActivitiesDashboard /> },
 
-          { path: "/admin/messages", element: <Messages /> },
+          { path: "/admin/messages", element: <MessagesDashboard /> },
         ],
       },
     ],

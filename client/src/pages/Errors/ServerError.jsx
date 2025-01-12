@@ -1,4 +1,4 @@
-import Header from "@/layout/Header/Header";
+import Header from "@/layouts/Header/Header";
 import { Error, ErrorContent } from "@/components/UI/Error/Error";
 
 const ServerError = () => {

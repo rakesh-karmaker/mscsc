@@ -42,6 +42,7 @@ import {
   faX,
 } from "@fortawesome/free-solid-svg-icons";
 
+// import and add icons
 library.add(
   faFacebook,
   faInstagram,

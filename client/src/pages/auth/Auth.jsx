@@ -1,6 +1,6 @@
 import UserForm from "@/components/UserForm/UserForm";
-import Login from "@/components/auth-components/login/Login";
-import RegisterImage from "@/components/auth-components/RegisterImage";
+import Login from "@/components/authComponents/login/Login";
+import RegisterImage from "@/components/authComponents/RegisterImage";
 import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/contexts/UserContext";

@@ -1,8 +1,8 @@
 import { useUser } from "@/contexts/UserContext";
 import { useParams } from "react-router-dom";
 import React, { useState } from "react";
-import AboutProfile from "@/components/profile-components/aboutProfile/AboutProfile";
-import Timeline from "@/components/profile-components/timeline/Timeline";
+import AboutProfile from "@/components/profileComponents/aboutProfile/AboutProfile";
+import Timeline from "@/components/profileComponents/timeline/Timeline";
 import UserForm from "@/components/UserForm/UserForm";
 import "./Profile.css";
 import TimelineInputs from "@/components/UI/TimelineInputs/TimelineInputs";
@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
 import Loader from "@/components/UI/Loader/Loader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ProfileDetails from "@/components/profile-components/profileDetails/ProfileDetails";
+import ProfileDetails from "@/components/profileComponents/profileDetails/ProfileDetails";
 
 const ProfilePage = () => {
   const { id } = useParams();

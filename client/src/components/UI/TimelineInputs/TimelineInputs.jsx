@@ -5,7 +5,7 @@ import InputText from "@/components/UI/InputText/InputText";
 import RadioList from "@/components/UI/RadioList/RadioList";
 
 import "./TimelineInputs.css";
-import editProfileToast from "@/components/profile-components/editProfileToast";
+import editProfileToast from "@/components/profileComponents/editProfileToast";
 
 const TimelineInputs = ({ timeline }) => {
   const [activeIndex, setActiveIndex] = useState(null);
