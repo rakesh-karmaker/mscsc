@@ -67,18 +67,20 @@ const getMemberById = async (req, res) => {
 const editMember = async (req, res) => {
   try {
     const id = req.body?._id || req.user._id;
+    console.log(id);
 
     // Edit User Timeline
     if (req.body && req.body.timeline) {
+      console.log(req.body.timeline);
       const timeline = JSON.parse(req.body.timeline);
       const member = await Member.findOneAndUpdate(
-        { id },
+        { _id: id },
         { timeline },
         { new: true }
-      );
+      ).select("-password");
       if (!member) return res.status(404).send({ message: "Member not found" });
       console.log("user edited");
-      return res.status(200).send({ message: "Edit successful" });
+      return res.status(200).send({ message: "Edit successful", member });
     }
 
     // Edit User Credentials
@@ -95,16 +97,16 @@ const editMember = async (req, res) => {
     const { memberId, ...updates } = req.body;
     const user = await Member.findOneAndUpdate({ _id: id }, updates, {
       new: true,
-    });
+    }).select("-password");
 
     console.log("user edited");
-    if (user) return res.status(200).send({ message: "Edit successful" });
+    if (user) return res.status(200).send({ message: "Edit successful", user });
     else return res.status(404).send({ message: "Edit failed" });
   } catch (err) {
     console.log(err);
     if (err.codeName === "DuplicateKey") {
       return res
-        .status(400)
+        .status(409)
         .send({ message: "Email has already been taken", subject: "email" });
     }
     res.status(500).send({ message: "Server error", error: err.message });

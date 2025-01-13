@@ -4,12 +4,24 @@ const api = axios.create({
   baseURL: `${import.meta.env.VITE_API_URL}/api`,
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
   },
 });
 
+// Add a request interceptor to dynamically set the Authorization header
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 const editUser = (data) => {
-  console.log("data", data);
   const formData = new FormData();
   for (const key in data) {
     formData.append(
@@ -17,7 +29,6 @@ const editUser = (data) => {
       key === "timeline" ? JSON.stringify(data[key]) : data[key]
     );
   }
-  console.log("data", formData);
   return api.put("/member", formData);
 };
 

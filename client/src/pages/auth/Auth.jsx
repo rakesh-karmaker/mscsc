@@ -20,6 +20,9 @@ const Auth = () => {
 
   const registerFormContainer = useRef(null);
   const [form, setForm] = useState("Register");
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [form]);
 
   return (
     <>

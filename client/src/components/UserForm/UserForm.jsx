@@ -4,12 +4,18 @@ import { YearRadio, BranchRadio } from "@/components/UI/RegRadios";
 import FileInput from "@/components/UI/FileInput/FileInput";
 import InputText from "@/components/UI/InputText/InputText";
 import SubmitBtn from "@/components/UI/SubmitBtn";
-import { Toaster } from "react-hot-toast";
-import registerToast from "@/components/authComponents/registerToast";
-import editProfileToast from "@/components/profileComponents/editProfileToast";
+import toast from "react-hot-toast";
 import "./UserForm.css";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { editUser } from "@/services/PutService";
+import { registerUser } from "@/services/PostService";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "@/contexts/UserContext";
 
 const UserForm = (props) => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const { setUser } = useUser();
   const {
     register,
     handleSubmit,
@@ -33,13 +39,49 @@ const UserForm = (props) => {
     mode: "onChange",
   });
 
+  const userMutation = useMutation({
+    mutationFn: (props) => {
+      const { method, setError, ...data } = props;
+      if (method === "register") {
+        return registerUser(data);
+      } else {
+        return editUser(data);
+      }
+    },
+
+    onSuccess: (data) => {
+      toast.success(data?.data?.message);
+      if (data?.data?.subject === "register") {
+        localStorage.setItem("token", data?.data?.token);
+        queryClient.invalidateQueries({ queryKey: ["members"] });
+        setUser(data?.data?.member);
+        navigate("/", { replace: true });
+      } else {
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+      }
+    },
+
+    onError: (err) => {
+      if (err.status === 409) {
+        setError("email", {
+          message: err.response.data.message,
+        });
+      } else {
+        useErrorNavigator(true, err);
+      }
+      setError("root", {
+        message: err.response.data.message,
+      });
+      toast.error(err.response.data.message);
+    },
+  });
+
   const onSubmit = async (data) => {
-    console.log(data);
-    if (props.setForm) {
-      registerToast(data, setError);
-    } else {
-      editProfileToast(data, setError);
-    }
+    userMutation.mutate({
+      method: props?.setForm ? "register" : "edit",
+      setError,
+      ...data,
+    });
   };
 
   return (
@@ -151,7 +193,6 @@ const UserForm = (props) => {
         </div>
         {errors.root && <p className="error-message">{errors.root.message}</p>}
       </div>
-      <Toaster position="top-right" />
     </form>
   );
 };

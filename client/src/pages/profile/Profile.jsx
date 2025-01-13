@@ -1,6 +1,6 @@
 import { useUser } from "@/contexts/UserContext";
 import { useParams } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AboutProfile from "@/components/profileComponents/aboutProfile/AboutProfile";
 import Timeline from "@/components/profileComponents/timeline/Timeline";
 import UserForm from "@/components/UserForm/UserForm";
@@ -19,6 +19,9 @@ const ProfilePage = () => {
   const { user } = useUser();
   const isOwner = user?._id === id;
   const [isEditing, setIsEditing] = useState(false);
+  useEffect(() => {
+    setIsEditing(false);
+  }, [isOwner]);
 
   const {
     data: profileData,
@@ -26,7 +29,7 @@ const ProfilePage = () => {
     error,
     isError,
   } = useQuery({
-    queryKey: ["user", id],
+    queryKey: ["profile", id, user],
     queryFn: () => {
       if (user && user._id === id) {
         return user;
@@ -35,6 +38,7 @@ const ProfilePage = () => {
       }
     },
   });
+
   useErrorNavigator(isError, error);
 
   if (error) {
@@ -85,13 +89,15 @@ const ProfilePage = () => {
               </div>
               <div className="profile-timeline-edit-container">
                 {isEditing ? (
-                  <>
-                    <UserForm
-                      data={profileData}
-                      schema={MemberProfileEditSchema}
-                    />
-                    <TimelineInputs timeline={profileData.timeline} />
-                  </>
+                  isOwner && (
+                    <>
+                      <UserForm
+                        data={profileData}
+                        schema={MemberProfileEditSchema}
+                      />
+                      <TimelineInputs timeline={profileData.timeline} />
+                    </>
+                  )
                 ) : (
                   <Timeline timelineData={profileData.timeline} />
                 )}

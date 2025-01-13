@@ -5,10 +5,16 @@ import { loginUser } from "@/services/PostService";
 import InputText from "@/components/UI/InputText/InputText";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import toast, { Toaster } from "react-hot-toast";
-import filterError from "@/utils/FilterError";
 import "./Login.css";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import useErrorNavigator from "@/hooks/useErrorNavigator";
+import { useUser } from "@/contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = ({ setForm }) => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const { setUser } = useUser();
   const {
     register,
     handleSubmit,
@@ -20,11 +26,34 @@ const Login = ({ setForm }) => {
     resolver: zodResolver(MemberLoginSchema),
   });
 
+  const authMutation = useMutation({
+    mutationFn: loginUser,
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        const token = res?.data?.token;
+        localStorage.setItem("token", token);
+        setUser(res?.data?.member);
+        toast.success("Login successful!");
+        navigate("/", { replace: true });
+      }
+    },
+    onError: (err) => {
+      useErrorNavigator(true, err);
+      setError(err.response.data.subject, {
+        message: err.response.data.message,
+      });
+      setError("root", {
+        message: "Invalid Credentials",
+      });
+    },
+  });
+
+  const onSubmit = async (data) => {
+    authMutation.mutate(data);
+  };
+
   return (
-    <form
-      className="auth-form login-form"
-      onSubmit={handleSubmit((data) => onSubmit(data, setError))}
-    >
+    <form className="auth-form login-form" onSubmit={handleSubmit(onSubmit)}>
       <InputText
         setValue={setValue}
         trigger={trigger}
@@ -66,30 +95,6 @@ const Login = ({ setForm }) => {
       <Toaster position="top-right" />
     </form>
   );
-};
-
-const onSubmit = async (data, setError) => {
-  toast.promise(loginUser(data), {
-    loading: "Logging in...",
-    success: (res) => {
-      localStorage.setItem("token", res.data.token);
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 2000);
-
-      return "Login Successful";
-    },
-    error: (err) => {
-      if (err.status === 500) filterError(err);
-      setError(err.response.data.subject, {
-        message: err.response.data.message,
-      });
-      setError("root", {
-        message: "Invalid Credentials",
-      });
-      return err.response.data.message;
-    },
-  });
 };
 
 export default Login;

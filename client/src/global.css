@@ -8,9 +8,9 @@
   font-family: "Poppins";
 }
 
-html {
-  scroll-behavior: smooth; /* makes the page link transition smooth */
-}
+/* html {
+  scroll-behavior: smooth;
+} */
 
 .page-section {
   scroll-margin-top: 100px;

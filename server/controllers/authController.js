@@ -33,7 +33,7 @@ exports.register = async (req, res) => {
     const existingMember = await Member.findOne({ email: body.email });
     if (existingMember) {
       return res
-        .status(400)
+        .status(409)
         .send({ subject: "email", message: "Email already used before" });
     }
 
@@ -46,7 +46,12 @@ exports.register = async (req, res) => {
 
     console.log("Member registered successfully.");
 
-    res.status(201).send({ message: "Member registered successfully.", token });
+    res.status(201).send({
+      subject: "register",
+      message: "Registered successfully.",
+      token,
+      member: newMember,
+    });
   } catch (err) {
     res
       .status(500)
@@ -77,7 +82,12 @@ exports.login = async (req, res) => {
     });
 
     console.log("Member logged in successfully.");
-    res.send({ token });
+    res.status(200).send({
+      subject: "login",
+      message: "Logged in successfully.",
+      token,
+      member,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).send({ message: "Server error", error: err.message });

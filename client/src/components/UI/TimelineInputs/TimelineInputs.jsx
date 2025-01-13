@@ -5,9 +5,13 @@ import InputText from "@/components/UI/InputText/InputText";
 import RadioList from "@/components/UI/RadioList/RadioList";
 
 import "./TimelineInputs.css";
-import editProfileToast from "@/components/profileComponents/editProfileToast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { editUser } from "@/services/PutService";
+import toast from "react-hot-toast";
+import useErrorNavigator from "@/hooks/useErrorNavigator";
 
 const TimelineInputs = ({ timeline }) => {
+  const queryClient = useQueryClient();
   const [activeIndex, setActiveIndex] = useState(null);
 
   const {
@@ -48,8 +52,19 @@ const TimelineInputs = ({ timeline }) => {
     setActiveIndex(null);
   };
 
+  const userMutation = useMutation({
+    mutationFn: ({ setError, ...data }) => editUser(data, setError),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["user"]);
+      toast.success("Edited Successfully!");
+    },
+    onError: (err) => {
+      useErrorNavigator(true, err);
+    },
+  });
+
   const onSubmit = async (data) => {
-    editProfileToast(data, setError);
+    userMutation.mutate(data);
   };
 
   const tags = ["Certificate", "Article", "Project"];

@@ -15,7 +15,7 @@ const MemberRegSchema = z.object({
     .max(255),
   password: z
     .string("Provide your password")
-    .min(6, "Password must be at least 6 characters"),
+    .min(8, "Password must be at least 8 characters"),
   email: z.string("Provide your email").email("Invalid email address"),
   contactNumber: z
     .string("Provide your contact number")
@@ -72,10 +72,9 @@ const MemberLoginSchema = z.object({
 const MemberProfileEditSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(255),
   email: z.string().email("Invalid email address"),
-  password: z
-    .string()
-    .min(6, "Password must be at least 6 characters")
-    .optional(),
+  password: z.string().refine((value) => value === "" || value.length >= 6, {
+    message: "Password must be at least 6 characters",
+  }),
   contactNumber: z.string().min(10, "Invalid contact number"),
   branch: z.string("Select your branch"),
   reason: z.string("Give a description of why you want to join the club"),

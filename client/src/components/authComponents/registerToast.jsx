@@ -7,9 +7,6 @@ const registerToast = async (data, setError) => {
     success: (res) => {
       if (res.status === 201) {
         localStorage.setItem("token", res.data.token);
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 2000); // 2 seconds wait time to reload the page
       }
       return "Registered Successfully";
     },

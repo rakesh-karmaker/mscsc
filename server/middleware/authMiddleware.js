@@ -4,6 +4,7 @@ const Member = require("../models/Member");
 // Verify if user is admin
 exports.isAuthorized = async (req, res, next) => {
   try {
+    console.log(req.header("Authorization"), "token");
     const prefix = "Bearer ";
     const token = req.header("Authorization").split(prefix)[1];
     if (!token) return res.status(401).send({ message: "Access Denied" });

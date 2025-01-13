@@ -1,5 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faFacebook,
@@ -89,6 +90,7 @@ function App() {
   return (
     <>
       <Outlet />
+      <Toaster position="top-right" reverseOrder={false} />
     </>
   );
 }

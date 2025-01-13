@@ -12,7 +12,6 @@ const InputText = ({
   ...rest
 }) => {
   const inputType = rest.type ?? "text";
-  const isRequired = rest?.required ? rest?.required : true;
   const [type, setType] = useState(inputType);
 
   const [labelTop, setLabelTop] = useState(
@@ -41,7 +40,9 @@ const InputText = ({
           type={type}
           id={id}
           onChange={handleInputChange}
-          {...(isRequired && { required: true })}
+          {...(rest?.required || rest?.required === false
+            ? {}
+            : { required: true })}
           onInput={(e) => {
             setValue(id, e.target.value);
             trigger(id);

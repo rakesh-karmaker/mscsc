@@ -1,7 +1,11 @@
 #auth:has(.login-container) {
   justify-content: center;
   align-items: center;
-  height: calc(100svh - var(--nav-height));
+  min-height: 100svh;
+}
+
+.auth-container.login-container {
+  min-width: 0px;
 }
 
 .login-container {
