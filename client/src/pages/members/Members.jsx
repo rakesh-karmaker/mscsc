@@ -3,6 +3,7 @@ import { useMember } from "@/contexts/MembersContext";
 import "./Members.css";
 import Loader from "@/components/UI/Loader/Loader";
 import MembersContainer from "@/components/membersComponents/MembersContainer";
+import { useEffect } from "react";
 
 const MemberPage = (props) => {
   const {
@@ -16,6 +17,12 @@ const MemberPage = (props) => {
     length,
     isLoading,
   } = useMember();
+
+  //reset search and branch when page reloads
+  useEffect(() => {
+    setSearch("");
+    setBranch("");
+  }, []);
 
   return (
     <>

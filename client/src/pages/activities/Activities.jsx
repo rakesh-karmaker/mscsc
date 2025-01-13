@@ -6,7 +6,12 @@ import { useActivities } from "@/contexts/ActivitiesContext";
 import Loader from "@/components/UI/Loader/Loader";
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
 import ActivityCard from "@/components/UI/activityCard/ActivityCard";
+import { useLocation } from "react-router-dom";
 const Activities = ({ admin, ...rest }) => {
+  const link = useLocation();
+  const searchParams = new URLSearchParams(link.search);
+  const linkTag = searchParams.get("tag");
+
   const {
     activities,
     length,
@@ -26,6 +31,12 @@ const Activities = ({ admin, ...rest }) => {
       observeExecutiveMember.observe(executiveMember);
     });
   }, [activities]);
+
+  useEffect(() => {
+    if (linkTag) {
+      setTag(linkTag);
+    }
+  }, []);
 
   const handleSetCurrentPageClick = (page) => {
     setPage(page);
