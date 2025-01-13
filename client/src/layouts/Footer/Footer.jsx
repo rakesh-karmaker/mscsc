@@ -5,34 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Footer = () => {
   return (
     <footer className="col-center">
-      {/* <div>
-        <p>© 2024 MSCSC || All Rights Reserved</p>
-
-        <div className="socials row-center">
-          <FooterLink
-            link="https://www.facebook.com/MSCSC2014"
-            title="Facebook"
-          >
-            <FontAwesomeIcon icon="fa-brands fa-facebook" />
-          </FooterLink>
-
-          <FooterLink
-            link="https://www.instagram.com/_mscsclub_/"
-            title="Instagram"
-          >
-            <FontAwesomeIcon icon="fa-brands fa-instagram" />
-          </FooterLink>
-
-          <FooterLink link="mailto:mscscofficial17@gmail" title="Email us">
-            <FontAwesomeIcon icon="fa-regular fa-envelope" />
-          </FooterLink>
-
-          <FooterLink link="tel: 01329-600430" title="Call us">
-            <FontAwesomeIcon icon="fa-solid fa-phone" />
-          </FooterLink>
-        </div>
-      </div> */}
-
       <div className="footer-upper-container">
         <FooterDesc />
 
@@ -41,7 +13,9 @@ const Footer = () => {
 
       <div className="line"></div>
 
-      <p className="copyright">© 2024 MSCSC || All Rights Reserved</p>
+      <p className="copyright">
+        © {new Date().getFullYear()} MSCSC || All Rights Reserved
+      </p>
     </footer>
   );
 };
