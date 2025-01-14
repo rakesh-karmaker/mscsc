@@ -6,13 +6,12 @@ import InputText from "@/components/UI/InputText/InputText";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import toast, { Toaster } from "react-hot-toast";
 import "./Login.css";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
 import { useUser } from "@/contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 
 const Login = ({ setForm }) => {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { setUser } = useUser();
   const {
@@ -34,7 +33,12 @@ const Login = ({ setForm }) => {
         localStorage.setItem("token", token);
         setUser(res?.data?.member);
         toast.success("Login successful!");
-        navigate("/", { replace: true });
+        const id = res?.data?.member?._id;
+        // Ensure navigate is called after setting the token and user state
+        setTimeout(() => {
+          navigate(`/member/${id}`, { replace: true });
+        }, 0);
+        console.log("logged in");
       }
     },
     onError: (err) => {
@@ -48,7 +52,7 @@ const Login = ({ setForm }) => {
     },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     authMutation.mutate(data);
   };
 
@@ -92,7 +96,6 @@ const Login = ({ setForm }) => {
         </div>
         {errors.root && <p className="error-message">{errors.root.message}</p>}
       </div>
-      <Toaster position="top-right" />
     </form>
   );
 };

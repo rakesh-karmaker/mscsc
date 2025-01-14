@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import "./AboutProfile.css";
 import { useQueryClient } from "@tanstack/react-query";
+import { useUser } from "@/contexts/UserContext";
 
 const AboutProfile = ({ data, isOwner }) => {
   const socialLink = {
@@ -67,6 +68,7 @@ const InformationItem = ({ info }) => {
 const UtilityBtns = () => {
   const queryClient = useQueryClient();
   const [copySuccess, setCopySuccess] = useState(false);
+  const { setUser } = useUser();
 
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -76,6 +78,8 @@ const UtilityBtns = () => {
   const logout = () => {
     localStorage.removeItem("token");
     queryClient.invalidateQueries(["user"]);
+    setUser(null);
+    console.log("logout");
   };
 
   return (

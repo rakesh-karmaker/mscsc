@@ -2,9 +2,20 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const originCheckMiddleware = require("./middleware/originCheckMiddleware");
 
 const app = express();
-app.use(cors());
+
+// Configure CORS to allow only requests from http://localhost:5173
+const corsOptions = {
+  origin: process.env.APP_URL,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.use(originCheckMiddleware);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));

@@ -26,6 +26,7 @@ const MemberSchema = new mongoose.Schema(
     },
     reference: { type: String, required: true },
     role: { type: String, default: "member" },
+    position: { type: String, default: "member" },
     new: { type: Boolean, default: true },
   },
   { timestamps: true }

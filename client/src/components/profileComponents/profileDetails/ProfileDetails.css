@@ -18,7 +18,7 @@
 .user-name-container {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 9px;
 }
 
 .user-name-role .primary-button {

@@ -55,9 +55,10 @@ const UserForm = (props) => {
         localStorage.setItem("token", data?.data?.token);
         queryClient.invalidateQueries({ queryKey: ["members"] });
         setUser(data?.data?.member);
-        navigate("/", { replace: true });
+        navigate(`/member/${data?.data?.member?._id}`, { replace: true });
       } else {
         queryClient.invalidateQueries({ queryKey: ["user"] });
+        window.scrollTo(0, 0);
       }
     },
 
