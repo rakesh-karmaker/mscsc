@@ -7,7 +7,7 @@
   /* margin-bottom: 30px; */
 }
 
-.user-name-role {
+.user-name-position {
   display: flex;
   justify-content: space-between;
   /* align-items: center; */
@@ -18,10 +18,10 @@
 .user-name-container {
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 10px;
 }
 
-.user-name-role .primary-button {
+.user-name-position .primary-button {
   padding: 10px 20px;
   height: fit-content;
   font-size: 1.1rem;
@@ -39,10 +39,15 @@
   line-height: 36px;
 }
 
-.user-role {
-  font-size: 1.25rem;
+.user-position {
+  font-size: 1.05rem;
   color: var(--highlighted-color);
   transform: translateY(-3px);
+  text-transform: capitalize;
+}
+
+.user-position.ec {
+  color: rgba(255, 0, 0, 0.82);
 }
 
 .user-school-info {

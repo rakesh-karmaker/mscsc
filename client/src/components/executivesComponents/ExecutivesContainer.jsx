@@ -80,7 +80,7 @@ const observeExecutiveMember = new IntersectionObserver(
     });
   },
   {
-    threshold: 0.3,
+    threshold: 0.2,
   }
 );
 

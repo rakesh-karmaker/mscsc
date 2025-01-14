@@ -1,4 +1,11 @@
-exports.paginatedResults = async (req, res, model, regex, sorted) => {
+exports.paginatedResults = async (
+  req,
+  res,
+  model,
+  regex,
+  sorted,
+  select = null
+) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || null;
   const startIndex = (page - 1) * limit;
@@ -7,6 +14,7 @@ exports.paginatedResults = async (req, res, model, regex, sorted) => {
     const allData = await model
       .find()
       .sort({ ...sorted })
+      .select(select)
       .exec();
 
     //* Filter data based on query and regex

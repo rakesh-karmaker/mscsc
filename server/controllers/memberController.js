@@ -14,7 +14,14 @@ const getAllMembers = async (req, res) => {
     };
     const sorted = { _id: -1 };
 
-    const members = await paginatedResults(req, res, Member, regex, sorted);
+    const members = await paginatedResults(
+      req,
+      res,
+      Member,
+      regex,
+      sorted,
+      "-password"
+    );
     members.adminLength = await Member.countDocuments({ role: "admin" });
     res.status(200).send(members);
   } catch (err) {

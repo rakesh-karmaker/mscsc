@@ -19,6 +19,7 @@
   align-items: center;
   gap: 5px;
   cursor: pointer;
+  text-transform: capitalize;
 
   font-style: normal;
   font-weight: 400;

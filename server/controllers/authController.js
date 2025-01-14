@@ -53,6 +53,7 @@ exports.register = async (req, res) => {
       member: newMember,
     });
   } catch (err) {
+    console.log(err, "error");
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: err.message });
@@ -89,7 +90,7 @@ exports.login = async (req, res) => {
       member,
     });
   } catch (err) {
-    console.log(err);
+    console.log(err, "error");
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };

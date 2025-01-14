@@ -37,7 +37,7 @@ const Header = () => {
     handleNavbarTogglerClick({ navbar: navBar, isOpened, setIsOpened });
   };
 
-  const { user } = useUser();
+  const { user, isVerifying } = useUser();
 
   return (
     <header>
@@ -69,13 +69,14 @@ const Header = () => {
             );
           })}
         </ul>
-        {user !== null ? (
-          <Avatar />
-        ) : (
-          <PrimaryBtn link="/register" name="Login page" header={true}>
-            Login
-          </PrimaryBtn>
-        )}
+        {!isVerifying &&
+          (user !== null ? (
+            <Avatar />
+          ) : (
+            <PrimaryBtn link="/register" name="Login page" header={true}>
+              Login
+            </PrimaryBtn>
+          ))}
       </nav>
     </header>
   );

@@ -6,11 +6,17 @@ const UserContext = createContext(null);
 
 const UserProvider = ({ children }) => {
   // localStorage.setItem("token", "");
+  console.log(localStorage.getItem("token"));
   const [user, setUser] = useState(null);
 
-  const { data, error } = useQuery({
+  const {
+    data,
+    error,
+    isLoading: isVerifying,
+  } = useQuery({
     queryKey: ["user"],
     queryFn: () => {
+      console.log("fetching");
       if (localStorage.getItem("token")) {
         return verifyToken(localStorage.getItem("token"));
       }
@@ -26,7 +32,7 @@ const UserProvider = ({ children }) => {
   }, [data]);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, isVerifying }}>
       {children}
     </UserContext.Provider>
   );

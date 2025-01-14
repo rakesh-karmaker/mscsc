@@ -42,13 +42,14 @@ const Login = ({ setForm }) => {
       }
     },
     onError: (err) => {
-      useErrorNavigator(true, err);
+      toast.error(err.response.data.message);
       setError(err.response.data.subject, {
         message: err.response.data.message,
       });
       setError("root", {
         message: "Invalid Credentials",
       });
+      useErrorNavigator(true, err);
     },
   });
 

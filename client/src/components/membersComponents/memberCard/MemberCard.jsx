@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./MemberCard.css";
+import MemberEditDialog from "@/components/admin/membersDashboard/memberEditDialog/MemberEditeDialog";
 
 const MemberCard = ({ member, ...props }) => {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ const MemberCard = ({ member, ...props }) => {
   return (
     <div onClick={() => navigate(`/member/${id}`)} className="member-card">
       <div className="role-icon">
-        {member.role === "admin" ? (
+        {member.position !== "member" ? (
           <FontAwesomeIcon icon="fa-solid fa-user-tie" className="admin" />
         ) : (
           <FontAwesomeIcon icon="fa-solid fa-user" />
@@ -23,7 +24,7 @@ const MemberCard = ({ member, ...props }) => {
         <p>{branch}</p>
         <p>{batch}</p>
       </div>
-      {props?.isAdmin && <MemberActions member={member} {...props} />}
+      {props?.isAdmin && <MemberEditDialog member={member} {...props} />}
     </div>
   );
 };
@@ -41,6 +42,7 @@ const MemberActions = ({ member, deleteMember, changeRole }) => {
       >
         {member?.role === "admin" ? "Make Member" : "Make Admin"}
       </button>
+
       <DeleteBtn id={member._id} deleteFunc={deleteMember}>
         Are you sure you want to delete this member?
       </DeleteBtn>

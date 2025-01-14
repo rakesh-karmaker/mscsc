@@ -5,11 +5,21 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-const registerUser = (data) => {
-  api.interceptors.request.use(function (config) {
-    config.headers["Content-Type"] = "multipart/form-data";
+// Add a request interceptor to dynamically set the Authorization header
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
-  });
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+const registerUser = (data) => {
   const formData = new FormData();
   for (const key in data) {
     if (key === "image") {
@@ -18,40 +28,40 @@ const registerUser = (data) => {
     }
     formData.append(key, data[key]);
   }
-  return api.post("/auth/register", formData);
+  return api.post("/auth/register", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 const loginUser = (data) => {
-  api.interceptors.request.use(function (config) {
-    config.headers["Content-Type"] = "application/json";
-    return config;
-  });
+  console.log(data);
   const formData = new FormData();
   for (const key in data) {
     formData.append(key, data[key]);
   }
-  return api.post("/auth/login", formData);
+  console.log(formData);
+  return api.post("/auth/login", data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 const sendMessage = (data) => {
-  api.interceptors.request.use(function (config) {
-    config.headers["Content-Type"] = "application/json";
-    return config;
-  });
-
   const formData = new FormData();
   for (const key in data) {
     formData.append(key, data[key]);
   }
-  return api.post("/message", formData);
+  return api.post("/message", formData, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 const addActivity = (data) => {
-  api.interceptors.request.use(function (config) {
-    config.headers["Content-Type"] = "multipart/form-data";
-    config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
-    return config;
-  });
   const formData = new FormData();
   for (const key in data) {
     if (key === "activityImage") {
