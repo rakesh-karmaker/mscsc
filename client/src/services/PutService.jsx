@@ -33,25 +33,19 @@ const editUser = (data) => {
 };
 
 const editMessage = (data) => {
-  api.interceptors.request.use(function (config) {
-    config.headers["Content-Type"] = "application/json";
-    return config;
-  });
   const formData = new FormData();
   for (const key in data) {
     formData.append(key, data[key]);
   }
   console.log("data", formData);
-  return api.put("/message", formData);
+  return api.put("/message", formData, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 const editActivity = (data) => {
-  api.interceptors.request.use(function (config) {
-    config.headers["Content-Type"] = "multipart/form-data";
-    config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
-    return config;
-  });
-
   const formData = new FormData();
   for (const key in data) {
     if (key === "activityImage") {

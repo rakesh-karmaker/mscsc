@@ -58,7 +58,12 @@ const ProfilePage = () => {
       <main id="profile" className="row-center">
         <div className="profile-container">
           <div className="profile-left">
-            <img src={profileData.image} alt={profileData.name} />
+            <img
+              src={profileData.image}
+              alt={profileData.name}
+              rel="preload"
+              fetchPriority="high"
+            />
             {window.innerWidth > 700 && (
               <AboutProfile data={profileData} isOwner={isOwner} />
             )}

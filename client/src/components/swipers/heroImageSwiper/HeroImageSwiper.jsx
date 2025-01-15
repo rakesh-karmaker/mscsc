@@ -20,6 +20,10 @@ const HeroImageSwiper = () => {
           <SwiperSlide key={index}>
             <img
               src={`/hero-img-${index + 1}.webp`}
+              {...(index == 0
+                ? { fetchpriority: "high" }
+                : { fetchpriority: "low" })}
+              rel="preload"
               alt={`hero image ${index + 1}`}
             />
           </SwiperSlide>

@@ -9,6 +9,8 @@ const AboutUs = () => {
         <ClubDescription />
         <img
           src="/about-club-section-img.webp"
+          rel="preload"
+          fetchpriority="high"
           alt="A picture of club members"
           width={"690px"}
           height={"650px"}

@@ -6,7 +6,6 @@ const UserContext = createContext(null);
 
 const UserProvider = ({ children }) => {
   // localStorage.setItem("token", "");
-  console.log(localStorage.getItem("token"));
   const [user, setUser] = useState(null);
 
   const {
@@ -16,7 +15,6 @@ const UserProvider = ({ children }) => {
   } = useQuery({
     queryKey: ["user"],
     queryFn: () => {
-      console.log("fetching");
       if (localStorage.getItem("token")) {
         return verifyToken(localStorage.getItem("token"));
       }
