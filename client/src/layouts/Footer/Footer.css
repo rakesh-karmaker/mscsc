@@ -127,10 +127,33 @@ footer > p {
 
 @media screen and (max-width: 445px) {
   .footer-links {
-    flex-direction: column;
-    gap: 30px;
+    /* flex-direction: column; */
+    justify-content: space-around;
+    gap: 20px;
   }
 
+  .footer-links > div {
+    /* align-items: center; */
+  }
+
+  .footer-link-container {
+    width: 100%;
+    /* align-items: center; */
+  }
+  .contact-us {
+    width: 100%;
+    align-items: center;
+  }
+
+  .contact-us a {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .footer-links {
+    gap: 30px;
+  }
   .footer-links > div {
     align-items: center;
   }

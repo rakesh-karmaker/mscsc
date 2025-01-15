@@ -4,7 +4,7 @@
   position: relative;
   border-radius: 10px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  margin-top: 40px;
+  /* margin-top: 40px; */
   scale: 0.7;
   opacity: 0;
   transition: 0.2s;
@@ -102,14 +102,24 @@
   background-color: var(--highlighted-color);
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 390px) {
   .activity {
-    height: 100%;
+    height: fit-content;
+    max-width: 290px;
+  }
+  .activity img {
+    height: 220px;
   }
   .activity-actions {
     position: relative;
     flex-direction: column;
     bottom: 0px;
     gap: 5px;
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .activity {
+    max-width: 250px;
   }
 }

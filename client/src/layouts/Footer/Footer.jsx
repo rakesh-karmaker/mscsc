@@ -133,18 +133,4 @@ const footerLinks = {
   ],
 };
 
-// const FooterLink = (prams) => {
-//   return (
-//     <a
-//       href={prams.link}
-//       target="_blank"
-//       className="row-center"
-//       title={prams.title}
-//       aria-label={`Go to our ${prams.title} page`}
-//     >
-//       {prams.children}
-//     </a>
-//   );
-// };
-
 export default Footer;

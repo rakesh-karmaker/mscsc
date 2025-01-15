@@ -11,6 +11,13 @@ main.page-activities {
 
 @media screen and (max-width: 1000px) {
   main.page-activities {
-    padding-top: 120px;
+    padding-top: calc(var(--nav-height) + 2rem);
+    gap: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 369px) {
+  main.page-activities {
+    gap: 2.5rem;
   }
 }

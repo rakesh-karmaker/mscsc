@@ -33,6 +33,13 @@ const Header = () => {
     },
   ];
 
+  if (window.innerWidth < 800) {
+    navLinks.push({
+      href: "/executives",
+      name: "Executives",
+    });
+  }
+
   const handelNavLinkClick = () => {
     handleNavbarTogglerClick({ navbar: navBar, isOpened, setIsOpened });
   };
@@ -102,7 +109,11 @@ const NavbarToggler = ({ navbar, isOpened, setIsOpened }) => {
 };
 
 const handleNavbarTogglerClick = ({ navbar, setIsOpened, isOpened }) => {
-  isOpened ? setIsOpened(false) : setIsOpened(true);
+  setIsOpened(!isOpened);
+  document.querySelector("main").addEventListener("click", () => {
+    setIsOpened(false);
+    navbar.current.classList.remove("open");
+  });
   navbar.current.classList.toggle("open");
 };
 
