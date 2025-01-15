@@ -37,7 +37,7 @@ nav {
   cursor: pointer;
 }
 
-.nav-link {
+.nav-link a {
   font-size: 1.12rem;
   line-height: normal;
   color: var(--text-primary);
@@ -45,8 +45,8 @@ nav {
   transition: 0.25s;
 }
 
-.nav-link.active,
-.nav-link:is(:hover, :focus) {
+.nav-link a.active,
+.nav-link a:is(:hover, :focus) {
   color: var(--highlighted-color);
 }
 
@@ -84,7 +84,7 @@ nav {
   .nav-links-container {
     gap: 18px;
   }
-  .nav-link {
+  .nav-link a {
     font-size: 1rem;
   }
   #avatar,
@@ -109,7 +109,7 @@ nav {
   .nav-links-container {
     gap: 17px;
   }
-  .nav-link {
+  .nav-link a {
     font-size: 0.95rem;
   }
   #avatar,
@@ -129,7 +129,7 @@ nav {
   .nav-links-container {
     gap: 15px;
   }
-  .nav-link {
+  .nav-link a {
     font-size: 0.85rem;
   }
   #avatar,
@@ -165,7 +165,7 @@ nav {
     background-color: var(--primary-bg);
     border-radius: 10px;
     padding: 20px;
-    gap: 17px;
+    gap: 4px;
     transform: scaleY(0);
     border: 0.5px solid rgba(0, 0, 0, 0.1);
     transition: 0.25s;
@@ -182,5 +182,15 @@ nav {
     padding: 10px 15px;
     border-radius: 5px;
     margin: 5px 0px 0px 0px;
+  }
+
+  .nav-link:hover a,
+  .nav-link a:is(:hover, :focus) {
+    background-color: var(--third-level-bg);
+  }
+
+  .nav-link a.active {
+    background-color: var(--highlighted-color);
+    color: var(--text-white);
   }
 }

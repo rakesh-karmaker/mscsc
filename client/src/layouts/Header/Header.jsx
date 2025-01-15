@@ -57,10 +57,10 @@ const Header = () => {
         <ul className="nav-links-container" ref={navBar}>
           {navLinks.map(({ href, name }, index) => {
             return (
-              <li key={index}>
+              <li key={index} className="nav-link">
                 <NavLink
                   to={href}
-                  className="nav-link"
+                  // className="nav-link"
                   onClick={handelNavLinkClick}
                 >
                   {name}
