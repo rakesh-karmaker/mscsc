@@ -107,6 +107,7 @@
 
   .stats-heading {
     padding-bottom: 0px;
+    font-size: 1.2rem;
   }
 
   .club-stats-container {
@@ -137,5 +138,14 @@
 @media screen and (max-width: 900px) {
   .stats {
     padding: 0px 20px;
+  }
+}
+
+@media screen and (max-width: 570px) {
+  .stats-heading {
+    font-size: 1rem;
+  }
+  .stats {
+    padding: 0px;
   }
 }

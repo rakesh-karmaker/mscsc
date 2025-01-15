@@ -6,11 +6,8 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins";
+  -webkit-tap-highlight-color: transparent;
 }
-
-/* html {
-  scroll-behavior: smooth;
-} */
 
 .page-section {
   scroll-margin-top: 100px;

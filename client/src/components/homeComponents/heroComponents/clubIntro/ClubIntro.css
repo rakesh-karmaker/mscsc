@@ -61,31 +61,23 @@
 
 @media screen and (max-width: 1080px) {
   .club-intro h1 {
-    font-size: 3.1rem;
-    line-height: 3.01rem;
+    font-size: 3.7rem;
+    line-height: 3.4rem;
   }
   .club-intro p {
-    font-size: 1rem;
-    line-height: 1.4rem;
-    margin-top: 1rem;
+    font-size: 1.1rem;
+    line-height: 1.5rem;
+    margin-top: 1.1rem;
   }
-
-  /* .club-intro {
-    height: 50svh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  } */
 }
 @media screen and (max-width: 670px) {
   .club-intro h1 {
-    font-size: 2.7rem;
-    line-height: 2.5rem;
+    font-size: 3.2rem;
+    line-height: 3rem;
   }
-
   .club-intro p {
-    font-size: 0.85rem;
-    line-height: 1.3rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
     margin-top: 1rem;
   }
 }
