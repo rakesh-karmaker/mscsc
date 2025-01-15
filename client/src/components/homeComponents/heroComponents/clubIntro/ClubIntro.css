@@ -60,12 +60,15 @@
 }
 
 @media screen and (max-width: 1080px) {
-  /* .club-intro h1 {
-    color: var(--text-white);
+  .club-intro h1 {
+    font-size: 3.1rem;
+    line-height: 3.01rem;
   }
   .club-intro p {
-    color: var(--text-white);
-  } */
+    font-size: 1rem;
+    line-height: 1.4rem;
+    margin-top: 1rem;
+  }
 
   /* .club-intro {
     height: 50svh;

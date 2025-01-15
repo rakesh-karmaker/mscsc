@@ -278,11 +278,10 @@
     width: 100vw;
     max-width: none;
     min-height: 550px;
-    /* max-height: 800px; */
     min-height: 100svh;
     height: 100%;
     position: relative;
-    padding-top: calc(var(--nav-height) + 3rem);
+    padding-top: calc(var(--nav-height));
   }
   /* .hero-section::after {
     content: "";
@@ -303,6 +302,7 @@
     align-items: center;
     text-align: center;
     min-height: 0px;
+    gap: 3rem;
   }
   .mscsc-tag {
     display: none;
