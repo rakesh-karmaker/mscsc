@@ -62,7 +62,7 @@ const ProfilePage = () => {
               src={profileData.image}
               alt={profileData.name}
               rel="preload"
-              fetchPriority="high"
+              fetchpriority="high"
             />
             {window.innerWidth > 700 && (
               <AboutProfile data={profileData} isOwner={isOwner} />

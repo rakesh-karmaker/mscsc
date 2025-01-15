@@ -13,33 +13,46 @@ const Hero = () => {
             <MscscTag />
             <ClubIntro />
 
-            {window.innerWidth > 1080 ? <ClubStats /> : null}
+            {/* {window.innerWidth > 1080 ? <ClubStats /> : null} */}
+            <ClubStats mobileClass={"mobile-stats"} />
           </article>
 
           <div className="hero-section-right col-center">
             <HeroImageSwiper />
 
-            <a className="join-btn" href="/register">
-              <div>
-                {window.innerWidth > 450 ? (
-                  <div className="pulse row-center"></div>
-                ) : null}
-                <p>Join Us With Our Journey</p>
-              </div>
-              <p>
-                <FontAwesomeIcon icon="fa-solid fa-arrow-right" />
-              </p>
-            </a>
+            <HeroActionBtn />
           </div>
         </div>
         {window.innerWidth <= 1080 ? <HeroSectionBottomCurve /> : null}
       </section>
 
-      {window.innerWidth <= 1080 ? (
+      {/* {window.innerWidth <= 1080 ? (
         <ClubStats mobileClass={"mobile-stats"} />
-      ) : null}
+      ) : null} */}
     </>
   );
+};
+
+const HeroActionBtn = () => {
+  if (window.innerWidth > 450) {
+    return (
+      <a className="join-btn" href="/register">
+        <div>
+          <div className="pulse row-center"></div>
+          <p>Join Us With Our Journey</p>
+        </div>
+        <p>
+          <FontAwesomeIcon icon="fa-solid fa-arrow-right" />
+        </p>
+      </a>
+    );
+  } else {
+    return (
+      <a className="primary-button" href="/register">
+        Join Us
+      </a>
+    );
+  }
 };
 
 const HeroSectionBottomCurve = () => {

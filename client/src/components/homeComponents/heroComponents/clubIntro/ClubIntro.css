@@ -60,12 +60,19 @@
 }
 
 @media screen and (max-width: 1080px) {
-  .club-intro h1 {
+  /* .club-intro h1 {
     color: var(--text-white);
   }
   .club-intro p {
     color: var(--text-white);
-  }
+  } */
+
+  /* .club-intro {
+    height: 50svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  } */
 }
 
 @media screen and (max-width: 450px) {

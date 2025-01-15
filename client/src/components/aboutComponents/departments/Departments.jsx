@@ -7,8 +7,6 @@ const Departments = () => {
         <svg
           version="1.1"
           viewBox="0 0 2048 2048"
-          width="108"
-          height="108"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
@@ -58,8 +56,6 @@ const Departments = () => {
         <svg
           version="1.1"
           viewBox="0 0 2048 2048"
-          width="108"
-          height="108"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
@@ -83,8 +79,6 @@ const Departments = () => {
         <svg
           version="1.1"
           viewBox="0 0 2048 2048"
-          width="108"
-          height="108"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
@@ -138,8 +132,6 @@ const Departments = () => {
         <svg
           version="1.1"
           viewBox="0 0 2048 2048"
-          width="108"
-          height="108"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
@@ -228,8 +220,6 @@ const Departments = () => {
         <svg
           version="1.1"
           viewBox="0 0 2048 2048"
-          width="108"
-          height="108"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path

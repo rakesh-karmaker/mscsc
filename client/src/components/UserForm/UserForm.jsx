@@ -135,11 +135,9 @@ const UserForm = (props) => {
 
       <BranchRadio register={register} errors={errors} />
 
-      {props?.setForm && (
-        <FileInput register={register("image")} errors={errors.image}>
-          Give us your formal photo:
-        </FileInput>
-      )}
+      <FileInput register={register("image")} errors={errors.image}>
+        {props?.setForm ? "Give us your formal photo:" : "Edit your photo:"}
+      </FileInput>
 
       <InputText
         setValue={setValue}
