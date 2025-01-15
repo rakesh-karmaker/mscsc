@@ -71,7 +71,7 @@ const ClubStats = ({ mobileClass }) => {
 
 const ClubState = ({ value, children, thousand }) => {
   return (
-    <h3 className="stats">
+    <p className="stats">
       <span className="stats-number">
         <span className="number-value" value={value}>
           0
@@ -79,7 +79,7 @@ const ClubState = ({ value, children, thousand }) => {
         {thousand ? "K+" : "+"}
       </span>
       <span className="stats-name">{children}</span>
-    </h3>
+    </p>
   );
 };
 
