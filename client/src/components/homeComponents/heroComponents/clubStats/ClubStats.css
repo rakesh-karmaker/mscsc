@@ -1,4 +1,4 @@
-.club-stats h3 {
+.stats-heading {
   font-weight: 450;
   padding-bottom: 7px;
 }
@@ -65,7 +65,7 @@
 }
 
 @media screen and (max-width: 1370px) {
-  .club-stats h3 {
+  .stats-heading {
     font-size: 0.95rem;
     font-weight: 500;
   }
