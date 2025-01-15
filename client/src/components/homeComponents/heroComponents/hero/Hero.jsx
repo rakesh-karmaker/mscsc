@@ -11,7 +11,11 @@ const Hero = () => {
         <div className="hero-section-container row-center">
           <article className="hero-section-left">
             <MscscTag />
-            <ClubIntro />
+            <div className="club-intro-container">
+              <ClubIntro />
+
+              {window.innerWidth <= 1080 ? <HeroActionBtns /> : null}
+            </div>
 
             {/* {window.innerWidth > 1080 ? <ClubStats /> : null} */}
             <ClubStats mobileClass={"mobile-stats"} />
@@ -23,13 +27,22 @@ const Hero = () => {
             <HeroActionBtn />
           </div>
         </div>
-        {window.innerWidth <= 1080 ? <HeroSectionBottomCurve /> : null}
+        {window.innerWidth <= 1080 ? <div className="circle"></div> : null}
       </section>
-
-      {/* {window.innerWidth <= 1080 ? (
-        <ClubStats mobileClass={"mobile-stats"} />
-      ) : null} */}
     </>
+  );
+};
+
+const HeroActionBtns = () => {
+  return (
+    <div className="hero-action-btns row-center">
+      <a className="primary-button" href="/register">
+        Join Us
+      </a>
+      <a className="primary-button secondary-button" href="/members">
+        See Others
+      </a>
+    </div>
   );
 };
 

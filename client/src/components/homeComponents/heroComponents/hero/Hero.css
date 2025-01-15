@@ -274,7 +274,6 @@
 
 @media screen and (max-width: 1080px) {
   .hero-section {
-    padding-top: 0px;
     width: 100vw;
     max-width: none;
     min-height: 550px;
@@ -313,6 +312,43 @@
     align-items: center;
   }
 
+  .hero-action-btns {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .hero-action-btns .primary-button {
+    padding: 7px 18px;
+    width: fit-content;
+    height: fit-content;
+  }
+
+  .hero-action-btns .primary-button.secondary-button::before {
+    background-color: var(--black);
+  }
+
+  .hero-action-btns .primary-button.secondary-button::after {
+    background: var(--highlighted-color);
+  }
+
+  .circle {
+    /* Ellipse 17 */
+
+    position: absolute;
+    width: 611px;
+    height: 611px;
+
+    background: radial-gradient(
+        74.85% 74.85% at 50.11% 50.11%,
+        rgba(59, 130, 246, 0.12) 0%,
+        rgba(59, 130, 246, 0) 100%
+      )
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+    filter: blur(84.25px);
+  }
+
   .join-btn {
     z-index: 99;
   }
@@ -340,10 +376,16 @@
     padding-top: 0px;
   }
   .hero-section {
-    padding: 0px;
     justify-content: center;
     align-items: center;
     max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 670px) {
+  .circle {
+    width: 80vw;
+    aspect-ratio: 1;
   }
 }
 
@@ -360,11 +402,21 @@
 }
 
 @media screen and (max-width: 450px) {
-  .hero-section {
+  /* .hero-section {
     max-height: 700px;
-  }
+  } */
   .hero-section-container {
     gap: 20px;
+  }
+
+  .club-intro-container {
+    height: calc(100svh - var(--nav-height));
+    min-height: 300px;
+    max-height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
   .hero-section .primary-button {
     padding: 7px 20px;
