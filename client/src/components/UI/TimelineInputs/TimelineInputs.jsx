@@ -10,15 +10,15 @@ import { editUser } from "@/services/PutService";
 import toast from "react-hot-toast";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
 
-const TimelineInputs = ({ timeline }) => {
+const TimelineInputs = ({ timeline, user }) => {
   const queryClient = useQueryClient();
   const [activeIndex, setActiveIndex] = useState(null);
+  console.log(user);
 
   const {
     register,
     control,
     handleSubmit,
-    setError,
     setValue,
     trigger,
     formState: { errors, isSubmitting },
@@ -52,8 +52,13 @@ const TimelineInputs = ({ timeline }) => {
     setActiveIndex(null);
   };
 
-  const userMutation = useMutation({
-    mutationFn: ({ setError, ...data }) => editUser(data, setError),
+  const timelineMutation = useMutation({
+    mutationFn: (data) => {
+      console.log(data, "data");
+      console.log(user);
+      data._id = user._id;
+      return editUser(data);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries(["user"]);
       toast.success("Edited Successfully!");
@@ -64,7 +69,7 @@ const TimelineInputs = ({ timeline }) => {
   });
 
   const onSubmit = async (data) => {
-    userMutation.mutate(data);
+    timelineMutation.mutate(data);
   };
 
   const tags = ["Certificate", "Article", "Project"];

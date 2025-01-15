@@ -100,7 +100,10 @@ const ProfilePage = () => {
                         data={profileData}
                         schema={MemberProfileEditSchema}
                       />
-                      <TimelineInputs timeline={profileData.timeline} />
+                      <TimelineInputs
+                        timeline={profileData.timeline}
+                        user={user}
+                      />
                     </>
                   )
                 ) : (

@@ -76,9 +76,31 @@ const MemberProfileEditSchema = z.object({
     message: "Password must be at least 6 characters",
   }),
   contactNumber: z.string().min(10, "Invalid contact number"),
+  image: z
+    .any()
+    .optional()
+    .refine(
+      (files) => files.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE,
+      {
+        message: `Max image size is ${MAX_FILE_SIZE / 1024}KB.`,
+      }
+    )
+    .refine(
+      (files) =>
+        files.length === 0 || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+      {
+        message: "Please upload a valid image file (JPG, JPEG, PNG or WebP).",
+      }
+    ),
   branch: z.string("Select your branch"),
   reason: z.string("Give a description of why you want to join the club"),
   socialLink: z.string("Enter your facebook link"),
+  batch: z
+    .string()
+    .length(4, "Invalid Batch")
+    .refine((value) => value !== null && value.toString().trim() !== "", {
+      message: "Invalid Batch",
+    }),
 });
 
 const TimelineSchema = z.object({

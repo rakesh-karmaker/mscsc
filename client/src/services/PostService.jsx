@@ -36,12 +36,10 @@ const registerUser = (data) => {
 };
 
 const loginUser = (data) => {
-  console.log(data);
   const formData = new FormData();
   for (const key in data) {
     formData.append(key, data[key]);
   }
-  console.log(formData);
   return api.post("/auth/login", data, {
     headers: {
       "Content-Type": "application/json",

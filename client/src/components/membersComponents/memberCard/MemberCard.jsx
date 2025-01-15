@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./MemberCard.css";
-import MemberEditDialog from "@/components/admin/membersDashboard/memberEditDialog/MemberEditeDialog";
+import MemberEditDialog from "@/components/admin/membersDashboard/memberEditDialog/MemberEditDialog";
 
 const MemberCard = ({ member, ...props }) => {
   const navigate = useNavigate();

@@ -79,7 +79,6 @@ const UtilityBtns = () => {
     localStorage.removeItem("token");
     queryClient.invalidateQueries(["user"]);
     setUser(null);
-    console.log("logout");
   };
 
   return (

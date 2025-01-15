@@ -1,6 +1,5 @@
 import InputText from "@/components/UI/InputText/InputText";
 import RadioList from "@/components/UI/RadioList/RadioList";
-import SearchInput from "@/components/UI/SearchInput/SearchInput";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -13,7 +12,6 @@ import { deleteMember } from "@/services/DeleteService";
 const MemberEditDialog = ({ member, deleteMember }) => {
   const editDialog = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  console.log(member);
 
   return (
     <div className="member-edit-btn-container" style={{ cursor: "initial" }}>

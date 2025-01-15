@@ -6,7 +6,7 @@ import { editUser } from "@/services/PutService";
 import { deleteMember } from "@/services/DeleteService";
 import Table from "@/components/UI/Table/Table";
 
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import DashboardTagsContainer from "@/components/admin/components/DashboadTags/DashboardTags";
 import DashboardHeader from "@/components/admin/components/DashboardHeader/DashboardHeader";
 import { useEffect } from "react";
@@ -26,7 +26,7 @@ const AdminDashboard = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries("members");
-      toast.success("Member Deleted Successfully!");
+      toast.success("Operation Completed");
     },
     onError: (err) => {
       console.log(err);
@@ -72,7 +72,6 @@ const AdminDashboard = () => {
           needPagination={false}
         />
       </div>
-      <Toaster position="top-right" />
     </>
   );
 };

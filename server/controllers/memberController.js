@@ -1,7 +1,7 @@
 const Member = require("../models/Member");
 const bcrypt = require("bcryptjs");
 const { paginatedResults } = require("../utils/paginatedResults");
-const { deleteImage } = require("../utils/imagekit");
+const { uploadImage, deleteImage } = require("../utils/imagekit");
 const { default: mongoose } = require("mongoose");
 
 // Get All Members
@@ -54,7 +54,6 @@ const getMemberById = async (req, res) => {
   }
 
   try {
-    console.log(_id);
     const member = await Member.findById(_id.toString()).select("-password");
     console.log(member, "member\n");
     if (!member) {
@@ -73,16 +72,26 @@ const getMemberById = async (req, res) => {
 
 const editMember = async (req, res) => {
   try {
-    const id = req.body?._id || req.user._id;
-    console.log(id);
+    const { _id: id, ...updates } = req.body;
+
+    const previousUser = await Member.findById(id);
+    if (!previousUser)
+      return res.status(404).send({ message: "User not found" });
+
+    if (previousUser._id.toString() !== req.user._id) {
+      console.log("Mismatched id");
+      const adminData = await Member.findById(req.user._id);
+      if (!adminData || adminData?.role !== "admin")
+        return res.status(401).send({ message: "Access Denied" });
+    }
 
     // Edit User Timeline
-    if (req.body && req.body.timeline) {
-      console.log(req.body.timeline);
-      const timeline = JSON.parse(req.body.timeline);
+    if (updates && updates.timeline) {
+      console.log(updates.timeline);
+      const timeline = JSON.parse(updates.timeline);
       const member = await Member.findOneAndUpdate(
         { _id: id },
-        { timeline },
+        { timeline: timeline },
         { new: true }
       ).select("-password");
       if (!member) return res.status(404).send({ message: "Member not found" });
@@ -91,17 +100,21 @@ const editMember = async (req, res) => {
     }
 
     // Edit User Credentials
-    const previousUser = await Member.findById(id);
-    if (!previousUser)
-      return res.status(404).send({ message: "User not found" });
 
-    if (req.body?.password && req.body.password === "") {
-      req.body.password = previousUser.password;
-    } else if (req.body && req.body.password) {
-      req.body.password = bcrypt.hashSync(req.body.password, 10);
+    if (req?.file) {
+      console.log(previousUser.imgId);
+      deleteImage(res, previousUser.imgId);
+      const { url, imgId } = await uploadImage(res, req.file);
+      updates.image = url;
+      updates.imgId = imgId;
     }
 
-    const { memberId, ...updates } = req.body;
+    if (updates?.password === "") {
+      updates.password = previousUser.password;
+    } else if (updates && updates.password) {
+      updates.password = bcrypt.hashSync(updates.password, 10);
+    }
+
     const user = await Member.findOneAndUpdate({ _id: id }, updates, {
       new: true,
     }).select("-password");

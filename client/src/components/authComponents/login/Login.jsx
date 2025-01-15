@@ -38,7 +38,6 @@ const Login = ({ setForm }) => {
         setTimeout(() => {
           navigate(`/member/${id}`, { replace: true });
         }, 0);
-        console.log("logged in");
       }
     },
     onError: (err) => {

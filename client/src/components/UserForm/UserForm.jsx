@@ -34,17 +34,19 @@ const UserForm = (props) => {
           branch: props.data.branch,
           reason: props.data.reason,
           socialLink: props.data.socialLink,
+          batch: props.data.batch,
         }
       : undefined,
     mode: "onChange",
   });
 
   const userMutation = useMutation({
-    mutationFn: (props) => {
-      const { method, setError, ...data } = props;
+    mutationFn: (editedProps) => {
+      const { method, setError, ...data } = editedProps;
       if (method === "register") {
         return registerUser(data);
       } else {
+        data._id = props.data._id;
         return editUser(data);
       }
     },
@@ -150,15 +152,13 @@ const UserForm = (props) => {
       </InputText>
 
       <div className="combined-inputs">
-        <InputText
-          setValue={setValue}
-          trigger={trigger}
+        <LinkBatch
           register={register}
-          errors={errors.socialLink}
-          id="socialLink"
-        >
-          Facebook Link
-        </InputText>
+          trigger={trigger}
+          errors={errors}
+          setValue={setValue}
+          {...props}
+        />
 
         {props?.setForm && (
           <InputText
@@ -194,6 +194,46 @@ const UserForm = (props) => {
       </div>
     </form>
   );
+};
+
+const LinkBatch = ({ register, trigger, setValue, errors, ...rest }) => {
+  if (rest?.setForm) {
+    return (
+      <InputText
+        setValue={setValue}
+        trigger={trigger}
+        register={register}
+        errors={errors.socialLink}
+        id="socialLink"
+      >
+        Facebook Link
+      </InputText>
+    );
+  } else {
+    return (
+      <div className="combined-inputs">
+        <InputText
+          setValue={setValue}
+          trigger={trigger}
+          register={register}
+          errors={errors.socialLink}
+          id="socialLink"
+        >
+          Facebook Link
+        </InputText>
+
+        <InputText
+          setValue={setValue}
+          trigger={trigger}
+          register={register}
+          errors={errors.batch}
+          id="batch"
+        >
+          SSC Batch
+        </InputText>
+      </div>
+    );
+  }
 };
 
 export default UserForm;

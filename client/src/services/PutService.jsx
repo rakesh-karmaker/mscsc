@@ -3,7 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: `${import.meta.env.VITE_API_URL}/api`,
   headers: {
-    "Content-Type": "application/json",
+    "Content-Type": "multipart/form-data",
   },
 });
 
@@ -24,6 +24,13 @@ api.interceptors.request.use(
 const editUser = (data) => {
   const formData = new FormData();
   for (const key in data) {
+    if (key === "image") {
+      if (data[key].length === 0) {
+        continue;
+      }
+      formData.append(key, data[key][0]);
+      continue;
+    }
     formData.append(
       key,
       key === "timeline" ? JSON.stringify(data[key]) : data[key]
@@ -37,7 +44,6 @@ const editMessage = (data) => {
   for (const key in data) {
     formData.append(key, data[key]);
   }
-  console.log("data", formData);
   return api.put("/message", formData, {
     headers: {
       "Content-Type": "application/json",

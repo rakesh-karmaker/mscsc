@@ -7,7 +7,7 @@ const MemberSchema = new mongoose.Schema(
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     contactNumber: { type: String, required: true },
-    batch: { type: Number, required: true },
+    batch: { type: String, required: true },
     branch: { type: String, required: true },
     image: { type: String, required: true },
     imgId: { type: String, required: true },
