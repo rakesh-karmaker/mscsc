@@ -12,7 +12,8 @@
   max-width: 500px !important;
   min-width: 0px;
 
-  padding: 50px 40px;
+  padding: 40px 40px;
+  padding-top: 30px;
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
@@ -21,4 +22,11 @@
   margin-top: 60px;
   justify-self: center;
   gap: 2.5rem;
+}
+
+@media screen and (max-width: 470px) {
+  .login-container {
+    box-shadow: none;
+    padding: 0px;
+  }
 }

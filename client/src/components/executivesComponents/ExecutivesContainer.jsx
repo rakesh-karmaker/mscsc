@@ -41,7 +41,7 @@ const ExecutivesContainer = ({ years, executivesData }) => {
   return (
     <>
       <aside dropdown-active="false">
-        {window.innerWidth > 950 ? null : (
+        {window.innerWidth > 980 ? null : (
           <YearsDropdown
             onClick={() => {
               yearsDropdownClick(years);

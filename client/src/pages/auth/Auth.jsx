@@ -9,7 +9,7 @@ import { MemberRegSchema } from "@/utils/MemberSchemaValidation";
 import "./Auth.css";
 import FormHeading from "@/components/UI/FormHeading/FormHeading";
 
-const Auth = () => {
+const Auth = ({ method }) => {
   const navigate = useNavigate();
   const { user } = useUser();
   useEffect(() => {
@@ -19,7 +19,7 @@ const Auth = () => {
   }, [navigate, user]);
 
   const registerFormContainer = useRef(null);
-  const [form, setForm] = useState("Register");
+  const [form, setForm] = useState(method);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [form]);
@@ -27,7 +27,7 @@ const Auth = () => {
   return (
     <>
       <main id="auth">
-        {window.innerWidth >= 1080 && form === "Register" ? (
+        {window.innerWidth >= 1200 && form === "Register" ? (
           <RegisterImage registerFormContainer={registerFormContainer} />
         ) : null}
         <div

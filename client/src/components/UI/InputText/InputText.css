@@ -40,7 +40,6 @@
 
 .input-container:has(input:focus) > label {
   top: 15px;
-  /* left: 0; */
   font-size: 1rem;
 }
 
@@ -83,4 +82,15 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   appearance: textfield;
   -moz-appearance: textfield;
+}
+
+@media screen and (max-width: 600px) {
+  .input-container label {
+    font-size: 1rem;
+  }
+
+  .input-container:has(input:focus) > label {
+    top: 10px;
+    font-size: 1rem;
+  }
 }

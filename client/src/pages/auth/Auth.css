@@ -3,9 +3,9 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap: 6.5rem;
-  padding-top: calc(var(--nav-height) + 4rem);
-  padding-bottom: 6rem;
+  gap: 5rem;
+  padding-top: calc(var(--nav-height) + 2rem);
+  padding-bottom: 4rem;
   height: 100%;
   min-height: 700px;
   width: 100%;
@@ -15,7 +15,7 @@
 
 .reg-img {
   width: 100%;
-  max-width: 600px;
+  max-width: 620px;
   height: inherit;
   background-color: rgb(70, 125, 173);
   background: url("/hero-img-1.webp") no-repeat center center/cover;
@@ -44,8 +44,12 @@
   }
 }
 
-@media screen and (max-width: 1080px) {
+@media screen and (max-width: 1200px) {
   .auth-container {
     min-width: 0px;
+  }
+
+  #auth {
+    padding-top: calc(var(--nav-height) + 1rem);
   }
 }

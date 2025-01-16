@@ -125,20 +125,14 @@ footer > p {
   }
 }
 
-@media screen and (max-width: 445px) {
+@media screen and (max-width: 430px) {
   .footer-links {
-    /* flex-direction: column; */
     justify-content: space-around;
     gap: 20px;
   }
 
-  .footer-links > div {
-    /* align-items: center; */
-  }
-
   .footer-link-container {
     width: 100%;
-    /* align-items: center; */
   }
   .contact-us {
     width: 100%;
@@ -150,7 +144,7 @@ footer > p {
   }
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 390px) {
   .footer-links {
     gap: 30px;
   }

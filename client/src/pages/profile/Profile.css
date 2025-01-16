@@ -98,20 +98,28 @@
   gap: 10px;
 }
 
-@media screen and (max-width: 1160px) {
+@media screen and (max-width: 1260px) {
   #profile .combined-inputs {
     flex-direction: column;
     gap: 40px;
   }
-}
-
-@media screen and (max-width: 1080px) {
   #profile > div {
-    gap: 30px;
+    gap: 40px;
+  }
+  .radio-label {
+    font-size: 0.9rem;
+    gap: 3px;
   }
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 950px) {
+  .profile-left,
+  .profile-left > img {
+    max-width: 300px;
+  }
+}
+
+@media screen and (max-width: 780px) {
   #profile > div {
     flex-direction: column;
     gap: 30px;

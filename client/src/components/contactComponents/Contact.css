@@ -87,6 +87,7 @@ input.hidden {
   #contact .section-heading {
     flex-direction: column;
     text-align: left;
+    align-items: center;
   }
 
   #contact .section-heading {

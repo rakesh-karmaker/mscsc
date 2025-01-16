@@ -272,6 +272,12 @@
   }
 }
 
+@media screen and (max-width: 1250px) {
+  .hero-section-container {
+    --image-slider-height: 360px;
+  }
+}
+
 @media screen and (max-width: 1080px) {
   .hero-section {
     width: 100vw;
@@ -317,8 +323,6 @@
   }
 
   .circle {
-    /* Ellipse 17 */
-
     position: absolute;
     width: 611px;
     height: 611px;
@@ -365,7 +369,7 @@
   }
 }
 
-@media screen and (max-width: 670px) {
+@media screen and (max-width: 700px) {
   .hero-action-btns .primary-button {
     padding: 7px 18px;
     width: fit-content;

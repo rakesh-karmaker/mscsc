@@ -69,7 +69,9 @@ const router = createBrowserRouter([
 
           { path: "/contact", element: <ContactPage /> },
 
-          { path: "/register", element: <Auth /> },
+          { path: "/register", element: <Auth method="Register" /> },
+
+          { path: "/login", element: <Auth method="Login" /> },
 
           { path: "/members", element: <MemberPage /> },
 

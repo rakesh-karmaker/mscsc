@@ -80,7 +80,7 @@ const Header = () => {
           (user !== null ? (
             <Avatar />
           ) : (
-            <PrimaryBtn link="/register" name="Login page" header={true}>
+            <PrimaryBtn link="/login" name="Login page" header={true}>
               Login
             </PrimaryBtn>
           ))}

@@ -64,13 +64,13 @@ const ProfilePage = () => {
               rel="preload"
               fetchpriority="high"
             />
-            {window.innerWidth > 700 && (
+            {window.innerWidth > 780 && (
               <AboutProfile data={profileData} isOwner={isOwner} />
             )}
           </div>
           <div className="profile-right">
             <ProfileDetails data={profileData} isOwner={isOwner} />
-            {window.innerWidth <= 700 && (
+            {window.innerWidth <= 780 && (
               <AboutProfile data={profileData} isOwner={isOwner} />
             )}
             <div className="profile-actions-container">

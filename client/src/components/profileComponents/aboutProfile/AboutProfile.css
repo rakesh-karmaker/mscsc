@@ -80,7 +80,7 @@
   background-color: var(--highlighted-color);
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 780px) {
   .about-profile button.primary-button {
     width: fit-content;
   }

@@ -69,3 +69,10 @@
     box-shadow: 0 0 0 7px rgba(0, 0, 0, 0);
   }
 }
+
+@media screen and (max-width: 750px) {
+  .radio-label {
+    font-size: 0.9rem;
+    gap: 3px;
+  }
+}
