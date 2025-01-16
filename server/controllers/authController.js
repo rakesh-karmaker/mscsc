@@ -44,8 +44,11 @@ exports.register = async (req, res) => {
       expiresIn: "7d",
     });
 
-    console.log("Member registered successfully.");
-
+    console.log(
+      `${newMember.name} registered successfully -`,
+      new Date().toUTCString(),
+      "\n---\n"
+    );
     res.status(201).send({
       subject: "register",
       message: "Registered successfully.",
@@ -53,7 +56,12 @@ exports.register = async (req, res) => {
       member: newMember,
     });
   } catch (err) {
-    console.log(err, "error");
+    console.log(
+      "Error registering member - ",
+      new Date().toUTCString(),
+      "\n---\n",
+      err
+    );
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: err.message });
@@ -82,7 +90,11 @@ exports.login = async (req, res) => {
       expiresIn: "7d",
     });
 
-    console.log("Member logged in successfully.");
+    console.log(
+      `${member.name} logged in successfully -`,
+      new Date().toUTCString(),
+      "\n---\n"
+    );
     res.status(200).send({
       subject: "login",
       message: "Logged in successfully.",
@@ -90,7 +102,12 @@ exports.login = async (req, res) => {
       member,
     });
   } catch (err) {
-    console.log(err, "error");
+    console.log(
+      "Error logging in - ",
+      new Date().toUTCString(),
+      "\n---\n",
+      err
+    );
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };

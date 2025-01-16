@@ -29,6 +29,7 @@ const ActivitiesNavbar = ({ tag, setTag, search, setSearch }) => {
                 setTag={setTag}
                 key={icon}
                 active={tag === icon}
+                tag={tag}
               >
                 <FontAwesomeIcon icon={icons[icon]} />
               </ActivityNavLink>

@@ -94,13 +94,14 @@
   min-height: 8.5rem;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  padding: 7px 10px;
 }
 
 .executive-lower p:not(.secondary-text) {
   text-align: center;
   font-size: 1.525rem;
   font-weight: 500;
-  line-height: 28px;
+  line-height: 32px;
   margin-bottom: 3px;
 }
 
@@ -120,9 +121,6 @@
 @media screen and (max-width: 750px) {
   .executive-member {
     width: min(100%, 270px);
-  }
-  .executive-lower {
-    padding: 0px 10px;
   }
 }
 

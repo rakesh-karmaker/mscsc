@@ -25,7 +25,12 @@ const uploadImage = async (res, file) => {
 
     return { url, imgId: uploadedImage.fileId };
   } catch (err) {
-    console.log(err);
+    console.log(
+      "Error uploading image - ",
+      new Date().toUTCString(),
+      "\n---\n",
+      err
+    );
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: err.message });
@@ -34,16 +39,27 @@ const uploadImage = async (res, file) => {
 
 const deleteImage = async (res, imageId) => {
   try {
-    imagekit.deleteFile(imageId, (error, result) => {
-      if (error) {
-        console.log("Failed to delete image. ", error);
+    imagekit.deleteFile(imageId, (err, result) => {
+      if (err) {
+        console.log(
+          "Error deleting image - ",
+          new Date().toUTCString(),
+          "\n---\n",
+          err
+        );
         return res.status(500).send({ error: "Failed to delete image." });
       }
 
       console.log("Image deleted successfully.");
     });
-  } catch (error) {
-    console.log("Failed to delete image. ", error);
+  } catch (err) {
+    console.log(
+      "Error deleting image - ",
+      new Date().toUTCString(),
+      "\n---\n",
+      err
+    );
+    return res.status(500).send({ error: "Failed to delete image." });
   }
 };
 

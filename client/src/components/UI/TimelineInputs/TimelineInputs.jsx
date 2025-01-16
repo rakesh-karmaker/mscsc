@@ -13,7 +13,6 @@ import useErrorNavigator from "@/hooks/useErrorNavigator";
 const TimelineInputs = ({ timeline, user }) => {
   const queryClient = useQueryClient();
   const [activeIndex, setActiveIndex] = useState(null);
-  console.log(user);
 
   const {
     register,

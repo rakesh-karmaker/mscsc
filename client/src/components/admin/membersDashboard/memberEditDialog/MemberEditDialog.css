@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   gap: 30px;
+  min-width: 400px;
 }
 
 .edit-dialog > div {
@@ -51,6 +52,7 @@
 
 .edit-dialog-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
@@ -62,4 +64,19 @@
   width: fit-content;
   height: fit-content;
   line-height: 22px;
+}
+
+@media screen and (max-width: 460px) {
+  .edit-dialog {
+    min-width: 90vw;
+    padding: 30px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .edit-dialog {
+    min-width: 100vw;
+    border-radius: 0px;
+    padding: 25px 15px;
+  }
 }

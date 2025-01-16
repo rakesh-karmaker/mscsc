@@ -35,7 +35,12 @@ exports.paginatedResults = async (
     results.selectedLength = selectedData.length;
     return results;
   } catch (err) {
-    console.log(err);
+    console.log(
+      "Error paginating results - ",
+      new Date().toUTCString(),
+      "\n---\n",
+      err
+    );
     res.status(500).send({ message: err.message });
   }
 };

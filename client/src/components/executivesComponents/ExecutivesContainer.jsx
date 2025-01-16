@@ -36,7 +36,7 @@ const ExecutivesContainer = ({ years, executivesData }) => {
       .forEach((executiveMember) => {
         observeExecutiveMember.observe(executiveMember);
       });
-  });
+  }, [selectedExecutives]);
 
   return (
     <>
@@ -50,6 +50,7 @@ const ExecutivesContainer = ({ years, executivesData }) => {
         )}
         {years.map((year) => (
           <YearPanel
+            active={year === currentYear}
             panelYear={year}
             onClick={() => {
               handlePanelClick(year);

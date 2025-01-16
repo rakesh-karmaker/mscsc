@@ -67,6 +67,9 @@
 }
 
 @media screen and (max-width: 1600px) {
+  .page-members {
+    padding-top: calc(var(--nav-height) + 2.5rem);
+  }
   .members-container {
     grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   }
@@ -84,5 +87,12 @@
   .branch-tags {
     flex-wrap: wrap;
     justify-content: center;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .page-members {
+    padding-top: calc(var(--nav-height) + 1.9rem);
+    gap: 2.2rem;
   }
 }

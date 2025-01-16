@@ -295,7 +295,8 @@ dialog {
 }
 @media screen and (max-width: 700px) {
   .section-heading {
-    font-size: 2.2rem !important;
+    font-size: 3rem !important;
+    line-height: 3rem;
   }
   .combined-inputs {
     flex-direction: column;
@@ -305,5 +306,6 @@ dialog {
 @media screen and (max-width: 450px) {
   .section-heading {
     font-size: 2rem !important;
+    line-height: 2.4rem;
   }
 }

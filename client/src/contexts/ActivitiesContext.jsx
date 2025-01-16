@@ -9,6 +9,11 @@ const ActivitiesProvider = ({ children }) => {
   const [tag, setTag] = useState("");
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    setTag("");
+  }, [search]);
+
   const { data, error, isError, isLoading, refetch } = useQuery({
     queryKey: ["activities", page, tag, search],
     queryFn: () => {

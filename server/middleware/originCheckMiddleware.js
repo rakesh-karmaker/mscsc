@@ -6,6 +6,7 @@ const originCheckMiddleware = (req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", origin);
     next();
   } else {
+    console.log("Origin not allowed -", new Date().toUTCString(), origin);
     res.status(403).json({ message: "Forbidden" });
   }
 };

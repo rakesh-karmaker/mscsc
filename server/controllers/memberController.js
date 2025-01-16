@@ -23,9 +23,15 @@ const getAllMembers = async (req, res) => {
       "-password"
     );
     members.adminLength = await Member.countDocuments({ role: "admin" });
+    console.log("fetched all members -", new Date().toUTCString());
     res.status(200).send(members);
   } catch (err) {
-    console.log(err);
+    console.log(
+      "Error fetching all members - ",
+      new Date().toUTCString(),
+      "\n---\n",
+      err
+    );
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
@@ -39,10 +45,17 @@ const verifyUser = async (req, res) => {
 
     user._id = user._id.toString();
 
+    console.log("User fetched -", new Date().toUTCString());
     res.send({
       user,
     });
   } catch (err) {
+    console.log(
+      "Error verifying user - ",
+      new Date().toUTCString(),
+      "\n---\n",
+      err
+    );
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
@@ -55,17 +68,20 @@ const getMemberById = async (req, res) => {
 
   try {
     const member = await Member.findById(_id.toString()).select("-password");
-    console.log(member, "member\n");
     if (!member) {
-      console.log("Member not found");
       return res.status(404).send({ message: "Member not found" });
     }
 
     member._id = member._id.toString();
-    console.log("member fetched");
+    console.log("Member fetched -", new Date().toUTCString());
     res.send(member);
   } catch (err) {
-    console.log(err);
+    console.log(
+      "Error fetching member - ",
+      new Date().toUTCString(),
+      "\n---\n",
+      err
+    );
     res.status(500).send({ message: "Server error", error: err?.message });
   }
 };
@@ -95,7 +111,7 @@ const editMember = async (req, res) => {
         { new: true }
       ).select("-password");
       if (!member) return res.status(404).send({ message: "Member not found" });
-      console.log("user edited");
+      console.log("Timeline edited -", new Date().toUTCString());
       return res.status(200).send({ message: "Edit successful", member });
     }
 
@@ -119,11 +135,16 @@ const editMember = async (req, res) => {
       new: true,
     }).select("-password");
 
-    console.log("user edited");
+    console.log("user edited -", new Date().toUTCString());
     if (user) return res.status(200).send({ message: "Edit successful", user });
     else return res.status(404).send({ message: "Edit failed" });
   } catch (err) {
-    console.log(err);
+    console.log(
+      "Error editing user - ",
+      new Date().toUTCString(),
+      "\n---\n",
+      err
+    );
     if (err.codeName === "DuplicateKey") {
       return res
         .status(409)
@@ -142,11 +163,21 @@ const deleteMember = async (req, res) => {
 
     const member = await Member.findByIdAndDelete(id);
     if (!member) return res.status(404).send({ message: "Member not found" });
-    console.log("Member deleted successfully.");
 
+    console.log(
+      "Member deleted successfully -",
+      new Date().toUTCString(),
+      "\n---\n"
+    );
     deleteImage(res, member.imgId);
     res.status(200).send({ message: "Member deleted successfully" });
   } catch (err) {
+    console.log(
+      "Error deleting member - ",
+      new Date().toUTCString(),
+      "\n---\n",
+      err
+    );
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };

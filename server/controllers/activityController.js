@@ -12,11 +12,8 @@ exports.getAllActivities = async (req, res) => {
     };
     const sorted = { date: -1 };
 
-    console.log(req.query.limit);
     if (req.query.limit === "all") {
       const activities = await Activity.find().sort({ ...sorted });
-      console.log("fetched all activities hihafwihfdha");
-      // throw new Error("hihafwihfdha");
       res.status(200).send(activities);
     } else {
       const activities = await paginatedResults(
@@ -26,12 +23,16 @@ exports.getAllActivities = async (req, res) => {
         regex,
         sorted
       );
-      console.log("fetched all activities");
-      // throw new Error("hihafwihfdha");
+      console.log("fetched all activities -", new Date().toUTCString());
       res.status(200).send(activities);
     }
   } catch (err) {
-    console.log(err);
+    console.log(
+      "Error fetching all activities - ",
+      new Date().toUTCString(),
+      "\n---\n",
+      err
+    );
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
@@ -45,7 +46,6 @@ exports.addActivity = async (req, res) => {
     }
     const { error: validationResult } = activitySchema.validate(body);
     if (validationResult) {
-      console.log(validationResult);
       return res.status(400).send({
         subject: validationResult.details[0].context.key,
         message: validationResult.details[0].message,
@@ -57,18 +57,26 @@ exports.addActivity = async (req, res) => {
     body.coverImageId = imgId;
 
     const activity = await Activity.create(body);
-    console.log("Activity added successfully.");
+    console.log(
+      "Activity added successfully -",
+      new Date().toUTCString(),
+      "\n---\n"
+    );
     res.status(200).send({ message: "Activity added" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({ message: "Server error", error: error.message });
+  } catch (err) {
+    console.log(
+      "Error adding activity - ",
+      new Date().toUTCString(),
+      "\n---\n",
+      err
+    );
+    res.status(500).send({ message: "Server error", error: err.message });
   }
 };
 
 // Edit Activity
 exports.editActivity = async (req, res) => {
   try {
-    console.log(req.body);
     const { _id, ...updates } = req.body;
     const { error: validationResult } = activitySchema.validate(updates);
     if (validationResult) {
@@ -94,11 +102,15 @@ exports.editActivity = async (req, res) => {
     if (!activity) {
       return res.status(404).send({ message: "Activity not found" });
     }
-
-    console.log("Activity updated successfully.");
+    console.log("Activity updated successfully -", new Date().toUTCString());
     res.status(200).send({ message: "Activity updated" });
   } catch (err) {
-    console.log(err);
+    console.log(
+      "Error editing activity - ",
+      new Date().toUTCString(),
+      "\n---\n",
+      err
+    );
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
@@ -113,10 +125,19 @@ exports.deleteActivity = async (req, res) => {
       return res.status(404).send({ message: "Activity not found" });
     }
     deleteImage(res, activity.coverImageId);
-    console.log("Activity deleted successfully.");
+    console.log(
+      "Activity deleted successfully -",
+      new Date().toUTCString(),
+      "\n---\n"
+    );
     res.status(200).send({ message: "Activity deleted" });
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(
+      "Error deleting activity - ",
+      new Date().toUTCString(),
+      "\n---\n",
+      err
+    );
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
