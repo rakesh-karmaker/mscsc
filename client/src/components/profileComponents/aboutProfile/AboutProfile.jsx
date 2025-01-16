@@ -17,7 +17,7 @@ const AboutProfile = ({ data, isOwner }) => {
     Email: <a href={`mailto:${email}`}>{email}</a>,
     Phone: (
       <a href={`tel:0${contactNumber.toString()}`}>
-        {`+880 ${contactNumber.toString()}`}
+        {`+880 ${contactNumber.toString().slice(1)}`}
       </a>
     ),
   };
