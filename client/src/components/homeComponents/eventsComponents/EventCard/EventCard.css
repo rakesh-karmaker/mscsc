@@ -107,7 +107,7 @@
     flex-direction: column;
     position: relative;
     max-width: 100%;
-    height: 530px;
+    height: auto;
     position: relative;
   }
   .activity-demo img {
@@ -118,16 +118,10 @@
   .activity-demo > article {
     width: 100%;
     height: 100%;
-    justify-content: flex-start;
-    margin-top: 21px;
   }
   .activity-demo article p:not(:has(span)) {
     -webkit-line-clamp: 3; /* number of lines to show */
     line-clamp: 3;
-  }
-  .activity-demo article a {
-    position: absolute;
-    bottom: 20px;
   }
 }
 
