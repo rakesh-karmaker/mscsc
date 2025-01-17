@@ -29,25 +29,4 @@ const MemberCard = ({ member, ...props }) => {
   );
 };
 
-const MemberActions = ({ member, deleteMember, changeRole }) => {
-  return (
-    <div className="member-actions">
-      <button
-        type="button"
-        className={`primary-button role-btn ${member?.role}`}
-        onClick={(e) => {
-          e.stopPropagation();
-          changeRole(member._id, member.role);
-        }}
-      >
-        {member?.role === "admin" ? "Make Member" : "Make Admin"}
-      </button>
-
-      <DeleteBtn id={member._id} deleteFunc={deleteMember}>
-        Are you sure you want to delete this member?
-      </DeleteBtn>
-    </div>
-  );
-};
-
 export default MemberCard;

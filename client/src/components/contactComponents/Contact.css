@@ -25,7 +25,7 @@ input.hidden {
   font-weight: 550;
   text-align: left;
   text-transform: capitalize;
-  line-height: 35px;
+  line-height: 40px;
 }
 
 #contact h3 {
@@ -98,6 +98,14 @@ input.hidden {
 @media screen and (max-height: 800px) {
   .page-contact #contact {
     padding: 50px 0px;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  @media screen and (max-width: 960px) {
+    #contact .section-heading {
+      font-size: 2rem !important;
+    }
   }
 }
 

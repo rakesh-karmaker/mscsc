@@ -10,8 +10,16 @@ import { editUser } from "@/services/PutService";
 import { deleteMember } from "@/services/DeleteService";
 
 const MemberEditDialog = ({ member, deleteMember }) => {
+  const queryClient = useQueryClient();
   const editDialog = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  const memberNewMutation = useMutation({
+    mutationFn: () => editUser({ _id: member?._id, new: false }),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["members"] });
+    },
+  });
 
   return (
     <div className="member-edit-btn-container" style={{ cursor: "initial" }}>
@@ -33,7 +41,6 @@ const MemberEditDialog = ({ member, deleteMember }) => {
                 }}
               />
             </div>
-            {/* <p>Change member's details by editing their position and role</p> */}
           </div>
           <EditForm
             member={member}
@@ -46,10 +53,11 @@ const MemberEditDialog = ({ member, deleteMember }) => {
 
       <button
         type="button"
-        className="primary-button"
+        className={`primary-button ${member?.new ? "new" : ""}`}
         onClick={(e) => {
           e.stopPropagation();
           setIsOpen(true);
+          memberNewMutation.mutate();
           editDialog.current.showModal();
         }}
       >

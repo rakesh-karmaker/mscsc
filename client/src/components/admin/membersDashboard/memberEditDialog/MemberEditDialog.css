@@ -66,6 +66,10 @@
   line-height: 22px;
 }
 
+.member-edit-btn-container .primary-button.new::before {
+  background-color: #379337;
+}
+
 @media screen and (max-width: 460px) {
   .edit-dialog {
     min-width: 90vw;
