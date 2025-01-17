@@ -113,28 +113,17 @@ const UserForm = (props) => {
         </InputText>
       </div>
 
-      <div className="combined-inputs">
-        <InputText
-          setValue={setValue}
-          trigger={trigger}
-          register={register}
-          errors={errors.password}
-          type="password"
-          id="password"
-          required={props?.setForm ?? false}
-        >
-          {props?.setForm ? "Password" : "New Password"}
-        </InputText>
-        <InputText
-          setValue={setValue}
-          trigger={trigger}
-          register={register}
-          errors={errors.contactNumber}
-          id="contactNumber"
-        >
-          Phone Number
-        </InputText>
-      </div>
+      <InputText
+        setValue={setValue}
+        trigger={trigger}
+        register={register}
+        errors={errors.password}
+        type="password"
+        id="password"
+        required={props?.setForm ?? false}
+      >
+        {props?.setForm ? "Password" : "New Password"}
+      </InputText>
 
       {props?.setForm && <YearRadio register={register} errors={errors} />}
 

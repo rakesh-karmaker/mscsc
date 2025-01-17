@@ -2,7 +2,11 @@
   margin-top: 40px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 35px;
+}
+
+.user-form .input-container #reason {
+  margin-top: 0px;
 }
 
 .checkbox-submission {

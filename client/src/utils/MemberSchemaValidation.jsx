@@ -17,9 +17,6 @@ const MemberRegSchema = z.object({
     .string("Provide your password")
     .min(8, "Password must be at least 8 characters"),
   email: z.string("Provide your email").email("Invalid email address"),
-  contactNumber: z
-    .string("Provide your contact number")
-    .min(10, "Invalid contact number"),
   batch: z
     .string("Select your ssc batch")
     .nullable()
@@ -75,7 +72,6 @@ const MemberProfileEditSchema = z.object({
   password: z.string().refine((value) => value === "" || value.length >= 6, {
     message: "Password must be at least 6 characters",
   }),
-  contactNumber: z.string().min(10, "Invalid contact number"),
   image: z
     .any()
     .optional()
