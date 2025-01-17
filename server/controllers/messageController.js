@@ -10,7 +10,6 @@ const getAllMessages = async (req, res) => {
     const sorted = { _id: -1 };
 
     const messages = await paginatedResults(req, res, Message, regex, sorted);
-    console.log("fetched all messages -", new Date().toUTCString());
     res.status(200).send(messages);
   } catch (err) {
     console.log(
@@ -25,7 +24,6 @@ const getAllMessages = async (req, res) => {
 
 const createMessage = async (req, res) => {
   try {
-    console.log(req.body);
     const { error: validationResult } = messageSchema.validate(req.body);
     if (validationResult) {
       return res.status(400).send({
@@ -34,7 +32,6 @@ const createMessage = async (req, res) => {
       });
     }
     const message = await Message.create(req.body);
-    console.log("Message sent successfully -", new Date().toUTCString());
     res.status(200).send({ message: "Message sent" });
   } catch (err) {
     console.log(
@@ -59,7 +56,6 @@ const editMessage = async (req, res) => {
     if (!message) {
       return res.status(404).send({ message: "Message not found" });
     }
-    res.status(200).send({ message: "Message updated" });
   } catch (err) {
     console.log(
       "Error updating message - ",

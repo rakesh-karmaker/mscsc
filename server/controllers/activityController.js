@@ -23,7 +23,6 @@ exports.getAllActivities = async (req, res) => {
         regex,
         sorted
       );
-      console.log("fetched all activities -", new Date().toUTCString());
       res.status(200).send(activities);
     }
   } catch (err) {
@@ -41,6 +40,7 @@ exports.getAllActivities = async (req, res) => {
 exports.addActivity = async (req, res) => {
   try {
     const { file, body } = req;
+    console.log(req.file);
     if (!file || !body) {
       return res.status(400).send({ message: "Invalid request" });
     }
@@ -100,6 +100,7 @@ exports.editActivity = async (req, res) => {
       new: true,
     });
     if (!activity) {
+      console.log("Activity not found");
       return res.status(404).send({ message: "Activity not found" });
     }
     console.log("Activity updated successfully -", new Date().toUTCString());

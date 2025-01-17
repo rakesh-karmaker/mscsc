@@ -88,8 +88,10 @@ const TimelineInputs = ({ timeline, user }) => {
               onClick={() => setActiveIndex(index)}
               className={index === activeIndex ? "active" : ""}
             >
-              {fields[index].title
-                ? fields[index].title.slice(0, 25) + "..."
+              {fields[index]?.title
+                ? fields[index].title.length > 25
+                  ? fields[index].title.slice(0, 25) + "..."
+                  : fields[index].title
                 : `Event ${index + 1}`}
             </button>
             {timelineLength > 1 && (

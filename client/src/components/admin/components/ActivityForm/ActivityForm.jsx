@@ -7,13 +7,19 @@ import { useForm } from "react-hook-form";
 import "./ActivityForm.css";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import { addActivity } from "@/services/PostService";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { editActivity } from "@/services/PutService";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
+import { deleteActivity } from "@/services/DeleteService";
+import useLoadingToast from "@/hooks/useLoadingToast";
+import { useState } from "react";
 
 const ActivityForm = (props) => {
   const queryClient = useQueryClient();
+  const [loadingText, setLoadingText] = useState(
+    props?.defaultValues ? "Editing Activity..." : "Adding Activity..."
+  );
   const defaultValues = props?.defaultValues
     ? {
         title: props.defaultValues.title,
@@ -29,35 +35,53 @@ const ActivityForm = (props) => {
     handleSubmit,
     setValue,
     trigger,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     defaultValues: defaultValues,
   });
 
   const tags = ["Event", "Workshop", "Article", "Achievement"];
 
+  const activityMutation = useMutation({
+    mutationFn: (data) => {
+      const { method, ...rest } = data;
+      if (method == "add") {
+        return addActivity(rest);
+      } else if (method == "delete") {
+        return deleteActivity(rest._id);
+      } else if (method == "edit") {
+        rest._id = props.defaultValues._id;
+        return editActivity(rest);
+      }
+    },
+    onSuccess: (res) => {
+      toast.success(res?.data?.message);
+      props.setSelectedActivity(null);
+    },
+    onError: (err) => {
+      toast.error(err?.response?.data?.message);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries("activities");
+    },
+  });
+
   const onSubmit = async (data) => {
-    let res = null;
-    if (props?.defaultValues) {
-      res = await editActivity({ ...data, _id: props.defaultValues._id });
-      if (res.status === 200) {
-        toast.success("Activity edited successfully");
-        queryClient.invalidateQueries("activities");
-        props?.setSelectedActivity(null);
-      } else {
-        toast.error("Failed to edit activity");
-      }
-    } else {
-      res = await addActivity(data);
-      if (res.status === 200) {
-        toast.success("Activity added successfully");
-        queryClient.invalidateQueries("activities");
-        props?.setCreateActivity(false);
-      } else {
-        toast.error("Failed to add activity");
-      }
-    }
+    activityMutation.mutate({
+      method: props?.defaultValues ? "edit" : "add",
+      ...data,
+    });
   };
+
+  const onDelete = (_id) => {
+    setLoadingText("Deleting Activity...");
+    activityMutation.mutate({
+      method: "delete",
+      _id: _id,
+    });
+  };
+
+  useLoadingToast(activityMutation.isPending, loadingText);
 
   return (
     <div>
@@ -121,7 +145,7 @@ const ActivityForm = (props) => {
 
         <div className="combined-btns">
           <SubmitBtn
-            isSubmitting={isSubmitting}
+            isLoading={activityMutation.isPending}
             pendingText={props?.defaultValues ? "Editing" : "Adding"}
           >
             {props?.defaultValues ? "Edit" : "Add"} Activity
@@ -129,14 +153,13 @@ const ActivityForm = (props) => {
           {props?.defaultValues && (
             <DeleteBtn
               id={props.defaultValues._id}
-              deleteFunc={props.deleteActivity}
+              deleteFunc={onDelete}
               btnText="Delete Activity"
             >
               Are you sure you want to delete this activity?
             </DeleteBtn>
           )}
         </div>
-        <Toaster position="top-right" />
       </form>
     </div>
   );

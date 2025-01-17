@@ -151,6 +151,11 @@ main {
   width: 100%;
 }
 
+.primary-button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .button-link {
   text-decoration: none;
   color: var(--text-primary);

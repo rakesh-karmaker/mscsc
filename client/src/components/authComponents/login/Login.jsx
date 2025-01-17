@@ -10,6 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
 import { useUser } from "@/contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import useLoadingToast from "@/hooks/useLoadingToast";
 
 const Login = ({ setForm }) => {
   const navigate = useNavigate();
@@ -32,12 +33,11 @@ const Login = ({ setForm }) => {
         const token = res?.data?.token;
         localStorage.setItem("token", token);
         setUser(res?.data?.member);
-        toast.success("Login successful!");
         const id = res?.data?.member?._id;
-        // Ensure navigate is called after setting the token and user state
         setTimeout(() => {
           navigate(`/member/${id}`, { replace: true });
         }, 0);
+        toast.success("Login successful!");
       }
     },
     onError: (err) => {
@@ -55,6 +55,8 @@ const Login = ({ setForm }) => {
   const onSubmit = (data) => {
     authMutation.mutate(data);
   };
+
+  // useLoadingToast(authMutation.isPending, "Logging in...");
 
   return (
     <form className="auth-form login-form" onSubmit={handleSubmit(onSubmit)}>
@@ -87,7 +89,7 @@ const Login = ({ setForm }) => {
             </button>
           </div>
           <SubmitBtn
-            isSubmitting={isSubmitting}
+            isLoading={authMutation.isPending}
             errors={errors}
             pendingText="Logging in"
           >

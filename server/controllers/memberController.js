@@ -23,7 +23,6 @@ const getAllMembers = async (req, res) => {
       "-password"
     );
     members.adminLength = await Member.countDocuments({ role: "admin" });
-    console.log("fetched all members -", new Date().toUTCString());
     res.status(200).send(members);
   } catch (err) {
     console.log(
@@ -44,8 +43,6 @@ const verifyUser = async (req, res) => {
     if (!user) return res.status(404).send({ message: "User not found" });
 
     user._id = user._id.toString();
-
-    console.log("User fetched -", new Date().toUTCString());
     res.send({
       user,
     });
@@ -73,7 +70,6 @@ const getMemberById = async (req, res) => {
     }
 
     member._id = member._id.toString();
-    console.log("Member fetched -", new Date().toUTCString());
     res.send(member);
   } catch (err) {
     console.log(
@@ -103,7 +99,6 @@ const editMember = async (req, res) => {
 
     // Edit User Timeline
     if (updates && updates.timeline) {
-      console.log(updates.timeline);
       const timeline = JSON.parse(updates.timeline);
       const member = await Member.findOneAndUpdate(
         { _id: id },
@@ -111,14 +106,11 @@ const editMember = async (req, res) => {
         { new: true }
       ).select("-password");
       if (!member) return res.status(404).send({ message: "Member not found" });
-      console.log("Timeline edited -", new Date().toUTCString());
       return res.status(200).send({ message: "Edit successful", member });
     }
 
     // Edit User Credentials
-
     if (req?.file) {
-      console.log(previousUser.imgId);
       deleteImage(res, previousUser.imgId);
       const { url, imgId } = await uploadImage(res, req.file);
       updates.image = url;
@@ -135,7 +127,6 @@ const editMember = async (req, res) => {
       new: true,
     }).select("-password");
 
-    console.log("user edited -", new Date().toUTCString());
     if (user) return res.status(200).send({ message: "Edit successful", user });
     else return res.status(404).send({ message: "Edit failed" });
   } catch (err) {

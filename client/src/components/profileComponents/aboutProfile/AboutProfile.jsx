@@ -73,6 +73,10 @@ const UtilityBtns = () => {
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     setCopySuccess(true);
+
+    setTimeout(() => {
+      setCopySuccess(false);
+    }, 2000);
   };
 
   const logout = () => {

@@ -11,6 +11,8 @@ import { editUser } from "@/services/PutService";
 import { registerUser } from "@/services/PostService";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/contexts/UserContext";
+import { useEffect } from "react";
+import useLoadingToast from "@/hooks/useLoadingToast";
 
 const UserForm = (props) => {
   const queryClient = useQueryClient();
@@ -86,6 +88,11 @@ const UserForm = (props) => {
       ...data,
     });
   };
+
+  useLoadingToast(
+    userMutation.isPending,
+    props?.setForm ? "Registering..." : "Editing..."
+  );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="user-form">
@@ -183,9 +190,9 @@ const UserForm = (props) => {
             </div>
           ) : null}
           <SubmitBtn
-            isSubmitting={isSubmitting}
+            isLoading={userMutation.isPending}
             errors={errors}
-            pendingText={props?.setForm ? "Registering..." : "Updating..."}
+            pendingText={props?.setForm ? "Registering" : "Updating"}
           >
             {props?.setForm ? "Register as a Member" : "Update"}
           </SubmitBtn>

@@ -68,7 +68,11 @@ const addActivity = (data) => {
     }
     formData.append(key, data[key]);
   }
-  return api.post("/activity", formData);
+  return api.post("/activity", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 export { registerUser, loginUser, sendMessage, addActivity };

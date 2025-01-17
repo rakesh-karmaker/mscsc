@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
 
-const SubmitBtn = ({ isSubmitting, pendingText, children, ...rest }) => {
+const SubmitBtn = ({ isLoading, pendingText, children, ...rest }) => {
   const width = rest?.width ?? "fit-content";
   const [innerText, setInnerText] = useState(children);
 
   useEffect(() => {
-    if (isSubmitting) {
+    if (isLoading) {
       setInnerText(`${pendingText}...`);
     } else {
       setInnerText(children);
     }
-  }, [isSubmitting]);
+  }, [isLoading]);
 
   return (
     <div>
       <button
-        disabled={isSubmitting}
+        disabled={isLoading}
         type="submit"
         className="primary-button"
         style={{ width: width }}

@@ -37,12 +37,14 @@ const ProfilePage = () => {
         return getUserById(id);
       }
     },
+    refetchOnWindowFocus: false,
+    retry: 0,
   });
 
-  useErrorNavigator(isError, error);
+  // useErrorNavigator(isError, error);
 
   if (error) {
-    return null;
+    throw Error("Failed to fetch profile");
   }
 
   if (isLoading) {
