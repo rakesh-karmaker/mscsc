@@ -27,7 +27,6 @@ const ProfilePage = () => {
     data: profileData,
     isLoading,
     error,
-    isError,
   } = useQuery({
     queryKey: ["profile", id, user],
     queryFn: () => {
@@ -40,8 +39,6 @@ const ProfilePage = () => {
     refetchOnWindowFocus: false,
     retry: 0,
   });
-
-  // useErrorNavigator(isError, error);
 
   if (error) {
     throw Error("Failed to fetch profile");

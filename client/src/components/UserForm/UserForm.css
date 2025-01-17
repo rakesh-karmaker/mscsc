@@ -5,6 +5,12 @@
   gap: 40px;
 }
 
+.checkbox-submission {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 .submission {
   display: flex;
   justify-content: space-between;

@@ -15,11 +15,11 @@ const AboutProfile = ({ data, isOwner }) => {
   const { email, contactNumber } = data;
   const contact = {
     Email: <a href={`mailto:${email}`}>{email}</a>,
-    Phone: (
-      <a href={`tel:0${contactNumber.toString()}`}>
-        {`+880 ${contactNumber.toString().slice(1)}`}
-      </a>
-    ),
+    // Phone: (
+    //   <a href={`tel:0${contactNumber.toString()}`}>
+    //     {`+880 ${contactNumber.toString().slice(1)}`}
+    //   </a>
+    // ),
   };
 
   return (
