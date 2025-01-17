@@ -140,7 +140,7 @@ const UserForm = (props) => {
         errors={errors.reason}
         id="reason"
       >
-        Why do you want to Join the club?
+        Your Description
       </InputText>
 
       <div className="combined-inputs">
@@ -185,38 +185,6 @@ const UserForm = (props) => {
         {errors.root && <p className="error-message">{errors.root.message}</p>}
       </div>
     </form>
-  );
-};
-
-const ShowBtns = ({ register }) => {
-  const checkBox = [
-    {
-      id: "emailShow",
-      text: "Show Email",
-    },
-    {
-      id: "phoneShow",
-      text: "Show Phone Number",
-    },
-  ];
-  return (
-    <div className="show-btns">
-      {checkBox.map((item) => {
-        return (
-          <div className="checkbox-container" key={item.id}>
-            <input
-              type="checkbox"
-              id={item.id}
-              {...register(item.id)}
-              className="checkbox"
-            />
-            <label htmlFor={item.id} className="checkbox-label">
-              {item.text}
-            </label>
-          </div>
-        );
-      })}
-    </div>
   );
 };
 
