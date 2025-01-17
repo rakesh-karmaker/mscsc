@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./ArticleCard.css";
+import { Link } from "react-router-dom";
 
 const ArticleCard = ({ article }) => {
   const { tag, date, coverImageUrl, title, description, link } = article;
@@ -13,9 +14,9 @@ const ArticleCard = ({ article }) => {
       </div>
       <h3>{title}</h3>
       <p className="secondary-text">{description}</p>
-      <a href={link} target="_blank">
+      <Link to={link}>
         Learn more <FontAwesomeIcon icon="fa-solid fa-arrow-right" />
-      </a>
+      </Link>
     </article>
   );
 };

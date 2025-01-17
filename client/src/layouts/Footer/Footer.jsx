@@ -72,7 +72,7 @@ const FooterLinks = () => {
 
 const FooterLink = ({ link, children, objectKey }) => {
   return objectKey === "Socials" ? (
-    <Link to={link} target="_blank" aria-label={`Go to our ${children} page`}>
+    <Link to={link} aria-label={`Go to our ${children} page`}>
       {children}
     </Link>
   ) : (

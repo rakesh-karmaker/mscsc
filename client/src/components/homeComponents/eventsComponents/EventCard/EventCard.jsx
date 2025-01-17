@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./EventCard.css";
+import { Link } from "react-router-dom";
 
 const EventCard = ({ eventData }) => {
   const { tag, coverImageUrl, title, description, link, date } = eventData;
@@ -19,9 +20,9 @@ const EventCard = ({ eventData }) => {
         </p>
         <h3>{title}</h3>
         <p className="secondary-text">{description}</p>
-        <a href={link} target="_blank" aria-label="Go to the Facebook post">
+        <Link to={link} aria-label="Go to the Facebook post">
           Learn more <FontAwesomeIcon icon="fa-solid fa-arrow-right" />
-        </a>
+        </Link>
       </article>
     </>
   );

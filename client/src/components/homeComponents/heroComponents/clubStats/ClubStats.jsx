@@ -39,7 +39,7 @@ const ClubStats = ({ mobileClass }) => {
           numberObserver.unobserve(entry.target);
         }
       });
-    });
+    }, []);
 
     const numberValues = document.querySelectorAll(".number-value");
     numberValues.forEach((numberValue) => {

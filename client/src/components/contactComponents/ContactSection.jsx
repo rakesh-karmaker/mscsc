@@ -1,6 +1,7 @@
 import ContactForm from "@/components/contactComponents/contactForm/ContactForm";
 import "./Contact.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 const Contact = () => {
   return (
@@ -51,9 +52,9 @@ const ContactInfo = ({ children, methodName, href, content }) => {
       </div>
       <div className="info">
         <p className="method-name">{methodName}</p>
-        <a href={href} target="_blank" title="Call us" className="content">
+        <Link to={href} title="Call us" className="content">
           {content}
-        </a>
+        </Link>
       </div>
     </div>
   );

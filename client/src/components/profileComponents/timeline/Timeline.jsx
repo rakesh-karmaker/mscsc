@@ -1,6 +1,7 @@
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
 import "./Timeline.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 const Timeline = ({ timelineData }) => {
   const tagIcon = (tag) => {
     switch (tag) {
@@ -37,14 +38,13 @@ const Timeline = ({ timelineData }) => {
             <p className="secondary-text timeline-summary">
               {item.description}
             </p>
-            <a
-              href={item.link}
+            <Link
+              to={item.link}
               className="primary-button"
-              target="_blank"
               aria-label={`Learn more about ${item.title}`}
             >
               Learn More <FontAwesomeIcon icon="fa-solid fa-arrow-right" />
-            </a>
+            </Link>
           </div>
         );
       })}

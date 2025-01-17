@@ -4,13 +4,12 @@ import { MemberLoginSchema } from "@/utils/MemberSchemaValidation";
 import { loginUser } from "@/services/PostService";
 import InputText from "@/components/UI/InputText/InputText";
 import SubmitBtn from "@/components/UI/SubmitBtn";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import "./Login.css";
 import { useMutation } from "@tanstack/react-query";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
 import { useUser } from "@/contexts/UserContext";
 import { useNavigate } from "react-router-dom";
-import useLoadingToast from "@/hooks/useLoadingToast";
 
 const Login = ({ setForm }) => {
   const navigate = useNavigate();

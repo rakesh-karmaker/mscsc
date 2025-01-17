@@ -1,5 +1,6 @@
 import "@/components/UI/ExecutiveCard/ExecutiveCard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 const ExecutiveCard = ({ executiveData }) => {
   const { name, position, image, socials, panel } = executiveData;
   return (
@@ -30,16 +31,15 @@ const ExecutiveSocials = ({ socials, name }) => {
       <>
         {socialsList.map((social) => {
           return (
-            <a
+            <Link
               key={social}
-              href={socials[social]}
+              to={socials[social]}
               className="row-center"
-              target="_blank"
               title={social}
               aria-label={`Go to ${name}'s ${social} page`}
             >
               <FontAwesomeIcon icon={`fa-brands fa-${social}`} />
-            </a>
+            </Link>
           );
         })}
       </>
