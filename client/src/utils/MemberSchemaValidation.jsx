@@ -42,10 +42,10 @@ const MemberRegSchema = z.object({
       message: "Please upload a valid image file (JPG, JPEG, PNG or WebP).",
     }),
   reason: z
-    .string("Give a description of why you want to join the club")
+    .string("Give a description of yourself")
     .nullable()
     .refine((value) => value !== null && value.trim() !== "", {
-      message: "Reason is required",
+      message: "Description is required",
     }),
   socialLink: z
     .string("Enter your facebook link")

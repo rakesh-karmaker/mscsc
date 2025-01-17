@@ -148,7 +148,6 @@ const editMember = async (req, res) => {
 const deleteMember = async (req, res) => {
   console.log("delete member");
   try {
-    console.log(req.body);
     const id = req.body?._id;
     if (!id) return res.status(400).send({ message: "Invalid request" });
 
