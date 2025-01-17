@@ -89,11 +89,6 @@ const UserForm = (props) => {
     });
   };
 
-  useLoadingToast(
-    userMutation.isPending,
-    props?.setForm ? "Registering..." : "Editing..."
-  );
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="user-form">
       <div className="combined-inputs">
