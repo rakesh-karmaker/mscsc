@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const Member = require("../models/Member");
 const { registerSchema } = require("../utils/validation");
 const { uploadImage } = require("../utils/imagekit");
+const { getDate } = require("../utils/getDate");
 
 // Register Member
 exports.register = async (req, res) => {
@@ -46,7 +47,7 @@ exports.register = async (req, res) => {
 
     console.log(
       `${newMember.name} registered successfully -`,
-      new Date().toString(),
+      getDate(),
       "\n---\n"
     );
     res.status(201).send({
@@ -56,12 +57,7 @@ exports.register = async (req, res) => {
       member: newMember,
     });
   } catch (err) {
-    console.log(
-      "Error registering member - ",
-      new Date().toString(),
-      "\n---\n",
-      err
-    );
+    console.log("Error registering member - ", getDate(), "\n---\n", err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: err.message });
@@ -92,7 +88,7 @@ exports.login = async (req, res) => {
 
     console.log(
       `${member.name} logged in successfully -`,
-      new Date().toString(),
+      getDate(),
       "\n---\n"
     );
     res.status(200).send({
@@ -102,7 +98,7 @@ exports.login = async (req, res) => {
       member,
     });
   } catch (err) {
-    console.log("Error logging in - ", new Date().toString(), "\n---\n", err);
+    console.log("Error logging in - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };

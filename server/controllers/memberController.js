@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const { paginatedResults } = require("../utils/paginatedResults");
 const { uploadImage, deleteImage } = require("../utils/imagekit");
 const { default: mongoose } = require("mongoose");
+const { getDate } = require("../utils/getDate");
 
 // Get All Members
 const getAllMembers = async (req, res) => {
@@ -25,12 +26,7 @@ const getAllMembers = async (req, res) => {
     members.adminLength = await Member.countDocuments({ role: "admin" });
     res.status(200).send(members);
   } catch (err) {
-    console.log(
-      "Error fetching all members - ",
-      new Date().toString(),
-      "\n---\n",
-      err
-    );
+    console.log("Error fetching all members - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
@@ -47,12 +43,7 @@ const verifyUser = async (req, res) => {
       user,
     });
   } catch (err) {
-    console.log(
-      "Error verifying user - ",
-      new Date().toString(),
-      "\n---\n",
-      err
-    );
+    console.log("Error verifying user - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
@@ -72,12 +63,7 @@ const getMemberById = async (req, res) => {
     member._id = member._id.toString();
     res.send(member);
   } catch (err) {
-    console.log(
-      "Error fetching member - ",
-      new Date().toString(),
-      "\n---\n",
-      err
-    );
+    console.log("Error fetching member - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err?.message });
   }
 };
@@ -130,7 +116,7 @@ const editMember = async (req, res) => {
     if (user) return res.status(200).send({ message: "Edit successful", user });
     else return res.status(404).send({ message: "Edit failed" });
   } catch (err) {
-    console.log("Error editing user - ", new Date().toString(), "\n---\n", err);
+    console.log("Error editing user - ", getDate(), "\n---\n", err);
     if (err.codeName === "DuplicateKey") {
       return res
         .status(409)
@@ -149,20 +135,11 @@ const deleteMember = async (req, res) => {
     const member = await Member.findByIdAndDelete(id);
     if (!member) return res.status(404).send({ message: "Member not found" });
 
-    console.log(
-      "Member deleted successfully -",
-      new Date().toString(),
-      "\n---\n"
-    );
+    console.log("Member deleted successfully -", getDate(), "\n---\n");
     deleteImage(res, member.imgId);
     res.status(200).send({ message: "Member deleted successfully" });
   } catch (err) {
-    console.log(
-      "Error deleting member - ",
-      new Date().toString(),
-      "\n---\n",
-      err
-    );
+    console.log("Error deleting member - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };

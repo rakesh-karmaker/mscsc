@@ -1,3 +1,5 @@
+const { getDate } = require("./getDate");
+
 exports.paginatedResults = async (
   req,
   res,
@@ -35,12 +37,7 @@ exports.paginatedResults = async (
     results.selectedLength = selectedData.length;
     return results;
   } catch (err) {
-    console.log(
-      "Error paginating results - ",
-      new Date().toString(),
-      "\n---\n",
-      err
-    );
+    console.log("Error paginating results - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: err.message });
   }
 };

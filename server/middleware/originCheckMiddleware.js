@@ -1,12 +1,14 @@
+const { getDate } = require("../utils/getDate");
+
 const allowedOrigins = [process.env.APP_URL];
 
 const originCheckMiddleware = async (req, res, next) => {
   const origin = req.headers.origin;
   const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-
+  const date = getDate();
   if (!origin) {
     console.log(
-      `----------------------\n${new Date().toString()} - Unauthorized request from  -`,
+      `----------------------\n${date} - Unauthorized request from  -`,
       req.headers,
       `\n----------------------`
     );
@@ -20,7 +22,7 @@ const originCheckMiddleware = async (req, res, next) => {
     next();
   } else {
     console.log(
-      `----------------------\n${new Date().toString()} - Unauthorized request from  -`,
+      `----------------------\n${date} - Unauthorized request from  -`,
       req.headers,
       `\n----------------------`
     );

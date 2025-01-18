@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const Member = require("../models/Member");
+const { getDate } = require("../utils/getDate");
 
 // Verify if user is admin
 exports.isAuthorized = async (req, res, next) => {
@@ -12,7 +13,7 @@ exports.isAuthorized = async (req, res, next) => {
     req.user = verified;
     next();
   } catch (err) {
-    console.log("isAuthorized error - ", new Date().toString(), "\n---\n", err);
+    console.log("isAuthorized error - ", getDate(), "\n---\n", err);
     res.status(400).send({ message: "Invalid Token" });
   }
 };

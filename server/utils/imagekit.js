@@ -1,5 +1,6 @@
 const ImageKit = require("imagekit");
 const sharp = require("sharp");
+const { getDate } = require("./getDate");
 
 const imagekit = new ImageKit({
   publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
@@ -25,12 +26,7 @@ const uploadImage = async (res, file) => {
 
     return { url, imgId: uploadedImage.fileId };
   } catch (err) {
-    console.log(
-      "Error uploading image - ",
-      new Date().toString(),
-      "\n---\n",
-      err
-    );
+    console.log("Error uploading image - ", getDate(), "\n---\n", err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: err.message });
@@ -41,24 +37,14 @@ const deleteImage = async (res, imageId) => {
   try {
     imagekit.deleteFile(imageId, (err, result) => {
       if (err) {
-        console.log(
-          "Error deleting image - ",
-          new Date().toString(),
-          "\n---\n",
-          err
-        );
+        console.log("Error deleting image - ", getDate(), "\n---\n", err);
         return res.status(500).send({ error: "Failed to delete image." });
       }
 
       console.log("Image deleted successfully -", new Date().toString());
     });
   } catch (err) {
-    console.log(
-      "Error deleting image - ",
-      new Date().toString(),
-      "\n---\n",
-      err
-    );
+    console.log("Error deleting image - ", getDate(), "\n---\n", err);
     return res.status(500).send({ error: "Failed to delete image." });
   }
 };

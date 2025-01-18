@@ -1,4 +1,5 @@
 const Activity = require("../models/Activity");
+const { getDate } = require("../utils/getDate");
 const { uploadImage, deleteImage } = require("../utils/imagekit");
 const { paginatedResults } = require("../utils/paginatedResults");
 const { activitySchema } = require("../utils/validation");
@@ -26,12 +27,7 @@ exports.getAllActivities = async (req, res) => {
       res.status(200).send(activities);
     }
   } catch (err) {
-    console.log(
-      "Error fetching all activities - ",
-      new Date().toString(),
-      "\n---\n",
-      err
-    );
+    console.log("Error fetching all activities - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
@@ -56,19 +52,10 @@ exports.addActivity = async (req, res) => {
     body.coverImageId = imgId;
 
     const activity = await Activity.create(body);
-    console.log(
-      "Activity added successfully -",
-      new Date().toString(),
-      "\n---\n"
-    );
+    console.log("Activity added successfully -", getDate(), "\n---\n");
     res.status(200).send({ message: "Activity added" });
   } catch (err) {
-    console.log(
-      "Error adding activity - ",
-      new Date().toString(),
-      "\n---\n",
-      err
-    );
+    console.log("Error adding activity - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
@@ -101,15 +88,10 @@ exports.editActivity = async (req, res) => {
     if (!activity) {
       return res.status(404).send({ message: "Activity not found" });
     }
-    console.log("Activity updated successfully -", new Date().toString());
+    console.log("Activity updated successfully -", getDate());
     res.status(200).send({ message: "Activity updated" });
   } catch (err) {
-    console.log(
-      "Error editing activity - ",
-      new Date().toString(),
-      "\n---\n",
-      err
-    );
+    console.log("Error editing activity - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
@@ -123,19 +105,10 @@ exports.deleteActivity = async (req, res) => {
       return res.status(404).send({ message: "Activity not found" });
     }
     deleteImage(res, activity.coverImageId);
-    console.log(
-      "Activity deleted successfully -",
-      new Date().toString(),
-      "\n---\n"
-    );
+    console.log("Activity deleted successfully -", getDate(), "\n---\n");
     res.status(200).send({ message: "Activity deleted" });
   } catch (err) {
-    console.log(
-      "Error deleting activity - ",
-      new Date().toString(),
-      "\n---\n",
-      err
-    );
+    console.log("Error deleting activity - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
