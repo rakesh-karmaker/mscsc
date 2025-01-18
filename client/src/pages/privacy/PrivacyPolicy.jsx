@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import "./privacyPolicy.css";
+import "./PrivacyPolicy.css";
 import {
   KeyPoints,
   TermsPolicyContent,
