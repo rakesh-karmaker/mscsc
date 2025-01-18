@@ -3,6 +3,14 @@ const NodeCache = require("node-cache");
 
 const allowedOrigins = [process.env.APP_URL];
 const ipGeolocationCache = new NodeCache({ stdTTL: 86400 }); // Cache for 24 hours
+const bogonRanges = [
+  "10.0.0.0/8",
+  "172.16.0.0/12",
+  "192.168.0.0/16",
+  "127.0.0.0/8",
+  "::1",
+  "::ffff:0:0/96",
+];
 
 const originCheckMiddleware = async (req, res, next) => {
   const origin = req.headers.origin;
@@ -25,10 +33,10 @@ const originCheckMiddleware = async (req, res, next) => {
 };
 
 const consoleIpData = async (ip) => {
-  // Skip tracing for local addresses
-  if (ip === "::1" || ip === "127.0.0.1" || ip === "::ffff:127.0.0.1") {
+  // Skip tracing for bogon IP addresses
+  if (ipRangeCheck(ip, bogonRanges)) {
     console.log(
-      `${new Date().toString()} - Unauthorized request from local IP: ${ip}`
+      `${new Date().toString()} - Unauthorized request from bogon IP: ${ip}`
     );
     return;
   }
