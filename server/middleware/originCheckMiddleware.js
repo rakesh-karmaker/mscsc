@@ -6,9 +6,9 @@ const originCheckMiddleware = async (req, res, next) => {
 
   if (!origin) {
     console.log(
-      `----------------------\n${new Date().toString()} - Unauthorized request from IP: ${ip} - ${
-        req.headers
-      }\n----------------------`
+      `----------------------\n${new Date().toString()} - Unauthorized request from  -`,
+      req.headers,
+      `\n----------------------`
     );
     return res
       .status(400)
@@ -20,9 +20,9 @@ const originCheckMiddleware = async (req, res, next) => {
     next();
   } else {
     console.log(
-      `----------------------\n${new Date().toString()} - Unauthorized request from IP: ${ip} - ${
-        req.headers
-      }\n----------------------`
+      `----------------------\n${new Date().toString()} - Unauthorized request from  -`,
+      req.headers,
+      `\n----------------------`
     );
     return res.status(403).send({ message: "Forbidden: Unauthorized Origin" });
   }
