@@ -81,7 +81,7 @@ const FooterLink = ({ link, children, objectKey }) => {
 };
 
 const footerLinks = {
-  Links: [
+  Pages: [
     {
       title: "Home",
       link: "/",
@@ -121,7 +121,15 @@ const footerLinks = {
       link: "/activities?tag=Achievement",
     },
   ],
-  Socials: [
+  Links: [
+    {
+      title: "Privacy Policy",
+      link: "/privacy-policy",
+    },
+    {
+      title: "Terms of Service",
+      link: "/terms-of-service",
+    },
     {
       title: "Facebook",
       link: "https://www.facebook.com/MSCSC2014",

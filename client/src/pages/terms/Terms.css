@@ -1,0 +1,35 @@
+html:has(.page-terms) {
+  scroll-behavior: smooth;
+}
+
+.page-terms {
+  width: 100%;
+  max-width: var(--max-elements-width);
+  min-height: 100vh;
+  height: 100%;
+  padding-top: calc(var(--nav-height) + 3rem);
+  padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.terms-container {
+  width: 100%;
+  display: flex;
+  gap: 40px;
+  position: relative;
+}
+
+@media screen and (max-width: 830px) {
+  .terms-container {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .page-terms {
+    padding-top: calc(var(--nav-height) + 1rem);
+    gap: 1.5rem;
+  }
+}

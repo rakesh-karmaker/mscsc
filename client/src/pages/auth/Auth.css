@@ -13,6 +13,15 @@
   position: relative;
 }
 
+#auth a {
+  text-decoration: none;
+  color: var(--highlighted-color);
+}
+
+#auth a:hover {
+  text-decoration: underline;
+}
+
 .reg-img {
   width: 100%;
   max-width: 620px;

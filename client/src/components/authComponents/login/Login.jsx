@@ -9,9 +9,9 @@ import "./Login.css";
 import { useMutation } from "@tanstack/react-query";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
 import { useUser } from "@/contexts/UserContext";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
-const Login = ({ setForm }) => {
+const Login = () => {
   const navigate = useNavigate();
   const { setUser } = useUser();
   const {
@@ -20,7 +20,7 @@ const Login = ({ setForm }) => {
     setError,
     setValue,
     trigger,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(MemberLoginSchema),
   });
@@ -83,9 +83,7 @@ const Login = ({ setForm }) => {
         <div className="submission">
           <div className="state-redirect">
             <p>Don't have an account?</p>
-            <button onClick={() => setForm("Register")} type="button">
-              Register Now
-            </button>
+            <NavLink to="/register">Register</NavLink>
           </div>
           <SubmitBtn
             isLoading={authMutation.isPending}

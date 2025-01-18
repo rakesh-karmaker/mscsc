@@ -15,6 +15,20 @@
   gap: 15px;
 }
 
+.consent {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.consent > p {
+  font-size: 1.1rem;
+}
+
+.checkbox-submission .checkbox-container {
+  gap: 8px;
+}
+
 .submission {
   display: flex;
   justify-content: space-between;

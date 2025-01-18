@@ -22,6 +22,9 @@ api.interceptors.request.use(
 const registerUser = (data) => {
   const formData = new FormData();
   for (const key in data) {
+    if (key === "consent") {
+      continue;
+    }
     if (key === "image") {
       formData.append(key, data[key][0]);
       continue;

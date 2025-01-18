@@ -4,12 +4,12 @@ const allowedOrigins = [process.env.APP_URL];
 
 const originCheckMiddleware = async (req, res, next) => {
   const origin = req.headers.origin;
-  const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  const data = req.headers["true-client-ip"] || req.headers;
   const date = getDate();
   if (!origin) {
     console.log(
       `----------------------\n${date} - Unauthorized request from  -`,
-      req.headers,
+      data,
       `\n----------------------`
     );
     return res
@@ -23,7 +23,7 @@ const originCheckMiddleware = async (req, res, next) => {
   } else {
     console.log(
       `----------------------\n${date} - Unauthorized request from  -`,
-      req.headers,
+      data,
       `\n----------------------`
     );
     return res.status(403).send({ message: "Forbidden: Unauthorized Origin" });

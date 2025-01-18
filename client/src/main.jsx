@@ -38,6 +38,8 @@ import { ActivitiesProvider } from "@/contexts/ActivitiesContext";
 //layouts
 import UserLayout from "@/layouts/UserLayout";
 import AdminLayout from "@/layouts/AdminLayout/AdminLayout";
+import PrivacyPolicy from "./pages/privacyPolicy/PrivacyPolicy";
+import TermsOfService from "./pages/terms/Terms";
 
 const queryClient = new QueryClient();
 
@@ -74,6 +76,10 @@ const router = createBrowserRouter([
           { path: "/login", element: <Auth method="Login" /> },
 
           { path: "/members", element: <MemberPage /> },
+
+          { path: "/privacy-policy", element: <PrivacyPolicy /> },
+
+          { path: "/terms-of-service", element: <TermsOfService /> },
 
           {
             path: "/member/:id",

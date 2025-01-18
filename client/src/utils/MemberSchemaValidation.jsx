@@ -59,6 +59,9 @@ const MemberRegSchema = z.object({
     .refine((value) => value !== null && value.trim() !== "", {
       message: "Reference is required",
     }),
+  consent: z.boolean().refine((value) => value === true, {
+    message: "Consent is required",
+  }),
 });
 
 const MemberLoginSchema = z.object({

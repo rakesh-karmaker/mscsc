@@ -19,26 +19,22 @@ const Auth = ({ method }) => {
   }, [navigate, user]);
 
   const registerFormContainer = useRef(null);
-  const [form, setForm] = useState(method);
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [form]);
 
   return (
     <>
       <main id="auth">
-        {window.innerWidth >= 1200 && form === "Register" ? (
+        {window.innerWidth >= 1200 && method === "Register" ? (
           <RegisterImage registerFormContainer={registerFormContainer} />
         ) : null}
         <div
           ref={registerFormContainer}
-          className={`auth-container ${form.toLocaleLowerCase()}-container`}
+          className={`auth-container ${method.toLocaleLowerCase()}-container`}
         >
-          <FormHeading>{form}</FormHeading>
-          {form === "Register" ? (
-            <UserForm setForm={setForm} schema={MemberRegSchema} />
+          <FormHeading>{method}</FormHeading>
+          {method === "Register" ? (
+            <UserForm isRegister={true} schema={MemberRegSchema} />
           ) : (
-            <Login setForm={setForm} />
+            <Login />
           )}
         </div>
       </main>

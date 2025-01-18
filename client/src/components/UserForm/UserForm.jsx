@@ -9,10 +9,8 @@ import "./UserForm.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editUser } from "@/services/PutService";
 import { registerUser } from "@/services/PostService";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useUser } from "@/contexts/UserContext";
-import { useEffect } from "react";
-import useLoadingToast from "@/hooks/useLoadingToast";
 import CheckBox from "../UI/Checkbox/Checkbox";
 
 const UserForm = (props) => {
@@ -84,7 +82,7 @@ const UserForm = (props) => {
 
   const onSubmit = async (data) => {
     userMutation.mutate({
-      method: props?.setForm ? "register" : "edit",
+      method: props?.isRegister ? "register" : "edit",
       setError,
       ...data,
     });
@@ -120,17 +118,17 @@ const UserForm = (props) => {
         errors={errors.password}
         type="password"
         id="password"
-        required={props?.setForm ?? false}
+        required={props?.isRegister ?? false}
       >
-        {props?.setForm ? "Password" : "New Password"}
+        {props?.isRegister ? "Password" : "New Password"}
       </InputText>
 
-      {props?.setForm && <YearRadio register={register} errors={errors} />}
+      {props?.isRegister && <YearRadio register={register} errors={errors} />}
 
       <BranchRadio register={register} errors={errors} />
 
       <FileInput register={register("image")} errors={errors.image}>
-        {props?.setForm ? "Give us your formal photo:" : "Edit your photo:"}
+        {props?.isRegister ? "Give us your formal photo:" : "Edit your photo:"}
       </FileInput>
 
       <InputText
@@ -152,7 +150,7 @@ const UserForm = (props) => {
           {...props}
         />
 
-        {props?.setForm && (
+        {props?.isRegister && (
           <InputText
             setValue={setValue}
             trigger={trigger}
@@ -165,27 +163,20 @@ const UserForm = (props) => {
         )}
       </div>
       <div className="checkbox-submission">
-        {/* <CheckBox
-          register={register("consent", { required: true })}
-          id="consent"
-        >
-          I agree to share my profile details with members.
-        </CheckBox> */}
+        {props?.isRegister && <Consent register={register} errors={errors} />}
         <div className="submission">
-          {props?.setForm ? (
+          {props?.isRegister ? (
             <div className="state-redirect">
               <p>Already have an account?</p>
-              <button onClick={() => props.setForm("Login")} type="button">
-                Login Now
-              </button>
+              <NavLink to="/login">Login Now</NavLink>
             </div>
           ) : null}
           <SubmitBtn
             isLoading={userMutation.isPending}
             errors={errors}
-            pendingText={props?.setForm ? "Registering" : "Updating"}
+            pendingText={props?.isRegister ? "Registering" : "Updating"}
           >
-            {props?.setForm ? "Register as a Member" : "Update"}
+            {props?.isRegister ? "Register as a Member" : "Update"}
           </SubmitBtn>
         </div>
         {errors.root && <p className="error-message">{errors.root.message}</p>}
@@ -194,8 +185,24 @@ const UserForm = (props) => {
   );
 };
 
+const Consent = ({ register, errors }) => {
+  return (
+    <div className="consent">
+      <CheckBox register={register("consent", { required: true })} id="consent">
+        I agree to the{" "}
+        <NavLink to="/terms-of-service">Terms of Service</NavLink> and{" "}
+        <NavLink to="/privacy-policy">Privacy Policy</NavLink>.
+      </CheckBox>
+
+      {errors.consent && (
+        <p className="error-message">{errors.consent.message}</p>
+      )}
+    </div>
+  );
+};
+
 const LinkBatch = ({ register, trigger, setValue, errors, ...rest }) => {
-  if (rest?.setForm) {
+  if (rest?.isRegister) {
     return (
       <InputText
         setValue={setValue}

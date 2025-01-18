@@ -28,6 +28,16 @@
     <lastmod>2025-01-18</lastmod>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://mscsc.netlify.app/privacy</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mscsc.netlify.app/terms-of-service</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.8</priority>
+  </url>
 
   <!-- Auth pages -->
   <url>
