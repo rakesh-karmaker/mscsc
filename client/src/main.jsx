@@ -15,6 +15,8 @@ import ContactPage from "@/pages/contact/Contact.jsx";
 import Executives from "@/pages/executives/Executives.jsx";
 import Profile from "@/pages/profile/Profile.jsx";
 import Auth from "@/pages/auth/Auth";
+import PrivacyPolicy from "@/pages/privacyPolicy/PrivacyPolicy";
+import TermsOfService from "@/pages/terms/Terms";
 
 //admin pages
 import Admin from "@/pages/Admin";
@@ -38,8 +40,6 @@ import { ActivitiesProvider } from "@/contexts/ActivitiesContext";
 //layouts
 import UserLayout from "@/layouts/UserLayout";
 import AdminLayout from "@/layouts/AdminLayout/AdminLayout";
-import PrivacyPolicy from "./pages/privacyPolicy/PrivacyPolicy";
-import TermsOfService from "./pages/terms/Terms";
 
 const queryClient = new QueryClient();
 
