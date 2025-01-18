@@ -16,7 +16,7 @@ import Executives from "@/pages/executives/Executives.jsx";
 import Profile from "@/pages/profile/Profile.jsx";
 import Auth from "@/pages/auth/Auth";
 import TermsOfService from "@/pages/terms/Terms";
-import PrivacyPolicy from "@/pages/privacyPolicy/PrivacyPolicy";
+import PrivacyPolicy from "@/pages/privacy/PrivacyPolicy";
 
 //admin pages
 import Admin from "@/pages/Admin";
