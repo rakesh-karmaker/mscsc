@@ -46,7 +46,7 @@ exports.register = async (req, res) => {
 
     console.log(
       `${newMember.name} registered successfully -`,
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n"
     );
     res.status(201).send({
@@ -58,7 +58,7 @@ exports.register = async (req, res) => {
   } catch (err) {
     console.log(
       "Error registering member - ",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n",
       err
     );
@@ -92,7 +92,7 @@ exports.login = async (req, res) => {
 
     console.log(
       `${member.name} logged in successfully -`,
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n"
     );
     res.status(200).send({
@@ -102,12 +102,7 @@ exports.login = async (req, res) => {
       member,
     });
   } catch (err) {
-    console.log(
-      "Error logging in - ",
-      new Date().toUTCString(),
-      "\n---\n",
-      err
-    );
+    console.log("Error logging in - ", new Date().toString(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };

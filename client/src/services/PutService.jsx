@@ -40,11 +40,7 @@ const editUser = (data) => {
 };
 
 const editMessage = (data) => {
-  const formData = new FormData();
-  for (const key in data) {
-    formData.append(key, data[key]);
-  }
-  return api.put("/message", formData, {
+  return api.put("/message", data, {
     headers: {
       "Content-Type": "application/json",
     },

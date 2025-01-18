@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Home page -->
+  <url>
+    <loc>https://mscsc.netlify.app/</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Static pages -->
+  <url>
+    <loc>https://mscsc.netlify.app/about</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mscsc.netlify.app/activities</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mscsc.netlify.app/contact</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mscsc.netlify.app/executives</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Auth pages -->
+  <url>
+    <loc>https://mscsc.netlify.app/register</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mscsc.netlify.app/login</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Members page -->
+  <url>
+    <loc>https://mscsc.netlify.app/members</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Admin pages (will not be indexed due to robots.txt) -->
+  <!-- These will be disallowed in robots.txt but listed here for completeness -->
+  <url>
+    <loc>https://mscsc.netlify.app/admin</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mscsc.netlify.app/admin/dashboard</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mscsc.netlify.app/admin/members</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mscsc.netlify.app/admin/activities</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mscsc.netlify.app/admin/messages</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Error pages -->
+  <url>
+    <loc>https://mscsc.netlify.app/400</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://mscsc.netlify.app/401</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://mscsc.netlify.app/500</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Catch-all Not Found page -->
+  <url>
+    <loc>https://mscsc.netlify.app/*</loc>
+    <lastmod>2025-01-18</lastmod>
+    <priority>0.3</priority>
+  </url>
+</urlset>

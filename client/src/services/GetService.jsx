@@ -23,8 +23,8 @@ const verifyToken = async () => {
   try {
     const response = await api.get("/member");
     return response;
-  } catch (error) {
-    console.error("Error verifying token:", error);
+  } catch (err) {
+    console.log("Error verifying token:");
     return null;
   }
 };

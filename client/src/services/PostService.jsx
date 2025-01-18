@@ -36,10 +36,6 @@ const registerUser = (data) => {
 };
 
 const loginUser = (data) => {
-  const formData = new FormData();
-  for (const key in data) {
-    formData.append(key, data[key]);
-  }
   return api.post("/auth/login", data, {
     headers: {
       "Content-Type": "application/json",
@@ -48,11 +44,7 @@ const loginUser = (data) => {
 };
 
 const sendMessage = (data) => {
-  const formData = new FormData();
-  for (const key in data) {
-    formData.append(key, data[key]);
-  }
-  return api.post("/message", formData, {
+  return api.post("/message", data, {
     headers: {
       "Content-Type": "application/json",
     },

@@ -27,7 +27,7 @@ const uploadImage = async (res, file) => {
   } catch (err) {
     console.log(
       "Error uploading image - ",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n",
       err
     );
@@ -43,19 +43,19 @@ const deleteImage = async (res, imageId) => {
       if (err) {
         console.log(
           "Error deleting image - ",
-          new Date().toUTCString(),
+          new Date().toString(),
           "\n---\n",
           err
         );
         return res.status(500).send({ error: "Failed to delete image." });
       }
 
-      console.log("Image deleted successfully.");
+      console.log("Image deleted successfully -", new Date().toString());
     });
   } catch (err) {
     console.log(
       "Error deleting image - ",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n",
       err
     );

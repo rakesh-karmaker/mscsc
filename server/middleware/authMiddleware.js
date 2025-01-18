@@ -12,12 +12,7 @@ exports.isAuthorized = async (req, res, next) => {
     req.user = verified;
     next();
   } catch (err) {
-    console.log(
-      "isAuthorized error - ",
-      new Date().toUTCString(),
-      "\n---\n",
-      err
-    );
+    console.log("isAuthorized error - ", new Date().toString(), "\n---\n", err);
     res.status(400).send({ message: "Invalid Token" });
   }
 };

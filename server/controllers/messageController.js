@@ -14,7 +14,7 @@ const getAllMessages = async (req, res) => {
   } catch (err) {
     console.log(
       "Error fetching all messages - ",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n",
       err
     );
@@ -36,7 +36,7 @@ const createMessage = async (req, res) => {
   } catch (err) {
     console.log(
       "Error sending message - ",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n",
       err
     );
@@ -59,7 +59,7 @@ const editMessage = async (req, res) => {
   } catch (err) {
     console.log(
       "Error updating message - ",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n",
       err
     );
@@ -69,7 +69,6 @@ const editMessage = async (req, res) => {
 
 const deleteMessage = async (req, res) => {
   try {
-    console.log(req.body._id);
     const id = req.body._id;
     const message = await Message.findByIdAndDelete(id);
     if (!message) {
@@ -77,14 +76,14 @@ const deleteMessage = async (req, res) => {
     }
     console.log(
       "Message deleted successfully -",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n"
     );
     res.status(200).send({ message: "Message deleted" });
   } catch (err) {
     console.log(
       "Error deleting message - ",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n",
       err
     );

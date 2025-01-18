@@ -28,7 +28,7 @@ exports.getAllActivities = async (req, res) => {
   } catch (err) {
     console.log(
       "Error fetching all activities - ",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n",
       err
     );
@@ -40,7 +40,6 @@ exports.getAllActivities = async (req, res) => {
 exports.addActivity = async (req, res) => {
   try {
     const { file, body } = req;
-    console.log(req.file);
     if (!file || !body) {
       return res.status(400).send({ message: "Invalid request" });
     }
@@ -59,14 +58,14 @@ exports.addActivity = async (req, res) => {
     const activity = await Activity.create(body);
     console.log(
       "Activity added successfully -",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n"
     );
     res.status(200).send({ message: "Activity added" });
   } catch (err) {
     console.log(
       "Error adding activity - ",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n",
       err
     );
@@ -100,15 +99,14 @@ exports.editActivity = async (req, res) => {
       new: true,
     });
     if (!activity) {
-      console.log("Activity not found");
       return res.status(404).send({ message: "Activity not found" });
     }
-    console.log("Activity updated successfully -", new Date().toUTCString());
+    console.log("Activity updated successfully -", new Date().toString());
     res.status(200).send({ message: "Activity updated" });
   } catch (err) {
     console.log(
       "Error editing activity - ",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n",
       err
     );
@@ -119,7 +117,6 @@ exports.editActivity = async (req, res) => {
 // Delete Activity
 exports.deleteActivity = async (req, res) => {
   try {
-    console.log(req.body);
     const id = req.body._id;
     const activity = await Activity.findByIdAndDelete(id);
     if (!activity) {
@@ -128,14 +125,14 @@ exports.deleteActivity = async (req, res) => {
     deleteImage(res, activity.coverImageId);
     console.log(
       "Activity deleted successfully -",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n"
     );
     res.status(200).send({ message: "Activity deleted" });
   } catch (err) {
     console.log(
       "Error deleting activity - ",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n",
       err
     );

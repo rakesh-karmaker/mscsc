@@ -37,7 +37,7 @@ exports.paginatedResults = async (
   } catch (err) {
     console.log(
       "Error paginating results - ",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n",
       err
     );

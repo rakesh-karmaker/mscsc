@@ -27,7 +27,7 @@ const getAllMembers = async (req, res) => {
   } catch (err) {
     console.log(
       "Error fetching all members - ",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n",
       err
     );
@@ -49,7 +49,7 @@ const verifyUser = async (req, res) => {
   } catch (err) {
     console.log(
       "Error verifying user - ",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n",
       err
     );
@@ -74,7 +74,7 @@ const getMemberById = async (req, res) => {
   } catch (err) {
     console.log(
       "Error fetching member - ",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n",
       err
     );
@@ -91,8 +91,8 @@ const editMember = async (req, res) => {
       return res.status(404).send({ message: "User not found" });
 
     if (previousUser._id.toString() !== req.user._id) {
-      console.log("Mismatched id");
       const adminData = await Member.findById(req.user._id);
+      console.log(`Mismatched id - ${adminData?.name} - ${req.user._id}`);
       if (!adminData || adminData?.role !== "admin")
         return res.status(401).send({ message: "Access Denied" });
     }
@@ -130,12 +130,7 @@ const editMember = async (req, res) => {
     if (user) return res.status(200).send({ message: "Edit successful", user });
     else return res.status(404).send({ message: "Edit failed" });
   } catch (err) {
-    console.log(
-      "Error editing user - ",
-      new Date().toUTCString(),
-      "\n---\n",
-      err
-    );
+    console.log("Error editing user - ", new Date().toString(), "\n---\n", err);
     if (err.codeName === "DuplicateKey") {
       return res
         .status(409)
@@ -156,7 +151,7 @@ const deleteMember = async (req, res) => {
 
     console.log(
       "Member deleted successfully -",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n"
     );
     deleteImage(res, member.imgId);
@@ -164,7 +159,7 @@ const deleteMember = async (req, res) => {
   } catch (err) {
     console.log(
       "Error deleting member - ",
-      new Date().toUTCString(),
+      new Date().toString(),
       "\n---\n",
       err
     );

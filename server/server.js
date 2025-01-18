@@ -6,7 +6,7 @@ const originCheckMiddleware = require("./middleware/originCheckMiddleware");
 
 const app = express();
 
-// Configure CORS to allow only requests from http://localhost:5173
+// Configure CORS to allow only requests from the specified origin
 const corsOptions = {
   origin: process.env.APP_URL,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",

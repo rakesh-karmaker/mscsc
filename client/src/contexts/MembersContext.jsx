@@ -12,7 +12,12 @@ const MemberProvider = ({ children }) => {
 
   useEffect(() => {
     setBranch("");
+    setPage(1);
   }, [search]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
 
   const { data, isLoading, error, isError, refetch } = useQuery({
     queryKey: ["members", page, search, role, branch],

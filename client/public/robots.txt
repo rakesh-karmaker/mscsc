@@ -1,4 +1,8 @@
 user-agent: *
-disallow: /admin/*
-disallow: /*.webp
-allow: /logo.webp
+Disallow: /member/:id
+Disallow: /admin
+Disallow: /login
+Disallow: /register
+Allow: /public/
+
+Sitemap: https://mscsc.netlify.app/sitemap.xml

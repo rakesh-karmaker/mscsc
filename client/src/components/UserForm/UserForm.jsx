@@ -165,6 +165,12 @@ const UserForm = (props) => {
         )}
       </div>
       <div className="checkbox-submission">
+        {/* <CheckBox
+          register={register("consent", { required: true })}
+          id="consent"
+        >
+          I agree to share my profile details with members.
+        </CheckBox> */}
         <div className="submission">
           {props?.setForm ? (
             <div className="state-redirect">
