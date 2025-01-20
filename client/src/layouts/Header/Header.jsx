@@ -46,6 +46,8 @@ const Header = () => {
 
   const { user, isVerifying } = useUser();
 
+  const isToken = localStorage.getItem("token") == "";
+
   return (
     <header>
       <nav>
@@ -76,14 +78,15 @@ const Header = () => {
             );
           })}
         </ul>
-        {!isVerifying &&
-          (user !== null ? (
-            <Avatar />
-          ) : (
-            <PrimaryBtn link="/login" name="Login page" header={true}>
-              Login
-            </PrimaryBtn>
-          ))}
+        {isToken ||
+          (!isVerifying &&
+            (user !== null ? (
+              <Avatar />
+            ) : (
+              <PrimaryBtn link="/login" name="Login page" header={true}>
+                Login
+              </PrimaryBtn>
+            )))}
       </nav>
     </header>
   );

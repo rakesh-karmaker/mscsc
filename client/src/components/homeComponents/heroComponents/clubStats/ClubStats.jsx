@@ -45,7 +45,7 @@ const ClubStats = ({ mobileClass }) => {
     numberValues.forEach((numberValue) => {
       numberObserver.observe(numberValue);
     });
-  });
+  }, []);
   return (
     <div
       className={`club-stats ${mobileClass == undefined ? "" : mobileClass}`}

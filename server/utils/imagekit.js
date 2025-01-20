@@ -41,7 +41,7 @@ const deleteImage = async (res, imageId) => {
         return res.status(500).send({ error: "Failed to delete image." });
       }
 
-      console.log("Image deleted successfully -", new Date().toString());
+      console.log("Image deleted successfully -", getDate(), "\n---\n");
     });
   } catch (err) {
     console.log("Error deleting image - ", getDate(), "\n---\n", err);
