@@ -28,9 +28,9 @@ const messageSchema = Joi.object({
 const activitySchema = Joi.object({
   tag: Joi.string().required(),
   title: Joi.string().required(),
-  description: Joi.string().required(),
+  summary: Joi.string().required(),
   date: Joi.date().required(),
-  link: Joi.string().required(),
+  content: Joi.string().required(),
 });
 
 // Add more schemas as needed

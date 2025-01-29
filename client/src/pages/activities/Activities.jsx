@@ -33,10 +33,10 @@ const Activities = ({ admin, ...rest }) => {
   }, [activities]);
 
   useEffect(() => {
-    if (linkTag) {
+    if (linkTag && search === "") {
       setTag(linkTag);
     }
-  }, []);
+  }, [isLoading, linkTag]);
 
   const handleSetCurrentPageClick = (page) => {
     setPage(page);
@@ -91,7 +91,7 @@ const observeExecutiveMember = new IntersectionObserver(
     });
   },
   {
-    threshold: 0.1,
+    threshold: 0,
   }
 );
 export default Activities;

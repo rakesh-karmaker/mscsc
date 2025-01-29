@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Table.css";
 import Pagination from "@/components/UI/Pagination/Pagination";
 import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
@@ -58,7 +58,7 @@ const TableRow = ({ row, headers, ...rest }) => {
   );
 };
 
-const getTableCell = (row, header, { onViewClick, onDelete, ...rest }) => {
+const getTableCell = (row, header, { onViewClick, onDelete }) => {
   switch (header.key) {
     case "social":
       return (
@@ -84,15 +84,6 @@ const getTableCell = (row, header, { onViewClick, onDelete, ...rest }) => {
             onClick={() => onDelete(row._id)}
           >
             Delete
-          </button>
-        );
-      } else if (header.title === "Change Role") {
-        return (
-          <button
-            className="primary-button role-btn"
-            onClick={() => rest.onRoleClick(row._id, row?.role)}
-          >
-            {row?.role === "admin" ? "Make Member" : "Make Admin"}
           </button>
         );
       } else {

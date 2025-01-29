@@ -7,8 +7,17 @@ const ActivitySchema = new mongoose.Schema(
     coverImageUrl: { type: String, required: true },
     coverImageId: { type: String, required: true },
     title: { type: String, required: true },
-    description: { type: String, required: true },
-    link: { type: String, default: "#" },
+    summary: { type: String, required: true },
+    gallery: {
+      type: [
+        {
+          url: { type: String, required: true },
+          imgId: { type: String, required: true },
+        },
+      ],
+      default: [],
+    },
+    content: { type: String, required: true },
   },
   { timestamps: true }
 );

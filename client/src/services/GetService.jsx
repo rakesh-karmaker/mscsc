@@ -46,6 +46,11 @@ const getAllMembers = (page, limit, search, role, branch) => {
   );
 };
 
+const getActivity = (_id) => {
+  console.log(_id);
+  return api.get(`/activity/${_id}`);
+};
+
 const getAllMessages = (page, limit, search) => {
   return api.get(`/message?page=${page}&limit=${limit}&name=${search}`);
 };
@@ -56,4 +61,5 @@ export {
   getAllMembers,
   getAllMessages,
   getAllActivities,
+  getActivity,
 };

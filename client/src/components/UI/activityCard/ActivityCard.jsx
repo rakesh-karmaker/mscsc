@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./ActivityCard.css";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const ActivityCard = ({ data, selectedTag, admin, ...rest }) => {
-  const { tag, date, coverImageUrl, title, description, link } = data;
+  const { tag, date, coverImageUrl, title, description, link, _id } = data;
 
   return (
     <div className="activity" tag={tag}>
@@ -20,13 +20,13 @@ const ActivityCard = ({ data, selectedTag, admin, ...rest }) => {
         <h2 className="activity-name">{title}</h2>
         <p className="secondary-text activity-summary">{description}</p>
         <div className="activity-actions">
-          <Link
-            to={link}
+          <NavLink
+            to={"/activity/" + _id}
             className="primary-button"
             aria-label={`Learn more about ${title} - ${tag} on ${date} at our Facebook page.`}
           >
             Learn More <FontAwesomeIcon icon="fa-solid fa-arrow-right" />
-          </Link>
+          </NavLink>
 
           {admin && (
             <button

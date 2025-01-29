@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import "./Footer.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -76,7 +76,29 @@ const FooterLink = ({ link, children, objectKey }) => {
       {children}
     </Link>
   ) : (
-    <NavLink to={link}>{children}</NavLink>
+    <FooterNavLink link={link}>{children}</FooterNavLink>
+  );
+};
+
+const FooterNavLink = ({ link, children }) => {
+  const url = useLocation();
+  const searchParams = new URLSearchParams(url.search);
+  const linkTag = searchParams.get("tag");
+
+  return linkTag ? (
+    <NavLink
+      to={link}
+      aria-label={`Go to our ${children} page`}
+      className={(isActive) =>
+        children.slice(0, -1) === linkTag ? "active" : ""
+      }
+    >
+      {children}
+    </NavLink>
+  ) : (
+    <NavLink to={link} aria-label={`Go to our ${children} page`}>
+      {children}
+    </NavLink>
   );
 };
 

@@ -4,7 +4,7 @@ const path = require("path");
 // Configure storage (in memory for processing with Sharp)
 const storage = multer.memoryStorage();
 
-const uploadSingle = multer({
+const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
     const fileTypes = /jpeg|jpg|png/;
@@ -19,6 +19,9 @@ const uploadSingle = multer({
       cb(new Error("Only images are allowed"));
     }
   },
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB
+  },
 });
 
-module.exports = uploadSingle;
+module.exports = upload;

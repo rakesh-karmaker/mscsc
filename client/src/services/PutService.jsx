@@ -57,6 +57,15 @@ const editActivity = (data) => {
       formData.append(key, data[key][0]);
       continue;
     }
+    if (key === "gallery") {
+      if (data[key].length === 0) {
+        continue;
+      }
+      for (let i = 0; i < data[key].length; i++) {
+        formData.append("gallery", data[key][i]);
+      }
+      continue;
+    }
     formData.append(key, data[key]);
   }
   return api.put("/activity", formData);

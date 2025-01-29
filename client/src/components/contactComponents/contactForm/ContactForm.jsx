@@ -40,8 +40,6 @@ const ContactForm = () => {
     contactForm.current.reset();
   };
 
-  useLoadingToast(messageMutation.isLoading, "Sending message...");
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

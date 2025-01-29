@@ -1,6 +1,10 @@
 const Activity = require("../models/Activity");
 const { getDate } = require("../utils/getDate");
-const { uploadImage, deleteImage } = require("../utils/imagekit");
+const {
+  uploadImage,
+  deleteImage,
+  uploadMultipleImages,
+} = require("../utils/imagekit");
 const { paginatedResults } = require("../utils/paginatedResults");
 const { activitySchema } = require("../utils/validation");
 
@@ -32,26 +36,45 @@ exports.getAllActivities = async (req, res) => {
   }
 };
 
+exports.getActivityById = async (req, res) => {
+  console.log(req.params._id);
+  try {
+    const activity = await Activity.findById(req.params._id);
+    if (!activity) {
+      return res.status(404).send({ message: "Activity not found" });
+    }
+    res.status(200).send(activity);
+  } catch (err) {
+    console.log("Error fetching activity - ", getDate(), "\n---\n", err);
+    res.status(500).send({ message: "Server error", error: err.message });
+  }
+};
+
 // Add Activity
 exports.addActivity = async (req, res) => {
   try {
-    const { file, body } = req;
-    if (!file || !body) {
+    const { files, body } = req;
+    console.log(files, body);
+    if (!files || !body) {
       return res.status(400).send({ message: "Invalid request" });
     }
-    const { error: validationResult } = activitySchema.validate(body);
-    if (validationResult) {
+    const { error: validationError } = activitySchema.validate(body);
+    if (validationError) {
       return res.status(400).send({
-        subject: validationResult.details[0].context.key,
-        message: validationResult.details[0].message,
+        subject: validationError.details[0].context.key,
+        message: validationError.details[0].message,
       });
     }
 
-    const { url, imgId } = await uploadImage(res, file);
+    const { url, imgId } = await uploadImage(res, files.activityImage[0], true);
     body.coverImageUrl = url;
     body.coverImageId = imgId;
 
+    if (files?.gallery) {
+      body.gallery = await uploadMultipleImages(res, files.gallery);
+    }
     const activity = await Activity.create(body);
+    console.log(activity);
     console.log("Activity added successfully -", getDate(), "\n---\n");
     res.status(200).send({ message: "Activity added" });
   } catch (err) {
@@ -71,15 +94,30 @@ exports.editActivity = async (req, res) => {
         .send({ message: validationResult.details[0].message });
     }
 
-    if (req?.file) {
+    if (req?.files) {
       const previousActivity = await Activity.findById(_id);
       if (!previousActivity) {
         return res.status(404).send({ message: "Activity not found" });
       }
-      deleteImage(res, previousActivity.coverImageId);
-      const { url, imgId } = await uploadImage(res, req.file);
-      updates.coverImageUrl = url;
-      updates.coverImageId = imgId;
+
+      if (req?.files?.activityImage) {
+        deleteImage(res, previousActivity.coverImageId);
+        const { url, imgId } = await uploadImage(
+          res,
+          req.files.activityImage[0],
+          true
+        );
+        updates.coverImageUrl = url;
+        updates.coverImageId = imgId;
+      }
+
+      if (req?.files?.gallery) {
+        previousActivity.gallery.forEach((image) =>
+          deleteImage(res, image.imgId)
+        );
+        const gallery = await uploadMultipleImages(res, req.files.gallery);
+        updates.gallery = gallery;
+      }
     }
 
     const activity = await Activity.findByIdAndUpdate(_id, updates, {
@@ -105,6 +143,8 @@ exports.deleteActivity = async (req, res) => {
       return res.status(404).send({ message: "Activity not found" });
     }
     deleteImage(res, activity.coverImageId);
+    activity.gallery.forEach((image) => deleteImage(res, image.imgId));
+
     console.log("Activity deleted successfully -", getDate(), "\n---\n");
     res.status(200).send({ message: "Activity deleted" });
   } catch (err) {

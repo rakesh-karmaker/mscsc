@@ -12,21 +12,18 @@ import { editActivity } from "@/services/PutService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 import { deleteActivity } from "@/services/DeleteService";
-import useLoadingToast from "@/hooks/useLoadingToast";
-import { useState } from "react";
+import ImageDropper from "@/components/UI/ImageDropper/ImageDropper";
+import QuillBox from "@/components/UI/QuillBox/QuillBox";
 
 const ActivityForm = (props) => {
   const queryClient = useQueryClient();
-  const [loadingText, setLoadingText] = useState(
-    props?.defaultValues ? "Editing Activity..." : "Adding Activity..."
-  );
   const defaultValues = props?.defaultValues
     ? {
         title: props.defaultValues.title,
-        description: props.defaultValues.description,
+        summary: props.defaultValues.summary,
         date: new Date(props.defaultValues.date).toISOString().split("T")[0],
-        link: props.defaultValues.link,
         tag: props.defaultValues.tag,
+        content: props.defaultValues.content,
       }
     : {};
 
@@ -35,9 +32,10 @@ const ActivityForm = (props) => {
     handleSubmit,
     setValue,
     trigger,
+    control,
     formState: { errors },
   } = useForm({
-    defaultValues: defaultValues,
+    defaultValues,
   });
 
   const tags = ["Event", "Workshop", "Article", "Achievement"];
@@ -56,13 +54,14 @@ const ActivityForm = (props) => {
     },
     onSuccess: (res) => {
       toast.success(res?.data?.message);
-      props.setSelectedActivity(null);
+      queryClient.invalidateQueries("activities");
     },
     onError: (err) => {
       toast.error(err?.response?.data?.message);
     },
     onSettled: () => {
-      queryClient.invalidateQueries("activities");
+      props.setCreateActivity(false);
+      props.setSelectedActivity(null);
     },
   });
 
@@ -81,8 +80,6 @@ const ActivityForm = (props) => {
     });
   };
 
-  useLoadingToast(activityMutation.isPending, loadingText);
-
   return (
     <div>
       <FormHeading style={{ fontSize: "42px", lineHeight: "52px" }}>
@@ -97,7 +94,7 @@ const ActivityForm = (props) => {
             setValue={setValue}
             trigger={trigger}
           >
-            Activity Name
+            Activity Title
           </InputText>
 
           <InputText
@@ -112,6 +109,16 @@ const ActivityForm = (props) => {
           </InputText>
         </div>
 
+        <TextArea register={register("summary")} errors={errors.summary}>
+          Activity Summary
+        </TextArea>
+
+        <FileInput register={register("activityImage")} errors={errors.image}>
+          {props?.defaultValues
+            ? "Change Activity Cover Image"
+            : "Activity Cover Image:"}
+        </FileInput>
+
         <RadioList
           register={register("tag")}
           errors={errors.type}
@@ -120,28 +127,12 @@ const ActivityForm = (props) => {
           Activity Type:
         </RadioList>
 
-        <FileInput register={register("activityImage")} errors={errors.image}>
-          {props?.defaultValues
-            ? "Change Activity Cover Image"
-            : "Activity Cover Image:"}
-        </FileInput>
+        <ImageDropper register={register("gallery")} />
 
-        <TextArea
-          register={register("description")}
-          errors={errors.description}
-        >
-          Description
-        </TextArea>
-
-        <InputText
-          register={register}
-          errors={errors.link}
-          id="link"
-          setValue={setValue}
-          trigger={trigger}
-        >
-          Activity Facebook Post Link
-        </InputText>
+        <QuillBox
+          register={register("content")}
+          content={props?.defaultValues?.content || ""}
+        />
 
         <div className="combined-btns">
           <SubmitBtn

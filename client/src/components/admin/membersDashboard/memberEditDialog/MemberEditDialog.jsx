@@ -57,7 +57,9 @@ const MemberEditDialog = ({ member, deleteMember }) => {
         onClick={(e) => {
           e.stopPropagation();
           setIsOpen(true);
-          memberNewMutation.mutate();
+          if (member?.new) {
+            memberNewMutation.mutate();
+          }
           editDialog.current.showModal();
         }}
       >

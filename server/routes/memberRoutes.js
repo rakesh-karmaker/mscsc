@@ -7,7 +7,7 @@ const {
   deleteMember,
 } = require("../controllers/memberController");
 const { isAuthorized, isAdmin } = require("../middleware/authMiddleware");
-const uploadSingle = require("../middleware/multer");
+const upload = require("../middleware/multer");
 
 const router = express.Router();
 
@@ -15,7 +15,7 @@ const router = express.Router();
 router.get("/all", getAllMembers);
 router.get("/", isAuthorized, verifyUser);
 router.get("/:_id", getMemberById);
-router.put("/", isAuthorized, uploadSingle.single("image"), editMember);
+router.put("/", isAuthorized, upload.single("image"), editMember);
 router.delete("/", isAuthorized, isAdmin, deleteMember);
 
 module.exports = router;

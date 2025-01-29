@@ -1,0 +1,96 @@
+.content-container {
+  max-width: 100%; /* Set your desired max width */
+  font-size: 1.125rem;
+  color: var(--text-primary);
+
+  /* overflow: hidden;
+  word-wrap: break-word; */
+}
+
+.content-container h1,
+.content-container h2,
+.content-container h3,
+.content-container h4,
+.content-container h5,
+.content-container strong {
+  font-weight: 600;
+}
+
+.content-container h1,
+.content-container h2 {
+  padding-top: 1.5rem;
+}
+
+.content-container h1 {
+  padding-bottom: 0.5rem;
+}
+
+.content-container h3 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.content-container strong {
+  font-size: 1.06em;
+}
+
+.content-container {
+  color: var(--text-primary) !important;
+}
+
+.content-container p {
+  letter-spacing: 0.3px;
+  padding-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.markdown-paragraph {
+  display: block;
+  max-width: 100%;
+  white-space: normal; /* Ensures normal text wrapping */
+  word-break: normal; /* Prevents breaking in the middle of words */
+  overflow-wrap: anywhere; /* Wraps long words without breaking normal ones */
+  line-height: 1.6;
+  hyphens: none; /* Disables automatic hyphenation */
+}
+
+.content-container em {
+  opacity: 0.9;
+}
+
+.content-container a {
+  color: var(--highlighted-color) !important;
+  transition: 0.25s;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+
+.content-container a:hover {
+  opacity: 0.7;
+}
+
+.content-container ol,
+.content-container ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding-left: 1.7rem;
+
+  margin-bottom: 0.75rem;
+}
+
+.content-container ol {
+  list-style: inside lead;
+}
+
+.content-container ol li::marker {
+  color: rgb(59, 130, 246);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 800px) {
+  .content-container {
+    font-size: 1rem;
+  }
+}

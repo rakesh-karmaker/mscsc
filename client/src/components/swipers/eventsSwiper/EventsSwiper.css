@@ -3,13 +3,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 400px;
+  /* min-height: 400px; */
 }
 
 .event-swiper > div {
   width: 100%;
   max-width: var(--max-elements-width);
-  height: 420px;
+  /* height: 420px; */
 }
 
 @media screen and (max-width: 550px) {

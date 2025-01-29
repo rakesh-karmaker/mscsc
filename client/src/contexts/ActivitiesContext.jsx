@@ -42,7 +42,7 @@ const ActivitiesProvider = ({ children }) => {
     error: allActivitiesError,
     isError: allActivitiesIsError,
   } = useQuery({
-    queryKey: ["allActivities", 1, "all", "", ""],
+    queryKey: ["allActivities"],
     queryFn: () => getAllActivities(1, "all", "", ""),
     staleTime: 1000 * 60 * 5,
   });

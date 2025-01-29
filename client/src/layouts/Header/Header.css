@@ -10,7 +10,7 @@ header {
   z-index: 9999;
 }
 
-nav {
+header nav {
   width: 100%;
   max-width: var(--max-elements-width);
   height: var(--nav-height);

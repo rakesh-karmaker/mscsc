@@ -11,6 +11,7 @@ import Home from "@/pages/home/Home.jsx";
 import About from "@/pages/about/About.jsx";
 import MemberPage from "@/pages/members/Members";
 import Activities from "@/pages/activities/Activities.jsx";
+import Activity from "@/pages/activity/Activity";
 import ContactPage from "@/pages/contact/Contact.jsx";
 import Executives from "@/pages/executives/Executives.jsx";
 import Profile from "@/pages/profile/Profile.jsx";
@@ -66,6 +67,12 @@ const router = createBrowserRouter([
           { path: "/about", element: <About /> },
 
           { path: "/activities", element: <Activities /> },
+
+          {
+            path: "/activity/:id",
+            element: <Activity />,
+            // errorElement: <NotFound />,
+          },
 
           { path: "/executives", element: <Executives /> },
 

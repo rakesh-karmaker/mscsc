@@ -1,19 +1,22 @@
+import { NavLink } from "react-router-dom";
+
 const ActivityNavLink = (props) => {
-  const { name, setTag, tag, children, active } = props;
+  const { name, children, active, setTag, search } = props;
   const capitalizeName = name.charAt(0).toUpperCase() + name.slice(1);
+
   return (
     <li>
-      <button
-        className={`activities-nav-link ${active ? "active" : ""}`}
+      <NavLink
+        className={(isActive) =>
+          "activities-nav-link" + (active ? " active" : "")
+        }
         nav-type={name}
-        onClick={() => {
-          active ? setTag("") : setTag(name);
-        }}
-        type="button"
+        to={active && search === "" ? "/activities" : `/activities?tag=${name}`}
         aria-label={`Sort the activities by ${capitalizeName}`}
+        onClick={() => (search !== "" ? setTag(name) : active && setTag(""))}
       >
         {children} <span>{capitalizeName}</span>
-      </button>
+      </NavLink>
     </li>
   );
 };

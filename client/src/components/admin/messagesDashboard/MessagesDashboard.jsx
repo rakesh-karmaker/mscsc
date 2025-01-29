@@ -37,8 +37,7 @@ const MessagesDashboard = () => {
   });
 
   const onViewClick = (id, isNew) => {
-    if (isNew) {
-      console.log("new");
+    if (isNew === true) {
       messagesMutation.mutate({ _id: id, isDelete: false, new: false });
     }
     const message = messages.find((message) => message._id === id);

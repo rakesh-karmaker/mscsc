@@ -26,10 +26,10 @@ const ActivitiesNavbar = ({ tag, setTag, search, setSearch }) => {
             return (
               <ActivityNavLink
                 name={icon}
-                setTag={setTag}
                 key={icon}
                 active={tag === icon}
-                tag={tag}
+                setTag={setTag}
+                search={search}
               >
                 <FontAwesomeIcon icon={icons[icon]} />
               </ActivityNavLink>
