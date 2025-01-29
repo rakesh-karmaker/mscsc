@@ -3,7 +3,7 @@ import "./ActivityCard.css";
 import { Link, NavLink } from "react-router-dom";
 
 const ActivityCard = ({ data, selectedTag, admin, ...rest }) => {
-  const { tag, date, coverImageUrl, title, description, link, _id } = data;
+  const { tag, date, coverImageUrl, title, summary, link, _id } = data;
 
   return (
     <div className="activity" tag={tag}>
@@ -18,7 +18,7 @@ const ActivityCard = ({ data, selectedTag, admin, ...rest }) => {
           </p>
         </div>
         <h2 className="activity-name">{title}</h2>
-        <p className="secondary-text activity-summary">{description}</p>
+        <p className="secondary-text activity-summary">{summary}</p>
         <div className="activity-actions">
           <NavLink
             to={"/activity/" + _id}

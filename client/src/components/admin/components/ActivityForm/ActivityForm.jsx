@@ -73,7 +73,7 @@ const ActivityForm = (props) => {
   };
 
   const onDelete = (_id) => {
-    setLoadingText("Deleting Activity...");
+    // setLoadingText("Deleting Activity...");
     activityMutation.mutate({
       method: "delete",
       _id: _id,

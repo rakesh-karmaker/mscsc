@@ -14,7 +14,13 @@ const TOOLBAR_OPTIONS = [
 
   ["bold", "italic", "underline", "blockquote"], // toggled buttons
 
-  [{ list: "ordered" }, { align: [] }, { indent: "-1" }, { indent: "+1" }],
+  [
+    { list: "ordered" },
+    { list: "bullet" },
+    { align: [] },
+    { indent: "-1" },
+    { indent: "+1" },
+  ],
 
   ["link"],
 

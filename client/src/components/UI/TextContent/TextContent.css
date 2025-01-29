@@ -81,6 +81,7 @@
 
 .content-container ol {
   list-style: inside lead;
+  padding-left: 0.7rem;
 }
 
 .content-container ol li::marker {
