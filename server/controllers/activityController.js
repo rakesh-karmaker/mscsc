@@ -37,7 +37,6 @@ exports.getAllActivities = async (req, res) => {
 };
 
 exports.getActivityById = async (req, res) => {
-  console.log(req.params._id);
   try {
     const activity = await Activity.findById(req.params._id);
     if (!activity) {
