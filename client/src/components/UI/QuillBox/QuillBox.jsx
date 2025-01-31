@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Typography from "@tiptap/extension-typography";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import { EmojiReplacer } from "@/plugins/emoijiReplacer/EmojiReplacer";
-import { htmlToMarkdown, markdownToHtml } from "@/utils/Parser";
 import Toolbar from "@/plugins/toolbar/Toolbar";
 import { Popover } from "@/plugins/popover/Popover";
 import Subscript from "@tiptap/extension-subscript";
