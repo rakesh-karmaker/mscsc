@@ -9,6 +9,11 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  build: { outDir: "build" },
+  build: {
+    outDir: "build",
+    rollupOptions: {
+      external: ["lodash-es"],
+    },
+  },
   server: { mimeTypes: { "application/javascript": ["js"] } },
 });

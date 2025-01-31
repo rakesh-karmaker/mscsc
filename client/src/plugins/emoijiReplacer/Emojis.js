@@ -2,7 +2,7 @@ import { joinShortcodes } from "emojibase";
 import EMOJIBASE_REGEX from "emojibase-regex";
 import emojis from "emojibase-data/en/compact.json";
 import shortcodes from "emojibase-data/en/shortcodes/emojibase.json";
-import escapeRegExp from "lodash-es/escapeRegExp.js";
+import escapeRegExp from "lodash-es/escapeRegExp";
 
 const emojisWithShortcodes = joinShortcodes(emojis, [shortcodes]);
 
