@@ -1,0 +1,124 @@
+.ProseMirror {
+  min-height: 400px;
+}
+
+.ProseMirror:focus-visible {
+  outline: none;
+}
+
+.ProseMirror > * + * {
+  margin-top: 0.75em;
+}
+
+.ProseMirror > *:first-child {
+  margin-top: 0;
+}
+
+.ProseMirror > *:last-child {
+  margin-bottom: 0;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.3rem !important;
+  padding-left: 3em !important;
+  margin: 0.8em 0 !important;
+}
+
+.ProseMirror li::before {
+  width: fit-content !important;
+}
+
+.ProseMirror ol li::marker {
+  color: rgb(59, 130, 246) !important;
+  font-size: 1.2rem !important;
+  font-weight: 600 !important;
+}
+
+.ProseMirror ul li > ul,
+.ProseMirror ul li > ol,
+.ProseMirror ol li > ul,
+.ProseMirror ol li > ol {
+  margin: 0;
+}
+
+.ProseMirror ul li p,
+.ProseMirror ol li p {
+  display: inline;
+  margin: 0;
+}
+
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6,
+.ProseMirror strong {
+  font-weight: 600 !important;
+  line-height: 1.1;
+}
+
+.ProseMirror h1,
+.ProseMirror h2 {
+  padding-top: 1.5rem !important;
+}
+
+.ProseMirror h3 {
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
+}
+
+.ProseMirror p {
+  margin: 0.8em 0;
+  line-height: 1.6;
+}
+
+.ProseMirror sub {
+  position: relative;
+  top: 0.5ex;
+  font-size: 0.8em;
+}
+
+.ProseMirror sup {
+  position: relative;
+  top: -0.5ex;
+  font-size: 0.8em;
+}
+
+.ProseMirror blockquote {
+  padding-left: 1rem;
+  border-left: 2px solid rgba(13, 13, 13, 0.1);
+  font-style: italic;
+  font-size: 0.95em;
+}
+
+.ProseMirror span[data-emoji-suggestion],
+.ProseMirror span[data-emoji-replacer] > img {
+  width: 1.1em;
+  height: 1.1em;
+  margin: 0 0.05em;
+  vertical-align: -0.25em;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: rgba(17, 17, 17, 0.3);
+  pointer-events: none;
+  height: 0;
+  font-style: italic;
+}
+
+.ProseMirror a {
+  color: var(--highlighted-color) !important;
+  transition: 0.25s ease-in-out;
+  text-decoration: none !important;
+  cursor: pointer !important;
+}
+
+.ProseMirror a:hover {
+  opacity: 0.7 !important;
+}

@@ -42,7 +42,7 @@ const Articles = ({ activities, isLoading }) => {
         title="CLUB Articles"
         description="Articles about the achievements and researches of MSCSC"
       >
-        <PrimaryBtn link="/activities" name="See More">
+        <PrimaryBtn link="/activities?tag=Article" name="See More">
           See More
         </PrimaryBtn>
       </SectionHeader>

@@ -1,6 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@/global.css";
 import App from "@/App.jsx";
@@ -20,7 +24,6 @@ import TermsOfService from "@/pages/terms/Terms";
 import PrivacyPolicy from "@/pages/privacy/PrivacyPolicy";
 
 //admin pages
-import Admin from "@/pages/Admin";
 import AdminDashboard from "@/components/admin/adminDashboard/AdminDashboard";
 import MembersDashboard from "@/components/admin/membersDashboard/MembersDashboard";
 import ActivitiesDashboard from "@/components/admin/activitiesDashboard/ActivitiesDashboard";
@@ -105,7 +108,7 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
         children: [
-          { path: "/admin", element: <Admin /> },
+          { path: "/admin", element: <Navigate to="/admin/dashboard" /> },
 
           { path: "/admin/dashboard", element: <AdminDashboard /> },
 

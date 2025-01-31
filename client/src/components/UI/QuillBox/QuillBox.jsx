@@ -1,89 +1,61 @@
-import { useRef, useEffect, useState } from "react";
-// import Quill from "quill";
-import { useWatch } from "react-hook-form";
-// import "quill/dist/quill.snow.css";
-import "./QuillBox.css";
+import React, { useEffect, useState } from "react";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Typography from "@tiptap/extension-typography";
+import Link from "@tiptap/extension-link";
+import Placeholder from "@tiptap/extension-placeholder";
+import { EmojiReplacer } from "@/plugins/emoijiReplacer/EmojiReplacer";
 import { htmlToMarkdown, markdownToHtml } from "@/utils/Parser";
-import ReactMarkdown from "react-markdown";
+import Toolbar from "@/plugins/toolbar/Toolbar";
+import { Popover } from "@/plugins/popover/Popover";
+import Subscript from "@tiptap/extension-subscript";
+import Superscript from "@tiptap/extension-superscript";
+import "./QuillBox.css";
+import "./TipTap.css";
 
-import ReactQuill, { Quill } from "react-quill";
-import "react-quill/dist/quill.snow.css";
+function QuillBox({ register, content = "" }) {
+  const extensions = [
+    StarterKit,
+    EmojiReplacer,
+    Typography,
+    Subscript,
+    Superscript,
+    Link.configure({
+      linkOnPaste: true,
+      openOnClick: false,
+    }),
+    Placeholder.configure({
+      placeholder: "Type '/' for actions…",
+    }),
+  ];
 
-const TOOLBAR_OPTIONS = [
-  [{ header: [1, 2, 3, 4, 5, false] }],
-
-  ["bold", "italic", "underline", "blockquote"], // toggled buttons
-
-  [
-    { list: "ordered" },
-    { list: "bullet" },
-    { align: [] },
-    { indent: "-1" },
-    { indent: "+1" },
-  ],
-
-  ["link"],
-
-  [
-    {
-      color: [
-        "#3b82f6",
-        "#ffffff",
-        "#c9e0ff",
-        "#f9f9f9",
-        "#f3f4f6",
-        "#e5e7eb",
-        "#e11d48",
-        "#ef4444",
-        "#f87171",
-        "#fbbf24",
-        "#f59e0b",
-        "#f97316",
-        "#fbbf24",
-        "#f59e0b",
-        "#f97316",
-        "#f59e0b",
-        "#f97316",
-        "#f59e0b",
-        "#11181c",
-      ],
+  const editor = useEditor({
+    content: content.trim(),
+    extensions,
+    onUpdate: ({ editor }) => {
+      console.log(editor.getHTML());
+      register.onChange({
+        target: {
+          name: "content",
+          value: editor.getHTML(),
+        },
+      });
     },
-    { background: [] },
-  ], // dropdown with defaults from theme
+  });
 
-  ["clean"], // remove formatting button
-];
-
-const QuillBox = ({ register, content }) => {
-  const [value, setValue] = useState(markdownToHtml(content));
-  const reactQuillRef = useRef(null);
-
-  const onChange = (c) => {
-    setValue(c);
-    register.onChange({
-      target: { name: "content", value: htmlToMarkdown(c) },
-    });
-  };
+  if (!editor) {
+    return null;
+  }
 
   return (
-    <div>
-      <h3 className="input-heading" style={{ marginBottom: "1rem" }}>
-        Activity Description
-      </h3>
-      <ReactQuill
-        ref={reactQuillRef}
-        theme="snow"
-        placeholder="Start writing..."
-        modules={{
-          toolbar: {
-            container: TOOLBAR_OPTIONS,
-          },
-        }}
-        value={value}
-        onChange={onChange}
-      />
+    <div id="Wrapper">
+      <div className="WhiteCard">
+        <Toolbar editor={editor} />
+        {window.innerWidth >= 1080 && <Popover editor={editor} />}
+        <EditorContent editor={editor} />
+      </div>
     </div>
   );
-};
+}
 
 export default QuillBox;

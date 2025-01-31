@@ -40,22 +40,48 @@
 
 .content-container p {
   letter-spacing: 0.3px;
-  padding-bottom: 0.5rem;
+  margin: 0.8em 0;
   line-height: 1.6;
-}
-
-.markdown-paragraph {
-  display: block;
-  max-width: 100%;
-  white-space: normal; /* Ensures normal text wrapping */
-  word-break: normal; /* Prevents breaking in the middle of words */
-  overflow-wrap: anywhere; /* Wraps long words without breaking normal ones */
-  line-height: 1.6;
-  hyphens: none; /* Disables automatic hyphenation */
 }
 
 .content-container em {
   opacity: 0.9;
+}
+
+.content-container sub {
+  position: relative;
+  top: 0.5ex;
+  font-size: 0.8em;
+}
+
+.content-container sup {
+  position: relative;
+  top: -0.5ex;
+  font-size: 0.8em;
+}
+
+.content-container blockquote {
+  padding-left: 1rem;
+  border-left: 2px solid rgba(13, 13, 13, 0.1);
+  font-style: italic;
+  font-size: 0.95em;
+}
+
+.content-container span[data-emoji-suggestion],
+.content-container span[data-emoji-replacer] > img {
+  width: 1.1em;
+  height: 1.1em;
+  margin: 0 0.05em;
+  vertical-align: -0.25em;
+}
+
+.content-container p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: rgba(17, 17, 17, 0.3);
+  pointer-events: none;
+  height: 0;
+  font-style: italic;
 }
 
 .content-container a {
@@ -73,21 +99,27 @@
 .content-container ul {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
-  padding-left: 1.7rem;
-
-  margin-bottom: 0.75rem;
+  padding-left: 2em;
 }
 
 .content-container ol {
   list-style: inside lead;
-  padding-left: 0.7rem;
+  padding-left: 1.7em;
+}
+
+.content-container li p {
+  margin: 0.3em 0px;
+}
+
+.content-container ol li p {
+  display: inline;
 }
 
 .content-container ol li::marker {
   color: rgb(59, 130, 246);
   font-size: 1.2rem;
   font-weight: 600;
+  display: inline-block;
 }
 
 @media screen and (max-width: 800px) {

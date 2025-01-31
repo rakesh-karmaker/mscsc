@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import "./DeleteBtn.css";
 
-const DeleteBtn = ({ id, deleteFunc, btnText, children }) => {
+const DeleteBtn = ({ id, deleteFunc, btnText, children, ...rest }) => {
   const deleteDialog = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -10,7 +10,7 @@ const DeleteBtn = ({ id, deleteFunc, btnText, children }) => {
       <div className={`dialog-container ${isOpen ? "open" : ""}`}>
         <dialog className="delete-dialog" ref={deleteDialog}>
           <div>
-            <h2>Delete Member</h2>
+            <h2>{rest?.title ?? "Delete Member"}</h2>
             <p>{children}</p>
           </div>
           <div className="delete-dialog-actions">

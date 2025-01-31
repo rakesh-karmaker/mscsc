@@ -68,3 +68,94 @@
   font-size: 1.2rem !important;
   font-weight: 600 !important;
 }
+
+.ql-editor {
+  font-size: 1.125rem;
+}
+
+.ql-editor h1,
+.ql-editor h2,
+.ql-editor h3,
+.ql-editor h4,
+.ql-editor h5,
+.ql-editor strong {
+  font-weight: 600 !important;
+}
+
+.ql-editor h1,
+.ql-editor h2 {
+  padding-top: 1.5rem !important;
+}
+
+.ql-editor h1 {
+  /* padding-bottom: 0.5rem !important; */
+}
+
+.ql-editor h3 {
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
+}
+
+.ql-editor {
+  color: var(--text-primary) !important;
+}
+
+/* Additional CSS */
+#Wrapper {
+  font-size: 1.18rem;
+}
+
+#Wrapper > nav {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 50px;
+  padding: 18px 20px;
+}
+
+#Wrapper > nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#Wrapper > nav li {
+  display: inline-block;
+  line-height: 2.5;
+  margin-right: 5px;
+}
+
+#Wrapper > nav a {
+  border: 2px solid transparent;
+  border-radius: 5px;
+  padding: 5px;
+  color: #005d71;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#Wrapper > nav a.selected {
+  background: #007992;
+  color: #ffffff;
+  cursor: default;
+}
+
+#Wrapper > nav a:hover:not(.selected) {
+  border: 2px solid #007992;
+}
+
+.WhiteCard {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  color: var(--text-primary) !important;
+}
+
+.WhiteCard + h2 {
+  margin: 20px 20px 5px;
+}
+
+.WhiteCard + .WhiteCard {
+  margin-top: 20px;
+}

@@ -67,7 +67,7 @@ const Events = ({ activities, isLoading }) => {
           title={"our events"}
           description="Stunning events and fests organized by us"
         >
-          <PrimaryBtn link="/activities" name="See All">
+          <PrimaryBtn link="/activities?tag=Event" name="See All">
             See All
           </PrimaryBtn>
         </SectionHeader>

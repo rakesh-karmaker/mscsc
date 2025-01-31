@@ -23,3 +23,12 @@
 .activity-form .combined-btns .danger-button::before {
   background-color: red;
 }
+
+@media screen and (max-width: 430px) {
+  .activity-form .combined-btns {
+    flex-direction: column;
+  }
+  .activity-form .combined-btns button.primary-button {
+    width: 100% !important;
+  }
+}

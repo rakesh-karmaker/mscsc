@@ -46,7 +46,7 @@ const Sidebar = ({ name, image }) => {
           />
         </nav>
 
-        <p className="copyright">© 2024 MSCSC</p>
+        <p className="copyright">© {new Date().getFullYear()} MSCSC</p>
       </div>
     </aside>
   );

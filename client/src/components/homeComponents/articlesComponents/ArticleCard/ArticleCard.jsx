@@ -3,7 +3,7 @@ import "./ArticleCard.css";
 import { Link } from "react-router-dom";
 
 const ArticleCard = ({ article }) => {
-  const { tag, date, coverImageUrl, title, description, link } = article;
+  const { tag, date, coverImageUrl, title, summary, _id } = article;
 
   return (
     <article className="article">
@@ -13,8 +13,8 @@ const ArticleCard = ({ article }) => {
         <p className="date">{date}</p>
       </div>
       <h3>{title}</h3>
-      <p className="secondary-text">{description}</p>
-      <Link to={link}>
+      <p className="secondary-text">{summary}</p>
+      <Link to={"/activity/" + _id} aria-label="Go to the article">
         Learn more <FontAwesomeIcon icon="fa-solid fa-arrow-right" />
       </Link>
     </article>

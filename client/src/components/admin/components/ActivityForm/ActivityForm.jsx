@@ -66,6 +66,7 @@ const ActivityForm = (props) => {
   });
 
   const onSubmit = async (data) => {
+    console.log(data, "data");
     activityMutation.mutate({
       method: props?.defaultValues ? "edit" : "add",
       ...data,
@@ -79,6 +80,8 @@ const ActivityForm = (props) => {
       _id: _id,
     });
   };
+
+  console.log(props?.defaultValues?.content, "content");
 
   return (
     <div>
@@ -131,7 +134,7 @@ const ActivityForm = (props) => {
 
         <QuillBox
           register={register("content")}
-          content={props?.defaultValues?.content || ""}
+          content={props?.defaultValues?.content}
         />
 
         <div className="combined-btns">
@@ -146,6 +149,7 @@ const ActivityForm = (props) => {
               id={props.defaultValues._id}
               deleteFunc={onDelete}
               btnText="Delete Activity"
+              title="Delete Activity"
             >
               Are you sure you want to delete this activity?
             </DeleteBtn>

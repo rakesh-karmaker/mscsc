@@ -5,7 +5,7 @@ import "./TextContent.css";
 const TextContent = ({ content }) => {
   return (
     <div className="content-container">
-      <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
+      <div dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   );
 };

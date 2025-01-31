@@ -3,7 +3,7 @@ import "./EventCard.css";
 import { Link } from "react-router-dom";
 
 const EventCard = ({ eventData }) => {
-  const { tag, coverImageUrl, title, description, link, date } = eventData;
+  const { tag, coverImageUrl, title, summary, _id, date } = eventData;
   const status = new Date(date) < new Date() ? "Happened" : "Upcoming";
   const capitalizedTag = tag.charAt(0).toUpperCase() + tag.slice(1);
 
@@ -19,8 +19,8 @@ const EventCard = ({ eventData }) => {
           <span>{status}</span>
         </p>
         <h3>{title}</h3>
-        <p className="secondary-text">{description}</p>
-        <Link to={link} aria-label="Go to the Facebook post">
+        <p className="secondary-text">{summary}</p>
+        <Link to={"/activity/" + _id} aria-label="Go to the article">
           Learn more <FontAwesomeIcon icon="fa-solid fa-arrow-right" />
         </Link>
       </article>
