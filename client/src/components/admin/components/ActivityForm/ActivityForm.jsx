@@ -13,7 +13,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 import { deleteActivity } from "@/services/DeleteService";
 import ImageDropper from "@/components/UI/ImageDropper/ImageDropper";
-import Editor from "@/components/UI/QuillBox/Editor";
+import Editor from "@/components/UI/Editor/Editor";
 
 const ActivityForm = (props) => {
   const queryClient = useQueryClient();
