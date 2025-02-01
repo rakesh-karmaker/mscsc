@@ -7,15 +7,15 @@ const originCheckMiddleware = require("./middleware/originCheckMiddleware");
 const app = express();
 
 // Configure CORS to allow only requests from the specified origin
-const corsOptions = {
-  origin: process.env.APP_URL,
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
+// const corsOptions = {
+//   origin: process.env.APP_URL,
+//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   credentials: true,
+//   optionsSuccessStatus: 204,
+// };
 
-app.use(cors(corsOptions));
-app.use(originCheckMiddleware);
+// app.use(cors(corsOptions));
+// app.use(originCheckMiddleware);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
