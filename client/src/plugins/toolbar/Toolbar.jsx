@@ -137,11 +137,11 @@ const MobileSelection = ({ editor, isCursorOverLink }) => {
       $(".mobile-selection-options").slideUp(200);
     }
   }, [open]);
-  $(".icon").click(() => setOpen(false));
+  $(".icon:not(.mobile-dropdown)").click(() => setOpen(false));
   return (
     <div className="mobile-selection">
       <div
-        className={"icon" + (open ? " active" : "")}
+        className={"icon mobile-dropdown" + (open ? " active" : "")}
         onClick={() => setOpen(!open)}
       >
         {open ? <RxCross2 /> : <RxHamburgerMenu />}
