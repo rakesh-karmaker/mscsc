@@ -9,10 +9,10 @@ import Toolbar from "@/plugins/toolbar/Toolbar";
 import { Popover } from "@/plugins/popover/Popover";
 import Subscript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
-import "./QuillBox.css";
+import "./Editor.css";
 import "./TipTap.css";
 
-function QuillBox({ register, content = "" }) {
+function Editor({ register, content = "" }) {
   const extensions = [
     StarterKit,
     EmojiReplacer,
@@ -24,7 +24,7 @@ function QuillBox({ register, content = "" }) {
       openOnClick: false,
     }),
     Placeholder.configure({
-      placeholder: "Type '/' for actions…",
+      placeholder: "Type Something Here…",
     }),
   ];
 
@@ -57,4 +57,4 @@ function QuillBox({ register, content = "" }) {
   );
 }
 
-export default QuillBox;
+export default Editor;

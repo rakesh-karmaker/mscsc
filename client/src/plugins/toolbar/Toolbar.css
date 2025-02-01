@@ -3,7 +3,6 @@
   border-bottom: 2px solid #999999;
   border-radius: 10px 10px 0 0;
   display: flex;
-  /* justify-content: center; */
   align-items: center;
   height: 50px;
   margin: -20px -20px 20px -20px;
@@ -31,6 +30,7 @@
   align-items: center;
   color: #333333;
   transition: 0.2s;
+  cursor: pointer;
 }
 
 .Toolbar .icon[disabled] {
@@ -38,7 +38,7 @@
   pointer-events: none;
 }
 
-.Toolbar .icon:hover {
+.Toolbar:not(.mobile-toolbar) .icon:hover {
   background: #333333;
   color: #ffffff;
   cursor: pointer;

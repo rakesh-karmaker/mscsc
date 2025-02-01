@@ -13,7 +13,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 import { deleteActivity } from "@/services/DeleteService";
 import ImageDropper from "@/components/UI/ImageDropper/ImageDropper";
-import QuillBox from "@/components/UI/QuillBox/QuillBox";
+import Editor from "@/components/UI/QuillBox/Editor";
 
 const ActivityForm = (props) => {
   const queryClient = useQueryClient();
@@ -32,7 +32,6 @@ const ActivityForm = (props) => {
     handleSubmit,
     setValue,
     trigger,
-    control,
     formState: { errors },
   } = useForm({
     defaultValues,
@@ -74,7 +73,6 @@ const ActivityForm = (props) => {
   };
 
   const onDelete = (_id) => {
-    // setLoadingText("Deleting Activity...");
     activityMutation.mutate({
       method: "delete",
       _id: _id,
@@ -132,7 +130,7 @@ const ActivityForm = (props) => {
 
         <ImageDropper register={register("gallery")} />
 
-        <QuillBox
+        <Editor
           register={register("content")}
           content={props?.defaultValues?.content}
         />

@@ -40,7 +40,9 @@ function Toolbar({ editor }) {
       className={classNames("ToolbarContainer", { sticky: !inView })}
       ref={observe}
     >
-      <div className="Toolbar">
+      <div
+        className={"Toolbar" + (window.innerWidth < 850 && " mobile-toolbar")}
+      >
         {window.innerWidth < 850 && (
           <>
             <MobileSelection
