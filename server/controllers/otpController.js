@@ -1,4 +1,4 @@
-const OTP = require("../models/OTP");
+const OTP = require("../models/Otp");
 const generateOTP = require("../utils/generateOTP");
 const sendEmail = require("../utils/sendEmail");
 
