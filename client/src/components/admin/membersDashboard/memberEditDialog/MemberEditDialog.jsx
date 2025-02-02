@@ -109,6 +109,7 @@ const EditForm = ({ member, setIsOpen, editDialog }) => {
   });
 
   const editMemberFunc = (data) => {
+    console.log(data);
     memberMutation.mutate({
       method: "edit",
       _id: member._id,
@@ -138,6 +139,7 @@ const EditForm = ({ member, setIsOpen, editDialog }) => {
         register={register("role")}
         errors={errors.role}
         dataList={["member", "admin"]}
+        id={member._id}
       >
         Change Role
       </RadioList>

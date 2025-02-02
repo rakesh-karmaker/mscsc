@@ -1,17 +1,22 @@
 const nodemailer = require("nodemailer");
 
 let transporter = nodemailer.createTransport({
-  service: "smtp-mail.outlook.com",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // true for 465, false for other ports
   auth: {
-    user: process.env.HOTMAIL_ADDRESS,
-    pass: process.env.HOTMAIL_PASS,
+    user: process.env.MAIL_ADDRESS,
+    pass: process.env.MAIL_PASS,
+  },
+  tls: {
+    rejectUnauthorized: false, // Allow self-signed certificates
   },
 });
 
-// test
+// Test the transporter
 transporter.verify((error, success) => {
   if (error) {
-    console.log(error);
+    console.log(error, "email");
   } else {
     console.log("Server is ready to take our messages");
   }
@@ -20,14 +25,13 @@ transporter.verify((error, success) => {
 const sendEmail = async (email) => {
   try {
     await transporter.sendMail({
-      from: process.env.HOTMAIL_ADDRESS,
+      from: process.env.MAIL_ADDRESS,
       to: email,
       subject: "Your password has been reset",
       html: "<h1>Click here to reset your password</h1>",
     });
   } catch (err) {
-    console.log("Error sending email - ", getDate(), "\n---\n", err);
-    throw err;
+    console.log("Error sending email - ", new Date(), "\n---\n", err);
   }
 };
 

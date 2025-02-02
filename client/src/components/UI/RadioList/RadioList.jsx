@@ -1,6 +1,7 @@
 import "@/components/UI/RadioList/RadioList.css";
 
 const RadioList = ({ register, errors, dataList, children, ...rest }) => {
+  const rand = Math.floor(Math.random() * 1000);
   return (
     <div className="radio-list-container">
       <p className="input-heading">{children}</p>
@@ -10,12 +11,12 @@ const RadioList = ({ register, errors, dataList, children, ...rest }) => {
             <div key={item} className="radio-item">
               <input
                 type="radio"
-                id={`${item}${rest?.id && `-${rest?.id}`}`}
+                id={`${item}${rest?.id && `-${rest?.id}`}-${rand}`}
                 {...register}
                 value={item}
               />
               <label
-                htmlFor={`${item}${rest?.id && `-${rest?.id}`}`}
+                htmlFor={`${item}${rest?.id && `-${rest?.id}`}-${rand}`}
                 className="radio-label"
               >
                 <span className="checkMark"></span>

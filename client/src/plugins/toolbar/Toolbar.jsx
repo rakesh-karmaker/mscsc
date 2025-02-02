@@ -41,7 +41,9 @@ function Toolbar({ editor }) {
       ref={observe}
     >
       <div
-        className={"Toolbar" + (window.innerWidth < 850 && " mobile-toolbar")}
+        className={
+          "Toolbar" + (window.innerWidth < 850 ? " mobile-toolbar" : "")
+        }
       >
         {window.innerWidth < 850 && (
           <>
