@@ -1,6 +1,6 @@
-const Otp = require("../models/Otp");
 const generateOTP = require("../utils/generateOTP");
 const sendEmail = require("../utils/sendEmail");
+const Otp = require("../models/Otp");
 
 // Request new OTP
 const sendOTP = async (req, res) => {
