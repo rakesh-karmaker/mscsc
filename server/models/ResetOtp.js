@@ -7,4 +7,4 @@ const OPTSchema = new mongoose.Schema({
   expiresAt: { type: Date },
 });
 
-module.exports = mongoose.model("Otp", OPTSchema);
+module.exports = mongoose.model("ResetOtp", OPTSchema);

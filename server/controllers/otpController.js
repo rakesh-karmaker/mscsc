@@ -1,6 +1,6 @@
 const generateOTP = require("../utils/generateOTP");
 const sendEmail = require("../utils/sendEmail");
-const Otp = require("../models/Otp");
+const ResetOtp = require("../models/ResetOtp");
 
 // Request new OTP
 const sendOTP = async (req, res) => {
@@ -9,7 +9,7 @@ const sendOTP = async (req, res) => {
     if (!email) return res.status(400).send({ message: "Invalid request" });
 
     //delete old otp
-    await Otp.deleteOne({ email });
+    await ResetOtp.deleteOne({ email });
 
     //generate OTP
     const otp = await generateOTP();
@@ -20,7 +20,7 @@ const sendOTP = async (req, res) => {
     await sendEmail(email);
 
     //save otp
-    const newOTP = new Otp({
+    const newOTP = new ResetOtp({
       email,
       opt: otp,
       createdAt: Date.now(),
