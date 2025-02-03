@@ -7,7 +7,6 @@ const allowedOrigins = [
 
 const originCheckMiddleware = async (req, res, next) => {
   const origin = req.headers.origin;
-  console.log(origin);
   const data = req.headers["true-client-ip"] || req.headers;
   const date = getDate();
 

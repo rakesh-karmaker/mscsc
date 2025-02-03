@@ -40,7 +40,7 @@ setInterval(() => {
     .on("error", (e) => {
       console.error(`Got error: ${e.message}`);
     });
-}, 5 * 1000); // request every 2 minutes
+}, 2 * 60 * 1000); // request every 2 minutes
 
 mongoose
   .connect(process.env.MONGO_URI)
