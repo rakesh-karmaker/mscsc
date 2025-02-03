@@ -24,13 +24,13 @@ app.use(express.static("public"));
 // TODO: remove this when in a paid hosting
 setInterval(() => {
   https
-    .get("https://mscsc-backend.onrender.com/", (res) => {
+    .get(process.env.SERVER_URL, (res) => {
       console.log("request sent");
     })
     .on("error", (e) => {
       console.error(`Got error: ${e.message}`);
     });
-}, 2 * 60 * 1000); // request every 2 minutes
+}, 5 * 1000); // request every 2 minutes
 
 mongoose
   .connect(process.env.MONGO_URI)
