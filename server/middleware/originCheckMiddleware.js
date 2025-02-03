@@ -1,11 +1,16 @@
 const { getDate } = require("../utils/getDate");
 
-const allowedOrigins = [process.env.APP_URL, process.env.SERVER_URL];
+const allowedOrigins = [
+  process.env.APP_URL,
+  process.env.INTERNAL_REQUEST_TOKEN,
+];
 
 const originCheckMiddleware = async (req, res, next) => {
   const origin = req.headers.origin;
+  console.log(origin);
   const data = req.headers["true-client-ip"] || req.headers;
   const date = getDate();
+
   if (!origin) {
     console.log(
       `----------------------\n${date} - Unauthorized request from  -`,
