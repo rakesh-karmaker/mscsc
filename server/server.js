@@ -9,7 +9,7 @@ const app = express();
 
 // Configure CORS to allow only requests from the specified origin
 const corsOptions = {
-  origin: process.env.APP_URL || "http://localhost:5000",
+  origin: process.env.APP_URL || process.env.SERVER_URL,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
@@ -24,7 +24,7 @@ app.use(express.static("public"));
 // TODO: remove this when in a paid hosting
 setInterval(() => {
   https
-    .get("https://mscsc.netlify.app", (res) => {
+    .get("https://mscsc-backend.onrender.com/", (res) => {
       console.log("request sent");
     })
     .on("error", (e) => {
@@ -42,7 +42,7 @@ app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/member", require("./routes/memberRoutes"));
 app.use("/api/message", require("./routes/messageRoutes"));
 app.use("/api/activity", require("./routes/activityRoutes"));
-app.use("/api/otp", require("./routes/otpRoutes"));
+app.use("/api/otp", require("./routes/resetPasswordRoutes"));
 
 app.listen(process.env.PORT, () =>
   console.log(`Server running on port ${process.env.PORT}`)
