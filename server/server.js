@@ -23,18 +23,8 @@ app.use(express.static("public"));
 
 // TODO: remove this when in a paid hosting
 setInterval(() => {
-  const options = {
-    hostname: process.env.SERVER_URL,
-    port: 443,
-    path: "/",
-    method: "GET",
-    headers: {
-      origin: process.env.INTERNAL_REQUEST_TOKEN,
-    },
-  };
-
   https
-    .get(options, (res) => {
+    .get(process.env.SERVER_URL, (res) => {
       console.log("request sent");
     })
     .on("error", (e) => {

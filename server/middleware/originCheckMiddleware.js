@@ -1,9 +1,6 @@
 const { getDate } = require("../utils/getDate");
 
-const allowedOrigins = [
-  process.env.APP_URL,
-  process.env.INTERNAL_REQUEST_TOKEN,
-];
+const allowedOrigins = [process.env.APP_URL];
 
 const originCheckMiddleware = async (req, res, next) => {
   const origin = req.headers.origin;
