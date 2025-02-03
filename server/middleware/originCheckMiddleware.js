@@ -22,12 +22,16 @@ const originCheckMiddleware = async (req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", origin);
     next();
   } else {
-    console.log(
-      `----------------------\n${date} - Unauthorized request from  -`,
-      data,
-      `\n----------------------`
-    );
-    return res.status(403).send({ message: "Forbidden: Unauthorized Origin" });
+    if (!data === process.env.SERVER_IP) {
+      console.log(
+        `----------------------\n${date} - Unauthorized request from  -`,
+        data,
+        `\n----------------------`
+      );
+      return res
+        .status(403)
+        .send({ message: "Forbidden: Unauthorized Origin" });
+    }
   }
 };
 
