@@ -3,7 +3,6 @@ const { getDate } = require("../utils/getDate");
 const allowedOrigins = [process.env.APP_URL, process.env.SERVER_URL];
 
 const originCheckMiddleware = async (req, res, next) => {
-  console.log("originCheckMiddleware", req.headers);
   const origin = req.headers.origin;
   const data = req.headers["true-client-ip"] || req.headers;
   const date = getDate();
