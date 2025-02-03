@@ -24,7 +24,7 @@ app.use(express.static("public"));
 // TODO: remove this when in a paid hosting
 setInterval(() => {
   https
-    .get(process.env.SERVER_URL, (res) => {
+    .get("https://" + process.env.SERVER_URL, (res) => {
       console.log("request sent");
     })
     .on("error", (e) => {
