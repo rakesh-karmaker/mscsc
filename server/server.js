@@ -3,12 +3,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const originCheckMiddleware = require("./middleware/originCheckMiddleware");
+const https = require("https");
 
 const app = express();
 
 // Configure CORS to allow only requests from the specified origin
 const corsOptions = {
-  origin: process.env.APP_URL,
+  origin: process.env.APP_URL || "http://localhost:5000",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
@@ -16,10 +17,20 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(originCheckMiddleware);
-// app.use(cors);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
+
+// TODO: remove this when in a paid hosting
+setInterval(() => {
+  https
+    .get("https://mscsc.netlify.app", (res) => {
+      console.log("request sent");
+    })
+    .on("error", (e) => {
+      console.error(`Got error: ${e.message}`);
+    });
+}, 2 * 60 * 1000); // request every 2 minutes
 
 mongoose
   .connect(process.env.MONGO_URI)

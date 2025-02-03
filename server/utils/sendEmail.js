@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const otpDraft = require("./otpDraft");
 
 let transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -22,14 +23,15 @@ transporter.verify((error, success) => {
   }
 });
 
-const sendEmail = async (email) => {
+const sendEmail = async (email, otp) => {
   try {
     await transporter.sendMail({
       from: process.env.MAIL_ADDRESS,
       to: email,
-      subject: "Your password has been reset",
-      html: "<h1>Click here to reset your password</h1>",
+      subject: "Password Reset OTP",
+      html: otpDraft(otp),
     });
+    return;
   } catch (err) {
     console.log("Error sending email - ", new Date(), "\n---\n", err);
   }

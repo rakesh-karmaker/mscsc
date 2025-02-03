@@ -1,6 +1,7 @@
 const generateOTP = require("../utils/generateOTP");
 const sendEmail = require("../utils/sendEmail");
 const ResetOtp = require("../models/ResetOtp");
+const bcrypt = require("bcryptjs");
 
 // Request new OTP
 const sendOTP = async (req, res) => {
@@ -12,23 +13,22 @@ const sendOTP = async (req, res) => {
     await ResetOtp.deleteOne({ email });
 
     //generate OTP
-    const otp = await generateOTP();
-    console.log(otp, "otp");
+    const generatedOTP = await generateOTP();
 
     //send email
-
-    await sendEmail(email);
+    await sendEmail(email, generatedOTP);
 
     //save otp
+    const hashedOTP = await bcrypt.hash(generatedOTP, 10);
     const newOTP = new ResetOtp({
       email,
-      opt: otp,
+      opt: hashedOTP,
       createdAt: Date.now(),
       expiresAt: Date.now() + 60000,
     });
     await newOTP.save();
 
-    res.status(200).send({ newOTP });
+    res.status(200).send({ message: "OTP sent" });
     // res.send({ otp });
   } catch (err) {
     console.log("Error sending OTP - ", getDate(), "\n---\n", err);
