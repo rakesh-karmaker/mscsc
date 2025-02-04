@@ -31,7 +31,19 @@ const ResetPassword = ({ email, token, setStage }) => {
   });
 
   const onSubmit = (data) => {
-    passwordMutation.mutate({ email, newPassword: data.newPassword, token });
+    const newPassword = data.newPassword.trim();
+
+    if (!newPassword) {
+      setError("newPassword", {
+        message: "Password is required",
+      });
+    } else if (newPassword.length < 6) {
+      setError("newPassword", {
+        message: "Password must be at least 6 characters",
+      });
+    } else {
+      passwordMutation.mutate({ email, newPassword: newPassword, token });
+    }
   };
 
   return (
@@ -55,7 +67,7 @@ const ResetPassword = ({ email, token, setStage }) => {
 
         <SubmitBtn
           isLoading={passwordMutation.isPending}
-          pendingText="Sending OTP"
+          pendingText="Updating..."
           width="100%"
         >
           Reset Password
