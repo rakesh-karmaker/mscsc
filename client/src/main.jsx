@@ -20,6 +20,7 @@ import ContactPage from "@/pages/contact/Contact.jsx";
 import Executives from "@/pages/executives/Executives.jsx";
 import Profile from "@/pages/profile/Profile.jsx";
 import Auth from "@/pages/auth/Auth";
+import ResetPassword from "@/pages/resetPassword/ForgotPassword";
 import TermsOfService from "@/pages/terms/Terms";
 import PrivacyPolicy from "@/pages/privacy/PrivacyPolicy";
 
@@ -74,7 +75,7 @@ const router = createBrowserRouter([
           {
             path: "/activity/:id",
             element: <Activity />,
-            // errorElement: <NotFound />,
+            errorElement: <NotFound />,
           },
 
           { path: "/executives", element: <Executives /> },
@@ -84,6 +85,8 @@ const router = createBrowserRouter([
           { path: "/register", element: <Auth method="Register" /> },
 
           { path: "/login", element: <Auth method="Login" /> },
+
+          { path: "/forgot-password", element: <ResetPassword /> },
 
           { path: "/members", element: <MemberPage /> },
 

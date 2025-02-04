@@ -46,6 +46,14 @@ const loginUser = (data) => {
   });
 };
 
+const forgotPasswordRequest = (email) => {
+  return api.post("/reset-password/otp", email, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+
 const sendMessage = (data) => {
   return api.post("/message", data, {
     headers: {
@@ -77,4 +85,10 @@ const addActivity = (data) => {
   });
 };
 
-export { registerUser, loginUser, sendMessage, addActivity };
+export {
+  registerUser,
+  loginUser,
+  forgotPasswordRequest,
+  sendMessage,
+  addActivity,
+};

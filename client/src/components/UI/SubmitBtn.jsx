@@ -13,7 +13,7 @@ const SubmitBtn = ({ isLoading, pendingText, children, ...rest }) => {
   }, [isLoading]);
 
   return (
-    <div>
+    <div className="submit-btn-container">
       <button
         disabled={isLoading}
         type="submit"

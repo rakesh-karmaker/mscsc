@@ -7,6 +7,7 @@ const {
 } = require("../utils/imagekit");
 const { paginatedResults } = require("../utils/paginatedResults");
 const { activitySchema } = require("../utils/validation");
+const mongoose = require("mongoose");
 
 // Get All Activities
 exports.getAllActivities = async (req, res) => {
@@ -38,10 +39,15 @@ exports.getAllActivities = async (req, res) => {
 
 exports.getActivityById = async (req, res) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params._id)) {
+      return res.status(400).send({ message: "Invalid request" });
+    }
+
     const activity = await Activity.findById(req.params._id);
     if (!activity) {
       return res.status(404).send({ message: "Activity not found" });
     }
+
     res.status(200).send(activity);
   } catch (err) {
     console.log("Error fetching activity - ", getDate(), "\n---\n", err);

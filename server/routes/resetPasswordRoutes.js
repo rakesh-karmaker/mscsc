@@ -3,11 +3,11 @@ const {
   sendOTP,
   verifyOtp,
   resetPassword,
-} = require("../controllers/resetPassword");
+} = require("../controllers/resetPasswordController");
 
 const router = express.Router();
 
-router.post("/", sendOTP);
+router.post("/otp", sendOTP);
 router.post("/verify", verifyOtp);
 router.post("/reset", resetPassword);
 

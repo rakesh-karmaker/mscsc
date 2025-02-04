@@ -48,7 +48,7 @@ app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/member", require("./routes/memberRoutes"));
 app.use("/api/message", require("./routes/messageRoutes"));
 app.use("/api/activity", require("./routes/activityRoutes"));
-app.use("/api/otp", require("./routes/resetPasswordRoutes"));
+app.use("/api/reset-password", require("./routes/resetPasswordRoutes"));
 
 app.listen(process.env.PORT, () =>
   console.log(`Server running on port ${process.env.PORT}`)

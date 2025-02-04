@@ -43,6 +43,7 @@ import {
   faX,
   faCloudArrowUp,
   faCheck,
+  faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
 // import and add icons
@@ -82,7 +83,8 @@ library.add(
   faSquareEnvelope,
   faX,
   faCloudArrowUp,
-  faCheck
+  faCheck,
+  faArrowLeft
 );
 
 function App() {

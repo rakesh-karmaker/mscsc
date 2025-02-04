@@ -34,7 +34,7 @@ const sendOTP = async (req, res) => {
     });
     await newOTP.save();
 
-    res.status(200).send({ message: "OTP sent" });
+    res.status(200).send({ message: "OTP sent", email });
   } catch (err) {
     console.log("Error sending OTP - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });

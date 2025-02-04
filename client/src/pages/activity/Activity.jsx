@@ -23,7 +23,7 @@ const Activity = () => {
   });
 
   if (error) {
-    throw Error("Failed to fetch profile");
+    throw Error("Failed to fetch activity");
   }
 
   if (isLoading || allActivitiesIsLoading) {
