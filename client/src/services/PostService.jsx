@@ -54,6 +54,19 @@ const forgotPasswordRequest = (email) => {
   });
 };
 
+const verifyOtp = (email, otp) => {
+  console.log(email, otp);
+  return api.post(
+    "/reset-password/verify",
+    { email, otp },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+};
+
 const sendMessage = (data) => {
   return api.post("/message", data, {
     headers: {
@@ -89,6 +102,7 @@ export {
   registerUser,
   loginUser,
   forgotPasswordRequest,
+  verifyOtp,
   sendMessage,
   addActivity,
 };

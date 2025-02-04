@@ -18,7 +18,7 @@ const ForgotPassword = () => {
     }
   }, [user, navigate]);
 
-  const [stage, setStage] = useState(2);
+  const [stage, setStage] = useState(1);
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
 

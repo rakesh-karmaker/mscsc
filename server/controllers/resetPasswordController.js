@@ -4,6 +4,7 @@ const sendEmail = require("../utils/sendEmail");
 const generateRandomToken = require("../utils/generateRandomToken");
 const bcrypt = require("bcryptjs");
 const Member = require("../models/Member");
+const { getDate } = require("../utils/getDate");
 
 // Request new OTP
 const sendOTP = async (req, res) => {
@@ -56,12 +57,6 @@ const verifyOtp = async (req, res) => {
     if (Date.now() > expiresAt) {
       await ResetOtp.deleteOne({ email });
       return res.status(400).send({ message: "OTP expired" });
-    }
-
-    //check if otp is already used
-    if (matchedOtp.token) {
-      await ResetOtp.deleteOne({ email });
-      return res.status(400).send({ message: "OTP already used" });
     }
 
     //check if otp is valid
