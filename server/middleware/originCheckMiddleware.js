@@ -1,6 +1,6 @@
 const { getDate } = require("../utils/getDate");
 
-const allowedOrigins = [process.env.APP_URL];
+const allowedOrigins = [process.env.APP_URL, process.env.SERVER_URL];
 
 const originCheckMiddleware = async (req, res, next) => {
   const origin = req.headers.origin;
@@ -9,7 +9,7 @@ const originCheckMiddleware = async (req, res, next) => {
 
   if (!origin) {
     console.log(
-      `----------------------\n${date} - Unauthorized request from  -`,
+      `----------------------\n${date} - Origin header missing  -`,
       data,
       `\n----------------------`
     );
@@ -22,16 +22,12 @@ const originCheckMiddleware = async (req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", origin);
     next();
   } else {
-    if (!data === process.env.SERVER_IP) {
-      console.log(
-        `----------------------\n${date} - Unauthorized request from  -`,
-        data,
-        `\n----------------------`
-      );
-      return res
-        .status(403)
-        .send({ message: "Forbidden: Unauthorized Origin" });
-    }
+    console.log(
+      `----------------------\n${date} - Unauthorized request from  -`,
+      data,
+      `\n----------------------`
+    );
+    return res.status(403).send({ message: "Forbidden: Unauthorized Origin" });
   }
 };
 

@@ -23,14 +23,24 @@ app.use(express.static("public"));
 
 // TODO: remove this when in a paid hosting
 setInterval(() => {
+  const options = {
+    hostname: process.env.SERVER_URL.replace(/^https?:\/\//, ""), // Remove protocol if present
+    port: 443,
+    path: "/",
+    method: "GET",
+    headers: {
+      Origin: process.env.SERVER_URL,
+    },
+  };
+
   https
-    .get(process.env.SERVER_URL, (res) => {
+    .get(options, (res) => {
       console.log("request sent");
     })
     .on("error", (e) => {
       console.error(`Got error: ${e.message}`);
     });
-}, 2 * 60 * 1000); // request every 2 minutes
+}, 2000);
 
 mongoose
   .connect(process.env.MONGO_URI)
