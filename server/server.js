@@ -33,14 +33,10 @@ setInterval(() => {
     },
   };
 
-  https
-    .get(options, (res) => {
-      console.log("request sent");
-    })
-    .on("error", (e) => {
-      console.error(`Got error: ${e.message}`);
-    });
-}, 2000);
+  https.get(options).on("error", (e) => {
+    console.error(`Got error: ${e.message}`);
+  });
+}, 2 * 60 * 1000); // every 2 minutes
 
 mongoose
   .connect(process.env.MONGO_URI)
