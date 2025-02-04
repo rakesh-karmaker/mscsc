@@ -1,12 +1,12 @@
+import ForgotPasswordLayout from "@/layouts/ForgotPasswordLayout";
+import { resetPassword } from "@/services/PostService";
 import { useMutation } from "@tanstack/react-query";
-import { forgotPasswordRequest } from "@/services/PostService";
 import { useForm } from "react-hook-form";
 import InputText from "@/components/UI/InputText/InputText";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import toast from "react-hot-toast";
-import ForgotPasswordLayout from "@/layouts/ForgotPasswordLayout";
 
-const SendOTP = ({ setEmail, setStage }) => {
+const ResetPassword = ({ email, token, setStage }) => {
   const {
     register,
     handleSubmit,
@@ -15,51 +15,54 @@ const SendOTP = ({ setEmail, setStage }) => {
     trigger,
     formState: { errors },
   } = useForm();
-
-  const emailMutation = useMutation({
-    mutationFn: (data) => forgotPasswordRequest({ email: data.email }),
+  const passwordMutation = useMutation({
+    mutationFn: (data) =>
+      resetPassword(data.email, data.token, data.newPassword),
     onSuccess: (res) => {
       toast.success(res.data.message);
-      setEmail(res.data.email);
-      setStage(2);
+      setStage(4);
     },
     onError: (err) => {
-      console.log(err);
       toast.error(err.response.data.message);
-      setError("email", {
+      setError("newPassword", {
         message: err.response.data.message,
       });
     },
   });
 
+  const onSubmit = (data) => {
+    passwordMutation.mutate({ email, newPassword: data.newPassword, token });
+  };
+
   return (
     <ForgotPasswordLayout
-      title="Forgot Password?"
-      description="Enter your email and will send you an OTP to reset your password."
-      stage={1}
+      title="Set new password"
+      description="Enter your new password."
+      image={"/edit.png"}
+      stage={3}
     >
-      <form onSubmit={handleSubmit(emailMutation.mutate)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <InputText
           register={register}
           setValue={setValue}
           trigger={trigger}
-          errors={errors.email}
-          id="email"
-          type="email"
+          errors={errors.newPassword}
+          id="newPassword"
+          type="password"
         >
-          Email
+          New Password
         </InputText>
 
         <SubmitBtn
-          isLoading={emailMutation.isPending}
+          isLoading={passwordMutation.isPending}
           pendingText="Sending OTP"
           width="100%"
         >
-          Send OTP
+          Reset Password
         </SubmitBtn>
       </form>
     </ForgotPasswordLayout>
   );
 };
 
-export default SendOTP;
+export default ResetPassword;

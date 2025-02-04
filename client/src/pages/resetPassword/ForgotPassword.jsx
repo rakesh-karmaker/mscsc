@@ -6,6 +6,9 @@ import SendOTP from "./stages/SendOTP";
 
 import "./ForgotPassword.css";
 import VerifyOTP from "./stages/VerifyOTP";
+import ResetPassword from "./stages/ResetPassword";
+import AllDone from "./stages/AddDone";
+import NotFound from "@/pages/Errors/NotFound";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -29,6 +32,13 @@ const ForgotPassword = () => {
       return (
         <VerifyOTP email={email} setToken={setToken} setStage={setStage} />
       );
+
+    case 3:
+      return <ResetPassword email={email} token={token} setStage={setStage} />;
+    case 4:
+      return <AllDone />;
+    default:
+      return <NotFound />;
   }
 };
 

@@ -3,6 +3,7 @@ import ForgotPasswordLayout from "@/layouts/ForgotPasswordLayout";
 import { useMutation } from "@tanstack/react-query";
 import { forgotPasswordRequest, verifyOtp } from "@/services/PostService";
 import toast from "react-hot-toast";
+import SubmitBtn from "@/components/UI/SubmitBtn";
 
 const VerifyOTP = ({ email, setToken, setStage }) => {
   const [otp, setOtp] = useState(new Array(5).fill(""));
@@ -77,7 +78,7 @@ const VerifyOTP = ({ email, setToken, setStage }) => {
     <ForgotPasswordLayout
       title="Verify OTP"
       description={`We have sent an OTP to ${email}`}
-      image={"/password.png"}
+      stage={2}
     >
       <form onSubmit={handleSubmit}>
         <div className="otp">
@@ -96,9 +97,14 @@ const VerifyOTP = ({ email, setToken, setStage }) => {
           </div>
           {error && <p className="error-message">{error}</p>}
         </div>
-        <button className="primary-button" type="submit">
+
+        <SubmitBtn
+          isLoading={tokenMutation.isPending}
+          pendingText="Verifying"
+          width="100%"
+        >
           Continue
-        </button>
+        </SubmitBtn>
 
         <div className="resend">
           <p>Didn't receive the OTP?</p>

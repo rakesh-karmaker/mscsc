@@ -82,8 +82,13 @@ const Login = () => {
       <div>
         <div className="submission">
           <div className="state-redirect">
-            <p>Don't have an account?</p>
-            <NavLink to="/register">Register</NavLink>
+            <div>
+              <NavLink to="/forgot-password">Forgot Password?</NavLink>
+            </div>
+            <div>
+              <p>Don't have an account?</p>
+              <NavLink to="/register">Register</NavLink>
+            </div>
           </div>
           <SubmitBtn
             isLoading={authMutation.isPending}

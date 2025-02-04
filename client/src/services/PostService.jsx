@@ -55,10 +55,22 @@ const forgotPasswordRequest = (email) => {
 };
 
 const verifyOtp = (email, otp) => {
-  console.log(email, otp);
   return api.post(
     "/reset-password/verify",
     { email, otp },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+};
+
+const resetPassword = (email, token, newPassword) => {
+  console.log(email, token, newPassword);
+  return api.post(
+    "/reset-password/reset",
+    { email, token, newPassword },
     {
       headers: {
         "Content-Type": "application/json",
@@ -103,6 +115,7 @@ export {
   loginUser,
   forgotPasswordRequest,
   verifyOtp,
+  resetPassword,
   sendMessage,
   addActivity,
 };

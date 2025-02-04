@@ -24,6 +24,21 @@
   gap: 2.5rem;
 }
 
+.login-form .state-redirect {
+  margin-top: -15px;
+  width: 100%;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 1.1rem;
+}
+
+.login-form .state-redirect > div {
+  width: 100%;
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
 @media screen and (max-width: 470px) {
   .login-container {
     box-shadow: none;
