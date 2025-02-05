@@ -2,6 +2,7 @@ import EmptyData from "@/components/UI/EmptyData/EmptyData";
 import "./Timeline.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import dateFormat from "@/utils/dateFormat";
 const Timeline = ({ timelineData }) => {
   const tagIcon = (tag) => {
     switch (tag) {
@@ -31,7 +32,7 @@ const Timeline = ({ timelineData }) => {
               </p>
               <p className="timeline-date">
                 <FontAwesomeIcon icon="fa-regular fa-calendar" />{" "}
-                <span>{item.date}</span>
+                <span>{dateFormat(item.date)}</span>
               </p>
             </div>
             <h2 className="timeline-name">{item.title}</h2>

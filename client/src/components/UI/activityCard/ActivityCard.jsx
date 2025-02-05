@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./ActivityCard.css";
 import { Link, NavLink } from "react-router-dom";
+import dateFormat from "@/utils/dateFormat";
 
 const ActivityCard = ({ data, selectedTag, admin, ...rest }) => {
   const { tag, date, coverImageUrl, title, summary, link, _id } = data;
@@ -14,7 +15,7 @@ const ActivityCard = ({ data, selectedTag, admin, ...rest }) => {
           {selectedTag === "" ? <Tag tag={data.tag} /> : ""}
           <p className="activity-date">
             <FontAwesomeIcon icon="fa-regular fa-calendar" />
-            <span>{date}</span>
+            <span>{dateFormat(date)}</span>
           </p>
         </div>
         <h2 className="activity-name">{title}</h2>

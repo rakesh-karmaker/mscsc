@@ -7,6 +7,7 @@ import "./Activity.css";
 import Gallery from "@/components/UI/Gallery/Gallery";
 import { useActivities } from "@/contexts/ActivitiesContext";
 import TextContent from "@/components/UI/TextContent/TextContent";
+import dateFormat from "@/utils/dateFormat";
 
 const Activity = () => {
   const { allActivities, allActivitiesIsLoading } = useActivities();
@@ -56,7 +57,7 @@ const Activity = () => {
             {tag}
           </a>
           <span>/</span>
-          <span className="date">{date}</span>
+          <span className="date">{dateFormat(date)}</span>
         </p>
         <p className="summary">{summary}</p>
         <Gallery title="Gallery" images={gallery} />
@@ -72,7 +73,7 @@ const Activity = () => {
               <li key={act._id} className="other-activity">
                 <Link to={`/activity/${act._id}`}>
                   <p className="other-activity-title">{act.title}</p>
-                  <p className="other-activity-date">{act.date}</p>
+                  <p className="other-activity-date">{dateFormat(act.date)}</p>
                 </Link>
               </li>
             );

@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./AboutProfile.css";
 import { useQueryClient } from "@tanstack/react-query";
 import { useUser } from "@/contexts/UserContext";
+import dateFormat from "@/utils/dateFormat";
 
 const AboutProfile = ({ data, isOwner }) => {
   const socialLink = {
@@ -26,10 +27,9 @@ const AboutProfile = ({ data, isOwner }) => {
       <ContactInformation info={socialLink}>Social Link</ContactInformation>
 
       <div className="about-info">
-        <p className="about-info-header">Basic Information</p>
         <p className="about-basic-info">Account Created:</p>
         <p className="account-date">
-          <span className="dot"></span> {data.createdAt.toString().slice(0, 10)}
+          <span className="dot"></span> {dateFormat(data.createdAt.toString())}
         </p>
       </div>
 
