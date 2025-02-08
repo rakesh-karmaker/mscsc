@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-  getMemberById,
+  getMember,
   editMember,
   getAllMembers,
   verifyUser,
@@ -14,7 +14,7 @@ const router = express.Router();
 // Auth Routes
 router.get("/all", getAllMembers);
 router.get("/", isAuthorized, verifyUser);
-router.get("/:_id", getMemberById);
+router.get("/:slug", getMember);
 router.put("/", isAuthorized, upload.single("image"), editMember);
 router.delete("/", isAuthorized, isAdmin, deleteMember);
 

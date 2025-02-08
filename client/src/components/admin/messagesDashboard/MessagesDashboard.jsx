@@ -75,7 +75,6 @@ const MessagesDashboard = () => {
         </div>
 
         <Dialog data={currentMessage} setData={setCurrentMessage} />
-        <Toaster position="top-right" />
       </div>
     </>
   );

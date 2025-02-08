@@ -6,9 +6,9 @@ import MemberEditDialog from "@/components/admin/membersDashboard/memberEditDial
 
 const MemberCard = ({ member, ...props }) => {
   const navigate = useNavigate();
-  const { _id: id, name, branch, batch, image } = member;
+  const { slug, name, branch, batch, image } = member;
   return (
-    <div onClick={() => navigate(`/member/${id}`)} className="member-card">
+    <div onClick={() => navigate(`/member/${slug}`)} className="member-card">
       <div className="role-icon">
         {member.position !== "member" ? (
           <FontAwesomeIcon icon="fa-solid fa-user-tie" className="admin" />

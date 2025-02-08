@@ -29,8 +29,8 @@ const verifyToken = async () => {
   }
 };
 
-const getUserById = async (id) => {
-  const response = await api.get(`/member/${id}`);
+const getUser = async (slug) => {
+  const response = await api.get(`/member/${slug}`);
   return response.data;
 };
 
@@ -46,9 +46,8 @@ const getAllMembers = (page, limit, search, role, branch) => {
   );
 };
 
-const getActivity = (_id) => {
-  console.log(_id);
-  return api.get(`/activity/${_id}`);
+const getActivity = (slug) => {
+  return api.get(`/activity/${slug}`);
 };
 
 const getAllMessages = (page, limit, search) => {
@@ -57,7 +56,7 @@ const getAllMessages = (page, limit, search) => {
 
 export {
   verifyToken,
-  getUserById,
+  getUser,
   getAllMembers,
   getAllMessages,
   getAllActivities,

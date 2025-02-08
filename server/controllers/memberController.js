@@ -2,7 +2,6 @@ const Member = require("../models/Member");
 const bcrypt = require("bcryptjs");
 const { paginatedResults } = require("../utils/paginatedResults");
 const { uploadImage, deleteImage } = require("../utils/imagekit");
-const { default: mongoose } = require("mongoose");
 const { getDate } = require("../utils/getDate");
 
 // Get All Members
@@ -48,14 +47,14 @@ const verifyUser = async (req, res) => {
   }
 };
 
-const getMemberById = async (req, res) => {
-  const _id = req.params?._id;
-  if (!mongoose.Types.ObjectId.isValid(_id)) {
+const getMember = async (req, res) => {
+  const slug = req.params?.slug;
+  if (!slug) {
     return res.status(400).send({ message: "Invalid request" });
   }
 
   try {
-    const member = await Member.findById(_id.toString()).select("-password");
+    const member = await Member.findOne({ slug }).select("-password");
     if (!member) {
       return res.status(404).send({ message: "Member not found" });
     }
@@ -70,9 +69,9 @@ const getMemberById = async (req, res) => {
 
 const editMember = async (req, res) => {
   try {
-    const { _id: id, ...updates } = req.body;
+    const { slug, ...updates } = req.body;
 
-    const previousUser = await Member.findById(id);
+    const previousUser = await Member.findOne({ slug });
     if (!previousUser)
       return res.status(404).send({ message: "User not found" });
 
@@ -87,7 +86,7 @@ const editMember = async (req, res) => {
     if (updates && updates.timeline) {
       const timeline = JSON.parse(updates.timeline);
       const member = await Member.findOneAndUpdate(
-        { _id: id },
+        { slug },
         { timeline: timeline },
         { new: true }
       ).select("-password");
@@ -109,7 +108,7 @@ const editMember = async (req, res) => {
       updates.password = bcrypt.hashSync(updates.password, 10);
     }
 
-    const user = await Member.findOneAndUpdate({ _id: id }, updates, {
+    const user = await Member.findOneAndUpdate({ slug }, updates, {
       new: true,
     }).select("-password");
 
@@ -127,12 +126,11 @@ const editMember = async (req, res) => {
 };
 
 const deleteMember = async (req, res) => {
-  console.log("delete member");
   try {
-    const id = req.body?._id;
-    if (!id) return res.status(400).send({ message: "Invalid request" });
+    const slug = req.body?.slug;
+    if (!slug) return res.status(400).send({ message: "Invalid request" });
 
-    const member = await Member.findByIdAndDelete(id);
+    const member = await Member.findOneAndDelete({ slug });
     if (!member) return res.status(404).send({ message: "Member not found" });
 
     console.log("Member deleted successfully -", getDate(), "\n---\n");
@@ -146,7 +144,7 @@ const deleteMember = async (req, res) => {
 
 module.exports = {
   verifyUser,
-  getMemberById,
+  getMember,
   editMember,
   getAllMembers,
   deleteMember,

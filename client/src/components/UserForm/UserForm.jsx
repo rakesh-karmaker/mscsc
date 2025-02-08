@@ -23,7 +23,7 @@ const UserForm = (props) => {
     setError,
     setValue,
     trigger,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(props.schema),
     defaultValues: props?.data
@@ -47,7 +47,7 @@ const UserForm = (props) => {
       if (method === "register") {
         return registerUser(data);
       } else {
-        data._id = props.data._id;
+        data.slug = props.data.slug;
         return editUser(data);
       }
     },
@@ -58,7 +58,7 @@ const UserForm = (props) => {
         localStorage.setItem("token", data?.data?.token);
         queryClient.invalidateQueries({ queryKey: ["members"] });
         setUser(data?.data?.member);
-        navigate(`/member/${data?.data?.member?._id}`, { replace: true });
+        navigate(`/member/${data?.data?.member?.slug}`, { replace: true });
       } else {
         queryClient.invalidateQueries({ queryKey: ["user"] });
         window.scrollTo(0, 0);

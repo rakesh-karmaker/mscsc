@@ -21,16 +21,16 @@ api.interceptors.request.use(
   }
 );
 
-const deleteMember = (id) => {
-  return api.delete("/member", { data: id });
+const deleteMember = (slug) => {
+  return api.delete("/member", { data: slug });
 };
 
 const deleteMessage = (id) => {
   return api.delete("/message", { data: id });
 };
 
-const deleteActivity = (_id) => {
-  return api.delete("/activity", { data: { _id: _id } });
+const deleteActivity = (slug) => {
+  return api.delete("/activity", { data: { slug: slug } });
 };
 
 export { deleteMember, deleteMessage, deleteActivity };

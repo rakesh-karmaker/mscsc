@@ -58,7 +58,7 @@ const TableRow = ({ row, headers, ...rest }) => {
   );
 };
 
-const getTableCell = (row, header, { onViewClick, onDelete }) => {
+const getTableCell = (row, header, { onViewClick, onDelete, ...rest }) => {
   switch (header.key) {
     case "social":
       return (

@@ -19,6 +19,7 @@ const DeleteBtn = ({ id, deleteFunc, btnText, children, ...rest }) => {
               className="primary-button"
               onClick={(e) => {
                 e.stopPropagation();
+                e.preventDefault();
                 deleteDialog.current.close();
                 setIsOpen(false);
               }}
@@ -30,7 +31,8 @@ const DeleteBtn = ({ id, deleteFunc, btnText, children, ...rest }) => {
               className="danger-button primary-button"
               onClick={(e) => {
                 e.stopPropagation();
-                deleteFunc(id);
+                e.preventDefault();
+                deleteFunc(rest?.slug ?? id);
                 deleteDialog.current.close();
                 setIsOpen(false);
               }}
@@ -46,6 +48,7 @@ const DeleteBtn = ({ id, deleteFunc, btnText, children, ...rest }) => {
         type="button"
         onClick={(e) => {
           e.stopPropagation();
+          e.preventDefault();
           deleteDialog.current.show();
           setIsOpen(true);
         }}

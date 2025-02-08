@@ -4,7 +4,7 @@ const {
   addActivity,
   editActivity,
   deleteActivity,
-  getActivityById,
+  getActivity,
 } = require("../controllers/activityController");
 const { isAdmin, isAuthorized } = require("../middleware/authMiddleware");
 const upload = require("../middleware/multer");
@@ -13,7 +13,7 @@ const router = express.Router();
 
 // Event Routes
 router.get("/", getAllActivities);
-router.get("/:_id", getActivityById);
+router.get("/:slug", getActivity);
 router.post(
   "/",
   isAuthorized,

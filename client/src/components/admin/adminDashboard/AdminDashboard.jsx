@@ -1,54 +1,29 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import "./AdminDashboard.css";
+import { NavLink } from "react-router-dom";
 import { useMember } from "@/contexts/MembersContext";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { editUser } from "@/services/PutService";
-import { deleteMember } from "@/services/DeleteService";
-import Table from "@/components/UI/Table/Table";
-
-import toast from "react-hot-toast";
 import DashboardTagsContainer from "@/components/admin/components/DashboadTags/DashboardTags";
 import DashboardHeader from "@/components/admin/components/DashboardHeader/DashboardHeader";
 import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useMessages } from "@/components/admin/contexts/MessagesContext";
+import {
+  MemberList,
+  MessagesList,
+} from "@/components/admin/components/Lists/Lists";
+import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const memberMutation = useMutation({
-    mutationFn: (data) => {
-      const { isDelete, ...rest } = data;
-      if (isDelete) {
-        return deleteMember(rest);
-      } else {
-        return editUser(rest);
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries("members");
-      toast.success("Operation Completed");
-    },
-    onError: (err) => {
-      console.log(err);
-      toast.error("Operation failed!");
-    },
-  });
-
-  const { response, members, setSearch } = useMember();
-
-  const onViewClick = (id, isNew) => {
-    if (isNew) {
-      memberMutation.mutate({ new: false, _id: id, isDelete: false });
-    }
-    navigate(`/member/${id}`);
-  };
-
-  const onDelete = (id) => {
-    memberMutation.mutate({ _id: id, isDelete: true });
-  };
+  const { response, members, setSearch, setPage } = useMember();
+  const {
+    messages,
+    setSearch: messagesSearch,
+    setPage: messagesPage,
+  } = useMessages();
 
   useEffect(() => {
     setSearch("");
+    setPage(1);
+    messagesSearch("");
+    messagesPage(1);
   }, []);
 
   return (
@@ -63,57 +38,13 @@ const AdminDashboard = () => {
           adminLength={response?.adminLength}
         />
       </div>
-      <div className="members-example-table">
-        <Table
-          headers={memberTableHeader}
-          data={members?.slice(0, 6)}
-          onViewClick={onViewClick}
-          onDelete={onDelete}
-          needPagination={false}
-        />
+      <div className="dashboard-lists">
+        <MemberList members={members} />
+        <MessagesList messages={messages} />
       </div>
     </>
   );
 };
-
-const memberTableHeader = [
-  {
-    title: "Name",
-    key: "name",
-    break: false,
-  },
-  {
-    title: "Batch",
-    key: "batch",
-    break: false,
-  },
-  {
-    title: "Branch",
-    key: "branch",
-    break: true,
-  },
-  {
-    title: "Reference",
-    key: "reference",
-    break: true,
-  },
-  {
-    title: "Social Link",
-    key: "social",
-    break: false,
-  },
-  {
-    title: "Profile",
-    key: "btn",
-    break: false,
-  },
-  {
-    title: "Action",
-    key: "btn",
-    action: "delete",
-    break: false,
-  },
-];
 
 const QuickAccess = () => {
   const quickAccessData = [

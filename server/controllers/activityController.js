@@ -1,4 +1,5 @@
 const Activity = require("../models/Activity");
+const generateSlug = require("../utils/generateSlug");
 const { getDate } = require("../utils/getDate");
 const {
   uploadImage,
@@ -37,13 +38,10 @@ exports.getAllActivities = async (req, res) => {
   }
 };
 
-exports.getActivityById = async (req, res) => {
+exports.getActivity = async (req, res) => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(req.params._id)) {
-      return res.status(400).send({ message: "Invalid request" });
-    }
-
-    const activity = await Activity.findById(req.params._id);
+    const { slug } = req.params;
+    const activity = await Activity.findOne({ slug });
     if (!activity) {
       return res.status(404).send({ message: "Activity not found" });
     }
@@ -59,7 +57,6 @@ exports.getActivityById = async (req, res) => {
 exports.addActivity = async (req, res) => {
   try {
     const { files, body } = req;
-    console.log(files, body);
     if (!files || !body) {
       return res.status(400).send({ message: "Invalid request" });
     }
@@ -70,6 +67,11 @@ exports.addActivity = async (req, res) => {
         message: validationError.details[0].message,
       });
     }
+
+    body.title = body.title.trim();
+    // generate the activity slug
+    const slug = await generateSlug(body.title, Activity);
+    body.slug = slug;
 
     const { url, imgId } = await uploadImage(res, files.activityImage[0], true);
     body.coverImageUrl = url;
@@ -91,7 +93,7 @@ exports.addActivity = async (req, res) => {
 // Edit Activity
 exports.editActivity = async (req, res) => {
   try {
-    const { _id, ...updates } = req.body;
+    const { slug, ...updates } = req.body;
     const { error: validationResult } = activitySchema.validate(updates);
     if (validationResult) {
       return res
@@ -100,7 +102,7 @@ exports.editActivity = async (req, res) => {
     }
 
     if (req?.files) {
-      const previousActivity = await Activity.findById(_id);
+      const previousActivity = await Activity.findOne({ slug });
       if (!previousActivity) {
         return res.status(404).send({ message: "Activity not found" });
       }
@@ -125,7 +127,7 @@ exports.editActivity = async (req, res) => {
       }
     }
 
-    const activity = await Activity.findByIdAndUpdate(_id, updates, {
+    const activity = await Activity.findOneAndUpdate({ slug }, updates, {
       new: true,
     });
     if (!activity) {
@@ -142,8 +144,8 @@ exports.editActivity = async (req, res) => {
 // Delete Activity
 exports.deleteActivity = async (req, res) => {
   try {
-    const id = req.body._id;
-    const activity = await Activity.findByIdAndDelete(id);
+    const slug = req.body.slug;
+    const activity = await Activity.findOneAndDelete({ slug });
     if (!activity) {
       return res.status(404).send({ message: "Activity not found" });
     }

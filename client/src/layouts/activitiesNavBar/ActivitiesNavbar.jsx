@@ -3,7 +3,7 @@ import ActivityNavLink from "@/layouts/activitiesNavBar/ActivityNavLink";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./ActivitiesNavBar.css";
 
-const ActivitiesNavbar = ({ tag, setTag, search, setSearch }) => {
+const ActivitiesNavbar = ({ tag, setTag, search, setSearch, ...rest }) => {
   const capitalizeName = tag.charAt(0).toUpperCase() + tag.slice(1) + "s";
   const icons = {
     Event: "fa-regular fa-calendar-days",
@@ -30,6 +30,7 @@ const ActivitiesNavbar = ({ tag, setTag, search, setSearch }) => {
                 active={tag === icon}
                 setTag={setTag}
                 search={search}
+                {...rest}
               >
                 <FontAwesomeIcon icon={icons[icon]} />
               </ActivityNavLink>

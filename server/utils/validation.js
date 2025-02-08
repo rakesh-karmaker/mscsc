@@ -33,10 +33,20 @@ const activitySchema = Joi.object({
   content: Joi.string().required(),
 });
 
+const taskSchema = Joi.object({
+  name: Joi.string().required(),
+  summary: Joi.string().required(),
+  instructions: Joi.string().required(),
+  champion: Joi.string(),
+  deadline: Joi.date().required(),
+  taskType: Joi.string().required(),
+});
+
 // Add more schemas as needed
 module.exports = {
   registerSchema,
   executiveSchema,
   messageSchema,
   activitySchema,
+  taskSchema,
 };

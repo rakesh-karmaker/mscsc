@@ -45,9 +45,9 @@ const ActivityForm = (props) => {
       if (method == "add") {
         return addActivity(rest);
       } else if (method == "delete") {
-        return deleteActivity(rest._id);
+        return deleteActivity(rest.slug);
       } else if (method == "edit") {
-        rest._id = props.defaultValues._id;
+        rest.slug = props.defaultValues.slug;
         return editActivity(rest);
       }
     },
@@ -65,21 +65,18 @@ const ActivityForm = (props) => {
   });
 
   const onSubmit = async (data) => {
-    console.log(data, "data");
     activityMutation.mutate({
       method: props?.defaultValues ? "edit" : "add",
       ...data,
     });
   };
 
-  const onDelete = (_id) => {
+  const onDelete = (slug) => {
     activityMutation.mutate({
       method: "delete",
-      _id: _id,
+      slug: slug,
     });
   };
-
-  console.log(props?.defaultValues?.content, "content");
 
   return (
     <div>
@@ -144,7 +141,7 @@ const ActivityForm = (props) => {
           </SubmitBtn>
           {props?.defaultValues && (
             <DeleteBtn
-              id={props.defaultValues._id}
+              id={props.defaultValues.slug}
               deleteFunc={onDelete}
               btnText="Delete Activity"
               title="Delete Activity"

@@ -46,6 +46,7 @@ const editMessage = async (req, res) => {
     if (!message) {
       return res.status(404).send({ message: "Message not found" });
     }
+    res.status(200).send({ message: "Message updated" });
   } catch (err) {
     console.log("Error updating message - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: err.message });

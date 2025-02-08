@@ -11,14 +11,14 @@ import dateFormat from "@/utils/dateFormat";
 
 const Activity = () => {
   const { allActivities, allActivitiesIsLoading } = useActivities();
-  const { id } = useParams();
+  const { slug } = useParams();
   const {
     data: activityData,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["activity", id],
-    queryFn: () => getActivity(id),
+    queryKey: ["activity", slug],
+    queryFn: () => getActivity(slug),
     refetchOnWindowFocus: false,
     retry: 0,
   });
@@ -71,7 +71,7 @@ const Activity = () => {
           {filteredActivities.map((act) => {
             return (
               <li key={act._id} className="other-activity">
-                <Link to={`/activity/${act._id}`}>
+                <Link to={`/activity/${act.slug}`}>
                   <p className="other-activity-title">{act.title}</p>
                   <p className="other-activity-date">{dateFormat(act.date)}</p>
                 </Link>

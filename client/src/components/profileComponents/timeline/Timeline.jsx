@@ -4,12 +4,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import dateFormat from "@/utils/dateFormat";
 const Timeline = ({ timelineData }) => {
+  if (timelineData.length === 0) {
+    return <EmptyData style={{ marginTop: "3rem" }} />;
+  }
+
+  const sortedTimelineData = timelineData.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB - dateA;
+  });
+
   const tagIcon = (tag) => {
     switch (tag) {
       case "Project":
         return <FontAwesomeIcon icon="fa-solid fa-project-diagram" />;
-      case "Article":
-        return <FontAwesomeIcon icon="fa-regular fa-newspaper" />;
+      case "Competition":
+        return <FontAwesomeIcon icon="fa-solid fa-medal" />;
       case "Certificate":
         return <FontAwesomeIcon icon="fa-solid fa-certificate" />;
       default:
@@ -17,13 +27,9 @@ const Timeline = ({ timelineData }) => {
     }
   };
 
-  if (timelineData.length === 0) {
-    return <EmptyData style={{ marginTop: "3rem" }} />;
-  }
-
   return (
     <div className="timeline-container">
-      {timelineData.map((item) => {
+      {sortedTimelineData.map((item) => {
         return (
           <div className="timeline" key={item.title}>
             <div>

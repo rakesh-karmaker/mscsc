@@ -23,6 +23,11 @@ exports.register = async (req, res) => {
       });
     }
 
+    // generate the member slug
+    const slug = await generateSlug(body.name, Member);
+    body.slug = slug;
+    body.name = body.name.trim();
+
     const { url, imgId } = await uploadImage(res, file);
     if (!url) {
       throw new Error("No image URL found");

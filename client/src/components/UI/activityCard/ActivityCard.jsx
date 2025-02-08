@@ -4,7 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 import dateFormat from "@/utils/dateFormat";
 
 const ActivityCard = ({ data, selectedTag, admin, ...rest }) => {
-  const { tag, date, coverImageUrl, title, summary, link, _id } = data;
+  const { tag, date, coverImageUrl, title, summary, slug } = data;
 
   return (
     <div className="activity" tag={tag}>
@@ -22,7 +22,7 @@ const ActivityCard = ({ data, selectedTag, admin, ...rest }) => {
         <p className="secondary-text activity-summary">{summary}</p>
         <div className="activity-actions">
           <NavLink
-            to={"/activity/" + _id}
+            to={"/activity/" + slug}
             className="primary-button"
             aria-label={`Learn more about ${title} - ${tag} on ${date} at our Facebook page.`}
           >

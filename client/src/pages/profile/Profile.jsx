@@ -6,18 +6,17 @@ import Timeline from "@/components/profileComponents/timeline/Timeline";
 import UserForm from "@/components/UserForm/UserForm";
 import "./Profile.css";
 import TimelineInputs from "@/components/UI/TimelineInputs/TimelineInputs";
-import { getUserById } from "@/services/GetService";
+import { getUser } from "@/services/GetService";
 import { MemberProfileEditSchema } from "@/utils/MemberSchemaValidation";
 import { useQuery } from "@tanstack/react-query";
-import useErrorNavigator from "@/hooks/useErrorNavigator";
 import Loader from "@/components/UI/Loader/Loader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ProfileDetails from "@/components/profileComponents/profileDetails/ProfileDetails";
 
 const ProfilePage = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const { user } = useUser();
-  const isOwner = user?._id === id;
+  const isOwner = user?.slug === slug;
   const [isEditing, setIsEditing] = useState(false);
   useEffect(() => {
     setIsEditing(false);
@@ -28,12 +27,12 @@ const ProfilePage = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["profile", id, user],
+    queryKey: ["profile", slug, user],
     queryFn: () => {
-      if (user && user._id === id) {
+      if (user && user.slug === slug) {
         return user;
       } else {
-        return getUserById(id);
+        return getUser(slug);
       }
     },
     refetchOnWindowFocus: false,
@@ -102,6 +101,7 @@ const ProfilePage = () => {
                       <TimelineInputs
                         timeline={profileData.timeline}
                         user={user}
+                        setIsEditing={setIsEditing}
                       />
                     </>
                   )

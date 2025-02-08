@@ -165,7 +165,7 @@
 @media screen and (max-width: 1530px) {
   #sidebar {
     transform: translateX(-100%);
-    transition: 0.25s;
+    transition: transform 0.25s;
   }
   .sidebar-active {
     transform: translateX(0) !important;

@@ -10,7 +10,7 @@ const MembersContainer = ({ members, length, page, setPage, ...props }) => {
         {members?.map((member) => {
           return (
             <MemberCard
-              key={member._id + member.name}
+              key={member._id + member.slug}
               member={member}
               {...props}
             />

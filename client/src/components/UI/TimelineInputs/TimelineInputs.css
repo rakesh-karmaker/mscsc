@@ -59,19 +59,27 @@
   display: flex;
   flex-direction: column;
   gap: 25px;
-  transform-origin: top;
-  transform: scaleY(0);
-  transition: 0.25s;
-  height: 0px;
+  /* transform-origin: top; */
+  /* transform: scaleY(0); */
+  transition: 0.35s max-height;
+  /* height: 0px; */
+  overflow: hidden;
+  max-height: 0px;
 }
 
 .timeline-input-fields.active {
-  transform: scaleY(1);
-  height: fit-content;
+  max-height: 500px;
+  padding-top: 20px;
 }
 
 .timeline-submit {
   width: fit-content;
   background-color: var(--highlighted-color) !important;
   color: var(--text-white) !important;
+}
+
+@media screen and (max-width: 400px) {
+  .timeline-input-fields.active {
+    max-height: 600px;
+  }
 }

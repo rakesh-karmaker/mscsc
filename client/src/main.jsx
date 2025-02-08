@@ -73,7 +73,7 @@ const router = createBrowserRouter([
           { path: "/activities", element: <Activities /> },
 
           {
-            path: "/activity/:id",
+            path: "/activity/:slug",
             element: <Activity />,
             errorElement: <NotFound />,
           },
@@ -95,7 +95,7 @@ const router = createBrowserRouter([
           { path: "/terms-of-service", element: <TermsOfService /> },
 
           {
-            path: "/member/:id",
+            path: "/member/:slug",
             element: <Profile />,
             errorElement: <NotFound />,
           },

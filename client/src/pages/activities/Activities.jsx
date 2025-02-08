@@ -50,6 +50,7 @@ const Activities = ({ admin, ...rest }) => {
           setTag={setTag}
           search={search}
           setSearch={setSearch}
+          admin={admin}
         />
         <section className="activities-container">
           {isLoading ? (
