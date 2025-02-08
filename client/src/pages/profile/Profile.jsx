@@ -14,9 +14,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ProfileDetails from "@/components/profileComponents/profileDetails/ProfileDetails";
 
 const ProfilePage = () => {
-  const { slug } = useParams();
+  const { username } = useParams();
   const { user } = useUser();
-  const isOwner = user?.slug === slug;
+  const isOwner = user?.slug === username;
   const [isEditing, setIsEditing] = useState(false);
   useEffect(() => {
     setIsEditing(false);
@@ -27,12 +27,12 @@ const ProfilePage = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["profile", slug, user],
+    queryKey: ["profile", username, user],
     queryFn: () => {
-      if (user && user.slug === slug) {
+      if (user && user.slug === username) {
         return user;
       } else {
-        return getUser(slug);
+        return getUser(username);
       }
     },
     refetchOnWindowFocus: false,

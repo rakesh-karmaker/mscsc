@@ -6,13 +6,23 @@ const {
   submitTask,
   editSubmission,
   deleteSubmission,
+  makeChampion,
+  deleteChampion,
+  deleteTask,
+  getAllTasks,
+  getTask,
 } = require("../controllers/taskController");
 const router = express.Router();
 
+router.get("/", getAllTasks);
+router.get("/:slug", getTask);
 router.post("/create", createTask);
-router.post("/edit-task", editTask);
+router.put("/edit-task", editTask);
+router.delete("/delete-task", deleteTask);
 router.post("/submit", submitTask);
-router.post("/edit-submission", editSubmission);
+router.put("/edit-submission", editSubmission);
 router.delete("/delete-submission", deleteSubmission);
+router.put("/make-champion", makeChampion);
+router.delete("/delete-champion", deleteChampion);
 
 module.exports = router;

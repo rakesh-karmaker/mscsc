@@ -16,6 +16,11 @@ const MemberSchema = new mongoose.Schema(
     timeline: {
       type: [
         {
+          taskId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Task",
+            default: null,
+          },
           tag: { type: String },
           date: { type: String },
           title: { type: String },

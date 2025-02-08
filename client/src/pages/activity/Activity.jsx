@@ -11,14 +11,14 @@ import dateFormat from "@/utils/dateFormat";
 
 const Activity = () => {
   const { allActivities, allActivitiesIsLoading } = useActivities();
-  const { slug } = useParams();
+  const { activityName } = useParams();
   const {
     data: activityData,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["activity", slug],
-    queryFn: () => getActivity(slug),
+    queryKey: ["activity", activityName],
+    queryFn: () => getActivity(activityName),
     refetchOnWindowFocus: false,
     retry: 0,
   });

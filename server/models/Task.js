@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const SubmissionSchema = new mongoose.Schema({
-  memberId: { type: mongoose.Schema.Types.ObjectId, ref: "Member" },
+  username: { type: String, unique: true },
   memberName: { type: String },
   memberEmail: { type: String },
   memberBatch: { type: String },
@@ -20,8 +20,7 @@ const TaskSchema = new mongoose.Schema(
     instructions: { type: String, required: true },
     deadline: { type: Date, required: true },
     champion: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Task.submission",
+      type: String,
       default: null,
     },
     taskType: {
