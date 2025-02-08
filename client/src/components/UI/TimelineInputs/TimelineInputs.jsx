@@ -53,7 +53,7 @@ const TimelineInputs = ({ timeline, user, setIsEditing }) => {
 
   const timelineMutation = useMutation({
     mutationFn: (data) => {
-      data._id = user._id;
+      data.slug = user.slug;
       return editUser(data);
     },
     onSuccess: () => {

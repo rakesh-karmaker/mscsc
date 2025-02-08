@@ -32,9 +32,9 @@ const Login = () => {
         const token = res?.data?.token;
         localStorage.setItem("token", token);
         setUser(res?.data?.member);
-        const id = res?.data?.member?._id;
+        const username = res?.data?.member?.slug;
         setTimeout(() => {
-          navigate(`/member/${id}`, { replace: true });
+          navigate(`/member/${username}`, { replace: true });
         }, 0);
         toast.success("Login successful!");
       }
