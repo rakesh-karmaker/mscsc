@@ -41,6 +41,7 @@ import { UserProvider } from "@/contexts/UserContext.jsx";
 import { MemberProvider } from "@/contexts/MembersContext";
 import { MessagesProvider } from "@/components/admin/contexts/MessagesContext";
 import { ActivitiesProvider } from "@/contexts/ActivitiesContext";
+import { TaskProvider } from "./contexts/TasksContext";
 
 //layouts
 import UserLayout from "@/layouts/UserLayout";
@@ -55,7 +56,9 @@ const router = createBrowserRouter([
     element: (
       <ActivitiesProvider>
         <MemberProvider>
-          <App />
+          <TaskProvider>
+            <App />
+          </TaskProvider>
         </MemberProvider>
       </ActivitiesProvider>
     ),

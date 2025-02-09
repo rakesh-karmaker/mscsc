@@ -5,15 +5,13 @@ import Loader from "@/components/UI/Loader/Loader";
 
 import "./Activity.css";
 import Gallery from "@/components/UI/Gallery/Gallery";
-import { useActivities } from "@/contexts/ActivitiesContext";
 import TextContent from "@/components/UI/TextContent/TextContent";
 import dateFormat from "@/utils/dateFormat";
 
 const Activity = () => {
-  const { allActivities, allActivitiesIsLoading } = useActivities();
   const { activityName } = useParams();
   const {
-    data: activityData,
+    data: response,
     isLoading,
     error,
   } = useQuery({
@@ -27,7 +25,7 @@ const Activity = () => {
     throw Error("Failed to fetch activity");
   }
 
-  if (isLoading || allActivitiesIsLoading) {
+  if (isLoading) {
     return (
       <div style={{ height: "100vh" }} className="row-center">
         <Loader />
@@ -35,12 +33,10 @@ const Activity = () => {
     );
   }
 
-  const { tag, date, title, summary, coverImageUrl, gallery, content, _id } =
-    activityData.data;
+  const { tag, date, title, summary, coverImageUrl, gallery, content } =
+    response?.data?.activity;
 
-  const filteredActivities = allActivities
-    .filter((act) => act.tag === tag && act._id !== _id)
-    .slice(0, window.innerWidth > 1080 ? 7 : 5);
+  const others = response?.data?.sameTags;
 
   return (
     <main className="page-activity">
@@ -68,9 +64,9 @@ const Activity = () => {
       <aside className="others">
         <p className="others-title">Other {tag}s</p>
         <ul className="others-container">
-          {filteredActivities.map((act) => {
+          {others?.map((act) => {
             return (
-              <li key={act._id} className="other-activity">
+              <li key={act.slug} className="other-activity">
                 <Link to={`/activity/${act.slug}`}>
                   <p className="other-activity-title">{act.title}</p>
                   <p className="other-activity-date">{dateFormat(act.date)}</p>

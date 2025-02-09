@@ -173,9 +173,9 @@ const TimelineInputs = ({ timeline, user, setIsEditing }) => {
       <button
         type="submit"
         className="timeline-submit"
-        disabled={fields.length === 0 || isSubmitting}
+        disabled={fields.length === 0 || timelineMutation.isPending}
       >
-        {isSubmitting ? "Submitting..." : "Submit Timeline"}
+        {timelineMutation.isPending ? "Submitting..." : "Submit Timeline"}
       </button>
     </form>
   );

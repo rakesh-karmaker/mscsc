@@ -202,6 +202,12 @@ const submitTask = async (req, res) => {
       { new: true }
     );
 
+    // add the submission into the member's profile
+    member.submissions.push({
+      taskId: updatedTask._id,
+    });
+    await member.save();
+
     console.log(
       member.name,
       "submitted a task successfully -",
@@ -276,7 +282,7 @@ const deleteSubmission = async (req, res) => {
     const { slug, username, posterId } = req.body;
 
     // validate the request
-    if (!slug || !username) {
+    if (!slug || !username || !posterId) {
       return res.status(400).send({ message: "Invalid request" });
     }
 
@@ -293,6 +299,16 @@ const deleteSubmission = async (req, res) => {
 
     if (!updatedSubmission) {
       return res.status(404).send({ message: "Submission not found" });
+    }
+
+    // delete submission from the member's profile
+    const member = await Member.findOne({ slug: username });
+    if (member) {
+      await Member.findOneAndUpdate(
+        { slug: username },
+        { $pull: { submissions: { taskId: updatedSubmission._id } } },
+        { new: true }
+      );
     }
 
     console.log("Submission deleted successfully -", getDate(), "\n---\n");

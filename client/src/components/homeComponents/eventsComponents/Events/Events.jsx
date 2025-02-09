@@ -12,12 +12,11 @@ gsap.registerPlugin(ScrollTrigger);
 import "./Events.css";
 import Loader from "@/components/UI/Loader/Loader";
 
-const Events = ({ activities, isLoading }) => {
+const Events = ({ events, isLoading }) => {
   const eventStatuses = ["happened", "all", "upcoming"];
   const [status, setStatus] = useState("all");
   const eventSwiperRef = useRef(null);
-  const [filteredActivities, setFilteredActivities] = useState([]);
-  const [events, setEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
 
   useGSAP(() => {
     gsap.fromTo(
@@ -36,29 +35,20 @@ const Events = ({ activities, isLoading }) => {
   });
 
   useEffect(() => {
-    const filteredData = activities
-      ?.filter((event) => event.tag === "Event" || event.tag === "Workshop")
-      .slice(0, 8);
-
-    setFilteredActivities(filteredData);
-    setEvents(filteredData);
-  }, [activities]);
-
-  useEffect(() => {
     if (status === "all") {
-      setEvents(filteredActivities);
+      setFilteredEvents(events);
     } else if (status === "happened") {
-      const filteredByStatusData = filteredActivities?.filter(
+      const filteredByStatusData = events?.filter(
         (event) => new Date(event.date) < new Date()
       );
-      setEvents(filteredByStatusData);
+      setFilteredEvents(filteredByStatusData);
     } else if (status === "upcoming") {
-      const filteredByStatusData = filteredActivities?.filter(
+      const filteredByStatusData = events?.filter(
         (event) => new Date(event.date) > new Date()
       );
-      setEvents(filteredByStatusData);
+      setFilteredEvents(filteredByStatusData);
     }
-  }, [status, filteredActivities]);
+  }, [status, events]);
 
   return (
     <section id="events" className="page-section col-center">
@@ -88,7 +78,11 @@ const Events = ({ activities, isLoading }) => {
         </div>
 
         <div ref={eventSwiperRef} className="events-container">
-          {isLoading ? <Loader /> : <EventSwiper filteredEvents={events} />}
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <EventSwiper filteredEvents={filteredEvents} />
+          )}
         </div>
       </div>
     </section>

@@ -19,21 +19,46 @@ exports.getAllActivities = async (req, res) => {
     };
     const sorted = { date: -1 };
 
-    if (req.query.limit === "all") {
-      const activities = await Activity.find().sort({ ...sorted });
-      res.status(200).send(activities);
-    } else {
-      const activities = await paginatedResults(
-        req,
-        res,
-        Activity,
-        regex,
-        sorted
-      );
-      res.status(200).send(activities);
-    }
+    const activities = await paginatedResults(
+      req,
+      res,
+      Activity,
+      regex,
+      sorted
+    );
+    res.status(200).send(activities);
   } catch (err) {
     console.log("Error fetching all activities - ", getDate(), "\n---\n", err);
+    res.status(500).send({ message: "Server error", error: err.message });
+  }
+};
+
+// get all events
+exports.getAllEvents = async (req, res) => {
+  try {
+    const events = await Activity.find({
+      $or: [{ tag: "Event" }, { tag: "Workshop" }],
+    })
+      .sort({ date: -1 })
+      .limit(8)
+      .select("-gallery" + " -content" + " -coverImageId");
+    res.status(200).send(events);
+  } catch (err) {
+    console.log("Error fetching all events - ", getDate(), "\n---\n", err);
+    res.status(500).send({ message: "Server error", error: err.message });
+  }
+};
+
+// get all articles
+exports.getAllArticles = async (req, res) => {
+  try {
+    const articles = await Activity.find({ tag: "Article" })
+      .sort({ date: -1 })
+      .limit(3)
+      .select("-gallery" + " -content" + " -coverImageId");
+    res.status(200).send(articles);
+  } catch (err) {
+    console.log("Error fetching all articles - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
@@ -46,7 +71,22 @@ exports.getActivity = async (req, res) => {
       return res.status(404).send({ message: "Activity not found" });
     }
 
-    res.status(200).send(activity);
+    const sameTags = await Activity.find({ tag: activity.tag })
+      .limit(10)
+      .select(
+        "-gallery" +
+          " -content" +
+          " -coverImageId" +
+          " -coverImageUrl" +
+          " -summary" +
+          " -tag" +
+          " -_id" +
+          " -createdAt" +
+          " -updatedAt" +
+          " -__v"
+      );
+
+    res.status(200).send({ activity, sameTags });
   } catch (err) {
     console.log("Error fetching activity - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });

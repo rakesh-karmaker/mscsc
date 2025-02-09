@@ -12,15 +12,7 @@ import ArticleCard from "@/components/homeComponents/articlesComponents/ArticleC
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
 
-const Articles = ({ activities, isLoading }) => {
-  const [articles, setArticles] = useState([]);
-  useEffect(() => {
-    const filteredData = activities
-      ?.filter((event) => event.tag === "Article")
-      .slice(0, 3);
-    setArticles(filteredData);
-  }, [activities]);
-
+const Articles = ({ articles, isLoading }) => {
   useGSAP(() => {
     gsap.fromTo(
       ".articles-container",
@@ -36,6 +28,7 @@ const Articles = ({ activities, isLoading }) => {
       }
     );
   });
+
   return (
     <section id="articles" className="page-section col-center">
       <SectionHeader

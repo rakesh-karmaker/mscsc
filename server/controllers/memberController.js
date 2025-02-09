@@ -47,6 +47,7 @@ const verifyUser = async (req, res) => {
   }
 };
 
+// Get Member
 const getMember = async (req, res) => {
   const slug = req.params?.slug;
   if (!slug) {
@@ -67,6 +68,32 @@ const getMember = async (req, res) => {
   }
 };
 
+// Get top submitters
+const getTopSubmitters = async (req, res) => {
+  try {
+    const members = await Member.find();
+    const topSubmitters = members
+      .map((member) => ({
+        name: member.name,
+        branch: member.branch,
+        batch: member.batch,
+        slug: member.slug,
+        image: member.image,
+        tasksCompleted: member.submissions ? member.submissions.length : 0,
+      }))
+      .sort((a, b) => b.tasksCompleted - a.tasksCompleted)
+      .slice(0, 10); // Adjust the number of top members you want to retrieve
+
+    console.log(topSubmitters);
+
+    res.status(200).send(topSubmitters);
+  } catch (err) {
+    console.log("Error fetching top submitters - ", getDate(), "\n---\n", err);
+    res.status(500).send({ message: "Server error", error: err.message });
+  }
+};
+
+// Edit User
 const editMember = async (req, res) => {
   try {
     const { slug, ...updates } = req.body;
@@ -147,5 +174,6 @@ module.exports = {
   getMember,
   editMember,
   getAllMembers,
+  getTopSubmitters,
   deleteMember,
 };

@@ -14,15 +14,17 @@ const {
 } = require("../controllers/taskController");
 const router = express.Router();
 
-router.get("/", getAllTasks);
-router.get("/:slug", getTask);
-router.post("/create", createTask);
-router.put("/edit-task", editTask);
-router.delete("/delete-task", deleteTask);
-router.post("/submit", submitTask);
-router.put("/edit-submission", editSubmission);
-router.delete("/delete-submission", deleteSubmission);
-router.put("/make-champion", makeChampion);
-router.delete("/delete-champion", deleteChampion);
+router.get("/", isAuthorized, getAllTasks);
+router.get("/:slug", isAuthorized, getTask);
+router.post("/create", isAuthorized, isAdmin, createTask);
+router.put("/edit-task", isAuthorized, isAdmin, editTask);
+router.delete("/delete-task", isAuthorized, isAdmin, deleteTask);
+
+router.post("/submit", isAuthorized, submitTask);
+router.put("/edit-submission", isAuthorized, editSubmission);
+router.delete("/delete-submission", isAuthorized, deleteSubmission);
+
+router.put("/make-champion", isAuthorized, isAdmin, makeChampion);
+router.delete("/delete-champion", isAuthorized, isAdmin, deleteChampion);
 
 module.exports = router;

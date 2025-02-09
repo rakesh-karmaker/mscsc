@@ -5,19 +5,44 @@ import Articles from "@/components/homeComponents/articlesComponents/Articles/Ar
 import HomeEcs from "@/components/homeComponents/homeExecutivesComponents/HomeEcs";
 import Contact from "@/components/contactComponents/ContactSection";
 import executivesData from "@/services/api/executivesData";
-import { useActivities } from "@/contexts/ActivitiesContext";
+import { useQuery } from "@tanstack/react-query";
+import { getArticles, getEvents } from "@/services/GetService";
+import useErrorNavigator from "@/hooks/useErrorNavigator";
 
 const Home = () => {
-  const { allActivities: activities, allActivitiesIsLoading: isLoading } =
-    useActivities();
+  const {
+    data: eventsData,
+    isLoading: eventsLoading,
+    error: eventsError,
+    isError: eventsIsError,
+  } = useQuery({
+    queryKey: ["events"],
+    queryFn: getEvents,
+  });
+
+  useErrorNavigator(eventsIsError, eventsError);
+  const events = eventsData?.data || [];
+
+  const {
+    data: articlesData,
+    isLoading: articlesLoading,
+    error: articlesError,
+    isError: articlesIsError,
+  } = useQuery({
+    queryKey: ["articles"],
+    queryFn: getArticles,
+  });
+
+  useErrorNavigator(articlesIsError, articlesError);
+  const articles = articlesData?.data || [];
 
   return (
     <>
       <main className="page-home">
         <Hero />
         <AboutUs />
-        <Events activities={activities} isLoading={isLoading} />
-        <Articles activities={activities} isLoading={isLoading} />
+        <Events events={events} isLoading={eventsLoading} />
+        <Articles articles={articles} isLoading={articlesLoading} />
         <HomeEcs data={executivesData} />
         <Contact />
       </main>

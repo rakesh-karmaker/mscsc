@@ -40,9 +40,23 @@ const getAllActivities = (page, limit, tag, search) => {
   );
 };
 
+const getEvents = () => {
+  return api.get("/activity/events");
+};
+
+const getArticles = () => {
+  return api.get("/activity/articles");
+};
+
 const getAllMembers = (page, limit, search, role, branch) => {
   return api.get(
     `/member/all?page=${page}&limit=${limit}&name=${search}&role=${role}&branch=${branch}`
+  );
+};
+
+const getAllTasks = (page, limit, search, taskType) => {
+  return api.get(
+    `/task?page=${page}&limit=${limit}&name=${search}&taskType=${taskType}`
   );
 };
 
@@ -60,5 +74,8 @@ export {
   getAllMembers,
   getAllMessages,
   getAllActivities,
+  getEvents,
+  getArticles,
+  getAllTasks,
   getActivity,
 };

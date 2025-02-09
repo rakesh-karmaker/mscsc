@@ -32,7 +32,6 @@ function Editor({ register, content = "" }) {
     content: content.trim(),
     extensions,
     onUpdate: ({ editor }) => {
-      console.log(editor.getHTML());
       register.onChange({
         target: {
           name: "content",

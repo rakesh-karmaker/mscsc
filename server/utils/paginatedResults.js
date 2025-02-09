@@ -24,7 +24,7 @@ exports.paginatedResults = async (
       return Object.keys(regex).every(
         (key) =>
           regex[key].test(item[key]) &&
-          item[key].toLowerCase().startsWith(req.query[key].toLowerCase())
+          item[key].toLowerCase().startsWith(req.query[key]?.toLowerCase())
       );
     });
     const includesData = allData.filter((item) => {

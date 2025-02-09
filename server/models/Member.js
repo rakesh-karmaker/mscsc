@@ -29,6 +29,15 @@ const MemberSchema = new mongoose.Schema(
         },
       ],
     },
+    submissions: [
+      {
+        taskId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Task",
+          default: [],
+        },
+      },
+    ],
     reference: { type: String, required: true },
     role: { type: String, default: "member" },
     position: { type: String, default: "member" },
