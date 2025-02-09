@@ -17,6 +17,7 @@ router.get("/all", getAllMembers);
 router.get("/", isAuthorized, verifyUser);
 router.get("/top-submitters", getTopSubmitters);
 router.get("/:slug", getMember);
+
 router.put("/", isAuthorized, upload.single("image"), editMember);
 router.delete("/", isAuthorized, isAdmin, deleteMember);
 

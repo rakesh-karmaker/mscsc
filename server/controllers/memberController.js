@@ -74,6 +74,7 @@ const getTopSubmitters = async (req, res) => {
     const members = await Member.find();
     const topSubmitters = members
       .map((member) => ({
+        _id: member._id,
         name: member.name,
         branch: member.branch,
         batch: member.batch,
@@ -83,8 +84,6 @@ const getTopSubmitters = async (req, res) => {
       }))
       .sort((a, b) => b.tasksCompleted - a.tasksCompleted)
       .slice(0, 10); // Adjust the number of top members you want to retrieve
-
-    console.log(topSubmitters);
 
     res.status(200).send(topSubmitters);
   } catch (err) {

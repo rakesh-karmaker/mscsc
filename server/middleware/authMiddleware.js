@@ -6,7 +6,7 @@ const { getDate } = require("../utils/getDate");
 exports.isAuthorized = async (req, res, next) => {
   try {
     const prefix = "Bearer ";
-    const token = req.header("Authorization").split(prefix)[1];
+    const token = req.header("Authorization")?.split(prefix)[1];
     if (!token) return res.status(401).send({ message: "Access Denied" });
     const verified = jwt.verify(token, process.env.JWT_SECRET);
     if (!verified) return res.status(401).send({ message: "Access Denied" });

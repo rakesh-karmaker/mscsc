@@ -54,6 +54,10 @@ const getAllMembers = (page, limit, search, role, branch) => {
   );
 };
 
+const getTopSubmitters = () => {
+  return api.get("/member/top-submitters");
+};
+
 const getAllTasks = (page, limit, search, taskType) => {
   return api.get(
     `/task?page=${page}&limit=${limit}&name=${search}&taskType=${taskType}`
@@ -72,6 +76,7 @@ export {
   verifyToken,
   getUser,
   getAllMembers,
+  getTopSubmitters,
   getAllMessages,
   getAllActivities,
   getEvents,

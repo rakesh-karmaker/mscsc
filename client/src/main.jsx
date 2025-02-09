@@ -46,6 +46,7 @@ import { TaskProvider } from "./contexts/TasksContext";
 //layouts
 import UserLayout from "@/layouts/UserLayout";
 import AdminLayout from "@/layouts/AdminLayout/AdminLayout";
+import Tasks from "./pages/tasks/Tasks";
 
 const queryClient = new QueryClient();
 
@@ -56,9 +57,7 @@ const router = createBrowserRouter([
     element: (
       <ActivitiesProvider>
         <MemberProvider>
-          <TaskProvider>
-            <App />
-          </TaskProvider>
+          <App />
         </MemberProvider>
       </ActivitiesProvider>
     ),
@@ -92,6 +91,15 @@ const router = createBrowserRouter([
           { path: "/forgot-password", element: <ResetPassword /> },
 
           { path: "/members", element: <MemberPage /> },
+
+          {
+            path: "/tasks",
+            element: (
+              <TaskProvider>
+                <Tasks />
+              </TaskProvider>
+            ),
+          },
 
           { path: "/privacy-policy", element: <PrivacyPolicy /> },
 
