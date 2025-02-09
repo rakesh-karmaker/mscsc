@@ -6,7 +6,7 @@ const UserContext = createContext(null);
 
 const UserProvider = ({ children }) => {
   // localStorage.setItem("token", "");
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
 
   const {
     data,
@@ -25,12 +25,14 @@ const UserProvider = ({ children }) => {
 
   if (error) console.log(error);
 
-  useEffect(() => {
-    setUser(data ? data.data.user : null);
-  }, [data]);
+  // useEffect(() => {
+  //   setUser(data ? data.data.user : null);
+  // }, [data]);
+
+  const user = data ? data.data.user : null;
 
   return (
-    <UserContext.Provider value={{ user, setUser, isVerifying }}>
+    <UserContext.Provider value={{ user, isVerifying }}>
       {children}
     </UserContext.Provider>
   );

@@ -1,25 +1,14 @@
 import Header from "@/layouts/Header/Header";
 import { Error, ErrorContent } from "@/components/UI/Error/Error";
-import { useUser } from "@/contexts/UserContext";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 const Unauthorized = () => {
-  const { user } = useUser();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user !== null && user?.role === "admin") {
-      navigate("/admin/dashboard", { replace: true });
-    }
-  }, [user, navigate]);
   return (
     <>
       <Header />
       <main className="page-error">
         <Error
           heading="HOLD ON!"
-          link="/register"
+          link="/login"
           linkText="Login"
           style={{
             fontSize: "128px",

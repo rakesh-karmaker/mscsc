@@ -10,13 +10,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editUser } from "@/services/PutService";
 import { registerUser } from "@/services/PostService";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useUser } from "@/contexts/UserContext";
 import CheckBox from "../UI/Checkbox/Checkbox";
 
 const UserForm = (props) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { setUser } = useUser();
   const {
     register,
     handleSubmit,
@@ -57,7 +55,7 @@ const UserForm = (props) => {
       if (data?.data?.subject === "register") {
         localStorage.setItem("token", data?.data?.token);
         queryClient.invalidateQueries({ queryKey: ["members"] });
-        setUser(data?.data?.member);
+        queryClient.invalidateQueries({ queryKey: ["user"] });
         navigate(`/member/${data?.data?.member?.slug}`, { replace: true });
       } else {
         queryClient.invalidateQueries({ queryKey: ["user"] });

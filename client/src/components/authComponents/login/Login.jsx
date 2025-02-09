@@ -6,14 +6,13 @@ import InputText from "@/components/UI/InputText/InputText";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import toast from "react-hot-toast";
 import "./Login.css";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
-import { useUser } from "@/contexts/UserContext";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setUser } = useUser();
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -31,7 +30,7 @@ const Login = () => {
       if (res.status === 200) {
         const token = res?.data?.token;
         localStorage.setItem("token", token);
-        setUser(res?.data?.member);
+        queryClient.invalidateQueries({ queryKey: ["user"] });
         const username = res?.data?.member?.slug;
         setTimeout(() => {
           navigate(`/member/${username}`, { replace: true });
@@ -54,8 +53,6 @@ const Login = () => {
   const onSubmit = (data) => {
     authMutation.mutate(data);
   };
-
-  // useLoadingToast(authMutation.isPending, "Logging in...");
 
   return (
     <form className="auth-form login-form" onSubmit={handleSubmit(onSubmit)}>

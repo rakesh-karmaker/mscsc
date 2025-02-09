@@ -4,6 +4,7 @@ const Member = require("../models/Member");
 const { registerSchema } = require("../utils/validation");
 const { uploadImage } = require("../utils/imagekit");
 const { getDate } = require("../utils/getDate");
+const generateSlug = require("../utils/generateSlug");
 
 // Register Member
 exports.register = async (req, res) => {

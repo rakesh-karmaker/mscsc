@@ -63,7 +63,7 @@ const TasksSidebar = () => {
         <p className="task-number">
           <span>{user?.submissions.length}</span>
           <span>/</span>
-          <span>{response.totalLength}</span>
+          <span>{response?.totalLength}</span>
         </p>
         <p>Tasks Completed</p>
       </div>
