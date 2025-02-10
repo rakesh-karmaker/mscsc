@@ -1,13 +1,10 @@
 import { verifyToken } from "@/services/GetService";
 import { useQuery } from "@tanstack/react-query";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
 
 const UserContext = createContext(null);
 
 const UserProvider = ({ children }) => {
-  // localStorage.setItem("token", "");
-  // const [user, setUser] = useState(null);
-
   const {
     data,
     error,
@@ -24,11 +21,6 @@ const UserProvider = ({ children }) => {
   });
 
   if (error) console.log(error);
-
-  // useEffect(() => {
-  //   setUser(data ? data.data.user : null);
-  // }, [data]);
-
   const user = data ? data.data.user : null;
 
   return (

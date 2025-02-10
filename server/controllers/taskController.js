@@ -15,7 +15,8 @@ const getAllTasks = async (req, res) => {
     };
 
     const sorted = { createdAt: -1 };
-    const tasks = await paginatedResults(req, res, Task, regex, sorted);
+    const select = "-__v" + " -createdAt" + " -updatedAt" + " -instructions";
+    const tasks = await paginatedResults(req, res, Task, regex, sorted, select);
     res.status(200).send(tasks);
   } catch (err) {
     console.log("Error fetching all tasks - ", getDate(), "\n---\n", err);
@@ -309,6 +310,25 @@ const deleteSubmission = async (req, res) => {
         { $pull: { submissions: { taskId: updatedSubmission._id } } },
         { new: true }
       );
+    }
+
+    // delete if champion
+    if (updatedSubmission.champion === username) {
+      const champion = await Member.findOne({
+        slug: updatedSubmission.champion,
+      });
+      if (champion) {
+        await Member.findOneAndUpdate(
+          { slug: updatedSubmission.champion },
+          {
+            $pull: {
+              timeline: {
+                taskId: updatedSubmission._id,
+              },
+            },
+          }
+        );
+      }
     }
 
     console.log("Submission deleted successfully -", getDate(), "\n---\n");

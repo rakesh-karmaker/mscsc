@@ -1,0 +1,80 @@
+.task-container {
+  width: 100%;
+}
+
+.tasks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.task {
+  padding: 10px 0px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text-primary);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.task:first-child {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.task-name {
+  font-size: 1.1rem;
+  word-break: break-all;
+  word-wrap: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  overflow-wrap: break-word;
+  transition: 0.25s;
+}
+
+.task:hover .task-name {
+  color: var(--highlighted-color);
+}
+
+.task-summary {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  word-break: break-all;
+  word-wrap: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  overflow-wrap: break-word;
+}
+
+.task-info {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  align-items: center;
+}
+
+.task-info p {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.champion {
+  color: gold;
+}
+
+.done {
+  color: green;
+}
+
+.task-type {
+  text-transform: capitalize;
+}

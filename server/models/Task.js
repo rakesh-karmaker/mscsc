@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const SubmissionSchema = new mongoose.Schema({
-  username: { type: String, unique: true },
+  username: { type: String },
   memberName: { type: String },
   memberEmail: { type: String },
   memberBatch: { type: String },
@@ -30,6 +30,7 @@ const TaskSchema = new mongoose.Schema(
     },
     submission: {
       type: [SubmissionSchema],
+      default: [],
     },
   },
   { timestamps: true }

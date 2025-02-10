@@ -57,7 +57,9 @@ const router = createBrowserRouter([
     element: (
       <ActivitiesProvider>
         <MemberProvider>
-          <App />
+          <TaskProvider>
+            <App />
+          </TaskProvider>
         </MemberProvider>
       </ActivitiesProvider>
     ),
@@ -94,11 +96,7 @@ const router = createBrowserRouter([
 
           {
             path: "/tasks",
-            element: (
-              <TaskProvider>
-                <Tasks />
-              </TaskProvider>
-            ),
+            element: <Tasks />,
           },
 
           { path: "/privacy-policy", element: <PrivacyPolicy /> },
