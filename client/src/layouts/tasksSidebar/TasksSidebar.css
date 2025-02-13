@@ -52,7 +52,6 @@
 .task-sidebar .image-container {
   display: flex;
   flex-direction: column;
-  /* gap: 10px; */
   align-items: flex-end;
 }
 
@@ -64,6 +63,11 @@
   gap: 15px;
   justify-content: space-between;
   align-items: flex-end;
+}
+
+.task-sidebar .submit-image > .submit-actions {
+  display: flex;
+  gap: 10px;
 }
 
 .task-sidebar .primary-button {

@@ -22,7 +22,8 @@ const Submission = ({
         <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
           <h3 className="instructions-title">Answer</h3>
           <Editor
-            content={submission?.answer}
+            key={submission ? submission._id : "new"}
+            content={submission?.answer || ""}
             register={register("content")}
             placeholder="Type your answer here…"
           />

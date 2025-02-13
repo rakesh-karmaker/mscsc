@@ -298,8 +298,6 @@ const editSubmission = async (req, res) => {
       return res.status(400).send({ message: "Deadline passed" });
     }
 
-    console.log(submission);
-
     let updatedSubmission;
     if (file) {
       await deleteImage(res, submission.posterId);
@@ -349,15 +347,27 @@ const editSubmission = async (req, res) => {
 // delete a submission
 const deleteSubmission = async (req, res) => {
   try {
-    const { slug, username, posterId } = req.body;
+    const { slug, username } = req.body;
 
     // validate the request
-    if (!slug || !username || !posterId) {
+    if (!slug || !username) {
       return res.status(400).send({ message: "Invalid request" });
     }
 
+    const previousSubmission = await Task.findOne({
+      slug,
+      "submissions.username": username,
+    });
+    if (!previousSubmission) {
+      return res.status(404).send({ message: "Submission not found" });
+    }
+
+    const submission = previousSubmission.submissions.find(
+      (s) => s.username === username
+    );
+
     // delete the poster
-    await deleteImage(res, posterId);
+    await deleteImage(res, submission.posterId);
 
     // update the submission
     const updatedSubmission = await Task.findOneAndUpdate(
@@ -405,7 +415,7 @@ const deleteSubmission = async (req, res) => {
     }
 
     console.log("Submission deleted successfully -", getDate(), "\n---\n");
-    res.status(200).send({ updatedSubmission });
+    res.status(200).send({ message: "Submission deleted successfully" });
   } catch (err) {
     console.log("Error deleting a submission - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });

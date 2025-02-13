@@ -1,6 +1,6 @@
 import useErrorNavigator from "@/hooks/useErrorNavigator";
 import { getTopSubmitters } from "@/services/GetService";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { NavLink } from "react-router-dom";
 import Loader from "@/components/UI/Loader/Loader";
 import { useUser } from "@/contexts/UserContext";
@@ -12,6 +12,9 @@ import Counter from "@/components/UI/Counter/Counter";
 
 import "./TasksSidebar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
+import { deleteSubmission } from "@/services/DeleteService";
+import toast from "react-hot-toast";
 
 const TasksSidebar = () => {
   const { category: currentCategory, setCategory, response } = useTask();
@@ -77,9 +80,31 @@ const TaskSidebar = ({
   onClick,
   errors,
   editable,
+  setEditable,
   mode,
   isSubmitting,
+  username,
+  formRef,
 }) => {
+  const queryClient = useQueryClient();
+  const taskDelete = useMutation({
+    mutationFn: (slug) => {
+      return deleteSubmission(slug, username);
+    },
+    onSuccess: (res) => {
+      queryClient.invalidateQueries(["task"]);
+      setEditable(false);
+      toast.success(res?.data?.message);
+    },
+    onError: (err) => {
+      console.log(err);
+      toast.error(err?.response?.data?.message);
+    },
+  });
+
+  const deleteFunc = (slug) => {
+    taskDelete.mutate(slug);
+  };
   return (
     <aside className="task-sidebar">
       <TaskSidebarCard title={"Description"}>
@@ -90,14 +115,28 @@ const TaskSidebar = ({
         <TaskSidebarCard title={"Submit"}>
           <p>Add a poster for the task and click submit to submit your work</p>
           <div className="submit-image">
-            <button
-              onClick={onClick}
-              className="primary-button"
-              type="button"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Submitting..." : "Submit"}
-            </button>
+            <div className="submit-actions">
+              <button
+                onClick={onClick}
+                className="primary-button"
+                type="button"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Submitting..." : "Submit"}
+              </button>
+              {editable && (
+                <DeleteBtn
+                  id={task.slug}
+                  deleteFunc={deleteFunc}
+                  btnText="Delete"
+                  slug={task.slug}
+                  title="Delete Submission"
+                >
+                  Are you sure you want to delete your submission of {task.name}
+                  ?
+                </DeleteBtn>
+              )}
+            </div>
             <SubmitImage
               register={register}
               errors={errors}

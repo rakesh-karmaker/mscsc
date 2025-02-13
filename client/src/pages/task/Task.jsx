@@ -194,7 +194,9 @@ const Task = () => {
             errors={errors}
             mode={mode}
             editable={editable}
+            setEditable={setEditable}
             isSubmitting={taskMutation.isPending}
+            username={username}
           />
         </>
       )}

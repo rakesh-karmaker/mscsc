@@ -33,4 +33,10 @@ const deleteActivity = (slug) => {
   return api.delete("/activity", { data: { slug: slug } });
 };
 
-export { deleteMember, deleteMessage, deleteActivity };
+const deleteSubmission = (slug, username) => {
+  return api.delete("/task/delete-submission", {
+    data: { slug: slug, username: username },
+  });
+};
+
+export { deleteMember, deleteMessage, deleteActivity, deleteSubmission };
