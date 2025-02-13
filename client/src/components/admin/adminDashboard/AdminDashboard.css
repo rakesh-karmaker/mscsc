@@ -87,6 +87,11 @@
     bottom: 0px;
   }
 }
+@media screen and (max-width: 950px) {
+  .dashboard-lists {
+    grid-template-columns: 1fr;
+  }
+}
 
 @media screen and (max-width: 550px) {
   .quick-access {

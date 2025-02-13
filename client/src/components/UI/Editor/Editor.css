@@ -56,3 +56,15 @@
 .WhiteCard + .WhiteCard {
   margin-top: 20px;
 }
+
+@media screen and (max-width: 700px) {
+  #Wrapper {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  #Wrapper {
+    font-size: 0.95rem;
+  }
+}

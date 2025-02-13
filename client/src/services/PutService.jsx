@@ -71,4 +71,15 @@ const editActivity = (data) => {
   return api.put("/activity", formData);
 };
 
-export { editUser, editMessage, editActivity };
+const editSubmission = (data) => {
+  const formData = new FormData();
+  formData.append("slug", data.slug);
+  formData.append("username", data.username);
+  formData.append("answer", data.answer);
+  if (data?.poster) {
+    formData.append("poster", data.poster);
+  }
+  return api.put("/task/edit-submission", formData);
+};
+
+export { editUser, editMessage, editActivity, editSubmission };

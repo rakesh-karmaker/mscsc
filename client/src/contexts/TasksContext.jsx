@@ -7,14 +7,14 @@ import { useUser } from "./UserContext";
 const TaskContext = createContext(null);
 
 const TaskProvider = ({ children }) => {
-  const { user } = useUser();
+  const { user, isVerifying } = useUser();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [taskType, setTaskType] = useState("");
+  const [category, setCategory] = useState("");
 
   useEffect(() => {
     setPage(1);
-    setTaskType("");
+    setCategory("");
   }, [search]);
 
   useEffect(() => {
@@ -22,8 +22,14 @@ const TaskProvider = ({ children }) => {
   }, [page]);
 
   const { data, isLoading, error, isError, refetch } = useQuery({
-    queryKey: ["tasks", page, search, taskType],
-    queryFn: () => getAllTasks(page, 18, search, taskType),
+    queryKey: ["tasks", page, search, category, isVerifying],
+    queryFn: () => {
+      if (!isVerifying && user) {
+        return getAllTasks(page, 12, search, category);
+      } else {
+        return null;
+      }
+    },
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
@@ -31,7 +37,7 @@ const TaskProvider = ({ children }) => {
 
   useEffect(() => {
     refetch();
-  }, [page, search, taskType, refetch]);
+  }, [page, search, category, refetch]);
 
   const response = data?.data;
   const tasks = data?.data?.results;
@@ -46,8 +52,8 @@ const TaskProvider = ({ children }) => {
         setPage,
         search,
         setSearch,
-        taskType,
-        setTaskType,
+        category,
+        setCategory,
         isLoading,
         response,
       }}

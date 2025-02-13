@@ -110,6 +110,21 @@ const addActivity = (data) => {
   });
 };
 
+const submitTask = (data) => {
+  const formData = new FormData();
+  formData.append("slug", data.slug);
+  formData.append("username", data.username);
+  formData.append("answer", data.answer);
+  formData.append("poster", data.poster);
+  console.log(formData);
+
+  return api.post("/task/submit", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
 export {
   registerUser,
   loginUser,
@@ -118,4 +133,5 @@ export {
   resetPassword,
   sendMessage,
   addActivity,
+  submitTask,
 };

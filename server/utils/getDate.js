@@ -14,3 +14,14 @@ exports.getDate = () => {
 
   return bangladeshTime;
 };
+
+exports.getBdTime = () => {
+  const now = new Date();
+
+  const bangladeshTime = now.toLocaleString("en-US", {
+    timeZone: "Asia/Dhaka",
+  });
+
+  const time = new Date(bangladeshTime);
+  return time;
+};

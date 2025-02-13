@@ -39,7 +39,7 @@ const taskSchema = Joi.object({
   instructions: Joi.string().required(),
   champion: Joi.string(),
   deadline: Joi.date().required(),
-  taskType: Joi.string().required(),
+  category: Joi.string().required(),
 });
 
 // Add more schemas as needed

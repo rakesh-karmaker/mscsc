@@ -4,12 +4,16 @@
   border-radius: 10px 10px 0 0;
   display: flex;
   align-items: center;
-  height: 50px;
+  height: 100%;
   margin: -20px -20px 20px -20px;
   position: sticky;
-  top: 0;
+  top: var(--nav-height);
   z-index: 1;
   padding: 10px;
+}
+
+#admin .ToolbarContainer {
+  top: 0px;
 }
 
 .ToolbarContainer.sticky {
@@ -19,6 +23,8 @@
 
 .Toolbar {
   display: flex;
+  flex-wrap: wrap;
+  height: 100%;
 }
 
 .Toolbar .icon {

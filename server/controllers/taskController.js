@@ -1,7 +1,7 @@
 const Member = require("../models/Member");
 const Task = require("../models/Task");
 const generateSlug = require("../utils/generateSlug");
-const { getDate } = require("../utils/getDate");
+const { getDate, getBdTime } = require("../utils/getDate");
 const { uploadImage, deleteImage } = require("../utils/imagekit");
 const { paginatedResults } = require("../utils/paginatedResults");
 const { taskSchema } = require("../utils/validation");
@@ -11,7 +11,7 @@ const getAllTasks = async (req, res) => {
   try {
     const regex = {
       name: new RegExp(req.query.name, "i"),
-      taskType: new RegExp(req.query.taskType, "i"),
+      category: new RegExp(req.query.category, "i"),
     };
 
     const sorted = { createdAt: -1 };
@@ -28,11 +28,54 @@ const getAllTasks = async (req, res) => {
 const getTask = async (req, res) => {
   try {
     const slug = req.params.slug;
-    const task = await Task.findOne({ slug });
-    if (!task) {
+    const username = req.query.username;
+
+    // Find the task and filter the submissions
+    const task = await Task.aggregate([
+      { $match: { slug } },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          slug: 1,
+          summary: 1,
+          instructions: 1,
+          deadline: 1,
+          champion: 1,
+          category: 1,
+          createdAt: 1,
+          submissions: {
+            $map: {
+              input: "$submissions",
+              as: "sub",
+              in: {
+                username: "$$sub.username",
+                name: "$$sub.name",
+                email: "$$sub.email",
+                branch: "$$sub.branch",
+                batch: "$$sub.batch",
+                image: "$$sub.image",
+                poster: "$$sub.poster",
+                submissionDate: "$$sub.submissionDate",
+                answer: {
+                  $cond: {
+                    if: { $eq: ["$$sub.username", username] },
+                    then: "$$sub.answer",
+                    else: "$$REMOVE",
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    ]);
+
+    if (!task || task.length === 0) {
       return res.status(404).send({ message: "Task not found" });
     }
-    res.status(200).send(task);
+
+    res.status(200).send(task[0]);
   } catch (err) {
     console.log("Error fetching a task - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
@@ -118,7 +161,7 @@ const deleteTask = async (req, res) => {
     }
 
     // delete all submissions
-    const submissions = task.submission;
+    const submissions = task.submissions;
     for (let i = 0; i < submissions.length; i++) {
       await deleteImage(res, submissions[i].posterId);
     }
@@ -167,12 +210,13 @@ const submitTask = async (req, res) => {
 
     // check the deadline
     const { deadline } = task;
-    if (Date.now() > deadline) {
+    const time = new Date(getBdTime());
+    if (time > new Date(deadline).getTime()) {
       return res.status(400).send({ message: "Deadline passed" });
     }
 
     // check if the submission exists
-    const submission = task.submission.find((s) => s.username === username);
+    const submission = task.submissions.find((s) => s.username === username);
     if (submission) {
       return res.status(400).send({ message: "Submission already exists" });
     }
@@ -184,10 +228,12 @@ const submitTask = async (req, res) => {
     }
     const answers = {
       username,
-      memberName: member.name,
-      memberEmail: member.email,
-      memberBatch: member.batch,
-      memberImage: member.image,
+      name: member.name,
+      email: member.email,
+      branch: member.branch,
+      batch: member.batch,
+      image: member.image,
+      submissionDate: getBdTime(),
       answer,
     };
 
@@ -199,15 +245,16 @@ const submitTask = async (req, res) => {
     // update the task
     const updatedTask = await Task.findOneAndUpdate(
       { slug },
-      { $push: { submission: answers } },
+      { $push: { submissions: answers } },
       { new: true }
     );
 
     // add the submission into the member's profile
-    member.submissions.push({
-      taskId: updatedTask._id,
-    });
-    await member.save();
+    await Member.findOneAndUpdate(
+      { slug: username },
+      { $push: { submissions: { taskId: task._id } } },
+      { new: true }
+    );
 
     console.log(
       member.name,
@@ -215,7 +262,7 @@ const submitTask = async (req, res) => {
       getDate(),
       "\n---\n"
     );
-    res.status(200).send({ updatedTask });
+    res.status(200).send({ message: "Task submitted successfully" });
   } catch (err) {
     console.log("Error submitting a task - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
@@ -233,20 +280,42 @@ const editSubmission = async (req, res) => {
       return res.status(400).send({ message: "Invalid request" });
     }
 
+    // check if the submission exists
+    const task = await Task.findOne({ slug });
+    if (!task) {
+      return res.status(404).send({ message: "Task not found" });
+    }
+
+    const submission = task.submissions.find((s) => s.username === username);
+    if (!submission) {
+      return res.status(404).send({ message: "Submission not found" });
+    }
+
+    // check the deadline
+    const { deadline } = task;
+    const time = new Date(getBdTime());
+    if (time > new Date(deadline).getTime()) {
+      return res.status(400).send({ message: "Deadline passed" });
+    }
+
+    console.log(submission);
+
     let updatedSubmission;
     if (file) {
-      await deleteImage(res, req.body.imgId);
+      await deleteImage(res, submission.posterId);
       // upload the poster
       const { url, imgId } = await uploadImage(req, file, true);
+      console.log("Image uploaded successfully -", getDate(), "\n---\n");
 
       // update the submission
       updatedSubmission = await Task.findOneAndUpdate(
-        { slug, "submission.username": username },
+        { slug, "submissions.username": username },
         {
           $set: {
-            "submission.$.answer": answer,
-            "submission.$.poster": url,
-            "submission.$.posterId": imgId,
+            "submissions.$.answer": answer,
+            "submissions.$.poster": url,
+            "submissions.$.posterId": imgId,
+            "submissions.$.submissionDate": getBdTime(),
           },
         },
         { new: true }
@@ -254,8 +323,8 @@ const editSubmission = async (req, res) => {
     } else {
       // update the submission
       updatedSubmission = await Task.findOneAndUpdate(
-        { slug, "submission.username": username },
-        { $set: { "submission.$.answer": answer } },
+        { slug, "submissions.username": username },
+        { $set: { "submissions.$.answer": answer } },
         { new: true }
       );
     }
@@ -270,7 +339,7 @@ const editSubmission = async (req, res) => {
     }
 
     console.log("Submission edited successfully -", getDate(), "\n---\n");
-    res.status(200).send({ updatedTask });
+    res.status(200).send({ message: "Submission edited successfully" });
   } catch (err) {
     console.log("Error editing a submission - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
@@ -292,9 +361,9 @@ const deleteSubmission = async (req, res) => {
 
     // update the submission
     const updatedSubmission = await Task.findOneAndUpdate(
-      { slug, "submission.username": username },
+      { slug, "submissions.username": username },
       {
-        $pull: { submission: { username } },
+        $pull: { submissions: { username } },
       }
     );
 
@@ -329,6 +398,10 @@ const deleteSubmission = async (req, res) => {
           }
         );
       }
+
+      // update the task
+      champion.champion = null;
+      await champion.save();
     }
 
     console.log("Submission deleted successfully -", getDate(), "\n---\n");
@@ -350,7 +423,10 @@ const makeChampion = async (req, res) => {
     }
 
     // find match
-    const match = await Task.findOne({ slug, "submission.username": username });
+    const match = await Task.findOne({
+      slug,
+      "submissions.username": username,
+    });
     if (!match) {
       return res.status(404).send({ message: "Submission not found" });
     }
@@ -423,7 +499,10 @@ const deleteChampion = async (req, res) => {
     }
 
     // find match
-    const match = await Task.findOne({ slug, "submission.username": username });
+    const match = await Task.findOne({
+      slug,
+      "submissions.username": username,
+    });
     if (!match) {
       return res.status(404).send({ message: "Submission not found" });
     }

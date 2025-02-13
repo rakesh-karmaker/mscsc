@@ -58,10 +58,14 @@ const getTopSubmitters = () => {
   return api.get("/member/top-submitters");
 };
 
-const getAllTasks = (page, limit, search, taskType) => {
+const getAllTasks = (page, limit, search, category) => {
   return api.get(
-    `/task?page=${page}&limit=${limit}&name=${search}&taskType=${taskType}`
+    `/task?page=${page}&limit=${limit}&name=${search}&category=${category}`
   );
+};
+
+const getTask = (slug, username) => {
+  return api.get(`/task/${slug}?username=${username}`);
 };
 
 const getActivity = (slug) => {
@@ -82,5 +86,6 @@ export {
   getEvents,
   getArticles,
   getAllTasks,
+  getTask,
   getActivity,
 };

@@ -1,0 +1,18 @@
+.instructions-title {
+  font-size: 1.7rem;
+}
+
+.created {
+  color: var(--text-primary);
+  opacity: 0.9;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.instructions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}

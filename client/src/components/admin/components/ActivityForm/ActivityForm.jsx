@@ -125,7 +125,7 @@ const ActivityForm = (props) => {
           Activity Type:
         </RadioList>
 
-        <ImageDropper register={register("gallery")} />
+        <ImageDropper register={register("gallery")} title={"Add Gallery"} />
 
         <Editor
           register={register("content")}

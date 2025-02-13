@@ -1,18 +1,12 @@
 import { NavLink } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
 import Pagination from "@/components/UI/Pagination/Pagination";
-import dateFormat from "@/utils/dateFormat";
 
 import "./TaskList.css";
+import TaskTags from "@/components/tasksComponents/taskTags/TaskTags";
 
 const TaskList = ({ tasks, length, page, setPage, submissions, username }) => {
-  if (length === 0) return <EmptyData />;
-
-  const categoryIcons = {
-    "article writing": <FontAwesomeIcon icon="fa-solid fa-newspaper" />,
-    "poster design": <FontAwesomeIcon icon="fa-solid fa-pen-nib" />,
-  };
+  if (tasks?.length === 0) return <EmptyData />;
 
   return (
     <div className="task-container">
@@ -20,40 +14,24 @@ const TaskList = ({ tasks, length, page, setPage, submissions, username }) => {
         {tasks?.map((task) => {
           return (
             <li key={task._id}>
-              <NavLink to={`/task/${task.slug}`} className="task">
-                <p className="task-name">{task.name}</p>
+              <NavLink
+                to={`/task/${task.slug}?user=${username}`}
+                className="task"
+              >
+                <p className="task-name" title={task.name}>
+                  {task.name?.slice(0, 36)}
+                  {task.name?.length > 36 ? "..." : ""}
+                </p>
                 <p className="task-summary">
                   {task.summary.slice(0, 75)}
                   {task.summary.length > 75 ? "..." : ""}
                 </p>
                 <div className="task-info">
-                  {submissions?.includes(task._id.toString()) ? (
-                    <p className="task-icons">
-                      {task?.champion === username ? (
-                        <FontAwesomeIcon
-                          icon="fa-solid fa-crown"
-                          className="champion"
-                        />
-                      ) : (
-                        <FontAwesomeIcon
-                          icon="fa-solid fa-check"
-                          className="done"
-                        />
-                      )}
-                    </p>
-                  ) : null}
-                  <p className="task-date">
-                    <FontAwesomeIcon icon="fa-solid fa-clock" />
-                    <span>{dateFormat(task.deadline)}</span>
-                  </p>
-                  <p className="task-type">
-                    {categoryIcons[task.taskType]}
-                    <span>{task.taskType}</span>
-                  </p>
-                  <p className="task-submissions">
-                    <FontAwesomeIcon icon="fa-solid fa-user" />
-                    <span>{task?.submission?.length} submissions</span>
-                  </p>
+                  <TaskTags
+                    task={task}
+                    submissions={submissions}
+                    username={username}
+                  />
                 </div>
               </NavLink>
             </li>

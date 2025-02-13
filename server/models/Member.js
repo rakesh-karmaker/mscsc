@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
+const SubmissionSchema = new mongoose.Schema({
+  taskId: { type: mongoose.Schema.Types.ObjectId, ref: "Task" },
+});
+
 const MemberSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
@@ -29,15 +33,7 @@ const MemberSchema = new mongoose.Schema(
         },
       ],
     },
-    submissions: [
-      {
-        taskId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Task",
-          default: [],
-        },
-      },
-    ],
+    submissions: [SubmissionSchema],
     reference: { type: String, required: true },
     role: { type: String, default: "member" },
     position: { type: String, default: "member" },

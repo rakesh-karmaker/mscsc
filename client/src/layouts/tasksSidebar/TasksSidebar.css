@@ -1,4 +1,5 @@
-.tasks-sidebar {
+.tasks-sidebar,
+.task-sidebar {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -48,6 +49,52 @@
   left: 0;
 }
 
+.task-sidebar .image-container {
+  display: flex;
+  flex-direction: column;
+  /* gap: 10px; */
+  align-items: flex-end;
+}
+
+.task-sidebar .submit-image {
+  margin-top: 5px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap-reverse;
+  gap: 15px;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.task-sidebar .primary-button {
+  padding: 7px 14px;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 22px;
+  height: fit-content;
+  width: fit-content;
+  border-radius: 4px;
+}
+
+.image-label {
+  padding: 7px 14px;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 22px;
+  height: fit-content;
+  width: fit-content;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: 0.25s;
+  color: var(--text-primary);
+  border-radius: 4px;
+}
+
+.image-label:hover {
+  background-color: var(--text-primary);
+  color: var(--white);
+}
+
 .submissions {
   display: flex;
   flex-direction: column;
@@ -61,11 +108,32 @@
   gap: 6px;
 }
 
-.top-submitters {
+.top-submitters,
+.top-submissions {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.top-submissions .empty-data {
+  margin: 20px 0px;
+  height: 100%;
+  gap: 0.5rem;
+}
+
+.top-submissions .empty-data svg {
+  font-size: 4rem;
+}
+
+.top-submissions .empty-data p {
+  font-size: 0.9rem;
+}
+
+.top-submitter .champion {
+  color: #ff8300;
+  width: 15px;
+  height: 15px;
 }
 
 .top-submitter {
@@ -96,6 +164,9 @@
 }
 
 .top-submitter .member-name {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-size: 1.1rem;
 }
 
@@ -107,6 +178,10 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
+}
+
+.top-submitter .value {
+  min-width: fit-content;
 }
 
 @media screen and (max-width: 1000px) {

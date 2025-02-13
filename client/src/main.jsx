@@ -19,6 +19,8 @@ import Activity from "@/pages/activity/Activity";
 import ContactPage from "@/pages/contact/Contact.jsx";
 import Executives from "@/pages/executives/Executives.jsx";
 import Profile from "@/pages/profile/Profile.jsx";
+import Tasks from "@/pages/tasks/Tasks";
+import Task from "@/pages/task/Task";
 import Auth from "@/pages/auth/Auth";
 import ResetPassword from "@/pages/resetPassword/ForgotPassword";
 import TermsOfService from "@/pages/terms/Terms";
@@ -46,7 +48,6 @@ import { TaskProvider } from "./contexts/TasksContext";
 //layouts
 import UserLayout from "@/layouts/UserLayout";
 import AdminLayout from "@/layouts/AdminLayout/AdminLayout";
-import Tasks from "./pages/tasks/Tasks";
 
 const queryClient = new QueryClient();
 
@@ -94,9 +95,12 @@ const router = createBrowserRouter([
 
           { path: "/members", element: <MemberPage /> },
 
+          { path: "/tasks", element: <Tasks /> },
+
           {
-            path: "/tasks",
-            element: <Tasks />,
+            path: "/task/:taskName",
+            element: <Task />,
+            // errorElement: <NotFound />,
           },
 
           { path: "/privacy-policy", element: <PrivacyPolicy /> },

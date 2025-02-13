@@ -14,7 +14,7 @@ const Auth = ({ method }) => {
   const { user } = useUser();
   useEffect(() => {
     if (user !== null) {
-      navigate(`/member/${user._id}`, { replace: true });
+      navigate(`/member/${user.slug}`, { replace: true });
     }
   }, [navigate, user]);
 

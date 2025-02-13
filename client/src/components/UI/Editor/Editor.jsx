@@ -12,7 +12,11 @@ import Superscript from "@tiptap/extension-superscript";
 import "./Editor.css";
 import "./TipTap.css";
 
-function Editor({ register, content = "" }) {
+function Editor({
+  register,
+  content = "",
+  placeholder = "Type Something Here…",
+}) {
   const extensions = [
     StarterKit,
     EmojiReplacer,
@@ -24,7 +28,7 @@ function Editor({ register, content = "" }) {
       openOnClick: false,
     }),
     Placeholder.configure({
-      placeholder: "Type Something Here…",
+      placeholder: placeholder,
     }),
   ];
 

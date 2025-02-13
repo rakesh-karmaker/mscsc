@@ -2,13 +2,14 @@ const mongoose = require("mongoose");
 
 const SubmissionSchema = new mongoose.Schema({
   username: { type: String },
-  memberName: { type: String },
-  memberEmail: { type: String },
-  memberBatch: { type: String },
-  memberImage: { type: String },
+  name: { type: String },
+  email: { type: String },
+  batch: { type: String },
+  branch: { type: String },
+  image: { type: String },
   answer: { type: String },
   poster: { type: String },
-  posterID: { type: String },
+  posterId: { type: String },
   submissionDate: { type: Date, default: new Date() },
 });
 
@@ -23,12 +24,12 @@ const TaskSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    taskType: {
+    category: {
       type: String,
       enum: ["article writing", "poster design"],
       required: true,
     },
-    submission: {
+    submissions: {
       type: [SubmissionSchema],
       default: [],
     },

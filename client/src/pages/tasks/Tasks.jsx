@@ -7,10 +7,9 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import TaskList from "@/components/tasksComponents/tasksList/TaskList";
-import TasksSidebar from "@/layouts/tasksSidebar/TasksSidebar";
+import { TasksSidebar } from "@/layouts/tasksSidebar/TasksSidebar";
 
 import "./Tasks.css";
-
 const Tasks = () => {
   // check if the user is logged in
   const { user, isVerifying } = useUser();
@@ -19,7 +18,7 @@ const Tasks = () => {
     if (!isVerifying && user === null) {
       navigate("/401", { replace: true });
     }
-  }, [user, navigate]);
+  }, [user, navigate, isVerifying]);
 
   const submissions = user?.submissions.map((s) => s.taskId.toString());
 
@@ -33,7 +32,7 @@ const Tasks = () => {
           Search tasks...
         </SearchInput>
 
-        {isVerifying ? (
+        {isLoading ? (
           <Loader />
         ) : (
           <TaskList
