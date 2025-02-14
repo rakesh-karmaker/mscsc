@@ -196,3 +196,22 @@
     min-width: 100%;
   }
 }
+
+@media screen and (max-width: 400px) {
+  .top-submitter .member-name {
+    font-size: 0.9rem;
+  }
+
+  .top-submitter .member-branch-batch {
+    font-size: 0.75rem;
+  }
+
+  .top-submitter img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .top-submitter .value {
+    font-size: 0.8rem;
+  }
+}

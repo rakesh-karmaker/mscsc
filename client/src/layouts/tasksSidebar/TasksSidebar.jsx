@@ -84,7 +84,6 @@ const TaskSidebar = ({
   mode,
   isSubmitting,
   username,
-  formRef,
 }) => {
   const queryClient = useQueryClient();
   const taskDelete = useMutation({
@@ -113,7 +112,10 @@ const TaskSidebar = ({
 
       {mode === "edit" ? (
         <TaskSidebarCard title={"Submit"}>
-          <p>Add a poster for the task and click submit to submit your work</p>
+          <p>
+            Add a poster for the task and click submit to submit your work.
+            {editable && " To delete your submission click the delete button."}
+          </p>
           <div className="submit-image">
             <div className="submit-actions">
               <button

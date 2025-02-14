@@ -48,9 +48,10 @@ const getArticles = () => {
   return api.get("/activity/articles");
 };
 
-const getAllMembers = (page, limit, search, role, branch) => {
+const getAllMembers = (page, limit, search, role, branch, position) => {
+  console.log(page, limit, search, role, branch, position);
   return api.get(
-    `/member/all?page=${page}&limit=${limit}&name=${search}&role=${role}&branch=${branch}`
+    `/member/all?page=${page}&limit=${limit}&name=${search}&role=${role}&branch=${branch}&position=${position}`
   );
 };
 

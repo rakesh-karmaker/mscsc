@@ -1,6 +1,6 @@
 import TextContent from "@/components/UI/TextContent/TextContent";
 import Editor from "@/components/UI/Editor/Editor";
-import "./TaskSection.css";
+import "./Submission.css";
 
 const Submission = ({
   task,

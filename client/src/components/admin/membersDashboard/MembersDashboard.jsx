@@ -6,7 +6,11 @@ import DashboardHeader from "../components/DashboardHeader/DashboardHeader";
 import "./MembersDashboard.css";
 import MemberPage from "@/pages/members/Members";
 
-const MembersDashboard = () => {
+const MembersDashboard = ({
+  type,
+  title = "Members",
+  des = "View all the members of the club",
+}) => {
   const queryClient = useQueryClient();
   const membersMutation = useMutation({
     mutationFn: (data) => {
@@ -28,7 +32,6 @@ const MembersDashboard = () => {
   });
   const onDelete = (id) => {
     membersMutation.mutate({ _id: id, isDelete: true });
-    console.log("Delete member");
   };
 
   const onRoleClick = (id, role) => {
@@ -41,14 +44,14 @@ const MembersDashboard = () => {
   return (
     <>
       <div className="admin-members">
-        <DashboardHeader title={"Members"}>
-          View all the members of the club
-        </DashboardHeader>
+        <DashboardHeader title={title}>{des}</DashboardHeader>
 
         <MemberPage
           isAdmin={true}
           deleteMember={onDelete}
           changeRole={onRoleClick}
+          showExecutives={type === "executive"}
+          showAdmins={type === "admin"}
         />
       </div>
     </>

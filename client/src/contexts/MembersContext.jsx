@@ -9,28 +9,26 @@ const MemberProvider = ({ children }) => {
   const [search, setSearch] = useState("");
   const [role, setRole] = useState("");
   const [branch, setBranch] = useState("");
+  const [position, setPosition] = useState("");
 
   useEffect(() => {
     setBranch("");
     setPage(1);
-  }, [search]);
+  }, [search, role, position]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [page]);
 
-  const { data, isLoading, error, isError, refetch } = useQuery({
-    queryKey: ["members", page, search, role, branch],
-    queryFn: () => getAllMembers(page, 12, search, role, branch),
+  const { data, isLoading, error, isError } = useQuery({
+    queryKey: ["members", page, search, role, branch, position],
+    queryFn: () => getAllMembers(page, 12, search, role, branch, position),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   useErrorNavigator(isError, error);
 
-  useEffect(() => {
-    refetch();
-  }, [page, search, role, refetch]);
-
+  console.log(position, "position");
   const response = data?.data;
   const members = data?.data.results;
   const length = data?.data?.selectedLength || 0;
@@ -49,6 +47,9 @@ const MemberProvider = ({ children }) => {
         branch,
         setBranch,
         length,
+        role,
+        position,
+        setPosition,
       }}
     >
       {children}

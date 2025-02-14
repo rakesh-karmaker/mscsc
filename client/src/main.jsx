@@ -130,6 +130,28 @@ const router = createBrowserRouter([
 
           { path: "/admin/members", element: <MembersDashboard /> },
 
+          {
+            path: "/admin/executives",
+            element: (
+              <MembersDashboard
+                type="executive"
+                title="Executives"
+                des="View all the executives of the club"
+              />
+            ),
+          },
+
+          {
+            path: "/admin/admins",
+            element: (
+              <MembersDashboard
+                type="admin"
+                title="Admins"
+                des="View all the admins of the club"
+              />
+            ),
+          },
+
           { path: "/admin/activities", element: <ActivitiesDashboard /> },
 
           { path: "/admin/messages", element: <MessagesDashboard /> },

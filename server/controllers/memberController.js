@@ -12,6 +12,10 @@ const getAllMembers = async (req, res) => {
       role: new RegExp(req.query.role, "i"),
       branch: new RegExp(req.query.branch, "i"),
     };
+    if (req.query.position && req.query.position === "executive") {
+      // Create a regex that matches values except for the query value
+      regex.position = new RegExp(`^(?!.*member).*$`, "i");
+    }
     const sorted = { _id: -1 };
 
     const members = await paginatedResults(

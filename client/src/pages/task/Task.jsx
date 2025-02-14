@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 
 import "./Task.css";
 import { useForm } from "react-hook-form";
-import Submission from "@/components/tasksComponents/taskSection/TaskSection";
+import Submission from "@/components/tasksComponents/submission/Submission";
 import { IoIosCreate } from "react-icons/io";
 import dateFormat from "@/utils/dateFormat";
 import TaskTags from "@/components/tasksComponents/taskTags/TaskTags";

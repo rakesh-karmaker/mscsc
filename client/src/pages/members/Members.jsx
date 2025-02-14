@@ -16,13 +16,34 @@ const MemberPage = (props) => {
     setBranch,
     length,
     isLoading,
+    position,
+    setPosition,
+    role,
+    setRole,
   } = useMember();
 
   //reset search and branch when page reloads
   useEffect(() => {
+    if (props?.showExecutives) {
+      console.log(props);
+      console.log(position);
+      if (position !== "executive") {
+        setPosition("executive");
+        setRole("");
+      }
+    } else if (props?.showAdmins) {
+      if (role !== "admin") {
+        setRole("admin");
+        setPosition("");
+      }
+    } else {
+      setPosition("");
+      setRole("");
+    }
+
     setSearch("");
     setBranch("");
-  }, []);
+  }, [, props]);
 
   return (
     <>

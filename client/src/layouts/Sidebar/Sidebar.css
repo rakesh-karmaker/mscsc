@@ -36,6 +36,7 @@
   flex-direction: column;
   gap: 35px;
   align-items: flex-start;
+  height: fit-content;
 }
 
 .mscsc-name {

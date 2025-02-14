@@ -20,8 +20,14 @@ const MemberCard = ({ member, ...props }) => {
       </div>
       <div className="member-info">
         <h3>{name}</h3>
-        <p>{branch}</p>
-        <p>{batch}</p>
+        {props?.showExecutives ? (
+          <p>{props?.showExecutives && member.position}</p>
+        ) : (
+          <>
+            <p>{branch}</p>
+            <p>{batch}</p>
+          </>
+        )}
       </div>
       {props?.isAdmin && <MemberEditDialog member={member} {...props} />}
     </div>

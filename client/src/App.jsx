@@ -48,6 +48,7 @@ import {
   faCrown,
   faPenNib,
   faClock,
+  faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 
 // import and add icons
@@ -92,7 +93,9 @@ library.add(
   faMedal,
   faCrown,
   faPenNib,
-  faClock
+  faClock,
+
+  faUserSecret
 );
 
 function App() {

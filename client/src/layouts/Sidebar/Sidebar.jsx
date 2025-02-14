@@ -6,47 +6,72 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Sidebar = ({ name, image }) => {
   const [sidebarState, setSidebarState] = useState(false);
 
+  let start;
+  // add a swipe event listener to the sidebar
+  window.addEventListener("touchstart", (e) => {
+    if (e.touches.length === 1) {
+      start = e.touches.item(0).clientX;
+    } else {
+      start = null;
+    }
+  });
+
+  window.addEventListener("touchend", (e) => {
+    const offset = 100;
+    if (start) {
+      const end = e.changedTouches.item(0).clientX;
+      if (end - start > offset) {
+        setSidebarState(true);
+      }
+      if (start - end > offset) {
+        setSidebarState(false);
+      }
+    }
+  });
+
   return (
     <aside className="sidebar-container">
-      {window.innerWidth <= 1530 && (
-        <div className="sidebar-header">
-          <button
-            className="sidebar-toggle mobile"
-            onClick={() => setSidebarState(!sidebarState)}
-          >
-            <FontAwesomeIcon icon="fa-solid fa-bars" />
-          </button>
-          <NavLink to="/" className="primary-button">
-            Home Page
-          </NavLink>
-        </div>
-      )}
-      <div id="sidebar" className={sidebarState ? "sidebar-active" : ""}>
-        <nav>
-          <div className="mscsc-name">
-            <div className="mscsc-name-container">
-              <h2>MSCSC</h2>
-              {window.innerWidth <= 1530 && (
-                <button
-                  className="sidebar-toggle"
-                  onClick={() => setSidebarState(!sidebarState)}
-                >
-                  <FontAwesomeIcon icon="fa-solid fa-times" />
-                </button>
-              )}
-            </div>
-            <p className="sub-text">Admin Panel</p>
+      <div>
+        {window.innerWidth <= 1530 && (
+          <div className="sidebar-header">
+            <button
+              className="sidebar-toggle mobile"
+              onClick={() => setSidebarState(!sidebarState)}
+            >
+              <FontAwesomeIcon icon="fa-solid fa-bars" />
+            </button>
+            <NavLink to="/" className="primary-button">
+              Home Page
+            </NavLink>
           </div>
+        )}
+        <div id="sidebar" className={sidebarState ? "sidebar-active" : ""}>
+          <nav>
+            <div className="mscsc-name">
+              <div className="mscsc-name-container">
+                <h2>MSCSC</h2>
+                {window.innerWidth <= 1530 && (
+                  <button
+                    className="sidebar-toggle"
+                    onClick={() => setSidebarState(!sidebarState)}
+                  >
+                    <FontAwesomeIcon icon="fa-solid fa-times" />
+                  </button>
+                )}
+              </div>
+              <p className="sub-text">Admin Panel</p>
+            </div>
 
-          <Welcome name={name} image={image} />
+            <Welcome name={name} image={image} />
 
-          <SidebarLinks
-            sidebarState={sidebarState}
-            setSidebarState={setSidebarState}
-          />
-        </nav>
+            <SidebarLinks
+              sidebarState={sidebarState}
+              setSidebarState={setSidebarState}
+            />
+          </nav>
 
-        <p className="copyright">© {new Date().getFullYear()} MSCSC</p>
+          <p className="copyright">© {new Date().getFullYear()} MSCSC</p>
+        </div>
       </div>
     </aside>
   );
@@ -77,6 +102,16 @@ const SidebarLinks = ({ sidebarState, setSidebarState }) => {
       to: "/admin/members",
     },
     {
+      name: "Executives",
+      icon: "fa-solid fa-user-tie",
+      to: "/admin/executives",
+    },
+    {
+      name: "Admins",
+      icon: "fa-solid fa-user-secret",
+      to: "/admin/admins",
+    },
+    {
       name: "Activities",
       icon: "fa-regular fa-calendar-days",
       to: "/admin/activities",
@@ -96,20 +131,33 @@ const SidebarLinks = ({ sidebarState, setSidebarState }) => {
         setSidebarState={setSidebarState}
       />
       <li>
-        <p className="sub-text">Club Data</p>
+        <p className="sub-text">Members</p>
         <ul>
-          <SidebarLink
-            data={links[1]}
-            sidebarState={sidebarState}
-            setSidebarState={setSidebarState}
-          />
-          <SidebarLink
-            data={links[2]}
-            sidebarState={sidebarState}
-            setSidebarState={setSidebarState}
-          />
+          {links.slice(1, 4).map((link) => (
+            <SidebarLink
+              key={link.name}
+              data={link}
+              sidebarState={sidebarState}
+              setSidebarState={setSidebarState}
+            />
+          ))}
         </ul>
       </li>
+
+      <li>
+        <p className="sub-text">Activities</p>
+        <ul>
+          {links.slice(4, 6).map((link) => (
+            <SidebarLink
+              key={link.name}
+              data={link}
+              sidebarState={sidebarState}
+              setSidebarState={setSidebarState}
+            />
+          ))}
+        </ul>
+      </li>
+
       <li>
         <p className="sub-text">Club Inbox</p>
         <ul>
