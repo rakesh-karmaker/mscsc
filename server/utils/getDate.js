@@ -17,14 +17,12 @@ exports.getDate = () => {
 
 exports.getBdTime = () => {
   const now = new Date();
-  const bangladeshOffset = 6 * 60; // Bangladesh is UTC+6
 
-  // Get the current UTC time in minutes
-  const utcTime = now.getTime() + now.getTimezoneOffset() * 60000;
+  // Create a new Date object for the Bangladesh time zone
+  const bdTime = new Date(
+    now.toLocaleString("en-US", { timeZone: "Asia/Dhaka" })
+  );
 
-  // Adjust to Bangladesh time
-  const bdTime = new Date(utcTime + bangladeshOffset * 60000);
-
-  // Return the time in ISO format
+  // Format the date as an ISO string
   return bdTime.toISOString();
 };
