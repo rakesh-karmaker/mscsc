@@ -2,6 +2,7 @@ const dayAgo = (date) => {
   const time = new Date(date).getTime();
   const now = new Date().getTime();
   const diff = now - time;
+  console.log(time, now, diff);
   let timeAgo;
 
   if (diff < 60 * 1000) {

@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 
 import "./Lists.css";
+import EmptyData from "@/components/UI/EmptyData/EmptyData";
 
 const ListsLayout = ({ title, children }) => {
   return (
@@ -121,17 +122,21 @@ const MessagesList = ({ messages }) => {
   };
   return (
     <ListsLayout title="Messages List">
-      {messages?.slice(0, 6).map((message) => {
-        return (
-          <li key={message._id}>
-            <MessagesListItem
-              message={message}
-              messageClick={messageClick}
-              messageDelete={messageDelete}
-            />
-          </li>
-        );
-      })}
+      {!messages || messages?.length == 0 ? (
+        <EmptyData />
+      ) : (
+        messages?.slice(0, 6).map((message) => {
+          return (
+            <li key={message._id}>
+              <MessagesListItem
+                message={message}
+                messageClick={messageClick}
+                messageDelete={messageDelete}
+              />
+            </li>
+          );
+        })
+      )}
       <Dialog data={currentMessage} setData={setCurrentMessage} />
     </ListsLayout>
   );

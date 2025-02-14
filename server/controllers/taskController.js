@@ -486,7 +486,7 @@ const makeChampion = async (req, res) => {
             date: "2025-01-19",
             tag: "Competition",
             description: updatedTask.summary,
-            link: "#",
+            link: `/task/${updatedTask.slug}?user=${username}`,
           },
         },
       },

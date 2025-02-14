@@ -15,7 +15,7 @@ const MemberEditDialog = ({ member, deleteMember }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const memberNewMutation = useMutation({
-    mutationFn: () => editUser({ _id: member?._id, new: false }),
+    mutationFn: () => editUser({ slug: member?.slug, new: false }),
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["members"] });
     },
@@ -109,17 +109,16 @@ const EditForm = ({ member, setIsOpen, editDialog }) => {
   });
 
   const editMemberFunc = (data) => {
-    console.log(data);
     memberMutation.mutate({
       method: "edit",
-      _id: member._id,
+      slug: member.slug,
       ...data,
     });
   };
 
-  const deleteMemberFunc = (id) => {
+  const deleteMemberFunc = (slug) => {
     memberMutation.mutate({
-      _id: id,
+      slug: slug,
     });
   };
 
@@ -159,7 +158,7 @@ const EditForm = ({ member, setIsOpen, editDialog }) => {
           className="danger-button primary-button"
           onClick={(e) => {
             e.stopPropagation();
-            deleteMemberFunc(member._id);
+            deleteMemberFunc(member.slug);
           }}
         >
           Delete

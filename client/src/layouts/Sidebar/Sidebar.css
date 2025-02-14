@@ -12,7 +12,6 @@
   top: 0;
   left: 0;
   z-index: 1000;
-  overflow-y: scroll;
 }
 
 .sidebar-header {
@@ -174,5 +173,11 @@
   }
   .sidebar-container {
     width: 100%;
+  }
+}
+
+@media screen and (max-height: 740px) {
+  #sidebar {
+    overflow-y: scroll;
   }
 }

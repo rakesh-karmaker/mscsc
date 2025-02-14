@@ -16,6 +16,28 @@
   list-style: none;
 }
 
+.lists ul:has(.empty-data) {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.lists .empty-data {
+  margin: 20px 0px;
+  height: 100%;
+  gap: 0.6rem;
+}
+
+.lists .empty-data svg {
+  font-size: 5rem;
+}
+
+.lists .empty-data p {
+  font-size: 1rem;
+}
+
 .lists ul li a,
 .lists ul li > div {
   width: 100%;
