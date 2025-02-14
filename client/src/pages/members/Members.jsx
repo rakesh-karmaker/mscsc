@@ -25,8 +25,6 @@ const MemberPage = (props) => {
   //reset search and branch when page reloads
   useEffect(() => {
     if (props?.showExecutives) {
-      console.log(props);
-      console.log(position);
       if (position !== "executive") {
         setPosition("executive");
         setRole("");

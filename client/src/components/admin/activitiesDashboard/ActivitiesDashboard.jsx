@@ -6,7 +6,6 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 const ActivitiesDashboard = () => {
-  const [createActivity, setCreateActivity] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState(null);
 
   useEffect(() => {
@@ -19,20 +18,11 @@ const ActivitiesDashboard = () => {
         <DashboardHeader title={"Activities"}>
           View and manage all the activities of the club
         </DashboardHeader>
-        <button
-          className="primary-button activity-action"
-          onClick={() => {
-            selectedActivity === null && setCreateActivity((prev) => !prev);
-            setSelectedActivity(null);
-          }}
-        >
-          {createActivity || selectedActivity ? "Cancel" : "Create Activity"}
-        </button>
-        {createActivity || selectedActivity != null ? (
+        {selectedActivity != null ? (
           <ActivityForm
             defaultValues={selectedActivity}
             setSelectedActivity={setSelectedActivity}
-            setCreateActivity={setCreateActivity}
+            method={"edit"}
           />
         ) : (
           <Activities admin={true} setSelectedActivity={setSelectedActivity} />

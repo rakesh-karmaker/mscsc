@@ -95,6 +95,9 @@ const addActivity = (data) => {
       continue;
     }
     if (key === "gallery") {
+      if (!data?.gallery || data?.gallery.length === 0) {
+        continue;
+      }
       for (let i = 0; i < data[key].length; i++) {
         formData.append("gallery", data[key][i]);
       }
@@ -102,7 +105,6 @@ const addActivity = (data) => {
     }
     formData.append(key, data[key]);
   }
-  console.log(formData);
   return api.post("/activity", formData, {
     headers: {
       "Content-Type": "multipart/form-data",

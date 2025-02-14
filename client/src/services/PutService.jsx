@@ -51,14 +51,14 @@ const editActivity = (data) => {
   const formData = new FormData();
   for (const key in data) {
     if (key === "activityImage") {
-      if (data[key].length === 0) {
+      if (!data?.activityImage || data?.activityImage.length === 0) {
         continue;
       }
       formData.append(key, data[key][0]);
       continue;
     }
     if (key === "gallery") {
-      if (data[key].length === 0) {
+      if (!data?.gallery || data?.gallery.length === 0) {
         continue;
       }
       for (let i = 0; i < data[key].length; i++) {

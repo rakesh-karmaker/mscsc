@@ -31,6 +31,7 @@ import AdminDashboard from "@/components/admin/adminDashboard/AdminDashboard";
 import MembersDashboard from "@/components/admin/membersDashboard/MembersDashboard";
 import ActivitiesDashboard from "@/components/admin/activitiesDashboard/ActivitiesDashboard";
 import MessagesDashboard from "@/components/admin/messagesDashboard/MessagesDashboard";
+import ActivityForm from "@/components/admin/components/ActivityForm/ActivityForm";
 
 //error pages
 import NotFound from "@/pages/Errors/NotFound";
@@ -153,6 +154,11 @@ const router = createBrowserRouter([
           },
 
           { path: "/admin/activities", element: <ActivitiesDashboard /> },
+
+          {
+            path: "/admin/add-activity",
+            element: <ActivityForm method={"add"} />,
+          },
 
           { path: "/admin/messages", element: <MessagesDashboard /> },
         ],

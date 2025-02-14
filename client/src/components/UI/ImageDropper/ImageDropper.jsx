@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./ImageDropper.css";
 import { useRef, useState } from "react";
 
-const ImageDropper = ({ title, ...props }) => {
+const ImageDropper = ({ title, register }) => {
   const dropArea = useRef(null);
   const [files, setFiles] = useState(0);
   const [active, setActive] = useState(false);
@@ -12,23 +12,21 @@ const ImageDropper = ({ title, ...props }) => {
     e.stopPropagation();
     if (e?.type === "input") {
       const droppedFiles = e.target.files;
-      props?.register.onChange({
+      register.onChange({
         target: {
           name: "gallery",
           value: droppedFiles,
         },
       });
-      props?.setImage(droppedFiles[0]);
       setFiles(droppedFiles.length);
     } else {
       const droppedFiles = e.dataTransfer.files;
-      props?.register.onChange({
+      register.onChange({
         target: {
           name: "gallery",
           value: droppedFiles,
         },
       });
-      props?.setImage(droppedFiles[0]);
       setFiles(droppedFiles.length);
     }
     setActive(true);

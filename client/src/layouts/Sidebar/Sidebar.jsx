@@ -9,7 +9,7 @@ const Sidebar = ({ name, image }) => {
   let start;
   // add a swipe event listener to the sidebar
   window.addEventListener("touchstart", (e) => {
-    if (e.touches.length === 1) {
+    if (e.touches.length === 1 && window.innerWidth <= 1530) {
       start = e.touches.item(0).clientX;
     } else {
       start = null;
@@ -18,7 +18,7 @@ const Sidebar = ({ name, image }) => {
 
   window.addEventListener("touchend", (e) => {
     const offset = 100;
-    if (start) {
+    if (start && window.innerWidth <= 1530) {
       const end = e.changedTouches.item(0).clientX;
       if (end - start > offset) {
         setSidebarState(true);
@@ -115,6 +115,11 @@ const SidebarLinks = ({ sidebarState, setSidebarState }) => {
       name: "Activities",
       icon: "fa-regular fa-calendar-days",
       to: "/admin/activities",
+    },
+    {
+      name: "Add New",
+      icon: "fa-solid fa-plus",
+      to: "/admin/add-activity",
     },
     {
       name: "Messages",

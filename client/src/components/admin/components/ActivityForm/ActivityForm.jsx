@@ -14,8 +14,10 @@ import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 import { deleteActivity } from "@/services/DeleteService";
 import ImageDropper from "@/components/UI/ImageDropper/ImageDropper";
 import Editor from "@/components/UI/Editor/Editor";
+import { useNavigate } from "react-router-dom";
 
 const ActivityForm = (props) => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const defaultValues = props?.defaultValues
     ? {
@@ -56,17 +58,21 @@ const ActivityForm = (props) => {
       queryClient.invalidateQueries("activities");
     },
     onError: (err) => {
+      console.log(err);
       toast.error(err?.response?.data?.message);
     },
     onSettled: () => {
-      props.setCreateActivity(false);
-      props.setSelectedActivity(null);
+      if (props?.method == "edit") {
+        props?.setSelectedActivity(null);
+      } else {
+        navigate("/admin/activities");
+      }
     },
   });
 
   const onSubmit = async (data) => {
     activityMutation.mutate({
-      method: props?.defaultValues ? "edit" : "add",
+      method: props?.method,
       ...data,
     });
   };

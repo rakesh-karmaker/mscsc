@@ -49,6 +49,7 @@ import {
   faPenNib,
   faClock,
   faUserSecret,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 
 // import and add icons
@@ -94,7 +95,7 @@ library.add(
   faCrown,
   faPenNib,
   faClock,
-
+  faPlus,
   faUserSecret
 );
 

@@ -28,7 +28,6 @@ const MemberProvider = ({ children }) => {
 
   useErrorNavigator(isError, error);
 
-  console.log(position, "position");
   const response = data?.data;
   const members = data?.data.results;
   const length = data?.data?.selectedLength || 0;

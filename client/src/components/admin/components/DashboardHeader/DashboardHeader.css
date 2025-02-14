@@ -4,6 +4,12 @@
   justify-content: space-between;
 }
 
+.dashboard-header > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .dashboard-header h1 {
   font-weight: 600;
   font-size: 2.5rem;
