@@ -3,7 +3,7 @@ import { useUser } from "@/contexts/UserContext";
 import { getTask } from "@/services/GetService";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { TaskSidebar } from "@/layouts/tasksSidebar/TasksSidebar";
 import toast from "react-hot-toast";
 
@@ -18,9 +18,18 @@ import { submitTask } from "@/services/PostService";
 import { editSubmission } from "@/services/PutService";
 
 const Task = ({ admin, ...rest }) => {
+  const { user, isVerifying } = useUser();
+
+  // redirect to unauthorized if user is not logged in
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isVerifying && user === null) {
+      navigate("/401", { replace: true });
+    }
+  }, [user, navigate, isVerifying]);
+
   const queryClient = useQueryClient();
   const { taskName } = useParams();
-  const { user, isVerifying } = useUser();
   const link = useLocation();
   const url = new URLSearchParams(link.search);
   const username = url.get("user") || (!admin ? user?.slug : null);

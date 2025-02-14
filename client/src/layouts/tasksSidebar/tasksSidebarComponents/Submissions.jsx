@@ -28,7 +28,7 @@ const Submissions = ({ task, admin }) => {
     <TaskSidebarCard title={"Submissions"}>
       <>
         <ul className="top-submissions">
-          {filteredSubmissions?.length > 0 ? (
+          {filteredSubmissions?.length > 0 && filteredSubmissions[0] ? (
             filteredSubmissions
               ?.slice(0, expanded ? task?.submissions?.length : 8)
               .map((member) => {

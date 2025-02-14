@@ -417,8 +417,8 @@ const deleteSubmission = async (req, res) => {
       }
 
       // update the task
-      champion.champion = null;
-      await champion.save();
+      updatedSubmission.champion = null;
+      await updatedSubmission.save();
     }
 
     console.log("Submission deleted successfully -", getDate(), "\n---\n");

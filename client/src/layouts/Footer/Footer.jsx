@@ -124,6 +124,10 @@ const footerLinks = {
       title: "Contact Us",
       link: "/contact",
     },
+    {
+      title: "Tasks",
+      link: "/tasks",
+    },
   ],
   Activities: [
     {
