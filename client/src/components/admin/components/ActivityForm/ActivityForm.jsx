@@ -87,7 +87,7 @@ const ActivityForm = (props) => {
   return (
     <div>
       <FormHeading style={{ fontSize: "42px", lineHeight: "52px" }}>
-        Add Activity
+        {props?.defaultValues ? "Edit Activity" : "Add Activity"}
       </FormHeading>
       <form onSubmit={handleSubmit(onSubmit)} className="activity-form">
         <div className="combined-inputs">
@@ -141,9 +141,9 @@ const ActivityForm = (props) => {
         <div className="combined-btns">
           <SubmitBtn
             isLoading={activityMutation.isPending}
-            pendingText={props?.defaultValues ? "Editing" : "Adding"}
+            pendingText={props?.defaultValues ? "Updating" : "Adding"}
           >
-            {props?.defaultValues ? "Edit" : "Add"} Activity
+            {props?.defaultValues ? "Update" : "Add"} Activity
           </SubmitBtn>
           {props?.defaultValues && (
             <DeleteBtn

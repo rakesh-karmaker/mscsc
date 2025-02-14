@@ -10,7 +10,7 @@ import TaskList from "@/components/tasksComponents/tasksList/TaskList";
 import { TasksSidebar } from "@/layouts/tasksSidebar/TasksSidebar";
 
 import "./Tasks.css";
-const Tasks = () => {
+const Tasks = ({ admin }) => {
   // check if the user is logged in
   const { user, isVerifying } = useUser();
   const navigate = useNavigate();
@@ -42,10 +42,11 @@ const Tasks = () => {
             setPage={setPage}
             submissions={submissions}
             username={user?.slug}
+            admin={admin}
           />
         )}
       </div>
-      <TasksSidebar />
+      <TasksSidebar admin={admin} />
     </main>
   );
 };

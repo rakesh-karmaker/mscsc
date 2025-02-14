@@ -34,8 +34,16 @@
   flex-direction: column;
 }
 
-.task {
+.tasks > li {
   padding: 20px 0px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.tasks > li:first-child {
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.task {
   cursor: pointer;
   text-decoration: none;
   color: var(--text-primary);
@@ -43,11 +51,6 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-}
-
-.task:first-child {
-  border-top: 1px solid rgba(0, 0, 0, 0.07);
 }
 
 .task-name {

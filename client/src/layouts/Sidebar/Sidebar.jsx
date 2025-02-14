@@ -97,9 +97,9 @@ const SidebarLinks = ({ sidebarState, setSidebarState }) => {
       to: "/admin/dashboard",
     },
     {
-      name: "Members",
-      icon: "fa-solid fa-user",
-      to: "/admin/members",
+      name: "Admins",
+      icon: "fa-solid fa-user-secret",
+      to: "/admin/admins",
     },
     {
       name: "Executives",
@@ -107,9 +107,9 @@ const SidebarLinks = ({ sidebarState, setSidebarState }) => {
       to: "/admin/executives",
     },
     {
-      name: "Admins",
-      icon: "fa-solid fa-user-secret",
-      to: "/admin/admins",
+      name: "Members",
+      icon: "fa-solid fa-user",
+      to: "/admin/members",
     },
     {
       name: "Activities",
@@ -120,6 +120,16 @@ const SidebarLinks = ({ sidebarState, setSidebarState }) => {
       name: "Add New",
       icon: "fa-solid fa-plus",
       to: "/admin/add-activity",
+    },
+    {
+      name: "Tasks",
+      icon: "fa-solid fa-list-check",
+      to: "/admin/tasks",
+    },
+    {
+      name: "Add New",
+      icon: "fa-solid fa-plus",
+      to: "/admin/add-task",
     },
     {
       name: "Messages",
@@ -164,10 +174,24 @@ const SidebarLinks = ({ sidebarState, setSidebarState }) => {
       </li>
 
       <li>
+        <p className="sub-text">Tasks</p>
+        <ul>
+          {links.slice(6, 8).map((link) => (
+            <SidebarLink
+              key={link.name}
+              data={link}
+              sidebarState={sidebarState}
+              setSidebarState={setSidebarState}
+            />
+          ))}
+        </ul>
+      </li>
+
+      <li>
         <p className="sub-text">Club Inbox</p>
         <ul>
           <SidebarLink
-            data={links[3]}
+            data={links[8]}
             sidebarState={sidebarState}
             setSidebarState={setSidebarState}
           />

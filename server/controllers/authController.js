@@ -16,6 +16,8 @@ exports.register = async (req, res) => {
         .send({ subject: "request", message: "Invalid request" });
     }
 
+    body.email = body?.email?.toLowerCase()?.trim();
+
     const { error: validationError } = registerSchema.validate(body);
     if (validationError) {
       return res.status(400).send({

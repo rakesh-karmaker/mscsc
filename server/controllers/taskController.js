@@ -103,7 +103,7 @@ const createTask = async (req, res) => {
     await newTask.save();
 
     console.log("New task created successfully -", getDate(), "\n---\n");
-    res.status(200).send({ newTask });
+    res.status(200).send({ message: "Task created successfully", slug });
   } catch (err) {
     console.log("Error creating a new task - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
@@ -141,10 +141,15 @@ const editTask = async (req, res) => {
 
     // update the task
     task.set(updates);
-    const updatedTask = await task.save();
+    await task.save();
+
+    // get the new task
+    const newTask = await Task.findById(task._id);
 
     console.log("Task edited successfully -", getDate(), "\n---\n");
-    res.status(200).send({ updatedTask });
+    res
+      .status(200)
+      .send({ message: "Task edited successfully", slug: newTask.slug });
   } catch (err) {
     console.log("Error editing a task - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
@@ -184,7 +189,9 @@ const deleteTask = async (req, res) => {
     }
 
     console.log("Task deleted successfully -", getDate(), "\n---\n");
-    res.status(200).send({ task });
+    res
+      .status(200)
+      .send({ message: "Task deleted successfully", method: "DELETE" });
   } catch (err) {
     console.log("Error deleting a task - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
@@ -491,7 +498,7 @@ const makeChampion = async (req, res) => {
     }
 
     console.log("Make a new champion successfully -", getDate(), "\n---\n");
-    res.status(200).send({ updatedTask });
+    res.status(200).send({ message: "Champion assigned successfully" });
   } catch (err) {
     console.log("Error deleting a submission - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
@@ -549,7 +556,7 @@ const deleteChampion = async (req, res) => {
     }
 
     console.log("Champion deleted successfully -", getDate(), "\n---\n");
-    res.status(200).send({ updatedTask });
+    res.status(200).send({ message: "Champion deleted successfully" });
   } catch (err) {
     console.log("Error deleting a champion - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });

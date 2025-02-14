@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dateFormat from "@/utils/dateFormat";
 
-const TaskTags = ({ task, submissions, username }) => {
+const TaskTags = ({ task, submissions, username, admin }) => {
   const categoryIcons = {
     "article writing": <FontAwesomeIcon icon="fa-solid fa-newspaper" />,
     "poster design": <FontAwesomeIcon icon="fa-solid fa-pen-nib" />,
@@ -9,7 +9,7 @@ const TaskTags = ({ task, submissions, username }) => {
 
   return (
     <>
-      {submissions?.includes(task._id.toString()) ? (
+      {submissions?.includes(task._id.toString()) && !admin ? (
         <p className="task-icons">
           {task?.champion === username ? (
             <>

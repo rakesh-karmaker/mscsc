@@ -36,7 +36,11 @@ const editUser = (data) => {
       key === "timeline" ? JSON.stringify(data[key]) : data[key]
     );
   }
-  return api.put("/member", formData);
+  return api.put("/member", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 const editMessage = (data) => {
@@ -68,7 +72,23 @@ const editActivity = (data) => {
     }
     formData.append(key, data[key]);
   }
-  return api.put("/activity", formData);
+  return api.put("/activity", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+const editTask = (data) => {
+  const formData = new FormData();
+  for (const key in data) {
+    formData.append(key, data[key]);
+  }
+  return api.put("/task/edit-task", formData, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 const editSubmission = (data) => {
@@ -79,7 +99,30 @@ const editSubmission = (data) => {
   if (data?.poster) {
     formData.append("poster", data.poster);
   }
-  return api.put("/task/edit-submission", formData);
+  return api.put("/task/edit-submission", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
-export { editUser, editMessage, editActivity, editSubmission };
+const makeChampion = (slug, username) => {
+  return api.put(
+    "/task/make-champion",
+    { slug, username },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+};
+
+export {
+  editUser,
+  editMessage,
+  editActivity,
+  editTask,
+  editSubmission,
+  makeChampion,
+};

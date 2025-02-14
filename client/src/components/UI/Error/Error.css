@@ -1,3 +1,7 @@
+#admin #header {
+  display: none;
+}
+
 .page-error {
   display: flex;
   flex-direction: column;
@@ -8,6 +12,11 @@
   padding: 4rem 0px;
   width: 100%;
   max-width: var(--max-elements-width);
+}
+
+#admin .page-error {
+  padding: 0;
+  min-height: calc(100svh - 60px);
 }
 
 .error-container {

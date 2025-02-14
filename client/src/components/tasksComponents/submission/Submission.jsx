@@ -19,15 +19,17 @@ const Submission = ({
           <h3 className="instructions-title">Instructions</h3>
           <TextContent content={task.instructions} />
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-          <h3 className="instructions-title">Answer</h3>
-          <Editor
-            key={submission ? submission._id : "new"}
-            content={submission?.answer || ""}
-            register={register("content")}
-            placeholder="Type your answer here…"
-          />
-        </form>
+        {username ? (
+          <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
+            <h3 className="instructions-title">Answer</h3>
+            <Editor
+              key={submission ? submission._id : "new"}
+              content={submission?.answer || ""}
+              register={register("content")}
+              placeholder="Type your answer here…"
+            />
+          </form>
+        ) : null}
       </div>
     </>
   );

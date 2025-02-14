@@ -50,6 +50,7 @@ import {
   faClock,
   faUserSecret,
   faPlus,
+  faListCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
 // import and add icons
@@ -96,7 +97,8 @@ library.add(
   faPenNib,
   faClock,
   faPlus,
-  faUserSecret
+  faUserSecret,
+  faListCheck
 );
 
 function App() {

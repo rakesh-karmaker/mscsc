@@ -112,13 +112,25 @@ const addActivity = (data) => {
   });
 };
 
+const addTask = (data) => {
+  const formData = new FormData();
+  for (const key in data) {
+    formData.append(key, data[key]);
+  }
+
+  return api.post("/task/create", formData, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+
 const submitTask = (data) => {
   const formData = new FormData();
   formData.append("slug", data.slug);
   formData.append("username", data.username);
   formData.append("answer", data.answer);
   formData.append("poster", data.poster);
-  console.log(formData);
 
   return api.post("/task/submit", formData, {
     headers: {
@@ -135,5 +147,6 @@ export {
   resetPassword,
   sendMessage,
   addActivity,
+  addTask,
   submitTask,
 };

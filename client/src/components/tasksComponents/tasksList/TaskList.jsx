@@ -5,7 +5,15 @@ import Pagination from "@/components/UI/Pagination/Pagination";
 import "./TaskList.css";
 import TaskTags from "@/components/tasksComponents/taskTags/TaskTags";
 
-const TaskList = ({ tasks, length, page, setPage, submissions, username }) => {
+const TaskList = ({
+  tasks,
+  length,
+  page,
+  setPage,
+  submissions,
+  username,
+  admin,
+}) => {
   if (tasks?.length === 0) return <EmptyData />;
 
   return (
@@ -15,7 +23,9 @@ const TaskList = ({ tasks, length, page, setPage, submissions, username }) => {
           return (
             <li key={task._id}>
               <NavLink
-                to={`/task/${task.slug}?user=${username}`}
+                to={`${admin ? "/admin" : ""}/task/${task.slug}${
+                  !admin ? `?user=${username}` : ""
+                }`}
                 className="task"
               >
                 <p className="task-name" title={task.name}>
@@ -31,6 +41,7 @@ const TaskList = ({ tasks, length, page, setPage, submissions, username }) => {
                     task={task}
                     submissions={submissions}
                     username={username}
+                    admin={admin}
                   />
                 </div>
               </NavLink>

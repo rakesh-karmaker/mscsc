@@ -65,8 +65,10 @@
   align-items: flex-end;
 }
 
-.task-sidebar .submit-image > .submit-actions {
+.task-sidebar .submit-image > .submit-actions,
+.task-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 

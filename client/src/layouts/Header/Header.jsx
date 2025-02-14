@@ -49,7 +49,7 @@ const Header = () => {
   const isToken = localStorage.getItem("token") == "";
 
   return (
-    <header>
+    <header id="header">
       <nav>
         {window.innerWidth > 800 ? (
           <NavLink to="/" id="logo">

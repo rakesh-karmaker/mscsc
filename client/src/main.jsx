@@ -49,6 +49,9 @@ import { TaskProvider } from "./contexts/TasksContext";
 //layouts
 import UserLayout from "@/layouts/UserLayout";
 import AdminLayout from "@/layouts/AdminLayout/AdminLayout";
+import TasksDashBoard from "./components/admin/tasksDashboard/TasksDashboaed";
+import TaskDashboard from "./components/admin/tasksDashboard/taskDashboard/TaskDashboard";
+import TaskForm from "./components/admin/components/TaskForm/TaskForm";
 
 const queryClient = new QueryClient();
 
@@ -101,7 +104,7 @@ const router = createBrowserRouter([
           {
             path: "/task/:taskName",
             element: <Task />,
-            // errorElement: <NotFound />,
+            errorElement: <NotFound />,
           },
 
           { path: "/privacy-policy", element: <PrivacyPolicy /> },
@@ -158,6 +161,16 @@ const router = createBrowserRouter([
           {
             path: "/admin/add-activity",
             element: <ActivityForm method={"add"} />,
+          },
+
+          { path: "/admin/tasks", element: <TasksDashBoard /> },
+
+          { path: "/admin/add-task", element: <TaskForm method={"add"} /> },
+
+          {
+            path: "/admin/task/:taskName",
+            element: <TaskDashboard />,
+            errorElement: <NotFound />,
           },
 
           { path: "/admin/messages", element: <MessagesDashboard /> },

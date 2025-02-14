@@ -17,13 +17,13 @@ import Preview from "@/components/tasksComponents/preview/Preview";
 import { submitTask } from "@/services/PostService";
 import { editSubmission } from "@/services/PutService";
 
-const Task = () => {
+const Task = ({ admin, ...rest }) => {
   const queryClient = useQueryClient();
   const { taskName } = useParams();
   const { user, isVerifying } = useUser();
   const link = useLocation();
   const url = new URLSearchParams(link.search);
-  const username = url.get("user") || user?.slug;
+  const username = url.get("user") || (!admin ? user?.slug : null);
 
   const isOwner = user?.slug === username;
   const [editable, setEditable] = useState(false);
@@ -44,9 +44,9 @@ const Task = () => {
   const task = data?.data;
 
   useEffect(() => {
-    // check if submission exists
     if (!(isVerifying || isLoading)) {
       if (
+        username &&
         !task?.submissions?.map((s) => s.username).includes(username) &&
         !isOwner
       ) {
@@ -59,15 +59,16 @@ const Task = () => {
           ?.map((s) => s.taskId)
           .includes(task?._id.toString()) &&
         isOwner &&
-        new Date(task?.deadline) > new Date()
+        new Date(task?.deadline) > new Date() &&
+        !admin
       ) {
         setEditable(true);
         setMode("edit");
-      } else if (isOwner && new Date(task?.deadline) > new Date()) {
+      } else if (isOwner && new Date(task?.deadline) > new Date() && !admin) {
         setMode("edit");
       } else {
         setEditable(false);
-        setMode("preview");
+        setMode(admin && !username ? "edit" : "preview");
       }
     }
   }, [isVerifying, isLoading, username]);
@@ -142,7 +143,7 @@ const Task = () => {
               <p className="created">
                 <IoIosCreate /> <span>{dateFormat(task.createdAt)}</span>
               </p>
-              {isOwner && editable && (
+              {isOwner && editable && !admin && (
                 <div className="mode-btns">
                   <button
                     className={`mode ${mode === "edit" ? "active" : ""}`}
@@ -183,6 +184,7 @@ const Task = () => {
                 task={task}
                 submissions={user?.submissions.map((s) => s.taskId.toString())}
                 username={username}
+                admin={admin}
               />
             </div>
           </div>
@@ -197,6 +199,8 @@ const Task = () => {
             setEditable={setEditable}
             isSubmitting={taskMutation.isPending}
             username={username}
+            admin={admin}
+            {...rest}
           />
         </>
       )}
