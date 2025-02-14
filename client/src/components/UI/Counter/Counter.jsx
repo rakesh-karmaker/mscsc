@@ -8,7 +8,7 @@ const Counter = ({ date }) => {
 
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const diff = new Date(date).getTime() - new Date().getTime();
+      const diff = Date.parse(date) - Date.now();
       if (diff < 0) {
         return "Deadline passed";
       } else {

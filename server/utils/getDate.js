@@ -14,15 +14,3 @@ exports.getDate = () => {
 
   return bangladeshTime;
 };
-
-exports.getBdTime = () => {
-  const now = new Date();
-
-  // Create a new Date object for the Bangladesh time zone
-  const bdTime = new Date(
-    now.toLocaleString("en-US", { timeZone: "Asia/Dhaka" })
-  );
-
-  // Format the date as an ISO string
-  return bdTime.toISOString();
-};

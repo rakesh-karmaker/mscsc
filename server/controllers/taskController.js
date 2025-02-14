@@ -1,7 +1,7 @@
 const Member = require("../models/Member");
 const Task = require("../models/Task");
 const generateSlug = require("../utils/generateSlug");
-const { getDate, getBdTime } = require("../utils/getDate");
+const { getDate } = require("../utils/getDate");
 const { uploadImage, deleteImage } = require("../utils/imagekit");
 const { paginatedResults } = require("../utils/paginatedResults");
 const { taskSchema } = require("../utils/validation");
@@ -98,6 +98,9 @@ const createTask = async (req, res) => {
     const slug = await generateSlug(req.body.name, Task);
     req.body.slug = slug;
 
+    // covert the deadline in UTC
+    req.body.deadline = new Date(req.body.deadline).toISOString();
+
     // create a new task
     const newTask = new Task({ ...req.body });
     await newTask.save();
@@ -131,6 +134,11 @@ const editTask = async (req, res) => {
     const task = await Task.findOne({ slug });
     if (!task) {
       return res.status(404).send({ message: "Task not found" });
+    }
+
+    if (updates.deadline) {
+      // convert the deadline in UTC
+      updates.deadline = new Date(updates.deadline).toISOString();
     }
 
     if (task.name !== updates.name) {
@@ -215,11 +223,13 @@ const submitTask = async (req, res) => {
       return res.status(404).send({ message: "Task not found" });
     }
 
-    // check the deadline
+    // check the deadline in UTC
     const { deadline } = task;
-    const time = new Date(getBdTime());
-    if (time > new Date(deadline).getTime()) {
-      return res.status(400).send({ message: "Deadline passed" });
+    const now = new Date().toISOString();
+    if (now > deadline) {
+      return res
+        .status(400)
+        .send({ message: "Submission deadline has passed" });
     }
 
     // check if the submission exists
@@ -240,7 +250,7 @@ const submitTask = async (req, res) => {
       branch: member.branch,
       batch: member.batch,
       image: member.image,
-      submissionDate: getBdTime(),
+      submissionDate: new Date().toISOString(),
       answer,
     };
 
@@ -250,7 +260,7 @@ const submitTask = async (req, res) => {
     answers.posterId = imgId;
 
     // update the task
-    const updatedTask = await Task.findOneAndUpdate(
+    await Task.findOneAndUpdate(
       { slug },
       { $push: { submissions: answers } },
       { new: true }
@@ -298,11 +308,13 @@ const editSubmission = async (req, res) => {
       return res.status(404).send({ message: "Submission not found" });
     }
 
-    // check the deadline
+    // check the deadline in UTC
     const { deadline } = task;
-    const time = new Date(getBdTime());
-    if (time > new Date(deadline).getTime()) {
-      return res.status(400).send({ message: "Deadline passed" });
+    const now = new Date().toISOString();
+    if (now > deadline) {
+      return res
+        .status(400)
+        .send({ message: "Submission deadline has passed" });
     }
 
     let updatedSubmission;
@@ -320,7 +332,7 @@ const editSubmission = async (req, res) => {
             "submissions.$.answer": answer,
             "submissions.$.poster": url,
             "submissions.$.posterId": imgId,
-            "submissions.$.submissionDate": getBdTime(),
+            "submissions.$.submissionDate": new Date().toISOString(),
           },
         },
         { new: true }
@@ -329,7 +341,12 @@ const editSubmission = async (req, res) => {
       // update the submission
       updatedSubmission = await Task.findOneAndUpdate(
         { slug, "submissions.username": username },
-        { $set: { "submissions.$.answer": answer } },
+        {
+          $set: {
+            "submissions.$.answer": answer,
+            "submissions.$.submissionDate": new Date().toISOString(),
+          },
+        },
         { new: true }
       );
     }
