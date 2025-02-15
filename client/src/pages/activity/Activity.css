@@ -20,14 +20,43 @@
   position: relative;
 }
 
+.cover-image-container {
+  width: 100%;
+  aspect-ratio: 5/2.5;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 2rem;
+}
+
 .cover {
+  width: 100%;
   max-width: 100%;
   aspect-ratio: 5/2.5;
   border-radius: 4px;
   object-fit: cover;
   object-position: center center;
-  margin-bottom: 2rem;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  transition: 0.25s;
+}
+
+.cover-image-container p {
+  position: absolute;
+  opacity: 0;
+  transition: 0.25s;
+  color: var(--text-white);
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.cover-image-container:hover .cover {
+  filter: brightness(0.7);
+}
+.cover-image-container:hover p {
+  opacity: 1;
 }
 
 .activity-details .title {

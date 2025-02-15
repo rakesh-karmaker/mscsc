@@ -131,11 +131,11 @@ const router = createBrowserRouter([
                 <Activity />
               </Suspense>
             ),
-            errorElement: (
-              <Suspense fallback={<Loader />}>
-                <NotFound />
-              </Suspense>
-            ),
+            // errorElement: (
+            //   <Suspense fallback={<Loader />}>
+            //     <NotFound />
+            //   </Suspense>
+            // ),
           },
           {
             path: "/executives",

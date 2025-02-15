@@ -2,14 +2,17 @@ import { getActivity } from "@/services/GetService";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "@/components/UI/Loader/Loader";
+import { useState } from "react";
 
 import "./Activity.css";
 import Gallery from "@/components/UI/Gallery/Gallery";
 import TextContent from "@/components/UI/TextContent/TextContent";
 import dateFormat from "@/utils/dateFormat";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import ImageViewer from "@/components/UI/ImageViewer/ImageViewer";
 
 const Activity = () => {
+  const [open, setOpen] = useState(false);
   const { activityName } = useParams();
   const {
     data: response,
@@ -42,12 +45,15 @@ const Activity = () => {
   return (
     <main className="page-activity">
       <div className="activity-details">
-        <LazyLoadImage
-          src={coverImageUrl}
-          alt={`cover image of ${title}`}
-          className="cover"
-          // width="1200"
-        />
+        <div className="cover-image-container" onClick={() => setOpen(true)}>
+          <LazyLoadImage
+            src={coverImageUrl}
+            alt={`cover image of ${title}`}
+            className="cover"
+            onClick={() => setOpen(true)}
+          />
+          <p>View full image</p>
+        </div>
 
         <p className="title">{title}</p>
         <p className="tags">
@@ -61,6 +67,13 @@ const Activity = () => {
         <Gallery title="Gallery" images={gallery} />
 
         <TextContent content={content} />
+
+        <ImageViewer
+          data={[{ url: coverImageUrl }]}
+          open={open}
+          setOpen={setOpen}
+          index={0}
+        />
       </div>
 
       <aside className="others">
