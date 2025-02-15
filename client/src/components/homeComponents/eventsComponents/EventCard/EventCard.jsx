@@ -11,10 +11,6 @@ const EventCard = ({ eventData }) => {
 
   return (
     <>
-      {/* <img
-        src={coverImageUrl}
-        alt={`A poster of ${title} - ${tag} on ${date}`}
-      /> */}
       <LazyLoadImage
         src={coverImageUrl}
         alt={`A poster of ${title} - ${tag} on ${date}`}
