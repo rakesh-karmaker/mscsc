@@ -54,7 +54,10 @@ const TaskActions = ({ task, taskMutation, ...rest }) => {
   };
   return (
     <TaskSidebarCard title={"Task Actions"}>
-      <p>change task</p>
+      <p>
+        To edit the task, click on the edit button and click the delete button
+        to delete the task
+      </p>
       <div className="task-actions">
         <button
           className="primary-button"
@@ -86,7 +89,10 @@ const SubmissionActions = ({ task, username, deleteFunc, taskMutation }) => {
   };
   return (
     <TaskSidebarCard title={"Submission Actions"}>
-      <p>make champion</p>
+      <p>
+        Click on the make champion button to make the submission champion and
+        click on the delete button to delete the submission
+      </p>
       <div className="task-actions">
         {username && task?.champion === username ? (
           <button

@@ -52,15 +52,15 @@ const QuickAccess = () => {
       icon: "fa-regular fa-calendar-days",
       heading: "Add a new Activity",
       text: "You can add a new workshop details, article, a member’s achievement and new upcoming events. So the users can see them, learn about them and join the activities to expand their domain of knowledge and learn about several things.",
-      link: "/admin/activities",
+      link: "/admin/add-activity",
       linkText: "Add Now",
     },
     {
-      icon: "fa-regular fa-envelope",
-      heading: "View Messages",
-      text: "You can view the messages sent by the users where they can asy a question or identify a problem. The users can send messages through the contact form in the contact section located in the home page and in the contact page.",
-      link: "/admin/messages",
-      linkText: "View Now",
+      icon: "fa-solid fa-list-check",
+      heading: "Add a new Task",
+      text: "You can add a new task to the system. So the users can see them, learn about them and join the activities to expand their domain of knowledge and learn about several things. Then the users can complete the task and get in the leaderboard.",
+      link: "/admin/add-task",
+      linkText: "Add Now",
     },
   ];
   return window.innerWidth <= 1240 ? (
