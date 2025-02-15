@@ -19,13 +19,19 @@ import Submitters from "./tasksSidebarComponents/Submitters";
 
 const TasksSidebar = ({ admin }) => {
   const { category: currentCategory, setCategory, response } = useTask();
-  const { user } = useUser();
+  const { user, isVerifying } = useUser();
   const totalLengthRef = useRef(null);
   const [initialTotalLength, setInitialTotalLength] = useState(null);
 
-  const { data, isLoading, error, isError } = useQuery({
-    queryKey: ["topSubmitters"],
-    queryFn: getTopSubmitters,
+  const { data, isLoading, error, isError, refetch } = useQuery({
+    queryKey: ["topSubmitters", isVerifying, user],
+    queryFn: () => {
+      if (!isVerifying && user) {
+        return getTopSubmitters();
+      } else {
+        return null;
+      }
+    },
   });
 
   useErrorNavigator(isError, error);

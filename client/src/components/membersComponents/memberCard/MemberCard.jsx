@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./MemberCard.css";
 import MemberEditDialog from "@/components/admin/membersDashboard/memberEditDialog/MemberEditDialog";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const MemberCard = ({ member, ...props }) => {
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ const MemberCard = ({ member, ...props }) => {
         )}
       </div>
       <div className="member-image-container">
-        <img src={image} alt={name} />
+        <LazyLoadImage src={image} alt={name} effect="blur" />
       </div>
       <div className="member-info">
         <h3>{name}</h3>

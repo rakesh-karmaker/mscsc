@@ -7,6 +7,7 @@ import "./Activity.css";
 import Gallery from "@/components/UI/Gallery/Gallery";
 import TextContent from "@/components/UI/TextContent/TextContent";
 import dateFormat from "@/utils/dateFormat";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const Activity = () => {
   const { activityName } = useParams();
@@ -41,12 +42,13 @@ const Activity = () => {
   return (
     <main className="page-activity">
       <div className="activity-details">
-        <img
+        <LazyLoadImage
           src={coverImageUrl}
           alt={`cover image of ${title}`}
           className="cover"
-          width="1200"
+          // width="1200"
         />
+
         <p className="title">{title}</p>
         <p className="tags">
           <a href={`/activities?tag=${tag}`} className="tag">

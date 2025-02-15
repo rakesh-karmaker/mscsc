@@ -56,6 +56,7 @@ const TaskProvider = ({ children }) => {
         setCategory,
         isLoading,
         response,
+        refetch,
       }}
     >
       {children}

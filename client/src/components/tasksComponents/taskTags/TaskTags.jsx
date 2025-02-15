@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dateFormat from "@/utils/dateFormat";
+import "./TaskTags.css";
 
 const TaskTags = ({ task, submissions, username, admin }) => {
   const categoryIcons = {

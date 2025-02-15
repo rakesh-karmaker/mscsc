@@ -22,8 +22,19 @@ const Tasks = ({ admin }) => {
 
   const submissions = user?.submissions.map((s) => s.taskId.toString());
 
-  const { tasks, length, page, setPage, search, setSearch, isLoading } =
-    useTask();
+  const {
+    tasks,
+    length,
+    page,
+    setPage,
+    search,
+    setSearch,
+    isLoading,
+    refetch,
+  } = useTask();
+
+  // if the user is logged in, refetch the tasks
+  if (!isLoading && !tasks && !isVerifying && user) refetch();
 
   return (
     <main className="page-tasks">

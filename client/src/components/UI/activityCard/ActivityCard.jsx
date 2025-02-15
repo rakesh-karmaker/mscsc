@@ -1,14 +1,21 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./ActivityCard.css";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import dateFormat from "@/utils/dateFormat";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const ActivityCard = ({ data, selectedTag, admin, ...rest }) => {
   const { tag, date, coverImageUrl, title, summary, slug } = data;
 
   return (
     <div className="activity" tag={tag}>
-      <img src={`${coverImageUrl}`} alt={`The image of ${title}`} />
+      {/* <img src={`${coverImageUrl}`} alt={`The image of ${title}`} /> */}
+      <LazyLoadImage
+        src={`${coverImageUrl}`}
+        alt={`The image of ${title}`}
+        effect="blur"
+      />
 
       <article>
         <div className="activity-meta">

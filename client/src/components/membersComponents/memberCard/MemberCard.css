@@ -64,8 +64,13 @@
   opacity: 1;
 }
 
-.member-card img {
+.member-card span:has(img) {
   width: 260px;
+  aspect-ratio: 1;
+}
+
+.member-card img {
+  width: 100%;
   aspect-ratio: 1;
   border-radius: 50%;
   object-fit: cover;

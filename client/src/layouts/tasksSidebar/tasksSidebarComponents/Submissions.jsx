@@ -32,7 +32,6 @@ const Submissions = ({ task, admin }) => {
             filteredSubmissions
               ?.slice(0, expanded ? task?.submissions?.length : 8)
               .map((member) => {
-                console.log(member.submissionDate);
                 return (
                   <li key={member.username}>
                     <Submitter

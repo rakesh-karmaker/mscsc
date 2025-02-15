@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./Gallery.css";
 import ImageViewer from "../ImageViewer/ImageViewer";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const Gallery = ({ title, images }) => {
   if (images.length === 0) return null;
@@ -13,7 +14,7 @@ const Gallery = ({ title, images }) => {
       <p className="gallery-title">{title}</p>
       <div className="gallery-images">
         {images.map((image, index) => (
-          <img
+          <LazyLoadImage
             src={image.url}
             alt={`activity gallery ${index}`}
             key={index}

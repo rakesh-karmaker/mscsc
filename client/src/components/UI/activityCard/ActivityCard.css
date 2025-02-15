@@ -14,9 +14,14 @@
   opacity: 1;
 }
 
-.activity img {
+.activity span:has(img) {
   width: 100%;
   height: 250px;
+}
+
+.activity img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center center;
   border-radius: 10px;
@@ -107,7 +112,7 @@
     height: fit-content;
     max-width: 290px;
   }
-  .activity img {
+  .activity span:has(img) {
     height: 220px;
   }
   .activity-actions {

@@ -147,6 +147,10 @@ main {
   transition: 0.25s;
 }
 
+.danger-button::before {
+  background-color: red;
+}
+
 .primary-button:hover:after {
   width: 100%;
 }

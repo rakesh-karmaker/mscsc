@@ -63,7 +63,6 @@ const InformationItem = ({ info }) => {
 const UtilityBtns = () => {
   const queryClient = useQueryClient();
   const [copySuccess, setCopySuccess] = useState(false);
-  const { setUser } = useUser();
 
   const copyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -77,7 +76,6 @@ const UtilityBtns = () => {
   const logout = () => {
     localStorage.removeItem("token");
     queryClient.invalidateQueries(["user"]);
-    setUser(null);
   };
 
   return (
