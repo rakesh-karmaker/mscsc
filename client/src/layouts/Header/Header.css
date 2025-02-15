@@ -19,6 +19,12 @@ header nav {
   align-items: center;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 #logo {
   height: 60px;
 }
@@ -154,8 +160,8 @@ header nav {
 @media screen and (max-width: 800px) {
   #avatar,
   #avatar > img {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
   }
   nav {
     position: relative;

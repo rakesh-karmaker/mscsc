@@ -1,6 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./EventCard.css";
 import { NavLink } from "react-router-dom";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const EventCard = ({ eventData }) => {
   const { tag, coverImageUrl, title, summary, slug, date } = eventData;
@@ -9,9 +11,14 @@ const EventCard = ({ eventData }) => {
 
   return (
     <>
-      <img
+      {/* <img
         src={coverImageUrl}
         alt={`A poster of ${title} - ${tag} on ${date}`}
+      /> */}
+      <LazyLoadImage
+        src={coverImageUrl}
+        alt={`A poster of ${title} - ${tag} on ${date}`}
+        effect="blur"
       />
       <article>
         <p className="event-tags">

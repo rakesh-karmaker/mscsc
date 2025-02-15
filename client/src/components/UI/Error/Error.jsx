@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import "./Error.css";
 
 const Error = ({ heading, link, linkText, children, ...rest }) => {
   const style = rest?.style ?? {};

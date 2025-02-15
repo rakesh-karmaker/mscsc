@@ -55,17 +55,9 @@ const Header = () => {
   return (
     <header id="header">
       <nav>
-        {window.innerWidth > 800 ? (
-          <NavLink to="/" id="logo">
-            <img src="/logo.webp" alt="MSCSC logo" />
-          </NavLink>
-        ) : (
-          <NavbarToggler
-            navbar={navBar}
-            isOpened={isOpened}
-            setIsOpened={setIsOpened}
-          />
-        )}
+        <NavLink to="/" id="logo">
+          <img src="/logo.webp" alt="MSCSC logo" />
+        </NavLink>
 
         <ul className="nav-links-container" ref={navBar}>
           {navLinks.map(({ href, name }, index) => {
@@ -82,15 +74,24 @@ const Header = () => {
             );
           })}
         </ul>
-        {isToken ||
-          (!isVerifying &&
-            (user !== null ? (
-              <Avatar />
-            ) : (
-              <PrimaryBtn link="/login" name="Login page" header={true}>
-                Login
-              </PrimaryBtn>
-            )))}
+        <div className="header-right">
+          {isToken ||
+            (!isVerifying &&
+              (user !== null ? (
+                <Avatar />
+              ) : (
+                <PrimaryBtn link="/login" name="Login page" header={true}>
+                  Login
+                </PrimaryBtn>
+              )))}
+          {window.innerWidth < 800 && (
+            <NavbarToggler
+              navbar={navBar}
+              isOpened={isOpened}
+              setIsOpened={setIsOpened}
+            />
+          )}
+        </div>
       </nav>
     </header>
   );

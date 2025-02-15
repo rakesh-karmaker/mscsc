@@ -12,7 +12,14 @@
   overflow-y: hidden;
 }
 
-.images-container .swiper-slide > img {
+.images-container .swiper-slide span {
+  width: 100%;
+  max-height: var(--image-slider-height);
+  position: relative;
+  overflow-y: hidden;
+}
+
+.images-container .swiper-slide img {
   width: 100%;
   height: var(--image-slider-height);
   object-fit: cover;

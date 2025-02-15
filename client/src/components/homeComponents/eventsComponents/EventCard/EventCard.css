@@ -4,8 +4,12 @@
   display: flex;
   border-radius: 13px;
   background: rgb(250, 251, 253);
-  overflow-x: hidden;
+  overflow: hidden;
   border: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+
+.activity-demo span:has(img) {
+  height: 350px;
 }
 
 .activity-demo img {
@@ -97,6 +101,9 @@
     width: 100% !important;
     min-height: 400px;
   }
+  .activity-demo span:has(img) {
+    height: 400px;
+  }
   .activity-demo article {
     max-width: none;
   }
@@ -109,6 +116,10 @@
     max-width: 100%;
     height: auto;
     position: relative;
+  }
+
+  .activity-demo span:has(img) {
+    height: 300px;
   }
   .activity-demo img {
     width: 100%;

@@ -1,19 +1,20 @@
 import ClubDescription from "@/components/aboutComponents/clubDesc/ClubDesc";
 import Departments from "@/components/aboutComponents/departments/Departments";
 import "./AboutSection.css";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const AboutUs = () => {
   return (
     <section id="about" className="col-center page-section">
       <div className="about-article-container">
         <ClubDescription />
-        <img
+        <LazyLoadImage
           src="/about-club-section-img.webp"
-          rel="preload"
-          fetchpriority="high"
           alt="A picture of club members"
           width={"690px"}
           height={"650px"}
+          effect="blur"
         />
       </div>
 

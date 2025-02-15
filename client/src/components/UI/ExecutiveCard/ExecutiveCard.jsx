@@ -1,5 +1,7 @@
 import "@/components/UI/ExecutiveCard/ExecutiveCard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import { Link } from "react-router-dom";
 const ExecutiveCard = ({ executiveData }) => {
   const { name, position, image, socials, panel } = executiveData;
@@ -7,10 +9,17 @@ const ExecutiveCard = ({ executiveData }) => {
     <div className="executive-member">
       <div>
         <div className="executive-upper">
-          <img
+          {/* <img
             src={`/executive-members/${image}`}
             alt={`A picture of ${name}, our ${position} of MSCSC in ${panel}`}
+          /> */}
+
+          <LazyLoadImage
+            src={`/executive-members/${image}`}
+            alt={`A picture of ${name}, our ${position} of MSCSC in ${panel}`}
+            effect="blur"
           />
+
           <div className="member-socials row-center">
             <ExecutiveSocials socials={socials} name={name} />
           </div>
