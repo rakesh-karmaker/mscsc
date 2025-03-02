@@ -9,11 +9,6 @@ const ExecutiveCard = ({ executiveData }) => {
     <div className="executive-member">
       <div>
         <div className="executive-upper">
-          {/* <img
-            src={`/executive-members/${image}`}
-            alt={`A picture of ${name}, our ${position} of MSCSC in ${panel}`}
-          /> */}
-
           <LazyLoadImage
             src={`/executive-members/${image}`}
             alt={`A picture of ${name}, our ${position} of MSCSC in ${panel}`}

@@ -2,6 +2,7 @@ const Member = require("../models/Member");
 const Task = require("../models/Task");
 const generateSlug = require("../utils/generateSlug");
 const { getDate } = require("../utils/getDate");
+const getPosition = require("../utils/getPosition");
 const { uploadImage, deleteImage } = require("../utils/imagekit");
 const { paginatedResults } = require("../utils/paginatedResults");
 const { taskSchema } = require("../utils/validation");
@@ -44,6 +45,9 @@ const getTask = async (req, res) => {
           champion: 1,
           category: 1,
           createdAt: 1,
+          first: 1,
+          second: 1,
+          third: 1,
           submissions: {
             $map: {
               input: "$submissions",
@@ -179,20 +183,40 @@ const deleteTask = async (req, res) => {
       await deleteImage(res, submissions[i].posterId);
     }
 
-    // delete champion
-    if (task.champion) {
-      const champion = await Member.findOne({ slug: task.champion });
-      if (champion) {
-        await Member.findOneAndUpdate(
-          { slug: task.champion },
-          {
-            $pull: {
-              timeline: {
-                taskId: task._id,
-              },
-            },
+    // delete all submissions from the members' profile
+    for (let i = 0; i < submissions.length; i++) {
+      await Member.findOneAndUpdate(
+        { slug: submissions[i].username },
+        {
+          $pull: { submissions: { taskId: task._id } }, // remove the task from the submissions array
+        }
+      );
+    }
+
+    // delete winners
+    if (task.first || task.second || task.third) {
+      // delete the old winners' timeline
+      while (task.first || task.second || task.third) {
+        const winners = [task.first, task.second, task.third];
+        for (let i = 0; i < winners.length; i++) {
+          // check if the winner is null
+          if (!winners[i]) {
+            continue;
           }
-        );
+          const winner = await Member.findOne({ slug: winners[i] });
+          if (winner) {
+            await Member.findOneAndUpdate(
+              { slug: winners[i] },
+              {
+                $pull: {
+                  timeline: {
+                    taskId: task._id, // remove the task from the timeline array
+                  },
+                },
+              }
+            );
+          }
+        }
       }
     }
 
@@ -415,26 +439,24 @@ const deleteSubmission = async (req, res) => {
       );
     }
 
-    // delete if champion
-    if (updatedSubmission.champion === username) {
-      const champion = await Member.findOne({
-        slug: updatedSubmission.champion,
-      });
-      if (champion) {
-        await Member.findOneAndUpdate(
-          { slug: updatedSubmission.champion },
-          {
-            $pull: {
-              timeline: {
-                taskId: updatedSubmission._id,
-              },
+    // get the position
+    const position = getPosition(updatedSubmission, username);
+
+    // delete if a winner
+    if (position !== null) {
+      await Member.findOneAndUpdate(
+        { slug: updatedSubmission[position] },
+        {
+          $pull: {
+            timeline: {
+              taskId: updatedSubmission._id,
             },
-          }
-        );
-      }
+          },
+        }
+      );
 
       // update the task
-      updatedSubmission.champion = null;
+      updatedSubmission[position] = null;
       await updatedSubmission.save();
     }
 
@@ -446,13 +468,13 @@ const deleteSubmission = async (req, res) => {
   }
 };
 
-// make a champion
-const makeChampion = async (req, res) => {
+// make a winner
+const makeWinner = async (req, res) => {
   try {
-    const { slug, username } = req.body;
+    const { slug, username, position } = req.body;
 
     // validate the request
-    if (!slug || !username) {
+    if (!slug || !username || !position) {
       return res.status(400).send({ message: "Invalid request" });
     }
 
@@ -465,32 +487,69 @@ const makeChampion = async (req, res) => {
       return res.status(404).send({ message: "Submission not found" });
     }
 
-    // check if the member is already a champion
-    if (match.champion === username) {
-      return res.status(400).send({ message: "Member is already a champion" });
-    } else if (match.champion) {
-      // delete the old champion's timeline
-      const oldChampion = await Member.findOne({ slug: match.champion });
-      if (oldChampion) {
-        await Member.findOneAndUpdate(
-          { slug: match.champion },
-          {
-            $pull: {
-              timeline: {
-                taskId: match._id,
-              },
+    // check if the member is already the same positioned member
+    if (match[position] === username) {
+      return res
+        .status(400)
+        .send({ message: "Member has already won the same position" });
+    } else if (match[position]) {
+      // delete the old winner's timeline
+      await Member.findOneAndUpdate(
+        { slug: match[position] },
+        {
+          $pull: {
+            timeline: {
+              taskId: match._id,
             },
-          }
-        );
-      }
+          },
+        }
+      );
+    }
+
+    // check if the member has any previous position if so then delete it
+    const previousPosition = getPosition(match, username);
+    if (previousPosition !== null) {
+      // delete the old winner's timeline
+      await Member.findOneAndUpdate(
+        { slug: match[previousPosition] },
+        {
+          $pull: {
+            timeline: {
+              taskId: match._id,
+            },
+          },
+        }
+      );
+      match[previousPosition] = null;
+      await match.save();
+    }
+
+    // check if another member is already has the position
+    if (match[position] !== null) {
+      return res
+        .status(400)
+        .send({ message: "Another member has already won the same position" });
     }
 
     // update the task
     const updatedTask = await Task.findOneAndUpdate(
       { slug },
-      { champion: username },
+      { $set: { [position]: username } },
       { new: true }
     );
+
+    const title = (pos) => {
+      switch (pos) {
+        case "first":
+          return "First Place";
+        case "second":
+          return "Second Place";
+        case "third":
+          return "Third Place";
+        default:
+          return "";
+      }
+    };
 
     // update the timeline
     const updatedTimeline = await Member.findOneAndUpdate(
@@ -499,8 +558,8 @@ const makeChampion = async (req, res) => {
         $push: {
           timeline: {
             taskId: updatedTask._id,
-            title: `Champion at ${updatedTask.name}`,
-            date: "2025-01-19",
+            title: `${title(position)} at ${updatedTask.name}`,
+            date: updatedTask.createdAt,
             tag: "Competition",
             description: updatedTask.summary,
             link: `/task/${updatedTask.slug}?user=${username}`,
@@ -514,16 +573,16 @@ const makeChampion = async (req, res) => {
       return res.status(404).send({ message: "Member not found" });
     }
 
-    console.log("Make a new champion successfully -", getDate(), "\n---\n");
-    res.status(200).send({ message: "Champion assigned successfully" });
+    console.log("Change position successfully -", getDate(), "\n---\n");
+    res.status(200).send({ message: "Changed position successfully" });
   } catch (err) {
-    console.log("Error deleting a submission - ", getDate(), "\n---\n", err);
+    console.log("Error changing a position - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
 
-// delete a champion
-const deleteChampion = async (req, res) => {
+// delete a winner
+const removeWinner = async (req, res) => {
   try {
     const { slug, username } = req.body;
 
@@ -541,30 +600,29 @@ const deleteChampion = async (req, res) => {
       return res.status(404).send({ message: "Submission not found" });
     }
 
-    // check if the member is already a champion
-    if (match.champion !== username) {
-      return res.status(400).send({ message: "Member is not a champion" });
-    } else if (match.champion) {
-      // delete the old champion's timeline
-      const oldChampion = await Member.findOne({ slug: match.champion });
-      if (oldChampion) {
-        await Member.findOneAndUpdate(
-          { slug: match.champion },
-          {
-            $pull: {
-              timeline: {
-                taskId: match._id,
-              },
+    const position = getPosition(match, username);
+
+    // check if the member is a winner
+    if (position === null) {
+      return res.status(400).send({ message: "Member is not a winner" });
+    } else if (position !== null) {
+      // delete the old winner's timeline
+      await Member.findOneAndUpdate(
+        { slug: match[position] },
+        {
+          $pull: {
+            timeline: {
+              taskId: match._id,
             },
-          }
-        );
-      }
+          },
+        }
+      );
     }
 
     // update the task
     const updatedTask = await Task.findOneAndUpdate(
       { slug },
-      { champion: "" },
+      { $set: { [position]: null } },
       { new: true }
     );
 
@@ -572,10 +630,10 @@ const deleteChampion = async (req, res) => {
       return res.status(404).send({ message: "Task not found" });
     }
 
-    console.log("Champion deleted successfully -", getDate(), "\n---\n");
-    res.status(200).send({ message: "Champion deleted successfully" });
+    console.log("Removed a position successfully -", getDate(), "\n---\n");
+    res.status(200).send({ message: "Position changed successfully" });
   } catch (err) {
-    console.log("Error deleting a champion - ", getDate(), "\n---\n", err);
+    console.log("Error changing a position - ", getDate(), "\n---\n", err);
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
@@ -589,6 +647,6 @@ module.exports = {
   submitTask,
   editSubmission,
   deleteSubmission,
-  makeChampion,
-  deleteChampion,
+  makeWinner,
+  removeWinner,
 };

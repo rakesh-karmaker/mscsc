@@ -25,7 +25,7 @@
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  transition: 0.25s;
+  transition: 0.25s ease-in-out !important;
 }
 .executive-upper::after {
   content: "";

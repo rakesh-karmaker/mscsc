@@ -6,11 +6,11 @@ const {
   submitTask,
   editSubmission,
   deleteSubmission,
-  makeChampion,
-  deleteChampion,
   deleteTask,
   getAllTasks,
   getTask,
+  makeWinner,
+  removeWinner,
 } = require("../controllers/taskController");
 const upload = require("../middleware/multer");
 const router = express.Router();
@@ -30,7 +30,7 @@ router.put(
 );
 router.delete("/delete-submission", isAuthorized, deleteSubmission);
 
-router.put("/make-champion", isAuthorized, isAdmin, makeChampion);
-router.delete("/delete-champion", isAuthorized, isAdmin, deleteChampion);
+router.put("/make-winner", isAuthorized, isAdmin, makeWinner);
+router.delete("/delete-winner", isAuthorized, isAdmin, removeWinner);
 
 module.exports = router;

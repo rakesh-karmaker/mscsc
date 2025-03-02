@@ -2,8 +2,8 @@ import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 import { TaskSidebarCard } from "../TasksSidebar";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { deleteChampion, deleteTask } from "@/services/DeleteService";
-import { makeChampion } from "@/services/PutService";
+import { deleteTask, deleteWinner } from "@/services/DeleteService";
+import { makeWinner } from "@/services/PutService";
 import { useNavigate } from "react-router-dom";
 
 const AdminTaskActions = ({
@@ -17,10 +17,10 @@ const AdminTaskActions = ({
   const taskMutation = useMutation({
     mutationFn: (data) => {
       const { method, ...rest } = data;
-      if (method == "make-champion") {
-        return makeChampion(rest.slug, username);
-      } else if (method == "delete-champion") {
-        return deleteChampion(rest.slug, username);
+      if (method == "add-position") {
+        return makeWinner(rest.position, rest.slug, rest.username);
+      } else if (method == "delete-position") {
+        return deleteWinner(rest.slug, rest.username);
       } else if (method == "delete") {
         return deleteTask(rest.slug);
       }
@@ -48,6 +48,7 @@ const AdminTaskActions = ({
   );
 };
 
+// task actions to edit the task and delete the task
 const TaskActions = ({ task, taskMutation, ...rest }) => {
   const deleteTask = (slug) => {
     taskMutation.mutate({ method: "delete", slug });
@@ -79,36 +80,57 @@ const TaskActions = ({ task, taskMutation, ...rest }) => {
   );
 };
 
+// submission actions to give the submission a champion and delete the submission
 const SubmissionActions = ({ task, username, deleteFunc, taskMutation }) => {
-  const makeChampionFunc = (slug) => {
-    taskMutation.mutate({ method: "make-champion", slug });
+  const setPosition = (position, slug, username) => {
+    taskMutation.mutate({ method: "add-position", slug, username, position });
   };
 
-  const deleteChampionFunc = (slug) => {
-    taskMutation.mutate({ method: "delete-champion", slug });
+  const deletePosition = (slug, username) => {
+    taskMutation.mutate({ method: "delete-position", slug, username });
   };
+
+  const positionActions = [
+    {
+      key: "first",
+      text: "1st",
+    },
+    {
+      key: "second",
+      text: "2nd",
+    },
+    {
+      key: "third",
+      text: "3rd",
+    },
+  ];
+
   return (
     <TaskSidebarCard title={"Submission Actions"}>
       <p>
-        Click on the make champion button to make the submission champion and
-        click on the delete button to delete the submission
+        Click on the position buttons to give the submitter a position and click
+        on the delete button to delete the submission
       </p>
       <div className="task-actions">
-        {username && task?.champion === username ? (
-          <button
-            className="primary-button"
-            onClick={() => deleteChampionFunc(task.slug)}
-          >
-            {taskMutation.isPending ? "Deleting..." : "Delete Champion"}
-          </button>
-        ) : (
-          <button
-            className="primary-button"
-            onClick={() => makeChampionFunc(task.slug)}
-          >
-            Make Champion
-          </button>
-        )}
+        {positionActions.map((position) => {
+          return (
+            <button
+              key={position.key + task.slug + username}
+              className={
+                "primary-button" +
+                (task[position.key] === username ? " danger" : "") +
+                (taskMutation.isPending ? " disabled" : "")
+              }
+              onClick={() =>
+                task[position.key] === username
+                  ? deletePosition(task?.slug, username)
+                  : setPosition(position.key, task?.slug, username)
+              }
+            >
+              {position.text}
+            </button>
+          );
+        })}
         <DeleteBtn
           id={task.slug}
           deleteFunc={deleteFunc}

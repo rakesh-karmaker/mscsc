@@ -106,10 +106,10 @@ const editSubmission = (data) => {
   });
 };
 
-const makeChampion = (slug, username) => {
+const makeWinner = (position, slug, username) => {
   return api.put(
-    "/task/make-champion",
-    { slug, username },
+    "/task/make-winner",
+    { slug: slug, username: username, position: position },
     {
       headers: {
         "Content-Type": "application/json",
@@ -124,5 +124,5 @@ export {
   editActivity,
   editTask,
   editSubmission,
-  makeChampion,
+  makeWinner,
 };

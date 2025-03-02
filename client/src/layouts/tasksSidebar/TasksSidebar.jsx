@@ -16,6 +16,7 @@ import AdminTaskActions from "./tasksSidebarComponents/AdminTaskActions";
 import SubmitImage from "./tasksSidebarComponents/SubmitImage";
 import Submissions from "./tasksSidebarComponents/Submissions";
 import Submitters from "./tasksSidebarComponents/Submitters";
+import getPosition from "@/utils/getPosition";
 
 const TasksSidebar = ({ admin }) => {
   const { category: currentCategory, setCategory, response } = useTask();
@@ -179,7 +180,10 @@ const TaskSidebar = ({
 };
 
 const Submitter = ({ member, value, url, ...rest }) => {
-  const { name, branch, batch, image } = member;
+  const { name, branch, batch, image, username } = member;
+
+  const position = rest?.task && getPosition(rest?.task, username);
+
   return (
     <NavLink to={url} className={"top-submitter"}>
       <div className="member-info">
@@ -187,8 +191,11 @@ const Submitter = ({ member, value, url, ...rest }) => {
         <div>
           <p className="member-name">
             {name}
-            {rest?.champion && (
-              <FontAwesomeIcon icon="fa-solid fa-crown" className="champion" />
+            {position && (
+              <FontAwesomeIcon
+                icon="fa-solid fa-crown"
+                className={"winner " + position}
+              />
             )}
           </p>
           <p className="member-branch-batch">

@@ -6,7 +6,7 @@ import ImageViewer from "@/components/UI/ImageViewer/ImageViewer";
 import { useState } from "react";
 import TextContent from "@/components/UI/TextContent/TextContent";
 
-const Preview = ({ submission, champion }) => {
+const Preview = ({ submission, task }) => {
   const [open, setOpen] = useState(false);
 
   if (!submission) return null;
@@ -16,7 +16,7 @@ const Preview = ({ submission, champion }) => {
         member={submission}
         url={`/member/${submission.username}`}
         value={dateFormat(submission.submissionDate)}
-        champion={champion === submission.username}
+        task={task}
       />
       <div className="submission-image">
         <div className="poster-container" onClick={() => setOpen(true)}>

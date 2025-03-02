@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dateFormat from "@/utils/dateFormat";
+import getPosition from "@/utils/getPosition";
 import "./TaskTags.css";
 
 const TaskTags = ({ task, submissions, username, admin }) => {
@@ -8,14 +9,19 @@ const TaskTags = ({ task, submissions, username, admin }) => {
     "poster design": <FontAwesomeIcon icon="fa-solid fa-pen-nib" />,
   };
 
+  const position = getPosition(task, username);
+
   return (
     <>
       {submissions?.includes(task._id.toString()) && !admin ? (
         <p className="task-icons">
-          {task?.champion === username ? (
+          {position ? (
             <>
-              <FontAwesomeIcon icon="fa-solid fa-crown" className="champion" />
-              <span>Champion</span>
+              <FontAwesomeIcon
+                icon="fa-solid fa-crown"
+                className={"winner " + position}
+              />
+              <span style={{ textTransform: "capitalize" }}>{position}</span>
             </>
           ) : (
             <>

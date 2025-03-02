@@ -82,6 +82,10 @@
   border-radius: 4px;
 }
 
+.task-actions .primary-button.danger::before {
+  background-color: red;
+}
+
 .image-label {
   padding: 7px 14px;
   font-size: 1rem;
@@ -136,10 +140,21 @@
   font-size: 0.9rem;
 }
 
-.top-submitter .champion {
-  color: #ff8300;
+.top-submitter .winner {
   width: 15px;
   height: 15px;
+}
+
+.top-submitter .winner.first {
+  color: gold;
+}
+
+.top-submitter .winner.second {
+  color: silver;
+}
+
+.top-submitter .winner.third {
+  color: #cd7f32;
 }
 
 .top-submitter {

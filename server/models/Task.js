@@ -20,6 +20,9 @@ const TaskSchema = new mongoose.Schema(
     summary: { type: String, required: true },
     instructions: { type: String, required: true },
     deadline: { type: Date, required: true },
+    first: { type: String, default: null },
+    second: { type: String, default: null },
+    third: { type: String, default: null },
     champion: {
       type: String,
       default: null,

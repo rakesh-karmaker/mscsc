@@ -31,8 +31,16 @@
   height: 12px;
 }
 
-.task-info .champion {
-  color: #ff8300;
+.task-info .winner.first {
+  color: gold;
+}
+
+.task-info .winner.second {
+  color: silver;
+}
+
+.task-info .winner.third {
+  color: #cd7f32;
 }
 
 .done {
@@ -52,7 +60,15 @@
   background-color: #6aea7861;
 }
 
-.task-icons:has(.champion) {
+.task-icons:has(.winner.first) {
+  background-color: #ffe6162e;
+}
+
+.task-icons:has(.winner.second) {
+  background-color: #f2f2f2;
+}
+
+.task-icons:has(.winner.third) {
   background-color: #ffe82942;
 }
 

@@ -43,8 +43,8 @@ const deleteSubmission = (slug, username) => {
   });
 };
 
-const deleteChampion = (slug, username) => {
-  return api.delete("/task/delete-champion", {
+const deleteWinner = (slug, username) => {
+  return api.delete("/task/delete-winner", {
     data: { slug: slug, username: username },
   });
 };
@@ -55,5 +55,5 @@ export {
   deleteActivity,
   deleteTask,
   deleteSubmission,
-  deleteChampion,
+  deleteWinner,
 };

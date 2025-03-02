@@ -175,7 +175,7 @@ const Task = ({ admin, ...rest }) => {
                 submission={task?.submissions?.find(
                   (s) => s.username === username
                 )}
-                champion={task?.champion}
+                task={task}
               />
             ) : (
               <Submission
