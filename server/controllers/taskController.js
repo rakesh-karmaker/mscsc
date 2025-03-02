@@ -42,7 +42,6 @@ const getTask = async (req, res) => {
           summary: 1,
           instructions: 1,
           deadline: 1,
-          champion: 1,
           category: 1,
           createdAt: 1,
           first: 1,

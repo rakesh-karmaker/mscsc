@@ -80,7 +80,7 @@ const TaskActions = ({ task, taskMutation, ...rest }) => {
   );
 };
 
-// submission actions to give the submission a champion and delete the submission
+// submission actions to give the submission a position and delete the submission
 const SubmissionActions = ({ task, username, deleteFunc, taskMutation }) => {
   const setPosition = (position, slug, username) => {
     taskMutation.mutate({ method: "add-position", slug, username, position });

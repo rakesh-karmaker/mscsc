@@ -23,10 +23,6 @@ const TaskSchema = new mongoose.Schema(
     first: { type: String, default: null },
     second: { type: String, default: null },
     third: { type: String, default: null },
-    champion: {
-      type: String,
-      default: null,
-    },
     category: {
       type: String,
       enum: ["article writing", "poster design"],
