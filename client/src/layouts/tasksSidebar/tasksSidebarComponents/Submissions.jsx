@@ -72,7 +72,11 @@ const filterSubmission = (task, submissions) => {
       } else if (position === "second") {
         filteredData.splice(task.first ? 1 : 0, 0, submissions[i]);
       } else if (position === "third") {
-        filteredData.splice(task.second ? 2 : 1, 0, submissions[i]);
+        filteredData.splice(
+          task.first ? (task.second ? 2 : 1) : task.second ? 1 : 0,
+          0,
+          submissions[i]
+        );
       }
     }
   }

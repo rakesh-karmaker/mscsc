@@ -47,6 +47,7 @@ const getTask = async (req, res) => {
           first: 1,
           second: 1,
           third: 1,
+          imageRequired: 1,
           submissions: {
             $map: {
               input: "$submissions",
@@ -179,7 +180,9 @@ const deleteTask = async (req, res) => {
     // delete all submissions
     const submissions = task.submissions;
     for (let i = 0; i < submissions.length; i++) {
-      await deleteImage(res, submissions[i].posterId);
+      if (submissions[i].posterId) {
+        await deleteImage(res, submissions[i].posterId);
+      }
     }
 
     // delete all submissions from the members' profile
@@ -233,10 +236,9 @@ const deleteTask = async (req, res) => {
 const submitTask = async (req, res) => {
   try {
     const { slug, username, answer } = req.body;
-    const file = req.file;
 
     // validate the request
-    if (!slug || !answer || !username || !file) {
+    if (!slug || !answer || !username) {
       return res.status(400).send({ message: "Invalid request" });
     }
 
@@ -277,10 +279,20 @@ const submitTask = async (req, res) => {
       answer,
     };
 
-    // upload the poster
-    const { url, imgId } = await uploadImage(req, file, true);
-    answers.poster = url;
-    answers.posterId = imgId;
+    // check if the image is required
+    if (task.imageRequired) {
+      const file = req.file;
+      if (!file) {
+        return res.status(400).send({ message: "Image is required" });
+      }
+    }
+
+    // upload the image
+    if (req.file) {
+      const { url, imgId } = await uploadImage(req, req.file, true);
+      answers.poster = url;
+      answers.posterId = imgId;
+    }
 
     // update the task
     await Task.findOneAndUpdate(
@@ -313,7 +325,7 @@ const submitTask = async (req, res) => {
 const editSubmission = async (req, res) => {
   try {
     const { slug, username, answer } = req.body;
-    const file = req.file;
+    const file = req?.file;
 
     // validate the request
     if (!slug || !username || !answer) {
@@ -341,53 +353,49 @@ const editSubmission = async (req, res) => {
     }
 
     let updatedSubmission;
+    const updates = {
+      "submissions.$.answer":
+        answer === "undefined" ||
+        answer === undefined ||
+        answer === "" ||
+        !answer
+          ? submission.answer
+          : answer,
+      "submissions.$.submissionDate": new Date().toISOString(),
+    };
+
     if (file) {
-      await deleteImage(res, submission.posterId);
+      // delete the previous image if it exists
+      if (submission.posterId) {
+        await deleteImage(res, submission.posterId);
+      }
       // upload the poster
       const { url, imgId } = await uploadImage(req, file, true);
       console.log("Image uploaded successfully -", getDate(), "\n---\n");
 
-      // update the submission
-      updatedSubmission = await Task.findOneAndUpdate(
-        { slug, "submissions.username": username },
-        {
-          $set: {
-            "submissions.$.answer": answer,
-            "submissions.$.poster": url,
-            "submissions.$.posterId": imgId,
-            "submissions.$.submissionDate": new Date().toISOString(),
-          },
-        },
-        { new: true }
-      );
-    } else {
-      // update the submission
-      updatedSubmission = await Task.findOneAndUpdate(
-        { slug, "submissions.username": username },
-        {
-          $set: {
-            "submissions.$.answer": answer,
-            "submissions.$.submissionDate": new Date().toISOString(),
-          },
-        },
-        { new: true }
-      );
+      // add the poster
+      updates["submissions.$.poster"] = url;
+      updates["submissions.$.posterId"] = imgId;
     }
+
+    // update the submission
+    updatedSubmission = await Task.findOneAndUpdate(
+      { slug, "submissions.username": username },
+      { $set: updates },
+      { new: true }
+    );
 
     if (!updatedSubmission) {
       return res.status(404).send({ message: "Submission not found" });
-    }
-
-    const updatedTask = await Task.findOne({ slug });
-    if (!updatedTask) {
-      return res.status(404).send({ message: "Task not found" });
     }
 
     console.log("Submission edited successfully -", getDate(), "\n---\n");
     res.status(200).send({ message: "Submission edited successfully" });
   } catch (err) {
     console.log("Error editing a submission - ", getDate(), "\n---\n", err);
-    res.status(500).send({ message: "Server error", error: err.message });
+    if (!res.headersSent) {
+      res.status(500).send({ message: "Server error", error: err.message });
+    }
   }
 };
 
@@ -413,18 +421,20 @@ const deleteSubmission = async (req, res) => {
       (s) => s.username === username
     );
 
-    // delete the poster
-    await deleteImage(res, submission.posterId);
+    if (submission.posterId) {
+      // delete the poster
+      await deleteImage(res, submission.posterId);
+    }
 
-    // update the submission
-    const updatedSubmission = await Task.findOneAndUpdate(
+    // update the task
+    const updatedTask = await Task.findOneAndUpdate(
       { slug, "submissions.username": username },
       {
         $pull: { submissions: { username } },
       }
     );
 
-    if (!updatedSubmission) {
+    if (!updatedTask) {
       return res.status(404).send({ message: "Submission not found" });
     }
 
@@ -433,30 +443,30 @@ const deleteSubmission = async (req, res) => {
     if (member) {
       await Member.findOneAndUpdate(
         { slug: username },
-        { $pull: { submissions: { taskId: updatedSubmission._id } } },
+        { $pull: { submissions: { taskId: updatedTask._id } } },
         { new: true }
       );
     }
 
     // get the position
-    const position = getPosition(updatedSubmission, username);
+    const position = getPosition(updatedTask, username);
 
     // delete if a winner
     if (position !== null) {
       await Member.findOneAndUpdate(
-        { slug: updatedSubmission[position] },
+        { slug: updatedTask[position] },
         {
           $pull: {
             timeline: {
-              taskId: updatedSubmission._id,
+              taskId: updatedTask._id,
             },
           },
         }
       );
 
       // update the task
-      updatedSubmission[position] = null;
-      await updatedSubmission.save();
+      updatedTask[position] = null;
+      await updatedTask.save();
     }
 
     console.log("Submission deleted successfully -", getDate(), "\n---\n");
@@ -491,18 +501,13 @@ const makeWinner = async (req, res) => {
       return res
         .status(400)
         .send({ message: "Member has already won the same position" });
-    } else if (match[position]) {
-      // delete the old winner's timeline
-      await Member.findOneAndUpdate(
-        { slug: match[position] },
-        {
-          $pull: {
-            timeline: {
-              taskId: match._id,
-            },
-          },
-        }
-      );
+    }
+
+    // check if another member is already has the position
+    if (match[position] !== null) {
+      return res
+        .status(400)
+        .send({ message: "Another member has already won the same position" });
     }
 
     // check if the member has any previous position if so then delete it
@@ -521,13 +526,6 @@ const makeWinner = async (req, res) => {
       );
       match[previousPosition] = null;
       await match.save();
-    }
-
-    // check if another member is already has the position
-    if (match[position] !== null) {
-      return res
-        .status(400)
-        .send({ message: "Another member has already won the same position" });
     }
 
     // update the task

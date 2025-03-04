@@ -18,37 +18,33 @@ const Preview = ({ submission, task }) => {
         value={dateFormat(submission.submissionDate)}
         task={task}
       />
-      <div className="submission-image">
-        <div className="poster-container" onClick={() => setOpen(true)}>
-          <img
-            src={
-              submission?.poster
-                ? submission.poster
-                : "https://ik.imagekit.io/testingimage/1738172492248-456490966_907851081382599_3782313942744084034_n_hHwYmVxq-.jpg"
-            }
-            alt={submission.username}
-          />
-          <p>View full poster</p>
+
+      {submission?.poster && (
+        <div className="submission-image">
+          <div className="poster-container" onClick={() => setOpen(true)}>
+            <img src={submission?.poster} alt={submission.username} />
+            <p>View full poster</p>
+          </div>
+          <button onClick={() => setOpen(true)} className="image-preview-btn">
+            View full poster
+          </button>
         </div>
-        <button onClick={() => setOpen(true)} className="image-preview-btn">
-          View full poster
-        </button>
-      </div>
+      )}
 
       <TextContent content={submission.answer} />
 
-      <ImageViewer
-        data={[
-          {
-            url: submission?.poster
-              ? submission.poster
-              : "https://ik.imagekit.io/testingimage/1738172492248-456490966_907851081382599_3782313942744084034_n_hHwYmVxq-.jpg",
-          },
-        ]}
-        open={open}
-        setOpen={setOpen}
-        index={0}
-      />
+      {submission?.poster && (
+        <ImageViewer
+          data={[
+            {
+              url: submission?.poster,
+            },
+          ]}
+          open={open}
+          setOpen={setOpen}
+          index={0}
+        />
+      )}
     </div>
   );
 };

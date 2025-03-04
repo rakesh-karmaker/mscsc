@@ -11,10 +11,15 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 import "./TaskForm.css";
+import CheckBox from "@/components/UI/Checkbox/Checkbox";
+import { useEffect } from "react";
 
 const TaskForm = (props) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const defaultValues = props?.defaultValues
     ? {
         name: props.defaultValues?.name,
@@ -24,6 +29,7 @@ const TaskForm = (props) => {
           .toISOString()
           .split("T")[0],
         category: props.defaultValues?.category,
+        imageRequired: props.defaultValues?.imageRequired ?? false,
       }
     : {};
 
@@ -112,9 +118,14 @@ const TaskForm = (props) => {
           Category
         </RadioList>
 
+        <CheckBox register={register("imageRequired")} id="imageRequired">
+          Image Required
+        </CheckBox>
+
         <Editor
           register={register("content")}
           content={props?.defaultValues?.instructions || ""}
+          placeholder="Type instructions here…"
         />
 
         <SubmitBtn

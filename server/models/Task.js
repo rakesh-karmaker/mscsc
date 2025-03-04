@@ -8,8 +8,8 @@ const SubmissionSchema = new mongoose.Schema({
   branch: { type: String },
   image: { type: String },
   answer: { type: String },
-  poster: { type: String },
-  posterId: { type: String },
+  poster: { type: String, default: null },
+  posterId: { type: String, default: null },
   submissionDate: { type: Date, default: new Date() },
 });
 
@@ -23,6 +23,7 @@ const TaskSchema = new mongoose.Schema(
     first: { type: String, default: null },
     second: { type: String, default: null },
     third: { type: String, default: null },
+    imageRequired: { type: Boolean, default: false },
     category: {
       type: String,
       enum: ["article writing", "poster design"],

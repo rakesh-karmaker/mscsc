@@ -155,6 +155,7 @@ const TaskSidebar = ({
               register={register}
               errors={errors}
               editable={editable}
+              imageRequired={task?.imageRequired}
             />
           </div>
         </TaskSidebarCard>
