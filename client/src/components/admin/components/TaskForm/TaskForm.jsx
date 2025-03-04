@@ -24,7 +24,6 @@ const TaskForm = (props) => {
     ? {
         name: props.defaultValues?.name,
         summary: props.defaultValues?.summary,
-        instructions: props.defaultValues?.instructions,
         deadline: new Date(props.defaultValues?.deadline)
           .toISOString()
           .split("T")[0],
@@ -69,6 +68,7 @@ const TaskForm = (props) => {
   });
 
   const onSubmit = (data) => {
+    console.log(data);
     const { content, ...rest } = data;
     taskMutation.mutate({
       method: props?.method ?? "add",
@@ -124,7 +124,7 @@ const TaskForm = (props) => {
 
         <Editor
           register={register("content")}
-          content={props?.defaultValues?.instructions || ""}
+          content={props?.defaultValues?.instructions ?? ""}
           placeholder="Type instructions here…"
         />
 
