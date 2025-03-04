@@ -68,7 +68,6 @@ const TaskForm = (props) => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
     const { content, ...rest } = data;
     taskMutation.mutate({
       method: props?.method ?? "add",

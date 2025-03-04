@@ -118,8 +118,6 @@ const addTask = (data) => {
     formData.append(key, data[key]);
   }
 
-  console.log(formData);
-
   return api.post("/task/create", formData, {
     headers: {
       "Content-Type": "application/json",
