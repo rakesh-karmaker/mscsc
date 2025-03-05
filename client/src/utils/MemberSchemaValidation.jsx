@@ -16,7 +16,15 @@ const MemberRegSchema = z.object({
   password: z
     .string("Provide your password")
     .min(8, "Password must be at least 8 characters"),
-  email: z.string("Provide your email").email("Invalid email address"),
+  email: z.string().superRefine((val, ctx) => {
+    const trimmedVal = val.trim();
+    if (!z.string().email().safeParse(trimmedVal).success) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Invalid email address",
+      });
+    }
+  }),
   batch: z
     .string("Select your ssc batch")
     .nullable()

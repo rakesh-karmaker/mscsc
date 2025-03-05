@@ -80,6 +80,9 @@ const UserForm = (props) => {
   });
 
   const onSubmit = async (data) => {
+    data.email = data.email.toLowerCase().trim();
+    data.name = data.name.trim();
+    data.password = data.password.trim();
     userMutation.mutate({
       method: props?.isRegister ? "register" : "edit",
       setError,

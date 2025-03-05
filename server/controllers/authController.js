@@ -17,6 +17,7 @@ exports.register = async (req, res) => {
     }
 
     body.email = body?.email?.toLowerCase()?.trim();
+    body.name = body.name.trim();
 
     const { error: validationError } = registerSchema.validate(body);
     if (validationError) {
@@ -29,7 +30,6 @@ exports.register = async (req, res) => {
     // generate the member slug
     const slug = await generateSlug(body.name, Member);
     body.slug = slug;
-    body.name = body.name.trim();
 
     const { url, imgId } = await uploadImage(res, file);
     if (!url) {
