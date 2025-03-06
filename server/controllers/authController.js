@@ -50,7 +50,7 @@ exports.register = async (req, res) => {
     await newMember.save();
 
     const token = jwt.sign({ _id: newMember._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
+      expiresIn: "30d",
     });
 
     console.log(
@@ -91,7 +91,7 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign({ _id: member._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
+      expiresIn: "30d",
     });
 
     console.log(
