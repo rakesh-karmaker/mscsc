@@ -1,6 +1,4 @@
-import useErrorNavigator from "@/hooks/useErrorNavigator";
-import { getTopSubmitters } from "@/services/GetService";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { NavLink } from "react-router-dom";
 import { useUser } from "@/contexts/UserContext";
 import { useTask } from "@/contexts/TasksContext";
@@ -9,33 +7,19 @@ import Counter from "@/components/UI/Counter/Counter";
 
 import "./TasksSidebar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 import { deleteSubmission } from "@/services/DeleteService";
 import toast from "react-hot-toast";
 import AdminTaskActions from "./tasksSidebarComponents/AdminTaskActions";
-import SubmitImage from "./tasksSidebarComponents/SubmitImage";
 import Submissions from "./tasksSidebarComponents/Submissions";
 import Submitters from "./tasksSidebarComponents/Submitters";
 import getPosition from "@/utils/getPosition";
+import SubmitCard from "./tasksSidebarComponents/SubmitCard";
 
 const TasksSidebar = ({ admin }) => {
   const { category: currentCategory, setCategory, response } = useTask();
-  const { user, isVerifying } = useUser();
+  const { user } = useUser();
   const totalLengthRef = useRef(null);
   const [initialTotalLength, setInitialTotalLength] = useState(null);
-
-  const { data, isLoading, error, isError, refetch } = useQuery({
-    queryKey: ["topSubmitters", isVerifying, user],
-    queryFn: () => {
-      if (!isVerifying && user) {
-        return getTopSubmitters();
-      } else {
-        return null;
-      }
-    },
-  });
-
-  useErrorNavigator(isError, error);
 
   const categories = ["Article Writing", "Poster Design"];
 
@@ -69,7 +53,7 @@ const TasksSidebar = ({ admin }) => {
         })}
       </TaskSidebarCard>
 
-      {admin ? null : (
+      {admin || !user ? null : (
         <TaskSidebarCard title={"Task Completed"}>
           <p className="task-number">
             <span>{user?.submissions.length}</span>
@@ -79,7 +63,7 @@ const TasksSidebar = ({ admin }) => {
         </TaskSidebarCard>
       )}
 
-      <Submitters data={data} isLoading={isLoading} title={"Top Submitters"} />
+      <Submitters title={"Top Submitters"} />
     </aside>
   );
 };
@@ -116,50 +100,35 @@ const TaskSidebar = ({
   const deleteFunc = (slug) => {
     submissionDelete.mutate(slug);
   };
+
   return (
     <aside className="task-sidebar">
       <TaskSidebarCard title={"Description"}>
         <p className="task-description">{task.summary}</p>
       </TaskSidebarCard>
 
-      {mode === "edit" && !admin ? (
-        <TaskSidebarCard title={"Submit"}>
-          <p>
-            Add a poster for the task and click submit to submit your work.
-            {editable && " To delete your submission click the delete button."}
-          </p>
-          <div className="submit-image">
-            <div className="submit-actions">
-              <button
-                onClick={onClick}
-                className="primary-button"
-                type="button"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Submitting..." : "Submit"}
-              </button>
-              {editable && (
-                <DeleteBtn
-                  id={task.slug}
-                  deleteFunc={deleteFunc}
-                  btnText="Delete"
-                  slug={task.slug}
-                  title="Delete Submission"
-                >
-                  Are you sure you want to delete your submission of {task.name}
-                  ?
-                </DeleteBtn>
-              )}
-            </div>
-            <SubmitImage
-              register={register}
-              errors={errors}
-              editable={editable}
-              imageRequired={task?.imageRequired}
-            />
-          </div>
-        </TaskSidebarCard>
+      {mode === "edit" && !admin && username ? (
+        <SubmitCard
+          task={task}
+          register={register}
+          onClick={onClick}
+          errors={errors}
+          editable={editable}
+          deleteFunc={deleteFunc}
+          isSubmitting={isSubmitting}
+        />
       ) : null}
+
+      {mode === "edit" && !admin && !username && (
+        <TaskSidebarCard title={"Login to submit"}>
+          <p>
+            You need to login to your account to be able to submit the task.
+          </p>
+          <NavLink to="/login" className="primary-button">
+            Login
+          </NavLink>
+        </TaskSidebarCard>
+      )}
 
       {admin && (
         <AdminTaskActions

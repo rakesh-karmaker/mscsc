@@ -45,7 +45,9 @@ const TaskTags = ({ task, submissions, username, admin }) => {
       </p>
       <p className="task-submissions">
         <FontAwesomeIcon icon="fa-solid fa-user" />
-        <span>{task?.submissions?.length} submissions</span>
+        <span>
+          {task?.submissionCount ?? task?.submissions?.length} submissions
+        </span>
       </p>
     </>
   );

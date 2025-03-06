@@ -15,8 +15,8 @@ const {
 const upload = require("../middleware/multer");
 const router = express.Router();
 
-router.get("/", isAuthorized, getAllTasks);
-router.get("/:slug", isAuthorized, getTask);
+router.get("/", getAllTasks);
+router.get("/:slug", getTask);
 router.post("/create", isAuthorized, isAdmin, createTask);
 router.put("/edit-task", isAuthorized, isAdmin, editTask);
 router.delete("/delete-task", isAuthorized, isAdmin, deleteTask);

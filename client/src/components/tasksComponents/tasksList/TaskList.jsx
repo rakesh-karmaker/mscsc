@@ -14,6 +14,7 @@ const TaskList = ({
   username,
   admin,
 }) => {
+  // check if there are tasks to display
   if (tasks?.length === 0) return <EmptyData />;
 
   return (
@@ -24,7 +25,7 @@ const TaskList = ({
             <li key={task._id}>
               <NavLink
                 to={`${admin ? "/admin" : ""}/task/${task.slug}${
-                  !admin ? `?user=${username}` : ""
+                  !admin && username ? `?user=${username}` : ""
                 }`}
                 className="task"
               >

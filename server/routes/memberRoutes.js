@@ -15,7 +15,7 @@ const router = express.Router();
 // Auth Routes
 router.get("/all", getAllMembers);
 router.get("/", isAuthorized, verifyUser);
-router.get("/top-submitters", isAuthorized, getTopSubmitters);
+router.get("/top-submitters", getTopSubmitters);
 router.get("/:slug", getMember);
 
 router.put("/", isAuthorized, upload.single("image"), editMember);

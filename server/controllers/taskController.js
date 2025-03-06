@@ -16,8 +16,36 @@ const getAllTasks = async (req, res) => {
     };
 
     const sorted = { createdAt: -1 };
-    const select = "-__v" + " -createdAt" + " -updatedAt" + " -instructions";
-    const tasks = await paginatedResults(req, res, Task, regex, sorted, select);
+    const select =
+      "-__v" +
+      " -createdAt" +
+      " -updatedAt" +
+      " -instructions" +
+      " -imageRequired";
+    const paginatedTasks = await paginatedResults(
+      req,
+      res,
+      Task,
+      regex,
+      sorted,
+      select
+    );
+
+    // reformat the tasks and remove the submissions data to reduce the response size
+    const tasks = {
+      ...paginatedTasks,
+      results: paginatedTasks.results.map((task) => {
+        if (!task) {
+          return {};
+        }
+        const { submissions, ...result } = task._doc;
+        return {
+          ...result,
+          submissionCount: submissions?.length || 0,
+        };
+      }),
+    };
+
     res.status(200).send(tasks);
   } catch (err) {
     console.log("Error fetching all tasks - ", getDate(), "\n---\n", err);

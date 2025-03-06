@@ -2,12 +2,10 @@ import useErrorNavigator from "@/hooks/useErrorNavigator";
 import { getAllTasks } from "@/services/GetService";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState } from "react";
-import { useUser } from "./UserContext";
 
 const TaskContext = createContext(null);
 
 const TaskProvider = ({ children }) => {
-  const { user, isVerifying } = useUser();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
@@ -22,14 +20,8 @@ const TaskProvider = ({ children }) => {
   }, [page]);
 
   const { data, isLoading, error, isError, refetch } = useQuery({
-    queryKey: ["tasks", page, search, category, isVerifying],
-    queryFn: () => {
-      if (!isVerifying && user) {
-        return getAllTasks(page, 12, search, category);
-      } else {
-        return null;
-      }
-    },
+    queryKey: ["tasks", page, search, category],
+    queryFn: () => getAllTasks(page, 12, search, category),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 

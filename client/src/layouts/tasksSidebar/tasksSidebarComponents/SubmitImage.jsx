@@ -3,7 +3,6 @@ import { useState } from "react";
 const SubmitImage = ({ register, errors, editable, imageRequired }) => {
   const MAX_FILE_SIZE = 1024 * 1024 * 2;
   const [file, setFile] = useState(null);
-  console.log(imageRequired);
   return (
     <div className="image-container">
       <label className="image-label" htmlFor="poster">

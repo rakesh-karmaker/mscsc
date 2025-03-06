@@ -20,14 +20,6 @@ import { editSubmission } from "@/services/PutService";
 const Task = ({ admin, ...rest }) => {
   const { user, isVerifying } = useUser();
 
-  // redirect to unauthorized if user is not logged in
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!isVerifying && user === null) {
-      navigate("/401", { replace: true });
-    }
-  }, [user, navigate, isVerifying]);
-
   const queryClient = useQueryClient();
   const { taskName } = useParams();
   const link = useLocation();
