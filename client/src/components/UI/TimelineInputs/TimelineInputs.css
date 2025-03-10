@@ -56,20 +56,27 @@
 }
 
 .timeline-input-fields {
+  /* display: flex;
+  flex-direction: column;
+  gap: 25px;
+  overflow: hidden;
+  max-height: 0px; */
+  display: grid;
+  transition: 0.35s;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+}
+
+.timeline-input-fields > div {
+  padding-top: 10px;
   display: flex;
   flex-direction: column;
   gap: 25px;
-  /* transform-origin: top; */
-  /* transform: scaleY(0); */
-  transition: 0.35s max-height;
-  /* height: 0px; */
   overflow: hidden;
-  max-height: 0px;
 }
 
 .timeline-input-fields.active {
-  max-height: 500px;
-  padding-top: 20px;
+  grid-template-rows: 1fr;
 }
 
 .timeline-submit {

@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { YearRadio, BranchRadio } from "@/components/UI/RegRadios";
 import FileInput from "@/components/UI/FileInput/FileInput";
 import InputText from "@/components/UI/InputText/InputText";
 import SubmitBtn from "@/components/UI/SubmitBtn";
@@ -10,7 +9,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editUser } from "@/services/PutService";
 import { registerUser } from "@/services/PostService";
 import { NavLink, useNavigate } from "react-router-dom";
-import CheckBox from "../UI/Checkbox/Checkbox";
+import { Checkbox, FormControlLabel, Stack, TextField } from "@mui/material";
+import SelectInput from "../UI/SelectInput";
 
 const UserForm = (props) => {
   const queryClient = useQueryClient();
@@ -19,8 +19,7 @@ const UserForm = (props) => {
     register,
     handleSubmit,
     setError,
-    setValue,
-    trigger,
+    control,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(props.schema),
@@ -90,80 +89,144 @@ const UserForm = (props) => {
     });
   };
 
+  const date = new Date();
+  const currentYear = date.getFullYear() - 1;
+  const years = [];
+  for (let i = 1; i <= 6; i++) {
+    years.push({
+      value: String(currentYear + i),
+      label: currentYear + i,
+    });
+  }
+
+  const branches = [
+    {
+      value: "Branch - 1",
+      label: "Branch - 1",
+    },
+    {
+      value: "Branch - 2",
+      label: "Branch - 2",
+    },
+    {
+      value: "Branch - 3",
+      label: "Branch - 3",
+    },
+    {
+      value: "Main Boys",
+      label: "Main Boys",
+    },
+    {
+      value: "Main Girls",
+      label: "Main Girls",
+    },
+  ];
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="user-form">
-      <div className="combined-inputs">
-        <InputText
-          setValue={setValue}
-          trigger={trigger}
-          register={register}
-          errors={errors.name}
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+        <TextField
+          {...register("name")}
           id="name"
-        >
-          Full Name
-        </InputText>
-        <InputText
-          setValue={setValue}
-          trigger={trigger}
-          register={register}
-          errors={errors.email}
+          label="Full Name"
+          variant="outlined"
+          fullWidth
+          error={!!errors.name}
+          helperText={errors.name?.message}
+        />
+
+        <TextField
+          {...register("email")}
           id="email"
+          label="Email"
+          type="email"
+          variant="outlined"
+          fullWidth
+          error={!!errors.email}
+          helperText={errors.email?.message}
+        />
+      </Stack>
+
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+        <TextField
+          {...register("password")}
+          id="password"
+          label="Password"
+          variant="outlined"
+          type="password"
+          fullWidth
+          error={!!errors.password}
+          helperText={errors.password?.message}
+        />
+        <TextField
+          {...register("contactNumber")}
+          id="contactNumber"
+          label="Contact Number"
+          variant="outlined"
+          fullWidth
+          error={!!errors.contactNumber}
+          helperText={errors.contactNumber?.message}
+        />
+      </Stack>
+
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+        <TextField
+          {...register("batch")}
+          id="batch"
+          label="Batch"
+          variant="outlined"
+          fullWidth
+          error={!!errors.batch}
+          helperText={errors.batch?.message}
+        />
+        <SelectInput
+          control={control}
+          name="branch"
+          errors={errors.branch}
+          dataList={branches}
         >
-          Email
-        </InputText>
-      </div>
-
-      <InputText
-        setValue={setValue}
-        trigger={trigger}
-        register={register}
-        errors={errors.password}
-        type="password"
-        id="password"
-        required={props?.isRegister ?? false}
-      >
-        {props?.isRegister ? "Password" : "New Password"}
-      </InputText>
-
-      {props?.isRegister && <YearRadio register={register} errors={errors} />}
-
-      <BranchRadio register={register} errors={errors} />
+          School Branch
+        </SelectInput>
+      </Stack>
 
       <FileInput register={register("image")} errors={errors.image}>
         {props?.isRegister ? "Give us your formal photo:" : "Edit your photo:"}
       </FileInput>
 
-      <InputText
-        setValue={setValue}
-        trigger={trigger}
-        register={register}
-        errors={errors.reason}
+      <TextField
+        {...register("reason")}
         id="reason"
-      >
-        Your Description
-      </InputText>
+        label="Your Description"
+        variant="outlined"
+        fullWidth
+        error={!!errors.reason}
+        helperText={errors.reason?.message}
+      />
 
-      <div className="combined-inputs">
-        <LinkBatch
-          register={register}
-          trigger={trigger}
-          errors={errors}
-          setValue={setValue}
-          {...props}
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+        <TextField
+          {...register("socialLink")}
+          id="socialLink"
+          label="Facebook Link"
+          variant="outlined"
+          fullWidth
+          error={!!errors.socialLink}
+          helperText={errors.socialLink?.message}
         />
 
         {props?.isRegister && (
-          <InputText
-            setValue={setValue}
-            trigger={trigger}
-            register={register}
-            errors={errors.reference}
+          <TextField
+            {...register("reference")}
             id="reference"
-          >
-            Reference
-          </InputText>
+            label="Reference"
+            variant="outlined"
+            fullWidth
+            error={!!errors.reference}
+            helperText={errors.reference?.message}
+          />
         )}
-      </div>
+      </Stack>
+
       <div className="checkbox-submission">
         {props?.isRegister && <Consent register={register} errors={errors} />}
         <div className="submission">
@@ -190,11 +253,16 @@ const UserForm = (props) => {
 const Consent = ({ register, errors }) => {
   return (
     <div className="consent">
-      <CheckBox register={register("consent", { required: true })} id="consent">
-        I agree to the{" "}
-        <NavLink to="/terms-of-service">Terms of Service</NavLink> and{" "}
-        <NavLink to="/privacy-policy">Privacy Policy</NavLink>.
-      </CheckBox>
+      <FormControlLabel
+        control={<Checkbox {...register("consent", { required: true })} />}
+        label={
+          <span>
+            I agree to the{" "}
+            <NavLink to="/terms-of-service">Terms of Service</NavLink> and{" "}
+            <NavLink to="/privacy-policy">Privacy Policy</NavLink>.
+          </span>
+        }
+      />
 
       {errors.consent && (
         <p className="error-message">{errors.consent.message}</p>

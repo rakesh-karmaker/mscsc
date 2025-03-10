@@ -10,6 +10,7 @@ const MemberSchema = new mongoose.Schema(
     name: { type: String, required: true },
     slug: { type: String, unique: true, required: true },
     email: { type: String, unique: true, required: true },
+    contactNumber: { type: String, required: true },
     password: { type: String, required: true },
     batch: { type: String, required: true },
     branch: { type: String, required: true },

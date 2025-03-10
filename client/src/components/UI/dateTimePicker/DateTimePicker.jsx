@@ -4,12 +4,12 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import { DesktopDateTimePicker } from "@mui/x-date-pickers/DesktopDateTimePicker";
 
-const DateTimePicker = React.forwardRef(({ value, onChange }, ref) => {
+const DateTimePicker = React.forwardRef(({ value, onChange, label }, ref) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       {window.innerWidth < 700 ? (
         <MobileDateTimePicker
-          label="Deadline"
+          label={label}
           value={value}
           onChange={onChange}
           ref={ref}
@@ -17,7 +17,7 @@ const DateTimePicker = React.forwardRef(({ value, onChange }, ref) => {
         />
       ) : (
         <DesktopDateTimePicker
-          label="Deadline"
+          label={label}
           value={value}
           onChange={onChange}
           ref={ref}

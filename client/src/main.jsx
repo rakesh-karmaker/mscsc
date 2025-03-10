@@ -1,4 +1,4 @@
-import { StrictMode, lazy, Suspense } from "react";
+import { StrictMode, lazy, Suspense, Children } from "react";
 import { createRoot } from "react-dom/client";
 import {
   createBrowserRouter,
@@ -88,6 +88,7 @@ const router = createBrowserRouter([
       </ActivitiesProvider>
     ),
     children: [
+      //! Public routes
       {
         path: "/",
         element: <UserLayout />,
@@ -131,11 +132,11 @@ const router = createBrowserRouter([
                 <Activity />
               </Suspense>
             ),
-            // errorElement: (
-            //   <Suspense fallback={<Loader />}>
-            //     <NotFound />
-            //   </Suspense>
-            // ),
+            errorElement: (
+              <Suspense fallback={<Loader />}>
+                <NotFound />
+              </Suspense>
+            ),
           },
           {
             path: "/executives",
@@ -153,30 +154,7 @@ const router = createBrowserRouter([
               </Suspense>
             ),
           },
-          {
-            path: "/register",
-            element: (
-              <Suspense fallback={<Loader />}>
-                <Auth method="Register" />
-              </Suspense>
-            ),
-          },
-          {
-            path: "/login",
-            element: (
-              <Suspense fallback={<Loader />}>
-                <Auth method="Login" />
-              </Suspense>
-            ),
-          },
-          {
-            path: "/forgot-password",
-            element: (
-              <Suspense fallback={<Loader />}>
-                <ResetPassword />
-              </Suspense>
-            ),
-          },
+
           {
             path: "/members",
             element: (
@@ -237,6 +215,39 @@ const router = createBrowserRouter([
           },
         ],
       },
+
+      //! Auth Routes
+      {
+        path: "/auth",
+        children: [
+          {
+            path: "/auth/register",
+            element: (
+              <Suspense fallback={<Loader />}>
+                <Auth method="Register" />
+              </Suspense>
+            ),
+          },
+          {
+            path: "/auth/login",
+            element: (
+              <Suspense fallback={<Loader />}>
+                <Auth method="Login" />
+              </Suspense>
+            ),
+          },
+          {
+            path: "/auth/forgot-password",
+            element: (
+              <Suspense fallback={<Loader />}>
+                <ResetPassword />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+
+      //! Admin Routes
       {
         path: "/admin",
         element: (

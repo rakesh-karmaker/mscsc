@@ -19,6 +19,7 @@ const PaginationContainer = ({
         count={pages.length}
         page={currentPage}
         onChange={(e, page) => setPage(page)}
+        size={window.innerWidth <= 1080 ? "small" : "large"}
       />
     </div>
   );

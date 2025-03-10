@@ -25,12 +25,22 @@ const MemberRegSchema = z.object({
       });
     }
   }),
+  contactNumber: z
+    .string("Provide your contact number")
+    .min(10, "Contact number must be at least 10 characters"),
   batch: z
     .string("Select your ssc batch")
+    .min(4, "Batch must be at least 4 characters")
     .nullable()
     .refine((value) => value !== null && value.trim() !== "", {
       message: "Batch is required",
-    }),
+    })
+    .refine(
+      (value) => Array.from(value).every((char) => !/[A-Za-z]/.test(char)),
+      {
+        message: "Batch must contain only numbers",
+      }
+    ),
   branch: z
     .string("Select your branch")
     .nullable()
@@ -102,12 +112,22 @@ const MemberProfileEditSchema = z.object({
   branch: z.string("Select your branch"),
   reason: z.string("Give a description of why you want to join the club"),
   socialLink: z.string("Enter your facebook link"),
+  contactNumber: z
+    .string("Provide your contact number")
+    .min(10, "Contact number must be at least 10 characters"),
   batch: z
-    .string()
-    .length(4, "Invalid Batch")
-    .refine((value) => value !== null && value.toString().trim() !== "", {
-      message: "Invalid Batch",
-    }),
+    .string("Select your ssc batch")
+    .min(4, "Batch must be at least 4 characters")
+    .nullable()
+    .refine((value) => value !== null && value.trim() !== "", {
+      message: "Batch is required",
+    })
+    .refine(
+      (value) => Array.from(value).every((char) => !/[A-Za-z]/.test(char)),
+      {
+        message: "Batch must contain only numbers",
+      }
+    ),
 });
 
 const TimelineSchema = z.object({

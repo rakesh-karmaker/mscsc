@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
 
 import InputText from "@/components/UI/InputText/InputText";
 import RadioList from "@/components/UI/RadioList/RadioList";
@@ -9,6 +9,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editUser } from "@/services/PutService";
 import toast from "react-hot-toast";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
+import { Stack, TextField } from "@mui/material";
+import DateTimePicker from "../dateTimePicker/DateTimePicker";
+import dayjs from "dayjs";
+import SelectInput from "../SelectInput";
 
 const TimelineInputs = ({ timeline, user, setIsEditing }) => {
   const queryClient = useQueryClient();
@@ -23,7 +27,17 @@ const TimelineInputs = ({ timeline, user, setIsEditing }) => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      timeline: timeline,
+      timeline: timeline
+        ? timeline.map((item) => {
+            return {
+              title: item.title,
+              date: dayjs(item.date),
+              tag: item.tag,
+              description: item.description,
+              link: item.link,
+            };
+          })
+        : [],
     },
   });
 
@@ -68,10 +82,32 @@ const TimelineInputs = ({ timeline, user, setIsEditing }) => {
   });
 
   const onSubmit = async (data) => {
+    data.timeline = data.timeline.map((item) => {
+      return {
+        title: item.title,
+        date: item.date.toISOString(),
+        tag: item.tag,
+        description: item.description,
+        link: item.link,
+      };
+    });
     timelineMutation.mutate(data);
   };
 
-  const tags = ["Certificate", "Competition", "Project"];
+  const tags = [
+    {
+      value: "Certificate",
+      label: "Certificate",
+    },
+    {
+      value: "Competition",
+      label: "Competition",
+    },
+    {
+      value: "Project",
+      label: "Project",
+    },
+  ];
   const maxTimelineLimit = 6;
   return (
     <form
@@ -109,57 +145,66 @@ const TimelineInputs = ({ timeline, user, setIsEditing }) => {
               index === activeIndex ? "active" : ""
             }`}
           >
-            <div className="combined-inputs">
-              <InputText
-                setValue={setValue}
-                trigger={trigger}
-                register={register}
-                errors={errors?.timeline?.[index]?.title}
-                id={`timeline.${index}.title`}
-              >
-                Event Title
-              </InputText>
+            <div className="timeline-input-inner">
+              <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+                <TextField
+                  {...register(`timeline.${index}.title`)}
+                  id={`timeline.${index}.title`}
+                  label="Event Title"
+                  variant="outlined"
+                  error={!!errors?.timeline?.[index]?.title}
+                  helperText={errors?.timeline?.[index]?.title?.message}
+                  fullWidth
+                />
+                <Controller
+                  name={`timeline.${index}.date`}
+                  control={control}
+                  render={({ field }) => (
+                    <DateTimePicker
+                      {...field}
+                      value={field.value || defaultValues.deadline}
+                      onChange={(date) => field.onChange(date)}
+                      error={errors.deadline}
+                      helperText={errors.deadline?.message}
+                      label="Event Date"
+                    />
+                  )}
+                />
+              </Stack>
 
-              <InputText
-                setValue={setValue}
-                trigger={trigger}
-                register={register}
-                errors={errors?.timeline?.[index]?.date}
-                type="date"
-                id={`timeline.${index}.date`}
-              >
-                Event Date
-              </InputText>
+              <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+                <SelectInput
+                  control={control}
+                  name={`timeline.${index}.tag`}
+                  errors={errors?.timeline?.[index]?.tag}
+                  dataList={tags}
+                >
+                  Event Tag
+                </SelectInput>
+
+                <TextField
+                  {...register(`timeline.${index}.link`)}
+                  id={`timeline.${index}.link`}
+                  label="Event Link"
+                  variant="outlined"
+                  error={!!errors?.timeline?.[index]?.link}
+                  helperText={errors?.timeline?.[index]?.link?.message}
+                  fullWidth
+                />
+              </Stack>
+
+              <TextField
+                {...register(`timeline.${index}.description`)}
+                id={`timeline.${index}.description`}
+                label="Event Description"
+                variant="outlined"
+                multiline
+                rows={4}
+                error={!!errors?.timeline?.[index]?.description}
+                helperText={errors?.timeline?.[index]?.description?.message}
+                fullWidth
+              />
             </div>
-
-            <RadioList
-              register={register(`timeline.${index}.tag`)}
-              dataList={tags}
-              errors={errors?.timeline?.[index]?.tag}
-              id={`timeline.${index}.tag`}
-            >
-              Event Tag:
-            </RadioList>
-
-            <InputText
-              setValue={setValue}
-              trigger={trigger}
-              register={register}
-              errors={errors?.timeline?.[index]?.description}
-              id={`timeline.${index}.description`}
-            >
-              Event Description
-            </InputText>
-
-            <InputText
-              setValue={setValue}
-              trigger={trigger}
-              register={register}
-              errors={errors?.timeline?.[index]?.link}
-              id={`timeline.${index}.link`}
-            >
-              Event Link
-            </InputText>
           </div>
         </div>
       ))}
