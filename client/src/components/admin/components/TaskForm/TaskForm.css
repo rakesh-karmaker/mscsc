@@ -2,7 +2,7 @@
   margin-top: 60px;
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 45px;
 }
 
 .task-form .combined-btns {

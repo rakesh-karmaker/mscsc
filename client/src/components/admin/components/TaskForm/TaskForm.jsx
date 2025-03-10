@@ -1,18 +1,19 @@
 import Editor from "@/components/UI/Editor/Editor";
 import FormHeading from "@/components/UI/FormHeading/FormHeading";
-import InputText, { TextArea } from "@/components/UI/InputText/InputText";
-import RadioList from "@/components/UI/RadioList/RadioList";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import { addTask } from "@/services/PostService";
 import { editTask } from "@/services/PutService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 import "./TaskForm.css";
-import CheckBox from "@/components/UI/Checkbox/Checkbox";
 import { useEffect } from "react";
+import DateTimePicker from "@/components/UI/dateTimePicker/DateTimePicker";
+import { FormControlLabel, Stack, Switch, TextField } from "@mui/material";
+import SelectInput from "@/components/UI/SelectInput";
 
 const TaskForm = (props) => {
   const navigate = useNavigate();
@@ -20,13 +21,12 @@ const TaskForm = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  console.log(props.defaultValues?.deadline);
   const defaultValues = props?.defaultValues
     ? {
         name: props.defaultValues?.name,
         summary: props.defaultValues?.summary,
-        deadline: new Date(props.defaultValues?.deadline)
-          .toISOString()
-          .split("T")[0],
+        deadline: dayjs(props.defaultValues?.deadline),
         category: props.defaultValues?.category,
         imageRequired: props.defaultValues?.imageRequired ?? false,
       }
@@ -35,14 +35,22 @@ const TaskForm = (props) => {
   const {
     register,
     handleSubmit,
-    setValue,
-    trigger,
+    control,
     formState: { errors },
   } = useForm({
     defaultValues,
   });
 
-  const categories = ["article writing", "poster design"];
+  const categories = [
+    {
+      value: "article writing",
+      label: "Article Writing",
+    },
+    {
+      value: "poster design",
+      label: "Poster Design",
+    },
+  ];
 
   const taskMutation = useMutation({
     mutationFn: (data) => {
@@ -68,6 +76,7 @@ const TaskForm = (props) => {
   });
 
   const onSubmit = (data) => {
+    data.deadline = data.deadline.toISOString();
     const { content, ...rest } = data;
     taskMutation.mutate({
       method: props?.method ?? "add",
@@ -83,43 +92,67 @@ const TaskForm = (props) => {
       </FormHeading>
 
       <form onSubmit={handleSubmit(onSubmit)} className="task-form">
-        <div className="combined-inputs">
-          <InputText
-            register={register}
-            errors={errors.name}
-            setValue={setValue}
-            trigger={trigger}
-            id="name"
-          >
-            Task Name
-          </InputText>
-          <InputText
-            register={register}
-            errors={errors.deadline}
-            id="deadline"
-            setValue={setValue}
-            trigger={trigger}
-            type="date"
-          >
-            Deadline
-          </InputText>
-        </div>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={2}
+          sx={{ width: "100%" }}
+        >
+          <TextField
+            {...register("name")}
+            type="text"
+            label="Task Name"
+            variant="outlined"
+            error={errors.name}
+            helperText={errors.name?.message}
+            fullWidth
+          />
 
-        <TextArea register={register("summary")} errors={errors.summary}>
-          Task Summary
-        </TextArea>
+          <Controller
+            name="deadline"
+            control={control}
+            render={({ field }) => (
+              <DateTimePicker
+                {...field}
+                value={field.value || defaultValues.deadline}
+                onChange={(date) => field.onChange(date)}
+                error={errors.deadline}
+                helperText={errors.deadline?.message}
+              />
+            )}
+          />
+        </Stack>
 
-        <RadioList
-          register={register("category")}
+        <TextField
+          {...register("summary")}
+          type="text"
+          label="Task Summary"
+          variant="outlined"
+          multiline
+          error={errors.summary}
+          helperText={errors.summary?.message}
+          fullWidth
+          rows={3}
+        />
+
+        <SelectInput
+          control={control}
+          name="category"
           errors={errors.category}
           dataList={categories}
         >
           Category
-        </RadioList>
+        </SelectInput>
 
-        <CheckBox register={register("imageRequired")} id="imageRequired">
-          Image Required
-        </CheckBox>
+        <Controller
+          name="imageRequired"
+          control={control}
+          render={({ field }) => (
+            <FormControlLabel
+              control={<Switch {...field} checked={field.value} />}
+              label="Image Required"
+            />
+          )}
+        />
 
         <Editor
           register={register("content")}
