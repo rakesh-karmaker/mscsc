@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import contactSchema from "@/utils/ContactSchema";
-import InputText, { TextArea } from "@/components/UI/InputText/InputText";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import { sendMessage } from "@/services/PostService";
 import toast from "react-hot-toast";
@@ -9,16 +8,14 @@ import { useRef } from "react";
 import "./ContactForm.css";
 import { useMutation } from "@tanstack/react-query";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
-import useLoadingToast from "@/hooks/useLoadingToast";
+import { Stack, TextField } from "@mui/material";
 
 const ContactForm = () => {
   const contactForm = useRef(null);
   const {
     register,
     handleSubmit,
-    setValue,
-    trigger,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(contactSchema),
   });
@@ -46,42 +43,53 @@ const ContactForm = () => {
       className="contact-form"
       ref={contactForm}
     >
-      <div className="combined-inputs">
-        <InputText
-          register={register}
-          errors={errors.name}
-          id="name"
-          setValue={setValue}
-          trigger={trigger}
-        >
-          Full Name
-        </InputText>
-
-        <InputText
-          type="email"
-          register={register}
-          errors={errors.email}
-          id="email"
-          setValue={setValue}
-          trigger={trigger}
-        >
-          Email
-        </InputText>
-      </div>
-
-      <InputText
-        register={register}
-        errors={errors.subject}
-        id="subject"
-        setValue={setValue}
-        trigger={trigger}
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={2}
+        sx={{ maxWidth: "100%" }}
       >
-        Subject
-      </InputText>
+        <TextField
+          {...register("name")}
+          id="name"
+          label="Full Name"
+          variant="standard"
+          error={!!errors.name}
+          helperText={errors.name?.message}
+          fullWidth
+        />
 
-      <TextArea register={register("message")} errors={errors.message}>
-        Write your message here...
-      </TextArea>
+        <TextField
+          {...register("email")}
+          id="email"
+          label="Email"
+          variant="standard"
+          error={!!errors.email}
+          helperText={errors.email?.message}
+          fullWidth
+        />
+      </Stack>
+
+      <TextField
+        {...register("subject")}
+        id="subject"
+        variant="standard"
+        error={!!errors.subject}
+        helperText={errors.subject?.message}
+        fullWidth
+        label="Subject"
+      />
+
+      <TextField
+        {...register("message")}
+        id="message"
+        variant="standard"
+        multiline
+        rows={4}
+        fullWidth
+        error={!!errors.message}
+        helperText={errors.message?.message}
+        label="Write your message here"
+      />
 
       <SubmitBtn
         isLoading={messageMutation.isPending}
