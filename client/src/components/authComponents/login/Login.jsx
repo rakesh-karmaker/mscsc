@@ -9,6 +9,7 @@ import "./Login.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
 import { NavLink, useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,8 +18,6 @@ const Login = () => {
     register,
     handleSubmit,
     setError,
-    setValue,
-    trigger,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(MemberLoginSchema),
@@ -56,44 +55,43 @@ const Login = () => {
 
   return (
     <form className="auth-form login-form" onSubmit={handleSubmit(onSubmit)}>
-      <InputText
-        setValue={setValue}
-        trigger={trigger}
-        register={register}
-        errors={errors.email}
-        id="email"
-      >
-        Email
-      </InputText>
-      <InputText
-        setValue={setValue}
-        trigger={trigger}
-        register={register}
-        errors={errors.password}
+      <TextField
+        {...register("email")}
+        type="email"
+        label="Email"
+        variant="outlined"
+        fullWidth
+        error={!!errors.email}
+        helperText={errors.email?.message}
+      />
+
+      <TextField
+        {...register("password")}
         type="password"
-        id="password"
-      >
-        Password
-      </InputText>
+        label="Password"
+        variant="outlined"
+        fullWidth
+        error={!!errors.password}
+        helperText={errors.password?.message}
+      />
 
       <div>
         <div className="submission">
-          <div className="state-redirect">
-            <div>
-              <NavLink to="/forgot-password">Forgot Password?</NavLink>
-            </div>
-            <div>
-              <p>Don't have an account?</p>
-              <NavLink to="/register">Register</NavLink>
-            </div>
+          <div>
+            <NavLink to="/auth/forgot-password">Forgot Password?</NavLink>
           </div>
           <SubmitBtn
             isLoading={authMutation.isPending}
             errors={errors}
             pendingText="Logging in"
+            width="100%"
           >
             Login
           </SubmitBtn>
+          <div className="register-link">
+            <p>Don't have an account?</p>
+            <NavLink to="/auth/register">Register</NavLink>
+          </div>
         </div>
         {errors.root && <p className="error-message">{errors.root.message}</p>}
       </div>

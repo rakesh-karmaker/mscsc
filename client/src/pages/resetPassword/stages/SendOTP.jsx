@@ -1,18 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
 import { forgotPasswordRequest } from "@/services/PostService";
 import { useForm } from "react-hook-form";
-import InputText from "@/components/UI/InputText/InputText";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import toast from "react-hot-toast";
 import ForgotPasswordLayout from "@/layouts/ForgotPasswordLayout";
+import { TextField } from "@mui/material";
 
 const SendOTP = ({ setEmail, setStage }) => {
   const {
     register,
     handleSubmit,
     setError,
-    setValue,
-    trigger,
     formState: { errors },
   } = useForm();
 
@@ -39,16 +37,14 @@ const SendOTP = ({ setEmail, setStage }) => {
       stage={1}
     >
       <form onSubmit={handleSubmit(emailMutation.mutate)}>
-        <InputText
-          register={register}
-          setValue={setValue}
-          trigger={trigger}
-          errors={errors.email}
-          id="email"
+        <TextField
+          fullWidth
+          {...register("email")}
+          error={!!errors.email}
+          helperText={errors.email?.message}
           type="email"
-        >
-          Email
-        </InputText>
+          label="Email"
+        />
 
         <SubmitBtn
           isLoading={emailMutation.isPending}

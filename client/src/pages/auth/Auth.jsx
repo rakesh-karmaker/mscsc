@@ -1,7 +1,6 @@
 import UserForm from "@/components/UserForm/UserForm";
 import Login from "@/components/authComponents/login/Login";
-import RegisterImage from "@/components/authComponents/RegisterImage";
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/contexts/UserContext";
 import { MemberRegSchema } from "@/utils/MemberSchemaValidation";
@@ -18,24 +17,35 @@ const Auth = ({ method }) => {
     }
   }, [navigate, user]);
 
-  const registerFormContainer = useRef(null);
+  const imgRef = useRef(null);
+  const containerRef = useRef(null);
+  useEffect(() => {
+    if (imgRef.current === null || containerRef.current === null) return;
+    imgRef.current.style.height = `${containerRef.current.offsetHeight}px`;
+  }, [imgRef, containerRef]);
 
   return (
     <>
-      <main id="auth">
-        {window.innerWidth >= 1200 && method === "Register" ? (
-          <RegisterImage registerFormContainer={registerFormContainer} />
+      <main id="auth" ref={containerRef}>
+        {window.innerWidth >= 1350 ? (
+          <img
+            src="/hero-img-1.webp"
+            className="reg-img"
+            alt="reg-img"
+            ref={imgRef}
+          />
         ) : null}
         <div
-          ref={registerFormContainer}
           className={`auth-container ${method.toLocaleLowerCase()}-container`}
         >
-          <FormHeading>{method}</FormHeading>
-          {method === "Register" ? (
-            <UserForm isRegister={true} schema={MemberRegSchema} />
-          ) : (
-            <Login />
-          )}
+          <div>
+            <FormHeading>{method}</FormHeading>
+            {method === "Register" ? (
+              <UserForm isRegister={true} schema={MemberRegSchema} />
+            ) : (
+              <Login />
+            )}
+          </div>
         </div>
       </main>
     </>

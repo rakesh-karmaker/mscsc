@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FileInput from "@/components/UI/FileInput/FileInput";
-import InputText from "@/components/UI/InputText/InputText";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import toast from "react-hot-toast";
 import "./UserForm.css";
@@ -10,7 +9,7 @@ import { editUser } from "@/services/PutService";
 import { registerUser } from "@/services/PostService";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Checkbox, FormControlLabel, Stack, TextField } from "@mui/material";
-import SelectInput from "../UI/SelectInput";
+import SelectInput from "@/components/UI/SelectInput";
 
 const UserForm = (props) => {
   const queryClient = useQueryClient();
@@ -233,7 +232,7 @@ const UserForm = (props) => {
           {props?.isRegister ? (
             <div className="state-redirect">
               <p>Already have an account?</p>
-              <NavLink to="/login">Login Now</NavLink>
+              <NavLink to="/auth/login">Login Now</NavLink>
             </div>
           ) : null}
           <SubmitBtn
@@ -269,46 +268,6 @@ const Consent = ({ register, errors }) => {
       )}
     </div>
   );
-};
-
-const LinkBatch = ({ register, trigger, setValue, errors, ...rest }) => {
-  if (rest?.isRegister) {
-    return (
-      <InputText
-        setValue={setValue}
-        trigger={trigger}
-        register={register}
-        errors={errors.socialLink}
-        id="socialLink"
-      >
-        Facebook Link
-      </InputText>
-    );
-  } else {
-    return (
-      <div className="combined-inputs">
-        <InputText
-          setValue={setValue}
-          trigger={trigger}
-          register={register}
-          errors={errors.socialLink}
-          id="socialLink"
-        >
-          Facebook Link
-        </InputText>
-
-        <InputText
-          setValue={setValue}
-          trigger={trigger}
-          register={register}
-          errors={errors.batch}
-          id="batch"
-        >
-          SSC Batch
-        </InputText>
-      </div>
-    );
-  }
 };
 
 export default UserForm;

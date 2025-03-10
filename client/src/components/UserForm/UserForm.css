@@ -2,7 +2,7 @@
   margin-top: 40px;
   display: flex;
   flex-direction: column;
-  gap: 35px;
+  gap: 30px;
 }
 
 .user-form .input-container #reason {

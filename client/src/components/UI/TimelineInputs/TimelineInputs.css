@@ -56,11 +56,6 @@
 }
 
 .timeline-input-fields {
-  /* display: flex;
-  flex-direction: column;
-  gap: 25px;
-  overflow: hidden;
-  max-height: 0px; */
   display: grid;
   transition: 0.35s;
   grid-template-rows: 0fr;

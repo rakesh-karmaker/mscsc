@@ -1,47 +1,28 @@
-#auth:has(.login-container) {
-  justify-content: center;
-  align-items: center;
-  min-height: 100svh;
+.login-form .submission {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: start;
 }
 
-.auth-container.login-container {
-  min-width: 0px;
-}
-
-.login-container {
-  max-width: 500px !important;
-  min-width: 0px;
-
-  padding: 40px 40px;
-  padding-top: 30px;
-  border-radius: 10px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
-.login-form {
-  margin-top: 60px;
-  justify-self: center;
-  gap: 2.5rem;
+.login-form .submit-btn-container {
+  width: 100%;
 }
 
 .login-form .state-redirect {
-  margin-top: -15px;
   width: 100%;
   flex-direction: column;
   gap: 7px;
   font-size: 1.1rem;
 }
 
-.login-form .state-redirect > div {
-  width: 100%;
+.register-link {
   display: flex;
-  gap: 4px;
+  gap: 5px;
+  align-content: center;
+  width: 100%;
+  justify-content: center;
+  margin-top: 20px;
   flex-wrap: wrap;
-}
-
-@media screen and (max-width: 470px) {
-  .login-container {
-    box-shadow: none;
-    padding: 0px;
-  }
 }
