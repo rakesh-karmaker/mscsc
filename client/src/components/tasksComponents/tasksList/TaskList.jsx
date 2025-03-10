@@ -1,9 +1,9 @@
 import { NavLink } from "react-router-dom";
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
-import Pagination from "@/components/UI/Pagination/Pagination";
 
 import "./TaskList.css";
 import TaskTags from "@/components/tasksComponents/taskTags/TaskTags";
+import PaginationContainer from "@/components/UI/Pagination/Pagination";
 
 const TaskList = ({
   tasks,
@@ -50,7 +50,7 @@ const TaskList = ({
           );
         })}
       </ul>
-      <Pagination
+      <PaginationContainer
         length={length}
         currentPage={page}
         setPage={setPage}

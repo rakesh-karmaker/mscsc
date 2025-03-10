@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import "./Table.css";
-import Pagination from "@/components/UI/Pagination/Pagination";
 import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
+import PaginationContainer from "@/components/UI/Pagination/Pagination";
+import { v4 as uuidv4 } from "uuid";
 
 const Table = ({ headers, data, length, page, setPage, ...rest }) => {
   if (length === 0) return <EmptyData />;
@@ -24,13 +25,13 @@ const Table = ({ headers, data, length, page, setPage, ...rest }) => {
           </thead>
           <tbody>
             {data?.map((row, index) => (
-              <TableRow key={index} row={row} headers={headers} {...rest} />
+              <TableRow key={index} row={row} headers={headers} />
             ))}
           </tbody>
         </table>
       </div>
       {rest?.needPagination === false ? null : (
-        <Pagination
+        <PaginationContainer
           length={length}
           elementsPerPage={elementsPerPage}
           setPage={setPage}
@@ -41,16 +42,16 @@ const Table = ({ headers, data, length, page, setPage, ...rest }) => {
   );
 };
 
-const TableRow = ({ row, headers, ...rest }) => {
+const TableRow = ({ row, headers }) => {
   return (
     <tr className={row?.role === "admin" ? "admin" : ""}>
       {headers.map((header) =>
         header.break && window.innerWidth < 1240 ? null : (
           <td
-            key={`${row._id}-${header.key}-${header.title}-${Math.random()}`}
+            key={`${row._id}-${header.key}-${header.title}-${uuidv4()}`}
             className={header.key}
           >
-            {getTableCell(row, header, rest)}
+            {getTableCell(row, header)}
           </td>
         )
       )}
@@ -58,7 +59,7 @@ const TableRow = ({ row, headers, ...rest }) => {
   );
 };
 
-const getTableCell = (row, header, { onViewClick, onDelete, ...rest }) => {
+const getTableCell = (row, header, { onViewClick, onDelete }) => {
   switch (header.key) {
     case "social":
       return (

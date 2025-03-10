@@ -1,6 +1,6 @@
-import Pagination from "@/components/UI/Pagination/Pagination";
 import MemberCard from "@/components/membersComponents/memberCard/MemberCard";
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
+import PaginationContainer from "@/components/UI/Pagination/Pagination";
 
 const MembersContainer = ({ members, length, page, setPage, ...props }) => {
   if (length === 0) return <EmptyData />;
@@ -17,7 +17,7 @@ const MembersContainer = ({ members, length, page, setPage, ...props }) => {
           );
         })}
       </div>
-      <Pagination
+      <PaginationContainer
         length={length}
         elementsPerPage={12}
         currentPage={page}

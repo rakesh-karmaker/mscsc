@@ -1,12 +1,12 @@
 import ActivitiesNavbar from "@/layouts/activitiesNavBar/ActivitiesNavbar";
 import "./Activities.css";
 import { useEffect } from "react";
-import Pagination from "@/components/UI/Pagination/Pagination";
 import { useActivities } from "@/contexts/ActivitiesContext";
 import Loader from "@/components/UI/Loader/Loader";
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
 import ActivityCard from "@/components/UI/activityCard/ActivityCard";
 import { useLocation } from "react-router-dom";
+import PaginationContainer from "@/components/UI/Pagination/Pagination";
 const Activities = ({ admin, ...rest }) => {
   const link = useLocation();
   const searchParams = new URLSearchParams(link.search);
@@ -71,7 +71,7 @@ const Activities = ({ admin, ...rest }) => {
             })
           )}
         </section>
-        <Pagination
+        <PaginationContainer
           length={length}
           elementsPerPage={elementsPerPage}
           setPage={handleSetCurrentPageClick}

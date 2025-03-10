@@ -17,6 +17,10 @@ const MemberProvider = ({ children }) => {
   }, [search, role, position]);
 
   useEffect(() => {
+    setPage(1);
+  }, [branch]);
+
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, [page]);
 
