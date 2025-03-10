@@ -1,7 +1,5 @@
 import FileInput from "@/components/UI/FileInput/FileInput";
 import FormHeading from "@/components/UI/FormHeading/FormHeading";
-import InputText, { TextArea } from "@/components/UI/InputText/InputText";
-import RadioList from "@/components/UI/RadioList/RadioList";
 import { Controller, useForm } from "react-hook-form";
 
 import "./ActivityForm.css";
@@ -19,6 +17,7 @@ import { Stack, TextField } from "@mui/material";
 import DateTimePicker from "@/components/UI/dateTimePicker/DateTimePicker";
 import SelectInput from "@/components/UI/SelectInput";
 import dayjs from "dayjs";
+import tags from "@/services/data/tags";
 
 const ActivityForm = (props) => {
   const navigate = useNavigate();
@@ -41,25 +40,6 @@ const ActivityForm = (props) => {
   } = useForm({
     defaultValues,
   });
-
-  const tags = [
-    {
-      value: "Event",
-      label: "Event",
-    },
-    {
-      value: "Workshop",
-      label: "Workshop",
-    },
-    {
-      value: "Article",
-      label: "Article",
-    },
-    {
-      value: "Achievement",
-      label: "Achievement",
-    },
-  ];
 
   const activityMutation = useMutation({
     mutationFn: (data) => {

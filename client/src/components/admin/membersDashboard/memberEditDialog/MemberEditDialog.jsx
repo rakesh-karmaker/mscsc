@@ -1,17 +1,16 @@
-import InputText from "@/components/UI/InputText/InputText";
-import RadioList from "@/components/UI/RadioList/RadioList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import "./MemberEditDialog.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { editUser } from "@/services/PutService";
 import { deleteMember } from "@/services/DeleteService";
+import { TextField } from "@mui/material";
+import SelectInput from "@/components/UI/SelectInput";
 
 const MemberEditDialog = ({ member, deleteMember }) => {
   const queryClient = useQueryClient();
-  const editDialog = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const memberNewMutation = useMutation({
@@ -23,33 +22,33 @@ const MemberEditDialog = ({ member, deleteMember }) => {
 
   return (
     <div className="member-edit-btn-container" style={{ cursor: "initial" }}>
-      <div
-        className={`dialog-container ${isOpen ? "open" : ""}`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <dialog className="edit-dialog" ref={editDialog}>
-          <div>
-            <div className="edit-dialog-title">
-              <h2>Edit Member</h2>
-              <FontAwesomeIcon
-                icon="fa-solid fa-x"
-                className="close"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsOpen(false);
-                  editDialog.current.close();
-                }}
-              />
+      {isOpen === true && (
+        <div
+          className={`dialog-container ${isOpen ? "open" : ""}`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <dialog className="edit-dialog" open>
+            <div>
+              <div className="edit-dialog-title">
+                <h2>Edit Member</h2>
+                <FontAwesomeIcon
+                  icon="fa-solid fa-x"
+                  className="close"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsOpen(false);
+                  }}
+                />
+              </div>
             </div>
-          </div>
-          <EditForm
-            member={member}
-            setIsOpen={setIsOpen}
-            editDialog={editDialog}
-            deleteMember={deleteMember}
-          />
-        </dialog>
-      </div>
+            <EditForm
+              member={member}
+              setIsOpen={setIsOpen}
+              deleteMember={deleteMember}
+            />
+          </dialog>
+        </div>
+      )}
 
       <button
         type="button"
@@ -60,7 +59,6 @@ const MemberEditDialog = ({ member, deleteMember }) => {
           if (member?.new) {
             memberNewMutation.mutate();
           }
-          editDialog.current.showModal();
         }}
       >
         Edit Member
@@ -69,13 +67,12 @@ const MemberEditDialog = ({ member, deleteMember }) => {
   );
 };
 
-const EditForm = ({ member, setIsOpen, editDialog }) => {
+const EditForm = ({ member, setIsOpen }) => {
   const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
-    setValue,
-    trigger,
+    control,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -101,10 +98,9 @@ const EditForm = ({ member, setIsOpen, editDialog }) => {
       toast.error("Failed to edit member");
     },
     onSettled: () => {
-      setIsOpen(false);
-      editDialog.current.close();
       queryClient.invalidateQueries({ queryKey: ["members"] });
       queryClient.invalidateQueries({ queryKey: ["user"] });
+      setIsOpen(false);
     },
   });
 
@@ -124,24 +120,33 @@ const EditForm = ({ member, setIsOpen, editDialog }) => {
 
   return (
     <form onSubmit={handleSubmit(editMemberFunc)} className="member-edit-form">
-      <InputText
-        register={register}
-        errors={errors.position}
+      <TextField
+        {...register("position")}
         id="position"
-        setValue={setValue}
-        trigger={trigger}
-      >
-        Change Position
-      </InputText>
+        label="Position"
+        variant="outlined"
+        error={!!errors.position}
+        helperText={errors.position?.message}
+      />
 
-      <RadioList
-        register={register("role")}
+      <SelectInput
+        name="role"
+        control={control}
         errors={errors.role}
-        dataList={["member", "admin"]}
-        id={member._id}
+        dataList={[
+          {
+            value: "member",
+            label: "Member",
+          },
+          {
+            value: "admin",
+            label: "Admin",
+          },
+        ]}
       >
-        Change Role
-      </RadioList>
+        Set Role
+      </SelectInput>
+
       <div className="edit-dialog-actions">
         <button
           type="submit"
