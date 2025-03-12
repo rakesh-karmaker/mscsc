@@ -120,8 +120,7 @@ exports.addActivity = async (req, res) => {
     if (files?.gallery) {
       body.gallery = await uploadMultipleImages(res, files.gallery);
     }
-    const activity = await Activity.create(body);
-    console.log(activity);
+    await Activity.create(body);
     console.log("Activity added successfully -", getDate(), "\n---\n");
     res.status(200).send({ message: "Activity added" });
   } catch (err) {

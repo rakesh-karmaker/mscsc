@@ -143,7 +143,11 @@ const TimelineInputs = ({ timeline, user, setIsEditing }) => {
             }`}
           >
             <div className="timeline-input-inner">
-              <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={2}
+                sx={{ pt: 1 }}
+              >
                 <TextField
                   {...register(`timeline.${index}.title`)}
                   id={`timeline.${index}.title`}

@@ -18,7 +18,7 @@
 .timeline-inputs-container {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 25px;
 }
 
 .timeline-inputs-container button {
@@ -63,7 +63,6 @@
 }
 
 .timeline-input-fields > div {
-  padding-top: 10px;
   display: flex;
   flex-direction: column;
   gap: 25px;
