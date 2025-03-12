@@ -77,7 +77,11 @@ const Events = ({ events, isLoading }) => {
           ))}
         </div>
 
-        <div ref={eventSwiperRef} className="events-container">
+        <div
+          ref={eventSwiperRef}
+          className="events-container"
+          style={{ height: isLoading && "300px" }}
+        >
           {isLoading ? (
             <Loader />
           ) : (

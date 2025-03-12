@@ -12,7 +12,7 @@
   min-height: 310px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
   padding: 20px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-radius: 10px;
@@ -38,7 +38,7 @@
 
 .timeline-name {
   font-size: 1.7rem;
-  line-height: 30px;
+  line-height: 35px;
   font-weight: 500;
   display: -webkit-box;
   line-clamp: 2;

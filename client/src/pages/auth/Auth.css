@@ -53,7 +53,7 @@
   padding-left: 5vw;
   padding-right: 11%;
   clip-path: polygon(0 0, 100% 0, 79% 100%, 0% 100%);
-  background: url("/login.jpg") no-repeat center center / cover;
+  background: url("/login.webp") no-repeat center center / cover;
 }
 
 .auth-left::after {
