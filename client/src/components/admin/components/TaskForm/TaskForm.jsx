@@ -29,7 +29,9 @@ const TaskForm = (props) => {
         category: props.defaultValues?.category,
         imageRequired: props.defaultValues?.imageRequired ?? false,
       }
-    : {};
+    : {
+        category: "",
+      };
 
   const {
     register,

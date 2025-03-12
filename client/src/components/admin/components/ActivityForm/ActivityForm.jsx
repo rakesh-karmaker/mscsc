@@ -30,7 +30,9 @@ const ActivityForm = (props) => {
         tag: props.defaultValues.tag,
         content: props.defaultValues.content,
       }
-    : {};
+    : {
+        tag: "",
+      };
 
   const {
     register,

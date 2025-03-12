@@ -19,9 +19,7 @@ const TimelineInputs = ({ timeline, user, setIsEditing }) => {
     register,
     control,
     handleSubmit,
-    setValue,
-    trigger,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     defaultValues: {
       timeline: timeline
@@ -29,7 +27,7 @@ const TimelineInputs = ({ timeline, user, setIsEditing }) => {
             return {
               title: item.title,
               date: dayjs(item.date),
-              tag: item.tag,
+              tag: item.tag || "",
               description: item.description,
               link: item.link,
             };
@@ -79,10 +77,12 @@ const TimelineInputs = ({ timeline, user, setIsEditing }) => {
   });
 
   const onSubmit = async (data) => {
+    // console.log(data);
     data.timeline = data.timeline.map((item) => {
+      const date = dayjs(item.date);
       return {
         title: item.title,
-        date: item.date.toISOString(),
+        date: date.isValid() ? date.toISOString() : "", // Check if date is valid before converting to ISO string
         tag: item.tag,
         description: item.description,
         link: item.link,
@@ -159,10 +159,10 @@ const TimelineInputs = ({ timeline, user, setIsEditing }) => {
                   render={({ field }) => (
                     <DateTimePicker
                       {...field}
-                      value={field.value || defaultValues.deadline}
+                      value={field.value || dayjs()} // Set default value to current date
                       onChange={(date) => field.onChange(date)}
-                      error={errors.deadline}
-                      helperText={errors.deadline?.message}
+                      error={errors?.timeline?.[index]?.date}
+                      helperText={errors?.timeline?.[index]?.date?.message}
                       label="Event Date"
                     />
                   )}

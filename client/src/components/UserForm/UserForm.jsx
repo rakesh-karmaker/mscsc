@@ -33,7 +33,9 @@ const UserForm = (props) => {
           socialLink: props.data.socialLink,
           batch: props.data.batch,
         }
-      : undefined,
+      : {
+          branch: "",
+        },
     mode: "onChange",
   });
 

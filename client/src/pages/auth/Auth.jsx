@@ -59,15 +59,27 @@ const AuthLeft = ({ leftRef }) => {
   return (
     <div className="auth-left" ref={leftRef}>
       <div className="auth-left-container">
-        <p>Hello there</p>
+        <p>
+          Hello there lorem20In a prospective study of obese subjects, fasting
+          for more than 16 days resulted in substantial weight loss while
+          reducing the baseline and exercise-induced serum norepinephrine,
+          epinephrine, and dopamine concentrations [18]. In addition, prolonged
+          fasting leads to an increase in the concentration of growth hormone
+          glucagon and a decrease in the blood levels of thyrotropin and T3/T4
+          [19]. The release and turnover of serotonin will increase during a
+          prolonged fasting period [20]. The plasma level of β-endorphin is
+          significantly increased in subjects fasting for 5-10 days [21]. In
+          rodents, fasting increases the expression of neuropeptide Y genes in
+          specific b
+        </p>
       </div>
-      <div className="slash">
+      {/* <div className="slash">
         <svg preserveAspectRatio="xMaxYMin meet">
-          <g transform="skewX(167.6)">
+          <g transform="skewX(171.6)">
             <rect x="0" y="0" height="100%" width="100%"></rect>
           </g>
         </svg>
-      </div>
+      </div> */}
     </div>
   );
 };
