@@ -120,7 +120,7 @@ const ActivityForm = (props) => {
         <TextField
           {...register("summary")}
           type="text"
-          label="Task Summary"
+          label="Activity Summary"
           variant="outlined"
           multiline
           error={errors.summary}
