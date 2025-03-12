@@ -24,7 +24,7 @@ const ForgotPasswordLayout = ({ title, description, children, stage }) => {
         <div className="forgot-form">{children}</div>
         {stage !== 4 ? (
           <p className="back">
-            <NavLink to="/login" className="button-link">
+            <NavLink to="/auth/login" className="button-link">
               <span>
                 <FontAwesomeIcon icon="fa-solid fa-arrow-left" />
               </span>{" "}
