@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 
-import InputText from "@/components/UI/InputText/InputText";
-import RadioList from "@/components/UI/RadioList/RadioList";
-
 import "./TimelineInputs.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editUser } from "@/services/PutService";

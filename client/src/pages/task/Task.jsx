@@ -1,35 +1,41 @@
-import Loader from "@/components/UI/Loader/Loader";
 import { useUser } from "@/contexts/UserContext";
 import { getTask } from "@/services/GetService";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { TaskSidebar } from "@/layouts/tasksSidebar/TasksSidebar";
+import { useLocation, useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import "./Task.css";
-import { useForm } from "react-hook-form";
-import Submission from "@/components/tasksComponents/submission/Submission";
-import { IoIosCreate } from "react-icons/io";
-import dateFormat from "@/utils/dateFormat";
-import TaskTags from "@/components/tasksComponents/taskTags/TaskTags";
+// import all the necessary components
+import Loader from "@/components/UI/Loader/Loader";
+import TaskHeader from "@/components/tasksComponents/taskHeader/TaskHeader";
+import { TaskSidebar } from "@/layouts/tasksSidebar/TasksSidebar";
 import Preview from "@/components/tasksComponents/preview/Preview";
+import Submission from "@/components/tasksComponents/submission/Submission";
+import TaskTags from "@/components/tasksComponents/taskTags/TaskTags";
+
+// server request functions
 import { submitTask } from "@/services/PostService";
 import { editSubmission } from "@/services/PutService";
 
+import "./Task.css";
+
 const Task = ({ admin, ...rest }) => {
+  const queryClient = useQueryClient();
   const { user, isVerifying } = useUser();
 
-  const queryClient = useQueryClient();
-  const { taskName } = useParams();
+  // get the data from the url
   const link = useLocation();
   const url = new URLSearchParams(link.search);
   const username = url.get("user") || (!admin ? user?.slug : null);
+  const { taskName } = useParams();
 
-  const isOwner = user?.slug === username;
-  const [editable, setEditable] = useState(false);
-  const [mode, setMode] = useState(null);
+  // init all the necessary states
+  const [canSubmit, setCanSubmit] = useState(false);
+  const [showModeChanger, setShowModeChange] = useState(true);
+  const [mode, setMode] = useState("edit");
 
+  // get the task
   const { data, isLoading, error, isError } = useQuery({
     queryKey: ["task", taskName, username],
     queryFn: () => getTask(taskName, username),
@@ -37,45 +43,32 @@ const Task = ({ admin, ...rest }) => {
     refetchOnWindowFocus: false,
     retry: 0,
   });
-
   if (isError && error) {
     throw Error("Task not found");
   }
-
   const task = data?.data;
 
   useEffect(() => {
     if (!(isVerifying || isLoading)) {
-      if (
-        username &&
-        !task?.submissions?.map((s) => s.username).includes(username) &&
-        !isOwner
-      ) {
-        throw Error("Submission not found");
-      }
+      // change the states to default as the parameter change of the url won't change the states
+      setCanSubmit(false);
+      setShowModeChange(true);
+      setMode("edit");
 
-      // check if the user has already submitted so that they can edit
-      if (
-        user?.submissions
-          ?.map((s) => s.taskId)
-          .includes(task?._id.toString()) &&
-        isOwner &&
-        new Date(task?.deadline) > new Date() &&
-        !admin
-      ) {
-        setEditable(true);
-        setMode("edit");
-      } else if (isOwner && new Date(task?.deadline) > new Date() && !admin) {
-        setMode("edit");
-      } else {
-        setEditable(false);
-        setMode(admin && !username ? "edit" : "preview");
-      }
+      changeStates(
+        user,
+        task,
+        username,
+        setCanSubmit,
+        setMode,
+        setShowModeChange,
+        admin
+      );
     }
   }, [isVerifying, isLoading, username]);
 
+  // init the form for the user to submit the task
   const formRef = useRef(null);
-
   const {
     register,
     handleSubmit,
@@ -87,9 +80,10 @@ const Task = ({ admin, ...rest }) => {
     },
   });
 
+  // send a submit request
   const taskMutation = useMutation({
     mutationFn: (data) => {
-      if (editable) {
+      if (task?.submissions?.find((s) => s.username === username)) {
         return editSubmission(data);
       } else {
         return submitTask(data);
@@ -102,7 +96,7 @@ const Task = ({ admin, ...rest }) => {
       // reset the form
       reset();
       setMode("preview");
-      setEditable(true);
+      setShowModeChange(true);
     },
     onError: (err) => {
       console.log(err);
@@ -110,6 +104,7 @@ const Task = ({ admin, ...rest }) => {
     },
   });
 
+  // filer the data and trigger a submit mutation
   const onSubmit = (data) => {
     const answer = data?.content;
     const poster = data?.poster;
@@ -128,6 +123,7 @@ const Task = ({ admin, ...rest }) => {
     }
   };
 
+  // trigger the form submission
   const handleSubmitClick = () => {
     formRef.current.requestSubmit();
   };
@@ -139,28 +135,12 @@ const Task = ({ admin, ...rest }) => {
       ) : (
         <>
           <div className="task-section">
-            <div className="task-header">
-              <h2 className="task-name">{task.name}</h2>
-              <p className="created">
-                <IoIosCreate /> <span>{dateFormat(task.createdAt)}</span>
-              </p>
-              {isOwner && editable && !admin && (
-                <div className="mode-btns">
-                  <button
-                    className={`mode ${mode === "edit" ? "active" : ""}`}
-                    onClick={() => setMode("edit")}
-                  >
-                    Edit Mode
-                  </button>
-                  <button
-                    className={`mode ${mode === "preview" ? "active" : ""}`}
-                    onClick={() => setMode("preview")}
-                  >
-                    Preview Mode
-                  </button>
-                </div>
-              )}
-            </div>
+            <TaskHeader
+              task={task}
+              mode={mode}
+              setMode={setMode}
+              showModeChanger={showModeChanger}
+            />
 
             {mode === "preview" ? (
               <Preview
@@ -177,6 +157,7 @@ const Task = ({ admin, ...rest }) => {
                 onSubmit={onSubmit}
                 register={register}
                 handleSubmit={handleSubmit}
+                canSubmit={canSubmit}
               />
             )}
 
@@ -196,17 +177,77 @@ const Task = ({ admin, ...rest }) => {
             register={register}
             errors={errors}
             mode={mode}
-            editable={editable}
-            setEditable={setEditable}
             isSubmitting={taskMutation.isPending}
             username={username}
             admin={admin}
+            canSubmit={canSubmit}
+            setShowModeChange={setShowModeChange}
             {...rest}
           />
         </>
       )}
     </main>
   );
+};
+
+// change states according to all scenarios
+const changeStates = (
+  user,
+  task,
+  username,
+  setCanSubmit,
+  setMode,
+  setShowModeChange,
+  admin
+) => {
+  if (!task) {
+    throw Error("Task not found");
+  }
+
+  const isOwner = user?.slug === username;
+
+  // check if the submission exists
+  if (
+    username &&
+    !task?.submissions?.map((s) => s.username).includes(username) &&
+    !isOwner
+  ) {
+    throw Error("Submission not found");
+  }
+
+  // when admin is seeing the task page
+  if (admin && !username) {
+    setShowModeChange(false);
+  }
+
+  // when someone is viewing a submission
+  else if (!isOwner || admin) {
+    setMode("preview");
+    setShowModeChange(false);
+  }
+
+  // if the owner views the task
+  else if (!admin && username && isOwner) {
+    // if the deadline is valid
+    if (new Date(task?.deadline) > new Date()) {
+      setCanSubmit(true);
+    }
+    // if the deadline is invalid
+    else {
+      setShowModeChange(false);
+    }
+
+    // check if the owner has already submitted
+    const submission = task?.submissions?.find((s) => s.username === username);
+    if (submission) {
+      setMode("preview");
+    } else {
+      setShowModeChange(false);
+      setMode("edit");
+    }
+  } else {
+    setShowModeChange(false);
+  }
 };
 
 export default Task;

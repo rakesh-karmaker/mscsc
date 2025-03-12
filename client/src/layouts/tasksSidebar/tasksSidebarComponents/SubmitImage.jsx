@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const SubmitImage = ({ register, errors, editable, imageRequired }) => {
+const SubmitImage = ({ register, errors, didSubmit, imageRequired }) => {
   const MAX_FILE_SIZE = 1024 * 1024 * 2;
   const [file, setFile] = useState(null);
   return (
@@ -19,7 +19,7 @@ const SubmitImage = ({ register, errors, editable, imageRequired }) => {
         id="poster"
         {...register("poster", {
           validate: (value) => {
-            if (value.length > 0 || editable || !imageRequired) {
+            if (value.length > 0 || didSubmit || !imageRequired) {
               if (value[0]?.size > MAX_FILE_SIZE) {
                 return `Max image size is ${MAX_FILE_SIZE / 1024 / 1024}MB.`;
               } else {

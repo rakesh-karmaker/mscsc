@@ -21,7 +21,6 @@ const TaskForm = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  console.log(props.defaultValues?.deadline);
   const defaultValues = props?.defaultValues
     ? {
         name: props.defaultValues?.name,
@@ -80,7 +79,7 @@ const TaskForm = (props) => {
     const { content, ...rest } = data;
     taskMutation.mutate({
       method: props?.method ?? "add",
-      instructions: content,
+      instructions: content ? content : props.defaultValues?.instructions,
       ...rest,
     });
   };

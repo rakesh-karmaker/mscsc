@@ -17,23 +17,26 @@ const Auth = ({ method }) => {
     }
   }, [navigate, user]);
 
-  const imgRef = useRef(null);
+  const leftRef = useRef(null);
   const containerRef = useRef(null);
   useEffect(() => {
-    if (imgRef.current === null || containerRef.current === null) return;
-    imgRef.current.style.height = `${containerRef.current.offsetHeight}px`;
-  }, [imgRef, containerRef]);
+    if (leftRef.current === null || containerRef.current === null) return;
+    leftRef.current.style.minHeight = `${containerRef.current.offsetHeight}px`;
+  }, [leftRef, containerRef]);
 
   return (
     <>
       <main id="auth" ref={containerRef}>
         {window.innerWidth >= 1350 ? (
-          <img
-            src="/hero-img-1.webp"
+          <>
+            {/* <img
+            src="/squries.png"
             className="reg-img"
             alt="reg-img"
             ref={imgRef}
-          />
+          /> */}
+            <AuthLeft leftRef={leftRef} />
+          </>
         ) : null}
         <div
           className={`auth-container ${method.toLocaleLowerCase()}-container`}
@@ -49,6 +52,23 @@ const Auth = ({ method }) => {
         </div>
       </main>
     </>
+  );
+};
+
+const AuthLeft = ({ leftRef }) => {
+  return (
+    <div className="auth-left" ref={leftRef}>
+      <div className="auth-left-container">
+        <p>Hello there</p>
+      </div>
+      <div className="slash">
+        <svg preserveAspectRatio="xMaxYMin meet">
+          <g transform="skewX(167.6)">
+            <rect x="0" y="0" height="100%" width="100%"></rect>
+          </g>
+        </svg>
+      </div>
+    </div>
   );
 };
 

@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MemberLoginSchema } from "@/utils/MemberSchemaValidation";
 import { loginUser } from "@/services/PostService";
-import InputText from "@/components/UI/InputText/InputText";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import toast from "react-hot-toast";
 import "./Login.css";

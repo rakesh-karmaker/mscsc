@@ -17,7 +17,6 @@ const VerifyOTP = ({ email, setToken, setStage }) => {
       setError(null);
       setToken(res.data.token);
       setStage(3);
-      console.log(res);
     },
     onError: (err) => {
       toast.error(err.response.data.message);
@@ -53,7 +52,6 @@ const VerifyOTP = ({ email, setToken, setStage }) => {
 
   const handleSubmit = (e) => {
     const otpNumber = otp.join("");
-    console.log(otpNumber);
 
     tokenMutation.mutate({
       email,

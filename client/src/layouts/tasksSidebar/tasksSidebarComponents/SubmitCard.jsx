@@ -7,15 +7,17 @@ const SubmitCard = ({
   register,
   onClick,
   errors,
-  editable,
   deleteFunc,
   isSubmitting,
+  username,
 }) => {
+  const didSubmit = task?.submissions?.find((s) => s.username === username);
+
   return (
     <TaskSidebarCard title={"Submit"}>
       <p>
         Add a poster for the task and click submit to submit your work.
-        {editable && " To delete your submission click the delete button."}
+        {didSubmit && " To delete your submission click the delete button."}
       </p>
       <div className="submit-image">
         <div className="submit-actions">
@@ -27,7 +29,7 @@ const SubmitCard = ({
           >
             {isSubmitting ? "Submitting..." : "Submit"}
           </button>
-          {editable && (
+          {didSubmit && (
             <DeleteBtn
               id={task.slug}
               deleteFunc={deleteFunc}
@@ -42,7 +44,7 @@ const SubmitCard = ({
         <SubmitImage
           register={register}
           errors={errors}
-          editable={editable}
+          didSubmit={didSubmit}
           imageRequired={task?.imageRequired}
         />
       </div>

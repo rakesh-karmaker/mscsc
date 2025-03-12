@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useUser } from "@/contexts/UserContext";
 import { useTask } from "@/contexts/TasksContext";
 import { useRef, useEffect, useState } from "react";
@@ -73,23 +73,26 @@ const TaskSidebar = ({
   register,
   onClick,
   errors,
-  editable,
-  setEditable,
   mode,
   isSubmitting,
   username,
   admin,
+  canSubmit,
+  setShowModeChange,
   ...rest
 }) => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
+
   const submissionDelete = useMutation({
     mutationFn: (slug) => {
       return deleteSubmission(slug, username);
     },
     onSuccess: (res) => {
       queryClient.invalidateQueries(["task"]);
-      setEditable(false);
       toast.success(res?.data?.message);
+      setShowModeChange(false);
+      admin && navigate("/admin/task/" + task?.slug);
     },
     onError: (err) => {
       console.log(err);
@@ -107,15 +110,15 @@ const TaskSidebar = ({
         <p className="task-description">{task.summary}</p>
       </TaskSidebarCard>
 
-      {mode === "edit" && !admin && username ? (
+      {mode === "edit" && canSubmit ? (
         <SubmitCard
           task={task}
           register={register}
           onClick={onClick}
           errors={errors}
-          editable={editable}
           deleteFunc={deleteFunc}
           isSubmitting={isSubmitting}
+          username={username}
         />
       ) : null}
 
@@ -124,7 +127,7 @@ const TaskSidebar = ({
           <p>
             You need to login to your account to be able to submit the task.
           </p>
-          <NavLink to="/login" className="primary-button">
+          <NavLink to="/auth/login" className="primary-button">
             Login
           </NavLink>
         </TaskSidebarCard>

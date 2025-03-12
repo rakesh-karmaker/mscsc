@@ -1,10 +1,10 @@
 import { Submitter } from "@/layouts/tasksSidebar/TasksSidebar";
 import dateFormat from "@/utils/dateFormat";
-
-import "./Preview.css";
 import ImageViewer from "@/components/UI/ImageViewer/ImageViewer";
 import { useState } from "react";
 import TextContent from "@/components/UI/TextContent/TextContent";
+
+import "./Preview.css";
 
 const Preview = ({ submission, task }) => {
   const [open, setOpen] = useState(false);

@@ -9,6 +9,7 @@ const Submission = ({
   onSubmit,
   register,
   handleSubmit,
+  canSubmit,
 }) => {
   const submission = task?.submissions?.find((s) => s.username === username);
 
@@ -19,7 +20,7 @@ const Submission = ({
           <h3 className="instructions-title">Instructions</h3>
           <TextContent content={task.instructions} />
         </div>
-        {username ? (
+        {canSubmit ? (
           <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
             <h3 className="instructions-title">Answer</h3>
             <Editor

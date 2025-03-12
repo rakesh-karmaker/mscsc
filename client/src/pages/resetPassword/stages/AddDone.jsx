@@ -9,7 +9,7 @@ const AllDone = () => {
       stage={4}
     >
       <div className="done-btns">
-        <NavLink to="/login" className="primary-button">
+        <NavLink to="/auth/login" className="primary-button">
           Login
         </NavLink>
       </div>

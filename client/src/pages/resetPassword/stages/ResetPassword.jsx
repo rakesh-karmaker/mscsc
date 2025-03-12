@@ -2,17 +2,15 @@ import ForgotPasswordLayout from "@/layouts/ForgotPasswordLayout";
 import { resetPassword } from "@/services/PostService";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import InputText from "@/components/UI/InputText/InputText";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import toast from "react-hot-toast";
+import { TextField } from "@mui/material";
 
 const ResetPassword = ({ email, token, setStage }) => {
   const {
     register,
     handleSubmit,
     setError,
-    setValue,
-    trigger,
     formState: { errors },
   } = useForm();
   const passwordMutation = useMutation({
@@ -54,16 +52,16 @@ const ResetPassword = ({ email, token, setStage }) => {
       stage={3}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <InputText
-          register={register}
-          setValue={setValue}
-          trigger={trigger}
-          errors={errors.newPassword}
-          id="newPassword"
+        <TextField
+          {...register("newPassword")}
           type="password"
-        >
-          New Password
-        </InputText>
+          label="New Password"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          error={!!errors.password}
+          helperText={errors.password?.message}
+        />
 
         <SubmitBtn
           isLoading={passwordMutation.isPending}

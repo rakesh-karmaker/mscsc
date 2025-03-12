@@ -8,7 +8,7 @@ const Unauthorized = () => {
       <main className="page-error">
         <Error
           heading="HOLD ON!"
-          link="/login"
+          link="/auth/login"
           linkText="Login"
           style={{
             fontSize: "128px",

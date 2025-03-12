@@ -1,4 +1,4 @@
-export default tags = [
+const tags = [
   {
     value: "Event",
     label: "Event",
@@ -16,3 +16,5 @@ export default tags = [
     label: "Achievement",
   },
 ];
+
+export default tags;

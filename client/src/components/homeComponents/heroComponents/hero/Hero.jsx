@@ -48,7 +48,7 @@ const HeroActionBtns = () => {
 
 const HeroActionBtn = () => {
   return (
-    <NavLink className={"join-btn"} to="/register">
+    <NavLink className={"join-btn"} to="/auth/register">
       <div>
         <div className="pulse row-center"></div>
         <p>Join Us With Our Journey</p>

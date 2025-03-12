@@ -83,11 +83,16 @@ const getTask = async (req, res) => {
               in: {
                 username: "$$sub.username",
                 name: "$$sub.name",
-                email: "$$sub.email",
                 branch: "$$sub.branch",
                 batch: "$$sub.batch",
                 image: "$$sub.image",
-                poster: "$$sub.poster",
+                poster: {
+                  $cond: {
+                    if: { $eq: ["$$sub.username", username] },
+                    then: "$$sub.poster",
+                    else: "$$REMOVE",
+                  },
+                },
                 submissionDate: "$$sub.submissionDate",
                 answer: {
                   $cond: {

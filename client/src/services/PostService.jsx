@@ -67,7 +67,6 @@ const verifyOtp = (email, otp) => {
 };
 
 const resetPassword = (email, token, newPassword) => {
-  console.log(email, token, newPassword);
   return api.post(
     "/reset-password/reset",
     { email, token, newPassword },
