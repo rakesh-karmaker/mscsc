@@ -2,11 +2,6 @@ const mongoose = require("mongoose");
 
 const SubmissionSchema = new mongoose.Schema({
   username: { type: String },
-  name: { type: String },
-  email: { type: String },
-  batch: { type: String },
-  branch: { type: String },
-  image: { type: String },
   answer: { type: String },
   poster: { type: String, default: null },
   posterId: { type: String, default: null },

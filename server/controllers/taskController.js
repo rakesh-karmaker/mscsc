@@ -82,10 +82,6 @@ const getTask = async (req, res) => {
               as: "sub",
               in: {
                 username: "$$sub.username",
-                name: "$$sub.name",
-                branch: "$$sub.branch",
-                batch: "$$sub.batch",
-                image: "$$sub.image",
                 poster: {
                   $cond: {
                     if: { $eq: ["$$sub.username", username] },
@@ -111,6 +107,19 @@ const getTask = async (req, res) => {
     if (!task || task.length === 0) {
       return res.status(404).send({ message: "Task not found" });
     }
+
+    // add all the submitters info
+    const submitters = task[0].submissions.map((s) => s.username);
+    const members = await Member.find({ slug: { $in: submitters } });
+    task[0].submissions.forEach((s) => {
+      const member = members.find((m) => m.slug === s.username);
+      if (member) {
+        s.name = member.name;
+        s.image = member.image;
+        s.branch = member.branch;
+        s.batch = member.batch;
+      }
+    });
 
     res.status(200).send(task[0]);
   } catch (err) {
