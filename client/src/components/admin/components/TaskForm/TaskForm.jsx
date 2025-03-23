@@ -31,6 +31,7 @@ const TaskForm = (props) => {
       }
     : {
         category: "",
+        imageRequired: false,
       };
 
   const {
