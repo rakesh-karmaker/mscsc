@@ -7,7 +7,7 @@ const storage = multer.memoryStorage();
 const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
-    const fileTypes = /jpeg|jpg|png/;
+    const fileTypes = /jpeg|jpg|png|webp/;
     const extname = fileTypes.test(
       path.extname(file.originalname).toLowerCase()
     );
@@ -16,6 +16,7 @@ const upload = multer({
     if (extname && mimeType) {
       cb(null, true);
     } else {
+      console.log(`Submitted IMAGE file type: ${file.mimetype}`);
       cb(new Error("Only images are allowed"));
     }
   },

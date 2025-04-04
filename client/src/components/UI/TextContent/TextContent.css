@@ -7,6 +7,25 @@
   word-wrap: break-word; */
 }
 
+.content-container .math-edit-hint {
+  display: none;
+}
+
+.content-container .math-inline,
+.content-container .math-block {
+  cursor: inherit;
+}
+
+.content-container .math-inline:hover,
+.content-container .math-block:hover {
+  box-shadow: none;
+}
+
+.content-container .math-inline:hover::after,
+.content-container .math-block:hover::after {
+  display: none;
+}
+
 .content-container h1,
 .content-container h2,
 .content-container h3,
