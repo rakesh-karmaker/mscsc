@@ -43,7 +43,10 @@ const Task = ({ admin, ...rest }) => {
     refetchOnWindowFocus: false,
     retry: 0,
   });
-  if (isError && error) {
+  if (
+    (isError && error) ||
+    (user && username !== user.slug && user.position === "member" && !admin)
+  ) {
     throw Error("Task not found");
   }
   const task = data?.data;

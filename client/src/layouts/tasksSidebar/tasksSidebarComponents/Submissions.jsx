@@ -4,9 +4,11 @@ import { TaskSidebarCard } from "../TasksSidebar";
 import { Submitter } from "../TasksSidebar";
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
 import getPosition from "@/utils/getPosition";
+import { useUser } from "@/contexts/UserContext";
 
 const Submissions = ({ task, admin }) => {
   const [expanded, setExpanded] = useState(false);
+  const { user, isVerifying } = useUser();
 
   const sortedSubmissions = task?.submissions.sort((a, b) => {
     const dateA = new Date(a.submissionDate);
@@ -18,6 +20,8 @@ const Submissions = ({ task, admin }) => {
     task?.first || task?.second || task?.third
       ? filterSubmission(task, sortedSubmissions)
       : sortedSubmissions;
+
+  if (isVerifying || (user.position === "member" && !admin)) return null;
 
   return (
     <TaskSidebarCard title={"Submissions"}>
