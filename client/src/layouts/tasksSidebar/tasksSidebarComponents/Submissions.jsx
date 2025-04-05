@@ -21,7 +21,12 @@ const Submissions = ({ task, admin }) => {
       ? filterSubmission(task, sortedSubmissions)
       : sortedSubmissions;
 
-  if (isVerifying || (user.position === "member" && !admin)) return null;
+  if (
+    isVerifying ||
+    (user && user.position === "member" && !admin) ||
+    (!isVerifying && !user)
+  )
+    return null;
 
   return (
     <TaskSidebarCard title={"Submissions"}>

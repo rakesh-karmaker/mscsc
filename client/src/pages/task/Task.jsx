@@ -45,7 +45,7 @@ const Task = ({ admin, ...rest }) => {
   });
   if (
     (isError && error) ||
-    (user && username !== user.slug && user.position === "member" && !admin)
+    (user && username !== user.slug && user?.position === "member" && !admin)
   ) {
     throw Error("Task not found");
   }
