@@ -13,7 +13,9 @@ const upload = require("../middleware/multer");
 const router = express.Router();
 
 // Auth Routes
-router.get("/all", getAllMembers);
+router.get("/all", (req, res) => {
+  res.json({ members: "hello" });
+});
 router.get("/", isAuthorized, verifyUser);
 router.get("/top-submitters", getTopSubmitters);
 router.get("/:slug", getMember);
