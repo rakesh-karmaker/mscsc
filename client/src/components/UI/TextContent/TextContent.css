@@ -148,6 +148,129 @@
   display: inline-block;
 }
 
+.math-inline {
+  font-family: "KaTeX_Math", serif;
+  padding: 0 0.25rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  margin: 0 0.25rem;
+  position: relative;
+}
+
+.math-block {
+  display: block;
+  text-align: center;
+  padding: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  margin: 1rem 0;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+/* Hover effects for math elements */
+.math-inline:hover,
+.math-block:hover {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* Tooltip for math elements */
+.math-inline:hover::after,
+.math-block:hover::after {
+  content: "Double-click to edit";
+  position: absolute;
+  background: #333;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 0.9;
+  z-index: 10;
+  white-space: nowrap;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* KaTeX specific styles */
+.katex {
+  white-space: pre !important;
+}
+
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 28rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.modal-description {
+  font-size: 0.875rem;
+  color: #4a5568;
+  margin-bottom: 0.5rem;
+}
+
+.modal-hint {
+  font-size: 0.75rem;
+  color: #718096;
+  margin-bottom: 1rem;
+}
+
+.modal-input {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.modal-textarea {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  height: 6rem;
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
 @media screen and (max-width: 800px) {
   .content-container {
     font-size: 1rem;
