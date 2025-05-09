@@ -39,6 +39,8 @@ const MemberSchema = new mongoose.Schema(
     role: { type: String, default: "member" },
     position: { type: String, default: "member" },
     new: { type: Boolean, default: true },
+    isImageVerified: { type: Boolean, default: false },
+    isImageHidden: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

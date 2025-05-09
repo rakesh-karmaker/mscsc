@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { editUser } from "@/services/PutService";
 import { deleteMember } from "@/services/DeleteService";
-import { TextField } from "@mui/material";
+import { Checkbox, FormControlLabel, TextField } from "@mui/material";
 import SelectInput from "@/components/UI/SelectInput";
 
 const MemberEditDialog = ({ member, deleteMember }) => {
@@ -78,6 +78,7 @@ const EditForm = ({ member, setIsOpen }) => {
     defaultValues: {
       position: member?.position,
       role: member?.role,
+      showImage: member?.isImageVerified ? true : false,
     },
     mode: "onChange",
   });
@@ -108,6 +109,8 @@ const EditForm = ({ member, setIsOpen }) => {
     memberMutation.mutate({
       method: "edit",
       slug: member.slug,
+      isImageVerified: data.showImage,
+      isImageHidden: !data.showImage,
       ...data,
     });
   };
@@ -146,6 +149,16 @@ const EditForm = ({ member, setIsOpen }) => {
       >
         Set Role
       </SelectInput>
+
+      <FormControlLabel
+        control={
+          <Checkbox
+            defaultChecked={member?.isImageVerified ? true : false}
+            {...register("showImage")}
+          />
+        }
+        label={<span>Show image</span>}
+      />
 
       <div className="edit-dialog-actions">
         <button

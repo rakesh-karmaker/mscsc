@@ -128,6 +128,7 @@ const MemberProfileEditSchema = z.object({
         message: "Batch must contain only numbers",
       }
     ),
+    hideImage: z.boolean().optional(),
 });
 
 const TimelineSchema = z.object({

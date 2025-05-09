@@ -21,6 +21,14 @@
   box-shadow: 0px 0px 1.1px rgba(0, 0, 0, 0.5);
 }
 
+.lock-icon {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  font-size: 1.25rem;
+  color: var(--highlighted-color);
+}
+
 .role-icon {
   position: absolute;
   top: 2rem;

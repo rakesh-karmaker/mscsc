@@ -118,6 +118,7 @@ const getTask = async (req, res) => {
         s.image = member.image;
         s.branch = member.branch;
         s.batch = member.batch;
+        s.isImageHidden = member.isImageHidden || true;
       }
     });
 

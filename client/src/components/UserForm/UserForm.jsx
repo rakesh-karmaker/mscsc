@@ -32,6 +32,7 @@ const UserForm = (props) => {
           reason: props.data.reason,
           socialLink: props.data.socialLink,
           batch: props.data.batch,
+          hideImage: props.data?.isImageHidden ? true : false,
         }
       : {
           branch: "",
@@ -46,7 +47,12 @@ const UserForm = (props) => {
         return registerUser(data);
       } else {
         data.slug = props.data.slug;
-        return editUser(data);
+        const { hideImage, ...editedData } = data;
+        editedData.isImageHidden = hideImage;
+        if (editedData.image.length != 0) {
+          editedData.new = true;
+        }
+        return editUser(editedData);
       }
     },
 
@@ -230,6 +236,14 @@ const UserForm = (props) => {
 
       <div className="checkbox-submission">
         {props?.isRegister && <Consent register={register} errors={errors} />}
+
+        {props?.isRegister || !props?.data?.isImageVerified ? null : (
+          <HideImage
+            register={register}
+            isHidden={props?.data?.isImageHidden ? true : false}
+          />
+        )}
+
         <div className="submission">
           {props?.isRegister ? (
             <div className="state-redirect">
@@ -237,6 +251,7 @@ const UserForm = (props) => {
               <NavLink to="/auth/login">Login Now</NavLink>
             </div>
           ) : null}
+
           <SubmitBtn
             isLoading={userMutation.isPending}
             errors={errors}
@@ -246,8 +261,26 @@ const UserForm = (props) => {
           </SubmitBtn>
         </div>
         {errors.root && <p className="error-message">{errors.root.message}</p>}
+        {props?.isRegister || props?.data?.isImageVerified ? null : (
+          <p className="user-form-note">
+            *Unverified Image: To make your image verified and visible to other
+            members, please give us a formal photo and contact with your
+            executives.
+          </p>
+        )}
       </div>
     </form>
+  );
+};
+
+const HideImage = ({ register, isHidden }) => {
+  return (
+    <FormControlLabel
+      control={
+        <Checkbox {...register("hideImage")} defaultChecked={isHidden} />
+      }
+      label={<span>Hide image</span>}
+    />
   );
 };
 

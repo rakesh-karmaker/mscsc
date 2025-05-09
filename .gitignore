@@ -32,3 +32,5 @@ build
 server/public/activities/*
 server/public/executives/*
 server/public/members/*
+# Local Netlify folder
+.netlify

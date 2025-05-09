@@ -85,6 +85,7 @@ const getTopSubmitters = async (req, res) => {
         slug: member.slug,
         image: member.image,
         tasksCompleted: member.submissions ? member.submissions.length : 0,
+        isImageHidden: member.isImageHidden,
       }))
       .sort((a, b) => b.tasksCompleted - a.tasksCompleted)
       .slice(0, 10); // Adjust the number of top members you want to retrieve
@@ -171,6 +172,8 @@ const deleteMember = async (req, res) => {
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
+
+
 
 module.exports = {
   verifyUser,

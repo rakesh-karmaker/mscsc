@@ -56,3 +56,9 @@
 .state-redirect > button:hover {
   opacity: 0.6;
 }
+
+.user-form-note {
+  font-size: 0.94em;
+  font-style: italic;
+  opacity: 0.8;
+}

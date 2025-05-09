@@ -153,14 +153,18 @@ const TaskSidebar = ({
 };
 
 const Submitter = ({ member, value, url, ...rest }) => {
-  const { name, branch, batch, image, username } = member;
+  const { name, branch, batch, image, username, isImageHidden } = member;
+  console.log(member);
 
   const position = rest?.task && getPosition(rest?.task, username);
 
   return (
     <NavLink to={url} className={"top-submitter"}>
       <div className="member-info">
-        <img src={image} alt={name} />
+        <img
+          src={isImageHidden ? "/executive-members/placeholderpfp.webp" : image}
+          alt={name}
+        />
         <div>
           <p className="member-name">
             {name}

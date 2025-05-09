@@ -57,11 +57,15 @@ const ProfilePage = () => {
         <div className="profile-container">
           <div className="profile-left">
             <img
-              src={profileData.image}
+              src={
+                profileData?.isImageHidden && !isOwner
+                  ? "/executive-members/placeholderpfp.webp"
+                  : profileData?.image
+              }
               alt={profileData.name}
               rel="preload"
               fetchpriority="high"
-            />
+            /> 
             {window.innerWidth > 780 && (
               <AboutProfile data={profileData} isOwner={isOwner} />
             )}
