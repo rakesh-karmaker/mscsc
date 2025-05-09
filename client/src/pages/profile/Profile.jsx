@@ -17,6 +17,7 @@ const ProfilePage = () => {
   const { username } = useParams();
   const { user } = useUser();
   const isOwner = user?.slug === username;
+  const isExecutive = user && user?.position !== "member";
   const [isEditing, setIsEditing] = useState(false);
   useEffect(() => {
     setIsEditing(false);
@@ -58,7 +59,7 @@ const ProfilePage = () => {
           <div className="profile-left">
             <img
               src={
-                profileData?.isImageHidden && !isOwner
+                profileData?.isImageHidden && !isOwner && !isExecutive
                   ? "/executive-members/placeholderpfp.webp"
                   : profileData?.image
               }
