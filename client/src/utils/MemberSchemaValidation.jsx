@@ -54,7 +54,7 @@ const MemberRegSchema = z.object({
       message: "Image is required",
     })
     .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, {
-      message: `Max image size is ${MAX_FILE_SIZE / 1024 / 1024}MB.`,
+      message: `Max image size is ${MAX_FILE_SIZE}MB.`,
     })
     .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), {
       message: "Please upload a valid image file (JPG, JPEG, PNG or WebP).",
@@ -99,7 +99,7 @@ const MemberProfileEditSchema = z.object({
     .refine(
       (files) => files.length === 0 || files?.[0]?.size <= MAX_FILE_SIZE,
       {
-        message: `Max image size is ${MAX_FILE_SIZE / 1024 / 1024}MB.`,
+        message: `Max image size is ${MAX_FILE_SIZE}MB.`,
       }
     )
     .refine(
