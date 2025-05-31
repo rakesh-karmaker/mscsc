@@ -46,19 +46,4 @@
   <url>
     <loc>https://mscsc.netlify.app/terms-of-service</loc>
   </url>
-  <url>
-    <loc>https://mscsc.netlify.app/member/</loc>
-  </url>
-  <url>
-    <loc>https://mscsc.netlify.app/400</loc>
-  </url>
-  <url>
-    <loc>https://mscsc.netlify.app/401</loc>
-  </url>
-  <url>
-    <loc>https://mscsc.netlify.app/500</loc>
-  </url>
-  <url>
-    <loc>https://mscsc.netlify.app/*</loc>
-  </url>
 </urlset>

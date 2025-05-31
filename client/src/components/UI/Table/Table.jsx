@@ -25,7 +25,7 @@ const Table = ({ headers, data, length, page, setPage, ...rest }) => {
           </thead>
           <tbody>
             {data?.map((row, index) => (
-              <TableRow key={index} row={row} headers={headers} />
+              <TableRow key={index} row={row} headers={headers} {...rest} />
             ))}
           </tbody>
         </table>
@@ -42,7 +42,7 @@ const Table = ({ headers, data, length, page, setPage, ...rest }) => {
   );
 };
 
-const TableRow = ({ row, headers }) => {
+const TableRow = ({ row, headers, ...rest }) => {
   return (
     <tr className={row?.role === "admin" ? "admin" : ""}>
       {headers.map((header) =>
@@ -51,7 +51,7 @@ const TableRow = ({ row, headers }) => {
             key={`${row._id}-${header.key}-${header.title}-${uuidv4()}`}
             className={header.key}
           >
-            {getTableCell(row, header)}
+            {getTableCell(row, header, rest)}
           </td>
         )
       )}
