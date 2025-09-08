@@ -1,5 +1,5 @@
 import Hero from "@/components/homeComponents/heroComponents/hero/Hero";
-import AboutUs from "@/components/aboutComponents/aboutSection/AboutSection";
+import AboutSection from "@/components/aboutComponents/aboutSection/AboutSection";
 import Events from "@/components/homeComponents/eventsComponents/Events/Events";
 import Articles from "@/components/homeComponents/articlesComponents/Articles/Articles";
 import HomeEcs from "@/components/homeComponents/homeExecutivesComponents/HomeEcs";
@@ -40,7 +40,7 @@ const Home = () => {
     <>
       <main className="page-home">
         <Hero />
-        <AboutUs />
+        <AboutSection />
         <Events events={events} isLoading={eventsLoading} />
         <Articles articles={articles} isLoading={articlesLoading} />
         <HomeEcs data={executivesData} />

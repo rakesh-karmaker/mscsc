@@ -1,4 +1,5 @@
-import AboutUs from "@/components/aboutComponents/aboutSection/AboutSection";
+import AboutSection from "@/components/aboutComponents/aboutSection/AboutSection";
+
 const AboutPage = () => {
   return (
     <>
@@ -6,7 +7,7 @@ const AboutPage = () => {
         style={{ marginTop: "var(--nav-height)", width: "100%" }}
         className="page-about"
       >
-        <AboutUs />
+        <AboutSection />
       </main>
     </>
   );

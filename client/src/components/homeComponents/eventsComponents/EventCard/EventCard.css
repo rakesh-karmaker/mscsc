@@ -13,7 +13,7 @@
 }
 
 .activity-demo img {
-  width: 210px;
+  min-width: 210px;
   height: 100%;
   object-fit: cover;
   object-position: center center;

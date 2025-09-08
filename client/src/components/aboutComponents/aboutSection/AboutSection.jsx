@@ -1,18 +1,18 @@
 import ClubDescription from "@/components/aboutComponents/clubDesc/ClubDesc";
 import Departments from "@/components/aboutComponents/departments/Departments";
 import "./AboutSection.css";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
-const AboutUs = () => {
+const AboutSection = () => {
   return (
     <section id="about" className="col-center page-section">
       <div className="about-article-container">
         <ClubDescription />
-        <LazyLoadImage
+        <img
           src="/about-club-section-img.webp"
           alt="A picture of club members"
-          effect="blur"
+          className="about-article-img"
+          loading="lazy"
         />
       </div>
 
@@ -30,4 +30,4 @@ const AboutUs = () => {
   );
 };
 
-export default AboutUs;
+export default AboutSection;
