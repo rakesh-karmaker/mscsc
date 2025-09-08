@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
-import { forgotPasswordRequest } from "@/services/PostService";
 import { useForm } from "react-hook-form";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import toast from "react-hot-toast";
 import ForgotPasswordLayout from "@/layouts/ForgotPasswordLayout";
 import { TextField } from "@mui/material";
+import { forgotPasswordRequest } from "@/lib/api/forgotPassword";
 
 const SendOTP = ({ setEmail, setStage }) => {
   const {

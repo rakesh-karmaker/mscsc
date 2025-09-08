@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useState, useEffect } from "react";
-import { getAllActivities } from "@/services/GetService";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
+import { getAllActivities } from "@/lib/api/activities";
 
 const ActivitiesContext = createContext();
 

@@ -1,4 +1,3 @@
-import { getActivity } from "@/services/GetService";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "@/components/UI/Loader/Loader";
@@ -10,6 +9,7 @@ import TextContent from "@/components/UI/TextContent/TextContent";
 import dateFormat from "@/utils/dateFormat";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import ImageViewer from "@/components/UI/ImageViewer/ImageViewer";
+import { getActivity } from "@/lib/api/activities";
 
 const Activity = () => {
   const [open, setOpen] = useState(false);

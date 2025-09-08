@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteMember } from "@/services/DeleteService";
-import { editUser } from "@/services/PutService";
 import toast from "react-hot-toast";
 import DashboardHeader from "../components/DashboardHeader/DashboardHeader";
 import "./MembersDashboard.css";
 import MemberPage from "@/pages/members/Members";
+import { editUser } from "@/lib/api/auth";
+import { deleteMember } from "@/lib/api/member";
 
 const MembersDashboard = ({
   type,

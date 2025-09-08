@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import ForgotPasswordLayout from "@/layouts/ForgotPasswordLayout";
 import { useMutation } from "@tanstack/react-query";
-import { forgotPasswordRequest, verifyOtp } from "@/services/PostService";
 import toast from "react-hot-toast";
 import SubmitBtn from "@/components/UI/SubmitBtn";
+import { forgotPasswordRequest, verifyOtp } from "@/lib/api/forgotPassword";
 
 const VerifyOTP = ({ email, setToken, setStage }) => {
   const [otp, setOtp] = useState(new Array(5).fill(""));

@@ -1,15 +1,11 @@
 import FileInput from "@/components/UI/FileInput/FileInput";
 import FormHeading from "@/components/UI/FormHeading/FormHeading";
 import { Controller, useForm } from "react-hook-form";
-
 import "./ActivityForm.css";
 import SubmitBtn from "@/components/UI/SubmitBtn";
-import { addActivity } from "@/services/PostService";
 import toast from "react-hot-toast";
-import { editActivity } from "@/services/PutService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
-import { deleteActivity } from "@/services/DeleteService";
 import ImageDropper from "@/components/UI/ImageDropper/ImageDropper";
 import Editor from "@/components/UI/Editor/Editor";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +14,11 @@ import DateTimePicker from "@/components/UI/dateTimePicker/DateTimePicker";
 import SelectInput from "@/components/UI/SelectInput";
 import dayjs from "dayjs";
 import tags from "@/services/data/tags";
+import {
+  addActivity,
+  deleteActivity,
+  editActivity,
+} from "@/lib/api/activities";
 
 const ActivityForm = (props) => {
   const navigate = useNavigate();

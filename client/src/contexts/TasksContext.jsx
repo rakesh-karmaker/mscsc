@@ -1,5 +1,5 @@
 import useErrorNavigator from "@/hooks/useErrorNavigator";
-import { getAllTasks } from "@/services/GetService";
+import { getAllTasks } from "@/lib/api/task";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState } from "react";
 

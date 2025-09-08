@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { getAllMessages } from "@/services/GetService";
 import { useQuery } from "@tanstack/react-query";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
+import { getAllMessages } from "@/lib/api/messages";
 
 const MessagesContext = createContext(null);
 

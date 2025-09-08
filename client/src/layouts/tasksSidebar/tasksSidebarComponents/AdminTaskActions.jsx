@@ -2,9 +2,8 @@ import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 import { TaskSidebarCard } from "../TasksSidebar";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { deleteTask, deleteWinner } from "@/services/DeleteService";
-import { makeWinner } from "@/services/PutService";
 import { useNavigate } from "react-router-dom";
+import { deleteTask, deleteWinner, makeWinner } from "@/lib/api/task";
 
 const AdminTaskActions = ({
   task,

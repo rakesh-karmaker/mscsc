@@ -1,5 +1,4 @@
 import { useUser } from "@/contexts/UserContext";
-import { getTask } from "@/services/GetService";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
@@ -15,8 +14,7 @@ import Submission from "@/components/tasksComponents/submission/Submission";
 import TaskTags from "@/components/tasksComponents/taskTags/TaskTags";
 
 // server request functions
-import { submitTask } from "@/services/PostService";
-import { editSubmission } from "@/services/PutService";
+import { editSubmission, getTask, submitTask } from "@/lib/api/task";
 
 import "./Task.css";
 

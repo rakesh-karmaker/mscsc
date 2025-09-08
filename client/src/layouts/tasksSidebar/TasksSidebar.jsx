@@ -7,13 +7,13 @@ import Counter from "@/components/UI/Counter/Counter";
 
 import "./TasksSidebar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { deleteSubmission } from "@/services/DeleteService";
 import toast from "react-hot-toast";
 import AdminTaskActions from "./tasksSidebarComponents/AdminTaskActions";
 import Submissions from "./tasksSidebarComponents/Submissions";
 import Submitters from "./tasksSidebarComponents/Submitters";
 import getPosition from "@/utils/getPosition";
 import SubmitCard from "./tasksSidebarComponents/SubmitCard";
+import { deleteSubmission } from "@/lib/api/task";
 
 const TasksSidebar = ({ admin }) => {
   const { category: currentCategory, setCategory, response } = useTask();
@@ -154,7 +154,6 @@ const TaskSidebar = ({
 
 const Submitter = ({ member, value, url, ...rest }) => {
   const { name, branch, batch, image, username, isImageHidden } = member;
-  console.log(member);
 
   const position = rest?.task && getPosition(rest?.task, username);
 

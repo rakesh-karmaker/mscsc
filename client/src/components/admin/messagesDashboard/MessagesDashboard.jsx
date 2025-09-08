@@ -1,15 +1,15 @@
 import { useMessages } from "@/components/admin/contexts/MessagesContext";
 import Table from "@/components/UI/Table/Table";
-import { deleteMessage } from "@/services/DeleteService";
-import { editMessage } from "@/services/PutService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import DashboardHeader from "@/components/admin/components/DashboardHeader/DashboardHeader";
 import "./MessagesDashboard.css";
 import { useState } from "react";
 import Dialog from "@/components/admin/components/Dialog/Dialog";
 import SearchInput from "@/components/UI/SearchInput/SearchInput";
 import Loader from "@/components/UI/Loader/Loader";
+import { deleteMessage, editMessage } from "@/lib/api/messages";
+import { messageTableHeader } from "@/services/data/data";
 
 const MessagesDashboard = () => {
   const queryClient = useQueryClient();
@@ -79,33 +79,5 @@ const MessagesDashboard = () => {
     </>
   );
 };
-
-const messageTableHeader = [
-  {
-    title: "Name",
-    key: "name",
-    break: false,
-  },
-  {
-    title: "Email",
-    key: "email",
-    break: false,
-  },
-  {
-    title: "Subject",
-    key: "subject",
-    break: true,
-  },
-  {
-    title: "View",
-    key: "btn",
-    break: false,
-  },
-  {
-    title: "Action",
-    key: "btn",
-    break: false,
-  },
-];
 
 export default MessagesDashboard;

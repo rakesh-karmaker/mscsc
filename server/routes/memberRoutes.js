@@ -19,6 +19,6 @@ router.get("/top-submitters", getTopSubmitters);
 router.get("/:slug", getMember);
 
 router.put("/", isAuthorized, upload.single("image"), editMember);
-router.delete("/", isAuthorized, isAdmin, deleteMember);
+router.delete("/:slug", isAuthorized, isAdmin, deleteMember);
 
 module.exports = router;

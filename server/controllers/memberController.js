@@ -158,7 +158,7 @@ const editMember = async (req, res) => {
 
 const deleteMember = async (req, res) => {
   try {
-    const slug = req.body?.slug;
+    const slug = req.params?.slug;
     if (!slug) return res.status(400).send({ message: "Invalid request" });
 
     const member = await Member.findOneAndDelete({ slug });
@@ -172,8 +172,6 @@ const deleteMember = async (req, res) => {
     res.status(500).send({ message: "Server error", error: err.message });
   }
 };
-
-
 
 module.exports = {
   verifyUser,

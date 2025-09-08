@@ -4,12 +4,12 @@ import { useForm } from "react-hook-form";
 import "./MemberEditDialog.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { editUser } from "@/services/PutService";
-import { deleteMember } from "@/services/DeleteService";
 import { Checkbox, FormControlLabel, TextField } from "@mui/material";
 import SelectInput from "@/components/UI/SelectInput";
+import { editUser } from "@/lib/api/auth";
+import { deleteMember } from "@/lib/api/member";
 
-const MemberEditDialog = ({ member, deleteMember }) => {
+const MemberEditDialog = ({ member, deleteMember: deleteMemberFunc }) => {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -44,7 +44,7 @@ const MemberEditDialog = ({ member, deleteMember }) => {
             <EditForm
               member={member}
               setIsOpen={setIsOpen}
-              deleteMember={deleteMember}
+              deleteMember={deleteMemberFunc}
             />
           </dialog>
         </div>

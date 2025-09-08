@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { getAllMembers } from "@/services/GetService";
 import { useQuery } from "@tanstack/react-query";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
+import { getAllMembers } from "@/lib/api/member";
 const MemberContext = createContext(null);
 
 const MemberProvider = ({ children }) => {

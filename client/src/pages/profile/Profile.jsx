@@ -6,12 +6,12 @@ import Timeline from "@/components/profileComponents/timeline/Timeline";
 import UserForm from "@/components/UserForm/UserForm";
 import "./Profile.css";
 import TimelineInputs from "@/components/UI/TimelineInputs/TimelineInputs";
-import { getUser } from "@/services/GetService";
 import { MemberProfileEditSchema } from "@/utils/MemberSchemaValidation";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "@/components/UI/Loader/Loader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ProfileDetails from "@/components/profileComponents/profileDetails/ProfileDetails";
+import { getMember } from "@/lib/api/member";
 
 const ProfilePage = () => {
   const { username } = useParams();
@@ -33,7 +33,7 @@ const ProfilePage = () => {
       if (user && user.slug === username) {
         return user;
       } else {
-        return getUser(username);
+        return getMember(username);
       }
     },
     refetchOnWindowFocus: false,
@@ -66,7 +66,7 @@ const ProfilePage = () => {
               alt={profileData.name}
               rel="preload"
               fetchpriority="high"
-            /> 
+            />
             {window.innerWidth > 780 && (
               <AboutProfile data={profileData} isOwner={isOwner} />
             )}

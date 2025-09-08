@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
-import { editMessage, editUser } from "@/services/PutService";
 import Dialog from "@/components/admin/components/Dialog/Dialog";
-import { deleteMember, deleteMessage } from "@/services/DeleteService";
 import { NavLink } from "react-router-dom";
 import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 
 import "./Lists.css";
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
+import { editUser } from "@/lib/api/auth";
+import { deleteMember } from "@/lib/api/member";
+import { deleteMessage, editMessage } from "@/lib/api/messages";
 
 const ListsLayout = ({ title, children }) => {
   return (

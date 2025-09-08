@@ -1,4 +1,4 @@
-import { verifyToken } from "@/services/GetService";
+import { verifyToken } from "@/lib/api/auth";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext } from "react";
 
