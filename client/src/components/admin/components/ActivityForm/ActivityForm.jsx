@@ -13,12 +13,12 @@ import { Stack, TextField } from "@mui/material";
 import DateTimePicker from "@/components/UI/dateTimePicker/DateTimePicker";
 import SelectInput from "@/components/UI/SelectInput";
 import dayjs from "dayjs";
-import tags from "@/services/data/tags";
 import {
   addActivity,
   deleteActivity,
   editActivity,
 } from "@/lib/api/activities";
+import { tags } from "@/services/data/data";
 
 const ActivityForm = (props) => {
   const navigate = useNavigate();

@@ -72,21 +72,21 @@ export const messageTableHeader = [
   },
 ];
 
-// export const tags = [
-//   {
-//     value: "Event",
-//     label: "Event",
-//   },
-//   {
-//     value: "Workshop",
-//     label: "Workshop",
-//   },
-//   {
-//     value: "Article",
-//     label: "Article",
-//   },
-//   {
-//     value: "Achievement",
-//     label: "Achievement",
-//   },
-// ];
+export const tags = [
+  {
+    value: "Event",
+    label: "Event",
+  },
+  {
+    value: "Workshop",
+    label: "Workshop",
+  },
+  {
+    value: "Article",
+    label: "Article",
+  },
+  {
+    value: "Achievement",
+    label: "Achievement",
+  },
+];
