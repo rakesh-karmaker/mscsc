@@ -4,10 +4,10 @@ import Events from "@/components/homeComponents/eventsComponents/Events/Events";
 import Articles from "@/components/homeComponents/articlesComponents/Articles/Articles";
 import HomeEcs from "@/components/homeComponents/homeExecutivesComponents/HomeEcs";
 import Contact from "@/components/contactComponents/ContactSection";
-import executivesData from "@/services/api/executivesData";
+import executivesData from "@/services/data/executivesData";
 import { useQuery } from "@tanstack/react-query";
-import { getArticles, getEvents } from "@/services/GetService";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
+import { getArticles, getEvents } from "@/lib/api/activities";
 
 const Home = () => {
   const {

@@ -2,8 +2,8 @@ import Loader from "@/components/UI/Loader/Loader";
 import { Submitter, TaskSidebarCard } from "../TasksSidebar";
 
 import { useQuery } from "@tanstack/react-query";
-import { getTopSubmitters } from "@/services/GetService";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
+import { getTopSubmitters } from "@/lib/api/task";
 
 const Submitters = ({ title }) => {
   const { data, isLoading, error, isError } = useQuery({

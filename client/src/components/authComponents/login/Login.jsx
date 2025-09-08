@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MemberLoginSchema } from "@/utils/MemberSchemaValidation";
-import { loginUser } from "@/services/PostService";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import toast from "react-hot-toast";
 import "./Login.css";
@@ -9,6 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
 import { NavLink, useNavigate } from "react-router-dom";
 import { TextField } from "@mui/material";
+import { loginUser } from "@/lib/api/auth";
 
 const Login = () => {
   const navigate = useNavigate();

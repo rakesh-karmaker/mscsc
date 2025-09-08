@@ -5,37 +5,11 @@ import PrimaryBtn from "@/components/UI/PrimaryBtn";
 import { useUser } from "@/contexts/UserContext";
 import Avatar from "@/components/UI/Avatar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { navLinks } from "@/services/data/data";
 
 const Header = () => {
   const navBar = useRef(null);
   const [isOpened, setIsOpened] = useState(false);
-
-  const navLinks = [
-    {
-      href: "/",
-      name: "Home",
-    },
-    {
-      href: "/about",
-      name: "About Us",
-    },
-    {
-      href: "/members",
-      name: "Members",
-    },
-    {
-      href: "/tasks",
-      name: "Tasks",
-    },
-    {
-      href: "/activities",
-      name: "Activities",
-    },
-    {
-      href: "/contact",
-      name: "Contact",
-    },
-  ];
 
   if (window.innerWidth < 800) {
     navLinks.push({
@@ -63,11 +37,7 @@ const Header = () => {
           {navLinks.map(({ href, name }, index) => {
             return (
               <li key={index} className="nav-link">
-                <NavLink
-                  to={href}
-                  // className="nav-link"
-                  onClick={handelNavLinkClick}
-                >
+                <NavLink to={href} onClick={handelNavLinkClick}>
                   {name}
                 </NavLink>
               </li>

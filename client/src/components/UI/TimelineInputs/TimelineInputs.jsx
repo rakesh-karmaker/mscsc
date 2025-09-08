@@ -3,13 +3,13 @@ import { useForm, useFieldArray, Controller } from "react-hook-form";
 
 import "./TimelineInputs.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { editUser } from "@/services/PutService";
 import toast from "react-hot-toast";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
 import { Stack, TextField } from "@mui/material";
 import DateTimePicker from "../dateTimePicker/DateTimePicker";
 import dayjs from "dayjs";
 import SelectInput from "../SelectInput";
+import { editUser } from "@/lib/api/auth";
 
 const TimelineInputs = ({ timeline, user, setIsEditing }) => {
   const queryClient = useQueryClient();

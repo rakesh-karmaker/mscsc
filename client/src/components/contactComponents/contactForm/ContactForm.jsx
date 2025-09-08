@@ -2,13 +2,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import contactSchema from "@/utils/ContactSchema";
 import SubmitBtn from "@/components/UI/SubmitBtn";
-import { sendMessage } from "@/services/PostService";
 import toast from "react-hot-toast";
 import { useRef } from "react";
 import "./ContactForm.css";
 import { useMutation } from "@tanstack/react-query";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
 import { Stack, TextField } from "@mui/material";
+import { sendMessage } from "@/lib/api/messages";
 
 const ContactForm = () => {
   const contactForm = useRef(null);

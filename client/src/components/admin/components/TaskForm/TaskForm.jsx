@@ -1,8 +1,6 @@
 import Editor from "@/components/UI/Editor/Editor";
 import FormHeading from "@/components/UI/FormHeading/FormHeading";
 import SubmitBtn from "@/components/UI/SubmitBtn";
-import { addTask } from "@/services/PostService";
-import { editTask } from "@/services/PutService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -14,6 +12,7 @@ import { useEffect } from "react";
 import DateTimePicker from "@/components/UI/dateTimePicker/DateTimePicker";
 import { FormControlLabel, Stack, Switch, TextField } from "@mui/material";
 import SelectInput from "@/components/UI/SelectInput";
+import { addTask, editTask } from "@/lib/api/task";
 
 const TaskForm = (props) => {
   const navigate = useNavigate();

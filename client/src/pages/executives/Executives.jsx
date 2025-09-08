@@ -1,4 +1,4 @@
-import executivesData from "@/services/api/executivesData";
+import executivesData from "@/services/data/executivesData";
 import ExecutivesContainer from "@/components/executivesComponents/ExecutivesContainer";
 import "./Executives.css";
 

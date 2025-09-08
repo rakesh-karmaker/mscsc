@@ -5,11 +5,11 @@ import SubmitBtn from "@/components/UI/SubmitBtn";
 import toast from "react-hot-toast";
 import "./UserForm.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { editUser } from "@/services/PutService";
-import { registerUser } from "@/services/PostService";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Checkbox, FormControlLabel, Stack, TextField } from "@mui/material";
 import SelectInput from "@/components/UI/SelectInput";
+import { editUser, registerUser } from "@/lib/api/auth";
+import { branches } from "@/services/data/data";
 
 const UserForm = (props) => {
   const queryClient = useQueryClient();
@@ -105,29 +105,6 @@ const UserForm = (props) => {
       label: currentYear + i,
     });
   }
-
-  const branches = [
-    {
-      value: "Branch - 1",
-      label: "Branch - 1",
-    },
-    {
-      value: "Branch - 2",
-      label: "Branch - 2",
-    },
-    {
-      value: "Branch - 3",
-      label: "Branch - 3",
-    },
-    {
-      value: "Main Boys",
-      label: "Main Boys",
-    },
-    {
-      value: "Main Girls",
-      label: "Main Girls",
-    },
-  ];
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="user-form">

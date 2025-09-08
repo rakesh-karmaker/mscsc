@@ -1,10 +1,10 @@
 import ForgotPasswordLayout from "@/layouts/ForgotPasswordLayout";
-import { resetPassword } from "@/services/PostService";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import SubmitBtn from "@/components/UI/SubmitBtn";
 import toast from "react-hot-toast";
 import { TextField } from "@mui/material";
+import { resetPassword } from "@/lib/api/forgotPassword";
 
 const ResetPassword = ({ email, token, setStage }) => {
   const {
