@@ -1,7 +1,7 @@
 import { api } from "@/config/axios";
 
 export async function getAllMessages(page, limit, search) {
-  return api.get(`/message`, {
+  return api.get(`/message/get-message`, {
     params: {
       page: page,
       limit: limit,
@@ -11,13 +11,17 @@ export async function getAllMessages(page, limit, search) {
 }
 
 export async function sendMessage(data) {
-  return api.post("/message", data);
+  return api.post("/message/send-message", data);
 }
 
-export async function editMessage(data) {
-  return api.put("/message", data);
+export async function markMessageAsRead(messageId) {
+  return api.patch("/message/mark-message-as-read", {
+    params: { id: messageId },
+  });
 }
 
-export async function deleteMessage(id) {
-  return api.delete("/message", { data: id });
+export async function deleteMessage(messageId) {
+  return api.delete("/message/delete-message", {
+    params: { id: messageId },
+  });
 }
