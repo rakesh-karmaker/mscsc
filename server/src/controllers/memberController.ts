@@ -6,7 +6,10 @@ import { deleteImage, uploadImage } from "../lib/imageUploader.js";
 import { generateHash } from "../utils/hash.js";
 
 // Get all members
-export async function getAllMembers(req: Request, res: Response) {
+export async function getAllMembers(
+  req: Request,
+  res: Response
+): Promise<void> {
   try {
     // Create regex for filtering
     const regex: GetAllMembersRegexType = {
