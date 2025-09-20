@@ -1,4 +1,4 @@
-export type MemberSchemaType = {
+export interface MemberSchemaType {
   name: string;
   slug: string;
   email: string;
@@ -27,7 +27,7 @@ export type MemberSchemaType = {
   isImageHidden: boolean;
   createdAt: Date;
   updatedAt: Date;
-};
+}
 
 export type NewMemberDataType = {
   name: string;
