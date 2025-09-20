@@ -87,7 +87,7 @@ export async function register(req: Request, res: Response): Promise<void> {
       member: newMember,
     });
   } catch (err) {
-    console.log("Error registering member - ", getDate(), "\n---\n", err);
+    console.log("Error registering member - ", "\n---\n", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
@@ -137,7 +137,29 @@ export async function login(req: Request, res: Response): Promise<void> {
       member,
     });
   } catch (err) {
-    console.log("Error logging in member - ", getDate(), "\n---\n", err);
+    console.log("Error logging in member - ", "\n---\n", err);
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    res
+      .status(500)
+      .send({ subject: "root", message: "Server error", error: errorMessage });
+  }
+}
+
+// verify user and send user data
+export async function verifyUser(req: Request, res: Response): Promise<void> {
+  try {
+    const data = req.user;
+    const user = await Member.findById(data?._id || "").select("-password");
+    if (!user) {
+      res.status(404).send({ message: "User not found" });
+      return;
+    }
+
+    res.send({
+      user,
+    });
+  } catch (err) {
+    console.log("Error verifying member - ", "\n---\n", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)

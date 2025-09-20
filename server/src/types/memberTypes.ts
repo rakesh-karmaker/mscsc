@@ -43,3 +43,10 @@ export type NewMemberDataType = {
   imgId: string;
   slug: string;
 };
+
+export type GetAllMembersRegexType = {
+  name: RegExp;
+  role: RegExp;
+  branch: RegExp;
+  position?: RegExp;
+};

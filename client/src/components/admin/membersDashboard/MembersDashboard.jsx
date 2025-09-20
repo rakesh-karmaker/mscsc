@@ -3,8 +3,7 @@ import toast from "react-hot-toast";
 import DashboardHeader from "../components/DashboardHeader/DashboardHeader";
 import "./MembersDashboard.css";
 import MemberPage from "@/pages/members/Members";
-import { editUser } from "@/lib/api/auth";
-import { deleteMember } from "@/lib/api/member";
+import { deleteMember, editUser } from "@/lib/api/member";
 
 const MembersDashboard = ({
   type,

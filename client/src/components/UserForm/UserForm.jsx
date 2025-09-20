@@ -8,8 +8,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Checkbox, FormControlLabel, Stack, TextField } from "@mui/material";
 import SelectInput from "@/components/UI/SelectInput";
-import { editUser, registerUser } from "@/lib/api/auth";
+import { registerUser } from "@/lib/api/auth";
 import { branches } from "@/services/data/data";
+import { editUser } from "@/lib/api/member";
 
 const UserForm = (props) => {
   const queryClient = useQueryClient();

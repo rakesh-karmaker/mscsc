@@ -9,7 +9,7 @@ import { Stack, TextField } from "@mui/material";
 import DateTimePicker from "../dateTimePicker/DateTimePicker";
 import dayjs from "dayjs";
 import SelectInput from "../SelectInput";
-import { editUser } from "@/lib/api/auth";
+import { editUser } from "@/lib/api/member";
 
 const TimelineInputs = ({ timeline, user, setIsEditing }) => {
   const queryClient = useQueryClient();

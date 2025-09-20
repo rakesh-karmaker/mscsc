@@ -7,8 +7,7 @@ import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 
 import "./Lists.css";
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
-import { editUser } from "@/lib/api/auth";
-import { deleteMember } from "@/lib/api/member";
+import { deleteMember, editUser } from "@/lib/api/member";
 import { deleteMessage, markMessageAsRead } from "@/lib/api/messages";
 
 const ListsLayout = ({ title, children }) => {

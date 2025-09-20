@@ -11,6 +11,7 @@ interface PaginateResultsType<T> {
   totalLength: number;
   selectedLength: number;
   results: T[];
+  adminLength?: number; // Optional, for specific use cases
 }
 
 export default async function paginateResults<T extends Document>(
