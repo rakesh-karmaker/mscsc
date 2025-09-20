@@ -2,6 +2,7 @@ import express from "express";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import cors from "cors";
 import config from "./config/config.js";
+import authRouter from "./routers/authRouter.js";
 
 const app = express();
 
@@ -18,5 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
 app.use(errorHandler);
+
+app.use("/api/auth", authRouter);
 
 export default app;

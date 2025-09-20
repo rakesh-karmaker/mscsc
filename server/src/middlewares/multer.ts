@@ -15,7 +15,7 @@ const allowedExtensions = [
   ".mp4",
   ".mp3",
   ".wav",
-];
+]; // Allowed file extensions
 
 // Configure storage (in memory for processing with Sharp)
 const storage = multer.memoryStorage();
