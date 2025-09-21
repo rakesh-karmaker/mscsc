@@ -15,12 +15,8 @@ export async function getActivity(slug) {
   return api.get(`/activity/${slug}`);
 }
 
-export async function getEvents() {
-  return api.get("/activity/events");
-}
-
-export async function getArticles() {
-  return api.get("/activity/articles");
+export async function getHomeActivities() {
+  return api.get("/activity/get-home-activities");
 }
 
 export async function addActivity(data) {
@@ -69,7 +65,7 @@ export async function editActivity(data) {
     }
     formData.append(key, data[key]);
   }
-  return api.put("/activity", formData, {
+  return api.patch("/activity", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

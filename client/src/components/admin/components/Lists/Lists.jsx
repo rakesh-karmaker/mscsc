@@ -7,9 +7,8 @@ import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 
 import "./Lists.css";
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
-import { editUser } from "@/lib/api/auth";
-import { deleteMember } from "@/lib/api/member";
-import { deleteMessage, editMessage } from "@/lib/api/messages";
+import { deleteMember, editUser } from "@/lib/api/member";
+import { deleteMessage, markMessageAsRead } from "@/lib/api/messages";
 
 const ListsLayout = ({ title, children }) => {
   return (
@@ -93,10 +92,10 @@ const MessagesList = ({ messages }) => {
   const messageMutation = useMutation({
     mutationFn: (data) => {
       const { method, ...rest } = data;
-      if (method == "edit") {
-        return editMessage(rest);
+      if (method == "mark") {
+        return markMessageAsRead(rest._id);
       } else if (method == "delete") {
-        return deleteMessage({ _id: rest._id });
+        return deleteMessage(rest._id);
       }
     },
     onSuccess: (res) => {
@@ -116,7 +115,7 @@ const MessagesList = ({ messages }) => {
   const [currentMessage, setCurrentMessage] = useState(null);
   const messageClick = (_id, isNew) => {
     if (isNew === true) {
-      messageMutation.mutate({ _id: _id, new: false, method: "edit" });
+      messageMutation.mutate({ _id: _id, method: "mark" });
     }
     const message = messages.find((message) => message._id === _id);
     setCurrentMessage(message);

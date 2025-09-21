@@ -6,8 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { Checkbox, FormControlLabel, TextField } from "@mui/material";
 import SelectInput from "@/components/UI/SelectInput";
-import { editUser } from "@/lib/api/auth";
-import { deleteMember } from "@/lib/api/member";
+import { deleteMember, editUser } from "@/lib/api/member";
 
 const MemberEditDialog = ({ member, deleteMember: deleteMemberFunc }) => {
   const queryClient = useQueryClient();

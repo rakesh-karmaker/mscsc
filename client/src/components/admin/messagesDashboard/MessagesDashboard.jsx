@@ -8,7 +8,7 @@ import { useState } from "react";
 import Dialog from "@/components/admin/components/Dialog/Dialog";
 import SearchInput from "@/components/UI/SearchInput/SearchInput";
 import Loader from "@/components/UI/Loader/Loader";
-import { deleteMessage, editMessage } from "@/lib/api/messages";
+import { deleteMessage, markMessageAsRead } from "@/lib/api/messages";
 import { messageTableHeader } from "@/services/data/data";
 
 const MessagesDashboard = () => {
@@ -21,9 +21,9 @@ const MessagesDashboard = () => {
     mutationFn: (data) => {
       const { isDelete, ...rest } = data;
       if (isDelete) {
-        return deleteMessage(rest);
+        return deleteMessage(rest._id);
       } else {
-        return editMessage(rest);
+        return markMessageAsRead(rest._id);
       }
     },
     onSuccess: () => {
@@ -38,7 +38,7 @@ const MessagesDashboard = () => {
 
   const onViewClick = (id, isNew) => {
     if (isNew === true) {
-      messagesMutation.mutate({ _id: id, isDelete: false, new: false });
+      messagesMutation.mutate({ _id: id, isDelete: false });
     }
     const message = messages.find((message) => message._id === id);
     setCurrentMessage(message);
