@@ -34,7 +34,7 @@ const MemberProvider = ({ children }) => {
 
   const response = data?.data;
   const members = data?.data.results;
-  const length = data?.data?.selectedLength || 0;
+  const length = data?.data?.totalLength || 0;
 
   return (
     <MemberContext.Provider

@@ -29,6 +29,7 @@ export async function getAllActivities(
 
     const sorted = {
       sort: { date: -1 as 1 | -1 },
+      select: "_id title slug date tag coverImageUrl summary createdAt",
     };
 
     const activities = await paginateResults(req, Activity, regex, sorted);
@@ -87,7 +88,7 @@ export async function getActivity(req: Request, res: Response): Promise<void> {
 
 // Get home page activities
 export async function getHomeActivities(
-  req: Request,
+  _: Request,
   res: Response
 ): Promise<void> {
   try {
@@ -239,7 +240,7 @@ export async function editActivity(req: Request, res: Response): Promise<void> {
     }
 
     // Update the activity
-    const activity = await Activity.findOneAndUpdate({ slug }, updates, {
+    await Activity.findOneAndUpdate({ slug }, updates, {
       new: true,
     });
 

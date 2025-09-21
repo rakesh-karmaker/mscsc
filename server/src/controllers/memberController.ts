@@ -33,7 +33,11 @@ export async function getAllMembers(
     }
 
     // Pagination and sorting options
-    const sorted = { sort: { _id: -1 as 1 | -1 }, select: "-password" };
+    const sorted = {
+      sort: { _id: -1 as 1 | -1 },
+      select:
+        "_id name slug batch branch image role position new isImageVerified isImageHidden", // Select only necessary fields
+    };
 
     // Get paginated results
     const members = await paginateResults(req, Member, regex, sorted);
