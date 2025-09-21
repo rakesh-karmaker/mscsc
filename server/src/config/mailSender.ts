@@ -7,8 +7,8 @@ console.log(
 );
 const mailSender = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // true for 465, false for other ports
+  port: 465,
+  secure: true, // true for 465, false for other ports
   auth: {
     user: process.env.MAIL_ADDRESS || config.mailAddress, // Use environment variable if available
     pass: process.env.MAIL_PASS || config.mailPass, // Use environment variable if available
@@ -38,7 +38,7 @@ const verifyConnection = async (retries = 3) => {
       console.log("Server is ready to send our emails");
       return true;
     } catch (error: any) {
-      console.log(`Email verification attempt ${i + 1} failed:`, error.message);
+      console.log(`Email verification attempt ${i + 1} failed:`, error);
       if (i < retries - 1) {
         console.log(`Retrying in ${Math.pow(2, i)} seconds...`);
         await new Promise((resolve) =>
