@@ -31,7 +31,6 @@ const ActivitiesProvider = ({ children }) => {
   }, [page, search, tag, refetch]);
 
   useErrorNavigator(isError, error);
-  // if (error) return null;
 
   const activities = data?.data ? data.data.results : [];
   const length = data?.data?.totalLength || 0;
