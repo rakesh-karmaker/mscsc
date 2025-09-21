@@ -1,13 +1,17 @@
 import config from "./config.js";
 import nodemailer from "nodemailer";
 
+console.log(
+  "Mail Address:",
+  config.mailAddress ? `Loaded ${config.mailAddress}` : "Not Loaded"
+);
 const mailSender = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
   secure: false, // true for 465, false for other ports
   auth: {
-    user: config.mailAddress,
-    pass: config.mailPass,
+    user: process.env.MAIL_ADDRESS || config.mailAddress, // Use environment variable if available
+    pass: process.env.MAIL_PASS || config.mailPass, // Use environment variable if available
   },
   tls: {
     rejectUnauthorized: false, // Allow self-signed certificates
