@@ -1,15 +1,19 @@
+import axios from "axios";
 import config from "../config/config.js";
-import mailSender from "../config/mailSender.js";
-import otpDraft from "../utils/otpDraft.js";
 
 export default async function sendEmail(email: string, otp: string) {
   try {
-    await mailSender.sendMail({
-      from: config.mailAddress,
+    const res = await axios.post(`${config.mailServerUrl}/mail/send`, {
       to: email,
-      subject: "Password Reset OTP",
-      html: otpDraft(otp),
+      otp: otp,
     });
+
+    if (res.status === 200) {
+      console.log("Email sent successfully:", res.data);
+    } else {
+      console.log("Error sending email:", res.data);
+    }
+
     return;
   } catch (err) {
     console.log("Error sending email - ", new Date(), "\n---\n", err);

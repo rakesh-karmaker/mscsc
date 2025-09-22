@@ -23,8 +23,7 @@ interface Config {
   jwtSecret: string;
 
   // Mail Service
-  mailAddress: string;
-  mailPass: string;
+  mailServerUrl: string;
 }
 
 const config: Config = {
@@ -43,8 +42,7 @@ const config: Config = {
 
   jwtSecret: process.env.JWT_SECRET || "",
 
-  mailAddress: process.env.MAIL_ADDRESS || "",
-  mailPass: process.env.MAIL_PASS || "",
+  mailServerUrl: process.env.MAIL_SERVER_URL || "",
 };
 
 export default config;
