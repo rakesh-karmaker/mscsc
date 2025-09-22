@@ -1,8 +1,8 @@
 {
-  "name": "server",
+  "name": "mscsc-server",
   "module": "server.ts",
   "type": "module",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "",
   "scripts": {
     "build": "rm -rf dist && tsc",
