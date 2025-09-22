@@ -10,11 +10,11 @@ Welcome to MSCSC’s official website repository. This platform highlights our c
 
 ## Tech Stack
 
-|   Front-End    |     |  Back-End  |     |  Hosting  |
-| :------------: | --- |  :------:  | --- |  :-----:  |
-|   Javascript   |     |   Nodejs   |     |  Netlify  |
-|  React.js 18   |     |   MongoDB  |     |  Render   |
-|      CSS       |     |            |     |           |
+|  Front-End  |     |  Back-End  |     | Hosting |
+| :---------: | --- | :--------: | --- | :-----: |
+| Javascript  |     | Typescript |     | Netlify |
+| React.js 18 |     |   Nodejs   |     | Render  |
+|     CSS     |     |  MongoDB   |     |         |
 
 ## Contributions
 
@@ -26,9 +26,9 @@ Welcome to MSCSC’s official website repository. This platform highlights our c
 
 - Rakesh Karmaker - IT Dept. (Web Developer) - Batch 2026
 
-### Back End Web Developer
+<!-- ### Back End Web Developer
 
-- Md Tanvir Ahmed - General Secretary - Batch 2025
+- Md Tanvir Ahmed - General Secretary - Batch 2025 -->
 
 ## Any Issues?
 
