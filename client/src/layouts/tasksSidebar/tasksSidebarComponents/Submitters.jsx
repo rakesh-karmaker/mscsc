@@ -25,7 +25,7 @@ const Submitters = ({ title }) => {
                 <Submitter
                   member={member}
                   url={`/member/${member.slug}`}
-                  value={member.tasksCompleted}
+                  value={member.submissionsCount}
                 />
               </li>
             );

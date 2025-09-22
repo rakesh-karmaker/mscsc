@@ -79,15 +79,24 @@ export async function getMember(req: Request, res: Response): Promise<void> {
 
 // Get top 10 members with most submissions
 export async function getTopSubmitters(
-  req: Request,
+  _: Request,
   res: Response
 ): Promise<void> {
   try {
-    const topSubmitters = await Member.find({
-      submissions: { $exists: true, $not: { $size: 0 } },
-    })
-      .sort({ "submissions.length": -1 })
-      .limit(10); // Limit to top 10
+    const members = await Member.find();
+    const topSubmitters = members
+      .map((member) => ({
+        _id: member._id,
+        name: member.name,
+        branch: member.branch,
+        batch: member.batch,
+        slug: member.slug,
+        image: member.image,
+        submissionsCount: member.submissions ? member.submissions.length : 0,
+        isImageHidden: member.isImageHidden,
+      }))
+      .sort((a, b) => b.submissionsCount - a.submissionsCount)
+      .slice(0, 10); // Get top 10
 
     if (!topSubmitters || topSubmitters.length === 0) {
       res.status(404).send({ message: "No submitters found" });
@@ -102,7 +111,7 @@ export async function getTopSubmitters(
         branch: member.branch,
         batch: member.batch,
         image: member.image,
-        submissionsCount: member.submissions.length,
+        submissionsCount: member.submissionsCount,
         isImageHidden: member.isImageHidden,
       }))
     );
