@@ -21,8 +21,9 @@ export async function register(req: Request, res: Response): Promise<void> {
     }
 
     // validate the request body
-    body.email = body?.email?.toLowerCase()?.trim();
+    body.email = body.email.toLowerCase().trim();
     body.name = body.name.trim();
+    body.batch = body.batch.trim();
     const { error: validationError } = registerSchema.validate(body);
     if (validationError) {
       res.status(400).send({

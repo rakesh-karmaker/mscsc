@@ -37,7 +37,7 @@ main {
   --lighter-black: rgba(17, 24, 28, 0.5);
   --lightest-black: rgba(17, 24, 28, 0.3);
 
-  --white: rgb(249, 249, 249);
+  --white: #f6f6f6;
 
   --primary-bg: rgb(255, 255, 255);
   --secondary-bg: rgb(245, 248, 252);
@@ -51,6 +51,26 @@ main {
   --light-highlighted-color: rgb(219, 234, 254);
 
   --nav-height: 80px;
+}
+
+@theme inline {
+  --color-black: var(--black);
+  --color-light-black: var(--light-black);
+  --color-lighter-black: var(--lighter-black);
+  --color-lightest-black: var(--lightest-black);
+
+  --color-white: var(--white);
+
+  --color-primary-bg: var(--primary-bg);
+  --color-secondary-bg: var(--secondary-bg);
+  --color-third-level-bg: var(--third-level-bg);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-white: var(--text-white);
+
+  --color-highlighted-color: var(--highlighted-color);
+  --color-light-highlighted-color: var(--light-highlighted-color);
 }
 
 /** utility classes */

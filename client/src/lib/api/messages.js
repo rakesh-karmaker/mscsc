@@ -16,7 +16,7 @@ export async function sendMessage(data) {
 
 export async function markMessageAsRead(messageId) {
   return api.patch("/message/mark-message-as-read", {
-    params: { id: messageId },
+    id: messageId,
   });
 }
 

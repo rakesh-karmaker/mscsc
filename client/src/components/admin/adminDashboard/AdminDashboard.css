@@ -68,6 +68,33 @@
   border-radius: 14px;
 }
 
+@media screen and (max-width: 1650px) {
+  .quick-stat-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .branch-distribution {
+    min-width: 270px;
+  }
+}
+
+@media screen and (max-width: 1530px) {
+  .branch-distribution {
+    min-width: 346px;
+  }
+}
+
+@media screen and (max-width: 1360px) {
+  .quick-stat-icon {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+  .dashboard-container {
+    flex-direction: column;
+  }
+}
+
 @media screen and (max-width: 1240px) {
   .dashboard-info {
     flex-wrap: wrap;
@@ -88,8 +115,8 @@
   }
 }
 @media screen and (max-width: 950px) {
-  .dashboard-lists {
-    grid-template-columns: 1fr;
+  .branch-distribution {
+    min-width: 270px;
   }
 }
 

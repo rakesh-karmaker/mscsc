@@ -183,6 +183,11 @@ export async function editMember(req: Request, res: Response): Promise<void> {
       updates.password = generateHash(updates.password);
     }
 
+    // Trim certain fields
+    updates.batch = updates.batch?.trim();
+    updates.name = updates.name?.trim();
+    updates.branch = updates.branch?.trim();
+
     const user = await Member.findOneAndUpdate({ slug }, updates, {
       isImageVerified: false, // Reset image verification on edit
       new: true,

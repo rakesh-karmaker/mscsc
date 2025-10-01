@@ -59,7 +59,7 @@ export async function markMessageAsRead(
   res: Response
 ): Promise<void> {
   try {
-    const messageId = req.query.id;
+    const messageId = req.body.id;
     if (!messageId || typeof messageId !== "string") {
       res
         .status(400)

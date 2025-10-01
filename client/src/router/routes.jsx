@@ -40,7 +40,7 @@ const ActivityForm = lazy(() =>
   import("@/components/admin/components/ActivityForm/ActivityForm")
 );
 const TasksDashBoard = lazy(() =>
-  import("@/components/admin/tasksDashboard/TasksDashboaed")
+  import("@/components/admin/tasksDashboard/TasksDashboard")
 );
 const TaskDashboard = lazy(() =>
   import("@/components/admin/tasksDashboard/taskDashboard/TaskDashboard")

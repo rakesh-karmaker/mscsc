@@ -40,6 +40,8 @@ export async function editUser(data) {
       key === "timeline" ? JSON.stringify(data[key]) : data[key]
     );
   }
+
+  console.log(formData);
   return api.patch("/member/edit-member", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
