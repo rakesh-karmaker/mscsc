@@ -62,13 +62,13 @@
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-.member-info {
+.member-short-info {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.member-info img {
+.member-short-info img {
   width: 50px;
   height: 50px;
   min-width: 50px;

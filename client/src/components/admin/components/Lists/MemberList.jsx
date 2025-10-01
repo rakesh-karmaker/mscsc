@@ -62,7 +62,7 @@ const MemberListItem = ({ member, onDelete, onNewClick }) => {
       }}
       to={`/member/${member.slug}`}
     >
-      <div className="member-info">
+      <div className="member-short-info">
         <img src={member.image} alt={member.name} />
         <div className="info">
           <p className="member-name">{member.name}</p>

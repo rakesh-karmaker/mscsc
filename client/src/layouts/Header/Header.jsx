@@ -11,7 +11,7 @@ const Header = () => {
   const navBar = useRef(null);
   const [isOpened, setIsOpened] = useState(false);
 
-  if (window.innerWidth < 800) {
+  if (window.innerWidth < 800 && navLinks.length === 5) {
     navLinks.push({
       href: "/executives",
       name: "Executives",

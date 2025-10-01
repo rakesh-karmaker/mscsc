@@ -15,7 +15,7 @@ import { MemberList } from "../components/Lists/MemberList";
 import { MessageList } from "../components/Lists/MessageList";
 
 const AdminDashboard = () => {
-  const { members, setSearch, setPage } = useMember();
+  const { members, setSearch, setPage, setRole } = useMember();
   const {
     messages,
     setSearch: messagesSearch,
@@ -24,6 +24,7 @@ const AdminDashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
 
   useEffect(() => {
+    setRole("");
     setSearch("");
     setPage(1);
     messagesSearch("");
