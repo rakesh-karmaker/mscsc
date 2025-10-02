@@ -5,11 +5,11 @@ import toast from "react-hot-toast";
 import DashboardHeader from "@/components/admin/components/DashboardHeader/DashboardHeader";
 import "./MessagesDashboard.css";
 import { useState } from "react";
-import Dialog from "@/components/admin/components/Dialog/Dialog";
 import SearchInput from "@/components/UI/SearchInput/SearchInput";
 import Loader from "@/components/UI/Loader/Loader";
 import { deleteMessage, markMessageAsRead } from "@/lib/api/messages";
 import { messageTableHeader } from "@/services/data/data";
+import { MessageBox } from "../components/MessageBox";
 
 const MessagesDashboard = () => {
   const queryClient = useQueryClient();
@@ -74,7 +74,7 @@ const MessagesDashboard = () => {
           )}
         </div>
 
-        <Dialog data={currentMessage} setData={setCurrentMessage} />
+        <MessageBox data={currentMessage} setData={setCurrentMessage} />
       </div>
     </>
   );

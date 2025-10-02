@@ -32,6 +32,18 @@ export async function addTask(data) {
   return api.post("/task/create", formData);
 }
 
+export async function editTask(data) {
+  const formData = new FormData();
+  for (const key in data) {
+    formData.append(key, data[key]);
+  }
+  return api.patch("/task/edit-task", formData);
+}
+
+export async function deleteTask(slug) {
+  return api.delete("/task/delete-task", { data: { slug: slug } });
+}
+
 export async function submitTask(data) {
   const formData = new FormData();
   formData.append("slug", data.slug);
@@ -46,14 +58,6 @@ export async function submitTask(data) {
   });
 }
 
-export async function editTask(data) {
-  const formData = new FormData();
-  for (const key in data) {
-    formData.append(key, data[key]);
-  }
-  return api.put("/task/edit-task", formData);
-}
-
 export async function editSubmission(data) {
   const formData = new FormData();
   formData.append("slug", data.slug);
@@ -62,10 +66,16 @@ export async function editSubmission(data) {
   if (data?.poster) {
     formData.append("poster", data.poster);
   }
-  return api.put("/task/edit-submission", formData, {
+  return api.patch("/task/edit-submission", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
+  });
+}
+
+export async function deleteSubmission(slug, username) {
+  return api.delete("/task/delete-submission", {
+    data: { slug: slug, username: username },
   });
 }
 
@@ -74,16 +84,6 @@ export async function makeWinner(position, slug, username) {
     slug: slug,
     username: username,
     position: position,
-  });
-}
-
-export async function deleteTask(slug) {
-  return api.delete("/task/delete-task", { data: { slug: slug } });
-}
-
-export async function deleteSubmission(slug, username) {
-  return api.delete("/task/delete-submission", {
-    data: { slug: slug, username: username },
   });
 }
 

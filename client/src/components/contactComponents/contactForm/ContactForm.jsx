@@ -33,6 +33,7 @@ const ContactForm = () => {
   });
 
   const onSubmit = (data) => {
+    console.log(data);
     messageMutation.mutate(data);
     contactForm.current.reset();
   };

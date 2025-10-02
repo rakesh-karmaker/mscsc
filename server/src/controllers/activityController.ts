@@ -29,7 +29,7 @@ export async function getAllActivities(
 
     const sorted = {
       sort: { date: -1 as 1 | -1 },
-      select: "_id title slug date tag coverImageUrl summary createdAt",
+      select: "_id title slug date tag coverImageUrl content summary createdAt", //TODO: Remove content later and request when editing the activity
     };
 
     const activities = await paginateResults(req, Activity, regex, sorted);

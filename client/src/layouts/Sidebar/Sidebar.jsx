@@ -6,28 +6,28 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Sidebar = ({ name, image }) => {
   const [sidebarState, setSidebarState] = useState(false);
 
-  let start;
-  // add a swipe event listener to the sidebar
-  window.addEventListener("touchstart", (e) => {
-    if (e.touches.length === 1 && window.innerWidth <= 1530) {
-      start = e.touches.item(0).clientX;
-    } else {
-      start = null;
-    }
-  });
+  // let start;
+  // // add a swipe event listener to the sidebar
+  // window.addEventListener("touchstart", (e) => {
+  //   if (e.touches.length === 1 && window.innerWidth <= 1530) {
+  //     start = e.touches.item(0).clientX;
+  //   } else {
+  //     start = null;
+  //   }
+  // });
 
-  window.addEventListener("touchend", (e) => {
-    const offset = 100;
-    if (start && window.innerWidth <= 1530) {
-      const end = e.changedTouches.item(0).clientX;
-      if (end - start > offset) {
-        setSidebarState(true);
-      }
-      if (start - end > offset) {
-        setSidebarState(false);
-      }
-    }
-  });
+  // window.addEventListener("touchend", (e) => {
+  //   const offset = 100;
+  //   if (start && window.innerWidth <= 1530) {
+  //     const end = e.changedTouches.item(0).clientX;
+  //     if (end - start > offset) {
+  //       setSidebarState(true);
+  //     }
+  //     if (start - end > offset) {
+  //       setSidebarState(false);
+  //     }
+  //   }
+  // });
 
   return (
     <aside className="sidebar-container">

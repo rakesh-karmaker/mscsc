@@ -41,7 +41,6 @@ export async function editUser(data) {
     );
   }
 
-  console.log(formData);
   return api.patch("/member/edit-member", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -49,6 +48,6 @@ export async function editUser(data) {
   });
 }
 
-export async function deleteMember(slug) {
-  return api.delete(`/member/${slug}`);
+export async function deleteMember(data) {
+  return api.delete(`/member/${data.slug}`);
 }

@@ -38,6 +38,8 @@ main {
   --lightest-black: rgba(17, 24, 28, 0.3);
 
   --white: #f6f6f6;
+  --red: #ff4141;
+  --green: #379337;
 
   --primary-bg: rgb(255, 255, 255);
   --secondary-bg: rgb(245, 248, 252);
@@ -60,6 +62,8 @@ main {
   --color-lightest-black: var(--lightest-black);
 
   --color-white: var(--white);
+  --color-red: var(--red);
+  --color-green: var(--green);
 
   --color-primary-bg: var(--primary-bg);
   --color-secondary-bg: var(--secondary-bg);
@@ -71,6 +75,8 @@ main {
 
   --color-highlighted-color: var(--highlighted-color);
   --color-light-highlighted-color: var(--light-highlighted-color);
+
+  --breakpoint-xs: 25rem; /* 400px */
 }
 
 /** utility classes */

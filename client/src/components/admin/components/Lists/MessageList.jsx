@@ -4,7 +4,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { ListsLayout } from "./Lists";
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
-import Dialog from "../Dialog/Dialog";
+import { MessageBox } from "../MessageBox";
 
 export const MessageList = ({ messages }) => {
   const queryClient = useQueryClient();
@@ -56,7 +56,7 @@ export const MessageList = ({ messages }) => {
           );
         })
       )}
-      <Dialog data={currentMessage} setData={setCurrentMessage} />
+      <MessageBox data={currentMessage} setData={setCurrentMessage} />
     </ListsLayout>
   );
 };
@@ -72,7 +72,7 @@ const MessagesListItem = ({ message, messageClick, messageDelete }) => {
         <p className="message-email line-clamp-2">{message.email}</p>
       </div>
       <button
-        className="danger-button primary-button !text-[1em] !py-[7px] !px-[15px] !w-fit !h-fit "
+        className="danger-button primary-button !text-[1em] !py-[7px] !px-[15px] !w-fit !h-fit"
         onClick={(e) => {
           e.stopPropagation();
           e.preventDefault();

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./MemberCard.css";
-import MemberEditDialog from "@/components/admin/membersDashboard/memberEditDialog/MemberEditDialog";
+import MemberEditDialog from "@/components/admin/membersDashboard/MemberEditDialog";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useUser } from "@/contexts/UserContext";

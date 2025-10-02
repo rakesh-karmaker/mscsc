@@ -1,9 +1,10 @@
-import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 import { deleteMember, editUser } from "@/lib/api/member";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { NavLink } from "react-router-dom";
 import { ListsLayout } from "./Lists";
+import { DeleteWarning } from "@/components/UI/DeleteWarning";
+import { useState } from "react";
 
 export const MemberList = ({ members }) => {
   const queryClient = useQueryClient();
@@ -52,28 +53,55 @@ export const MemberList = ({ members }) => {
 };
 
 const MemberListItem = ({ member, onDelete, onNewClick }) => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <NavLink
-      className={member.new ? "new" : ""}
-      onClick={() => {
-        if (member.new) {
-          onNewClick(member.slug);
-        }
-      }}
-      to={`/member/${member.slug}`}
-    >
-      <div className="member-short-info">
-        <img src={member.image} alt={member.name} />
-        <div className="info">
-          <p className="member-name">{member.name}</p>
-          <p className="member-branch-batch">
-            {member.branch}, {member.batch}
-          </p>
+    <>
+      <NavLink
+        className={member.new ? "new" : ""}
+        onClick={() => {
+          if (member.new) {
+            onNewClick(member.slug);
+          }
+        }}
+        to={`/member/${member.slug}`}
+      >
+        <div className="member-short-info">
+          <img src={member.image} alt={member.name} />
+          <div className="info">
+            <p className="member-name">{member.name}</p>
+            <p className="member-branch-batch">
+              {member.branch}, {member.batch}
+            </p>
+          </div>
         </div>
-      </div>
-      <DeleteBtn slug={member.slug} deleteFunc={onDelete}>
-        Are you sure you want to delete this member?
-      </DeleteBtn>
-    </NavLink>
+
+        <button
+          className="danger-button primary-button !text-[1em] !py-[7px] !px-[15px] !w-fit !h-fit"
+          aria-label="Delete this data"
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            setOpen(true);
+          }}
+        >
+          Delete
+        </button>
+      </NavLink>
+
+      <DeleteWarning
+        slug={member.slug}
+        deleteFunc={onDelete}
+        open={open}
+        setOpen={setOpen}
+        title="Delete Member"
+      >
+        This will permanently delete this member{" "}
+        <span className="font-semibold">{member.name}</span> from the member's
+        list and remove all of their data from the server. All of their images,
+        links, and other data will be permanently lost.
+      </DeleteWarning>
+    </>
   );
 };

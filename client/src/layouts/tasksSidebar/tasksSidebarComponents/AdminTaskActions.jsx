@@ -1,9 +1,10 @@
-import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
+import { DeleteWarning } from "@/components/UI/DeleteWarning";
 import { TaskSidebarCard } from "../TasksSidebar";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { deleteTask, deleteWinner, makeWinner } from "@/lib/api/task";
+import { useState } from "react";
 
 const AdminTaskActions = ({
   task,
@@ -49,38 +50,60 @@ const AdminTaskActions = ({
 
 // task actions to edit the task and delete the task
 const TaskActions = ({ task, taskMutation, ...rest }) => {
-  const deleteTask = (slug) => {
+  const [open, setOpen] = useState(false);
+
+  const onDelete = (slug) => {
     taskMutation.mutate({ method: "delete", slug });
+    setOpen(false);
   };
   return (
-    <TaskSidebarCard title={"Task Actions"}>
-      <p>
-        To edit the task, click on the edit button and click the delete button
-        to delete the task
-      </p>
-      <div className="task-actions">
-        <button
-          className="primary-button"
-          onClick={() => rest?.setSelectedTask(task)}
-        >
-          Edit Task
-        </button>
-        <DeleteBtn
-          id={task.slug}
-          deleteFunc={deleteTask}
-          btnText="Delete"
-          slug={task.slug}
-          title="Delete Task"
-        >
-          Are you sure you want to delete {task.name}?
-        </DeleteBtn>
-      </div>
-    </TaskSidebarCard>
+    <>
+      <TaskSidebarCard title={"Task Actions"}>
+        <p>
+          To edit the task, click on the edit button and click the delete button
+          to delete the task
+        </p>
+        <div className="task-actions">
+          <button
+            className="primary-button"
+            onClick={() => rest?.setSelectedTask(task)}
+          >
+            Edit Task
+          </button>
+
+          <button
+            className="danger-button primary-button"
+            aria-label="Delete this data"
+            type="button"
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            Delete Task
+          </button>
+        </div>
+      </TaskSidebarCard>
+
+      <DeleteWarning
+        slug={task.slug}
+        deleteFunc={onDelete}
+        open={open}
+        setOpen={setOpen}
+        title="Delete Task"
+      >
+        This will permanently delete this task{" "}
+        <span className="font-semibold">{task.name}</span> from the task list
+        and remove all of its data from the server. All of its images, links,
+        and other data will be permanently lost.
+      </DeleteWarning>
+    </>
   );
 };
 
 // submission actions to give the submission a position and delete the submission
 const SubmissionActions = ({ task, username, deleteFunc, taskMutation }) => {
+  const [open, setOpen] = useState(false);
+
   const setPosition = (position, slug, username) => {
     taskMutation.mutate({ method: "add-position", slug, username, position });
   };
@@ -105,42 +128,62 @@ const SubmissionActions = ({ task, username, deleteFunc, taskMutation }) => {
   ];
 
   return (
-    <TaskSidebarCard title={"Submission Actions"}>
-      <p>
-        Click on the position buttons to give the submitter a position and click
-        on the delete button to delete the submission
-      </p>
-      <div className="task-actions">
-        {positionActions.map((position) => {
-          return (
-            <button
-              key={position.key + task.slug + username}
-              className={
-                "primary-button" +
-                (task[position.key] === username ? " danger" : "") +
-                (taskMutation.isPending ? " disabled" : "")
-              }
-              onClick={() =>
-                task[position.key] === username
-                  ? deletePosition(task?.slug, username)
-                  : setPosition(position.key, task?.slug, username)
-              }
-            >
-              {position.text}
-            </button>
-          );
-        })}
-        <DeleteBtn
-          id={task.slug}
-          deleteFunc={deleteFunc}
-          btnText="Delete"
-          slug={task.slug}
-          title="Delete Submission"
-        >
-          Are you sure you want to delete your submission of {task.name}?
-        </DeleteBtn>
-      </div>
-    </TaskSidebarCard>
+    <>
+      <TaskSidebarCard title={"Submission Actions"}>
+        <p>
+          Click on the position buttons to give the submitter a position and
+          click on the delete button to delete the submission
+        </p>
+        <div className="task-actions">
+          {positionActions.map((position) => {
+            return (
+              <button
+                key={position.key + task.slug + username}
+                className={
+                  "primary-button" +
+                  (task[position.key] === username ? " danger" : "") +
+                  (taskMutation.isPending ? " disabled" : "")
+                }
+                onClick={() =>
+                  task[position.key] === username
+                    ? deletePosition(task?.slug, username)
+                    : setPosition(position.key, task?.slug, username)
+                }
+              >
+                {position.text}
+              </button>
+            );
+          })}
+
+          <button
+            className="danger-button primary-button"
+            aria-label="Delete this data"
+            type="button"
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      </TaskSidebarCard>
+
+      <DeleteWarning
+        slug={task.slug}
+        deleteFunc={(slug) => {
+          deleteFunc(slug);
+          setOpen(false);
+        }}
+        open={open}
+        setOpen={setOpen}
+        title="Delete Submission"
+      >
+        This will permanently delete this submission of{" "}
+        <span className="font-semibold">{task.name}</span> from the submission's
+        list and remove all of its data from the server. All of its images,
+        links, and other data will be permanently lost.
+      </DeleteWarning>
+    </>
   );
 };
 

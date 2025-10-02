@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import "./Table.css";
-import DeleteBtn from "@/components/UI/DeleteBtn/DeleteBtn";
 import EmptyData from "@/components/UI/EmptyData/EmptyData";
 import PaginationContainer from "@/components/UI/Pagination/Pagination";
 import { v4 as uuidv4 } from "uuid";
@@ -75,11 +74,7 @@ const getTableCell = (row, header, { onViewClick, onDelete }) => {
       );
     case "btn":
       if (header.title === "Action") {
-        return header?.action === "delete" ? (
-          <DeleteBtn id={row._id} deleteFunc={onDelete}>
-            Are you sure you want to delete this member?
-          </DeleteBtn>
-        ) : (
+        return (
           <button
             className="primary-button profile-btn danger-button"
             onClick={() => onDelete(row._id)}

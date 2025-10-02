@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import "./Dialog.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaReply } from "react-icons/fa";
 
 const Dialog = ({ data, setData }) => {
+  console.log(data);
   return (
     <div className={`dialog-container ${data ? "open" : ""}`}>
       <dialog className="message-dialog" open={data ? true : false}>
@@ -13,21 +15,26 @@ const Dialog = ({ data, setData }) => {
               <FontAwesomeIcon icon="fa-solid fa-x" />
             </button>
           </div>
-          <p className="message-email highlighted-text">{data?.email}</p>
+          <a
+            href={`mailto:${data?.email}`}
+            className="text-sm text-highlighted-color hover:underline"
+          >
+            {data?.email}
+          </a>
         </div>
-        <div className="subject">
-          <h3>Subject</h3>
+        <div className="flex flex-col gap-1">
+          <h3 className="text-highlighted-color font-medium">Subject</h3>
           <p>{data?.subject}</p>
         </div>
-        <div className="message">
-          <h3>Message</h3>
-          <p>{data?.message}</p>
+        <div className="flex flex-col gap-1">
+          <h3 className="text-highlighted-color font-medium">Message</h3>
+          <p className="text-[1rem]/[145%]" style={{ whiteSpace: "pre-wrap" }}>
+            {data?.message}
+          </p>
         </div>
         <Link to={`mailto:${data?.email}`} className="reply primary-button">
+          <FaReply />
           Reply
-          <span className="reply-icon">
-            <FontAwesomeIcon icon="fa-solid fa-reply" flip="horizontal" />
-          </span>
         </Link>
       </dialog>
     </div>
