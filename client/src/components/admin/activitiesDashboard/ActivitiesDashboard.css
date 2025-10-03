@@ -12,7 +12,6 @@
   padding-top: 0px;
   min-height: 0px;
   flex: 1;
-  max-width: 100%;
 }
 
 .admin-activities .activity-action {
@@ -21,4 +20,11 @@
   height: 40px;
   padding: 0px 20px;
   width: 100%;
+}
+
+@media screen and (max-width: 1530px) {
+  .admin-activities .page-activities,
+  .admin-activities .activities-container {
+    max-width: 100%;
+  }
 }

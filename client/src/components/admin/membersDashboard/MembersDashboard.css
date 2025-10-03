@@ -11,9 +11,14 @@
   min-height: 0px;
   padding-top: 0px;
   flex: 1;
-  max-width: 100%;
 }
 
 .admin-members .members-list-container {
   flex: 1;
+}
+
+@media screen and (max-width: 1530px) {
+  .admin-members .page-members {
+    max-width: 100%;
+  }
 }
