@@ -10,11 +10,6 @@ const ServerError = lazy(() => import("@/pages/Errors/ServerError"));
 const BadRequest = lazy(() => import("@/pages/Errors/BadRequest"));
 const Unauthorized = lazy(() => import("@/pages/Errors/Unauthorized"));
 
-// Contexts
-import { MemberProvider } from "@/contexts/MembersContext";
-import { ActivitiesProvider } from "@/contexts/ActivitiesContext";
-import { TaskProvider } from "@/contexts/TasksContext";
-
 // Layouts
 import { publicRoutes } from "./publicRoutes";
 import { authRoutes } from "./authRoutes";
@@ -24,21 +19,13 @@ import { adminRoutes } from "./adminRoutes";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <ActivitiesProvider>
-        <MemberProvider>
-          <TaskProvider>
-            <App />
-          </TaskProvider>
-        </MemberProvider>
-      </ActivitiesProvider>
-    ),
+    element: <App />,
     children: [publicRoutes, authRoutes, adminRoutes], // Merged routes
-    // errorElement: (
-    //   <Suspense fallback={<Loader />}>
-    //     <ServerError />
-    //   </Suspense>
-    // ),
+    errorElement: (
+      <Suspense fallback={<Loader />}>
+        <ServerError />
+      </Suspense>
+    ),
   },
   {
     path: "400",

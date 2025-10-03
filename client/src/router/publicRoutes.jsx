@@ -19,6 +19,11 @@ const PrivacyPolicy = lazy(() => import("@/pages/privacy/PrivacyPolicy"));
 // Lazy load error pages
 const NotFound = lazy(() => import("@/pages/Errors/NotFound"));
 
+// Contexts
+import { ActivitiesProvider } from "@/contexts/ActivitiesContext";
+import { MemberProvider } from "@/contexts/MembersContext";
+import { TaskProvider } from "@/contexts/TasksContext";
+
 // Layouts
 import UserLayout from "@/layouts/UserLayout";
 
@@ -26,6 +31,7 @@ export const publicRoutes = {
   path: "/",
   element: <UserLayout />,
   children: [
+    // Home Route
     {
       path: "/",
       element: (
@@ -42,6 +48,8 @@ export const publicRoutes = {
         </Suspense>
       ),
     },
+
+    // About Route
     {
       path: "/about",
       element: (
@@ -50,11 +58,40 @@ export const publicRoutes = {
         </Suspense>
       ),
     },
+
+    // Members Route
+    {
+      path: "/members",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <MemberProvider>
+            <MemberPage />
+          </MemberProvider>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/member/:username",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <Profile />
+        </Suspense>
+      ),
+      errorElement: (
+        <Suspense fallback={<Loader />}>
+          <NotFound />
+        </Suspense>
+      ),
+    },
+
+    // Activities Route
     {
       path: "/activities",
       element: (
         <Suspense fallback={<Loader />}>
-          <Activities />
+          <ActivitiesProvider>
+            <Activities />
+          </ActivitiesProvider>
         </Suspense>
       ),
     },
@@ -71,14 +108,8 @@ export const publicRoutes = {
         </Suspense>
       ),
     },
-    {
-      path: "/executives",
-      element: (
-        <Suspense fallback={<Loader />}>
-          <Executives />
-        </Suspense>
-      ),
-    },
+
+    // Contact Route
     {
       path: "/contact",
       element: (
@@ -88,19 +119,24 @@ export const publicRoutes = {
       ),
     },
 
+    // Executives Route
     {
-      path: "/members",
+      path: "/executives",
       element: (
         <Suspense fallback={<Loader />}>
-          <MemberPage />
+          <Executives />
         </Suspense>
       ),
     },
+
+    // Tasks Route
     {
       path: "/tasks",
       element: (
         <Suspense fallback={<Loader />}>
-          <Tasks />
+          <TaskProvider>
+            <Tasks />
+          </TaskProvider>
         </Suspense>
       ),
     },
@@ -117,6 +153,8 @@ export const publicRoutes = {
         </Suspense>
       ),
     },
+
+    // Legal Routes
     {
       path: "/privacy-policy",
       element: (
@@ -130,19 +168,6 @@ export const publicRoutes = {
       element: (
         <Suspense fallback={<Loader />}>
           <TermsOfService />
-        </Suspense>
-      ),
-    },
-    {
-      path: "/member/:username",
-      element: (
-        <Suspense fallback={<Loader />}>
-          <Profile />
-        </Suspense>
-      ),
-      errorElement: (
-        <Suspense fallback={<Loader />}>
-          <NotFound />
         </Suspense>
       ),
     },

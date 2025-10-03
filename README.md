@@ -1,6 +1,6 @@
 # MSCSC - Official Website
 
-#### MSCSC - Monipur High School Science Club
+#### MSCSC - Monipur School & College Science Club
 
 ![rakesh-karmaker](client/public/hero-image.jpeg)
 
@@ -38,4 +38,4 @@ Please contact to mscscofficial17@gmail.com or open an issue if you find any bug
 
 - [Website](https://mscsc.netlify.app/)
 - [Facebook](https://www.facebook.com/MSCSC2014)
-- [Instragram](https://www.instagram.com/_mscsclub_)
+- [Instagram](https://www.instagram.com/_mscsclub_)

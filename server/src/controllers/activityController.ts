@@ -29,7 +29,7 @@ export async function getAllActivities(
 
     const sorted = {
       sort: { date: -1 as 1 | -1 },
-      select: "_id title slug date tag coverImageUrl content summary createdAt", //TODO: Remove content later and request when editing the activity
+      select: "_id title slug date tag coverImageUrl summary createdAt",
     };
 
     const activities = await paginateResults(req, Activity, regex, sorted);
@@ -46,35 +46,47 @@ export async function getAllActivities(
 // Get activity by slug
 export async function getActivity(req: Request, res: Response): Promise<void> {
   const slug = req.params?.slug;
+  const isEdit = req.query?.isEdit === "true"; // Check if isEdit query param is true
   if (!slug) {
     res.status(400).send({ message: "Invalid request" });
     return;
   }
 
   try {
-    const activity = await Activity.findOne({ slug });
+    const activity = await Activity.findOne({ slug }).select(
+      isEdit
+        ? "-gallery -coverImageId -coverImageUrl -createdAt -updatedAt -__v"
+        : "-updatedAt -__v"
+    );
     if (!activity) {
       res.status(404).send({ message: "Activity not found" });
       return;
     }
 
-    // Find activities with the same tag, limit to 10 results, exclude certain fields
-    const sameTags = await Activity.find({ tag: activity.tag })
-      .limit(10)
-      .select(
-        [
-          "-gallery",
-          "-content",
-          "-coverImageId",
-          "-coverImageUrl",
-          "-summary",
-          "-tag",
-          "-_id",
-          "-createdAt",
-          "-updatedAt",
-          "-__v",
-        ].join(" ")
-      );
+    // Find activities with the same tag, limit to 10 results, exclude certain fields if not editing
+    let sameTags: {
+      date: String;
+      title: String;
+      slug: String;
+    }[] = [];
+    if (!isEdit) {
+      sameTags = await Activity.find({ tag: activity.tag })
+        .limit(10)
+        .select(
+          [
+            "-gallery",
+            "-content",
+            "-coverImageId",
+            "-coverImageUrl",
+            "-summary",
+            "-tag",
+            "-_id",
+            "-createdAt",
+            "-updatedAt",
+            "-__v",
+          ].join(" ")
+        );
+    }
 
     res.status(200).send({ activity, sameTags });
   } catch (err) {

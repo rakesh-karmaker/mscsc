@@ -35,6 +35,9 @@ const NotFound = lazy(() => import("@/pages/Errors/NotFound"));
 
 // Contexts
 import { MessagesProvider } from "@/components/admin/contexts/MessagesContext";
+import { MemberProvider } from "@/contexts/MembersContext";
+import { ActivitiesProvider } from "@/contexts/ActivitiesContext";
+import { TaskProvider } from "@/contexts/TasksContext";
 
 // Layouts
 import AdminLayout from "@/layouts/AdminLayout/AdminLayout";
@@ -43,13 +46,18 @@ export const adminRoutes = {
   path: "/admin",
   element: (
     <ProtectedRoute>
-      <MessagesProvider>
-        <AdminLayout />
-      </MessagesProvider>
+      <MemberProvider>
+        <MessagesProvider>
+          <AdminLayout />
+        </MessagesProvider>
+      </MemberProvider>
     </ProtectedRoute>
   ),
   children: [
+    // Redirect to /admin/dashboard
     { path: "/admin", element: <Navigate to="/admin/dashboard" /> },
+
+    // Admin Dashboard Route
     {
       path: "/admin/dashboard",
       element: (
@@ -58,6 +66,8 @@ export const adminRoutes = {
         </Suspense>
       ),
     },
+
+    // Admin Members Routes
     {
       path: "/admin/members",
       element: (
@@ -90,11 +100,15 @@ export const adminRoutes = {
         </Suspense>
       ),
     },
+
+    // Activities Routes
     {
       path: "/admin/activities",
       element: (
         <Suspense fallback={<Loader />}>
-          <ActivitiesDashboard />
+          <ActivitiesProvider>
+            <ActivitiesDashboard />
+          </ActivitiesProvider>
         </Suspense>
       ),
     },
@@ -106,11 +120,15 @@ export const adminRoutes = {
         </Suspense>
       ),
     },
+
+    // Tasks Routes
     {
       path: "/admin/tasks",
       element: (
         <Suspense fallback={<Loader />}>
-          <TasksDashBoard />
+          <TaskProvider>
+            <TasksDashBoard />
+          </TaskProvider>
         </Suspense>
       ),
     },
@@ -135,6 +153,8 @@ export const adminRoutes = {
         </Suspense>
       ),
     },
+
+    // Messages Route
     {
       path: "/admin/messages",
       element: (

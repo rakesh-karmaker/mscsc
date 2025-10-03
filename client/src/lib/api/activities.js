@@ -6,13 +6,15 @@ export async function getAllActivities(page, limit, tag, search) {
       limit: limit,
       page: page,
       tag: tag,
-      search: search,
+      title: search,
     },
   });
 }
 
-export async function getActivity(slug) {
-  return api.get(`/activity/${slug}`);
+export async function getActivity(slug, isEdit = false) {
+  return api.get(`/activity/${slug}`, {
+    params: { isEdit: isEdit },
+  });
 }
 
 export async function getHomeActivities() {

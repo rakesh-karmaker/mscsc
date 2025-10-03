@@ -35,21 +35,6 @@ const ActivitiesProvider = ({ children }) => {
   const activities = data?.data ? data.data.results : [];
   const length = data?.data?.totalLength || 0;
 
-  const {
-    data: allActivitiesData,
-    isLoading: allActivitiesIsLoading,
-    error: allActivitiesError,
-    isError: allActivitiesIsError,
-  } = useQuery({
-    queryKey: ["allActivities"],
-    queryFn: () => getAllActivities(1, "all", "", ""),
-    staleTime: 1000 * 60 * 5,
-  });
-
-  useErrorNavigator(allActivitiesIsError, allActivitiesError);
-
-  const allActivities = allActivitiesData?.data;
-
   return (
     <ActivitiesContext.Provider
       value={{
@@ -62,8 +47,6 @@ const ActivitiesProvider = ({ children }) => {
         page,
         setPage,
         isLoading,
-        allActivities,
-        allActivitiesIsLoading,
       }}
     >
       {children}
