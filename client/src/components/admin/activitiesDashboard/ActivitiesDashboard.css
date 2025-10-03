@@ -12,6 +12,7 @@
   padding-top: 0px;
   min-height: 0px;
   flex: 1;
+  max-width: 100%;
 }
 
 .admin-activities .activity-action {
