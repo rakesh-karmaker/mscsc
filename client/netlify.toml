@@ -1,0 +1,7 @@
+[build]
+  base = "client"
+  command = "bun run build"
+  publish = "build"
+
+[build.environment]
+  NODE_VERSION = "18.20.5"

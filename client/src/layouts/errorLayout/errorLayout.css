@@ -1,0 +1,130 @@
+#admin #header {
+  display: none;
+}
+
+.page-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 100svh;
+  padding: 4rem 0px;
+  width: 100%;
+  max-width: var(--max-elements-width);
+}
+
+#admin .page-error {
+  padding: 0;
+  min-height: calc(100svh - 60px);
+}
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.error-heading {
+  font-weight: 800;
+  font-size: 160px;
+  line-height: 144px;
+
+  background: linear-gradient(96.48deg, #3b82f6 -2.66%, #c9e0ff 188.37%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  text-align: center;
+}
+
+.error-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+}
+
+.error-info {
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 44px;
+  color: rgba(17, 24, 28, 0.84);
+  text-align: center;
+}
+
+.error-text {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 25px;
+  text-align: center;
+  color: var(--text-primary);
+  opacity: 0.7;
+}
+
+.error-link {
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 900px) {
+  .error-heading {
+    font-size: 120px !important;
+    line-height: 100px !important;
+  }
+
+  .error-info {
+    font-size: 28px;
+    line-height: 34px;
+  }
+
+  .error-text {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .error-content {
+    gap: 5px;
+  }
+
+  .error-link {
+    margin-top: 0px;
+    padding: 10px 20px;
+    font-size: 16px;
+    line-height: 19px;
+    height: fit-content;
+    width: fit-content;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .error-heading {
+    font-size: 80px !important;
+    line-height: 70px !important;
+  }
+
+  .error-info {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .error-text {
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .error-link {
+    padding: 10px 15px;
+    font-size: 14px;
+    line-height: 16px;
+  }
+}
+
+@media screen and (max-height: 600px) {
+  .page-error {
+    padding: 2rem 0px;
+    padding-top: calc(var(--nav-height) + 2rem);
+  }
+}
