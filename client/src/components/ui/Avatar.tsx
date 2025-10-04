@@ -1,8 +1,8 @@
 import { useUser } from "@/contexts/UserContext";
-import type React from "react";
+import type { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 
-export default function Avatar(): React.ReactNode {
+export default function Avatar(): ReactNode {
   const { user } = useUser();
   return (
     <NavLink to={`/member/${user?.slug}`} title="Profile" id="avatar">

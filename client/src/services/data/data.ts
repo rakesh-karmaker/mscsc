@@ -22,6 +22,73 @@ export const navLinks: { href: string; name: string }[] = [
   },
 ];
 
+// Footer links data
+export const footerLinks: { [key: string]: { title: string; link: string }[] } =
+  {
+    Pages: [
+      {
+        title: "Home",
+        link: "/",
+      },
+      {
+        title: "About Us",
+        link: "/about",
+      },
+      {
+        title: "Members",
+        link: "/members",
+      },
+      {
+        title: "Executives",
+        link: "/executives",
+      },
+      {
+        title: "Contact Us",
+        link: "/contact",
+      },
+      {
+        title: "Tasks",
+        link: "/tasks",
+      },
+    ],
+    Activities: [
+      {
+        title: "Events",
+        link: "/activities?tag=Event",
+      },
+      {
+        title: "Workshops",
+        link: "/activities?tag=Workshop",
+      },
+      {
+        title: "Articles",
+        link: "/activities?tag=Article",
+      },
+      {
+        title: "Achievements",
+        link: "/activities?tag=Achievement",
+      },
+    ],
+    Links: [
+      {
+        title: "Privacy Policy",
+        link: "/privacy-policy",
+      },
+      {
+        title: "Terms of Service",
+        link: "/terms-of-service",
+      },
+      {
+        title: "Facebook",
+        link: "https://www.facebook.com/MSCSC2014",
+      },
+      {
+        title: "Instagram",
+        link: "https://www.instagram.com/_mscsclub_/",
+      },
+    ],
+  };
+
 // School branches data
 export const branches: { value: string; label: string }[] = [
   {

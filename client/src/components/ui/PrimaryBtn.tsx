@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import type React from "react";
+import type { ReactNode } from "react";
 
 export default function PrimaryBtn({
   children,
@@ -7,11 +7,11 @@ export default function PrimaryBtn({
   name,
   isHeader,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   link: string;
   name: string;
   isHeader?: boolean;
-}): React.ReactNode {
+}): ReactNode {
   isHeader = isHeader ?? false;
 
   return (

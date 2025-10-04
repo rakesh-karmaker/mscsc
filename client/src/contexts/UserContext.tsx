@@ -1,11 +1,11 @@
 import { verifyToken } from "@/lib/api/auth";
 import type { UserContextType } from "@/types/contextTypes";
 import { useQuery } from "@tanstack/react-query";
-import React, { createContext, useContext } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 
 const UserContext = createContext<UserContextType | null>(null);
 
-export function UserProvider({ children }: { children: React.ReactNode }) {
+export function UserProvider({ children }: { children: ReactNode }) {
   const {
     data,
     error,

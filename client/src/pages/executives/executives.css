@@ -1,0 +1,137 @@
+main.page-executives {
+  max-width: var(--max-elements-width);
+  margin-top: calc(var(--nav-height) + 5rem);
+  margin-bottom: 70px;
+}
+.executive-panel-container {
+  margin-top: 80px;
+  display: flex;
+  gap: 60px;
+  justify-content: space-between;
+}
+
+.executive-panel-container > aside {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  gap: 30px;
+  position: sticky;
+  top: 170px;
+}
+
+.year-dropdown {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--black);
+  transition: 0.25s;
+  color: var(--white);
+  cursor: pointer;
+}
+
+.year-dropdown:hover {
+  background-color: var(--highlighted-color);
+}
+
+.year-dropdown.active {
+  background-color: var(--highlighted-color);
+}
+
+.year-dropdown.active svg {
+  transform: rotate(180deg);
+}
+
+.panel-year {
+  min-width: 13ch;
+  width: 100%;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: larger;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+  background: transparent;
+}
+
+.active-year {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.panel-year:hover {
+  color: var(--highlighted-color);
+  background-color: var(--light-highlighted-color);
+}
+
+.page-executives .executives-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 60px;
+  margin-top: 0rem;
+}
+
+@media screen and (max-width: 1600px) {
+  main.page-executives {
+    margin-top: calc(var(--nav-height) + 3rem);
+  }
+}
+
+@media screen and (max-width: 980px) {
+  .executive-panel-container {
+    margin-top: 40px;
+    flex-direction: column;
+    width: 100%;
+    gap: 2rem;
+  }
+  .executive-panel-container > aside {
+    position: relative;
+    top: 0px;
+    gap: 0px;
+    overflow: hidden;
+    height: 40px;
+    border-radius: 10px;
+    transition: 0.25s;
+  }
+
+  .year-dropdown {
+    display: block;
+  }
+  .panel-year {
+    box-shadow: none;
+    padding: 0px;
+    min-height: 40px;
+    border-radius: 0px;
+  }
+  .panel-year.active-year {
+    background-color: var(--light-highlighted-color);
+    color: var(--highlighted-color);
+  }
+}
+
+@media screen and (max-width: 700px) {
+  main.page-executives {
+    margin-top: calc(var(--nav-height) + 2rem);
+  }
+  .executive-panel-container {
+    margin-top: 2.5rem;
+    gap: 2rem;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .executives-container {
+    gap: 3rem;
+  }
+}
+
+@media screen and (max-width: 660px) {
+  .page-executives .executives-container {
+    flex-direction: column;
+  }
+}

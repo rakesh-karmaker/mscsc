@@ -77,7 +77,14 @@ main {
   --color-highlighted-color: var(--highlighted-color);
   --color-light-highlighted-color: var(--light-highlighted-color);
 
+  --spacing-max-width: var(--max-elements-width);
+  --spacing-nav-height: var(--nav-height);
+
   --breakpoint-xs: 25rem; /* 400px */
+}
+
+html:has(.terms-privacy) {
+  scroll-behavior: smooth;
 }
 
 /** utility classes */

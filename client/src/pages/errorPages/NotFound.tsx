@@ -1,8 +1,8 @@
 import { ErrorContent, ErrorLayout } from "@/layouts/errorLayout/ErrorLayout";
 import Navbar from "@/layouts/navbar/Navbar";
-import type React from "react";
+import type { ReactNode } from "react";
 
-export default function NotFound(): React.ReactNode {
+export default function NotFound(): ReactNode {
   return (
     <>
       <Navbar />

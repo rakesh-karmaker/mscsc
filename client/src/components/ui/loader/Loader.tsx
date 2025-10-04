@@ -1,7 +1,7 @@
-import type React from "react";
 import "./loader.css";
+import type { ReactNode } from "react";
 
-export default function Loader(): React.ReactNode {
+export default function Loader(): ReactNode {
   return (
     <div className="loader col-center">
       <svg viewBox="25 25 50 50">

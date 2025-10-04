@@ -56,7 +56,7 @@ export async function getActivity(req: Request, res: Response): Promise<void> {
     const activity = await Activity.findOne({ slug }).select(
       isEdit
         ? "-gallery -coverImageId -coverImageUrl -createdAt -updatedAt -__v"
-        : "-updatedAt -__v"
+        : "-updatedAt -coverImageId -__v"
     );
     if (!activity) {
       res.status(404).send({ message: "Activity not found" });

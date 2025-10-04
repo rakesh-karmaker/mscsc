@@ -1,15 +1,21 @@
 import { useUser } from "@/contexts/UserContext";
 import { navLinks } from "@/services/data/data";
-import type React from "react";
-import { useRef, useState } from "react";
+import {
+  useRef,
+  useState,
+  type Dispatch,
+  type ReactNode,
+  type RefObject,
+  type SetStateAction,
+} from "react";
 import { NavLink } from "react-router-dom";
 import NavbarToggleBtn from "./NavbarToggleBtn";
 import Avatar from "@/components/ui/Avatar";
-
-import "./navbar.css";
 import PrimaryBtn from "@/components/ui/PrimaryBtn";
 
-export default function Navbar(): React.ReactNode {
+import "./navbar.css";
+
+export default function Navbar(): ReactNode {
   const navBar = useRef(null);
   const [isOpened, setIsOpened] = useState<boolean>(false);
 
@@ -78,8 +84,8 @@ export function handleNavbarTogglerClick({
   setIsOpened,
   isOpened,
 }: {
-  navbar: React.RefObject<HTMLElement | null>;
-  setIsOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  navbar: RefObject<HTMLElement | null>;
+  setIsOpened: Dispatch<SetStateAction<boolean>>;
   isOpened: boolean;
 }) {
   setIsOpened(!isOpened);

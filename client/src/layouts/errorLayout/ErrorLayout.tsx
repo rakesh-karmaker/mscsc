@@ -1,5 +1,5 @@
-import type React from "react";
 import { NavLink } from "react-router-dom";
+import type { CSSProperties, ReactNode } from "react";
 
 import "./errorLayout.css";
 
@@ -10,12 +10,12 @@ export function ErrorLayout({
   linkText,
   style,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   heading: string;
   link: string;
   linkText: string;
-  style?: React.CSSProperties;
-}): React.ReactNode {
+  style?: CSSProperties;
+}): ReactNode {
   return (
     <div className="error-container">
       <h2 className="error-heading" style={style ?? {}}>
@@ -33,9 +33,9 @@ export function ErrorContent({
   children,
   message,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   message: string;
-}): React.ReactNode {
+}): ReactNode {
   return (
     <div className="error-content">
       <h3 className="error-info">{message}</h3>

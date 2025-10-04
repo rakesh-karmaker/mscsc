@@ -2,10 +2,10 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import "./index.css";
-// import { UserProvider } from "@/contexts/UserContext.jsx";
+import { UserProvider } from "./contexts/UserContext";
+import { router } from "./router/routes";
 
-// import router from "@/router/routes.jsx";
+import "./index.css";
 
 const queryClient = new QueryClient();
 

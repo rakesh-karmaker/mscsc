@@ -1,8 +1,8 @@
-import type React from "react";
 import Navbar from "@/layouts/navbar/Navbar";
 import { ErrorContent, ErrorLayout } from "@/layouts/errorLayout/ErrorLayout";
+import type { ReactNode } from "react";
 
-export default function Unauthorized(): React.ReactNode {
+export default function Unauthorized(): ReactNode {
   return (
     <>
       <Navbar />

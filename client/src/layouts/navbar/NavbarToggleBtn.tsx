@@ -1,16 +1,16 @@
 import { FaBars, FaXmark } from "react-icons/fa6";
 import { handleNavbarTogglerClick } from "./Navbar";
-import type React from "react";
+import type { ReactNode, RefObject, Dispatch, SetStateAction } from "react";
 
 export default function NavbarToggleBtn({
   navbar,
   setIsOpened,
   isOpened,
 }: {
-  navbar: React.RefObject<HTMLElement | null>;
-  setIsOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  navbar: RefObject<HTMLElement | null>;
+  setIsOpened: Dispatch<SetStateAction<boolean>>;
   isOpened: boolean;
-}): React.ReactNode {
+}): ReactNode {
   return (
     <button
       className="navbar-toggler"

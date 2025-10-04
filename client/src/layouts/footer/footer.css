@@ -1,0 +1,159 @@
+footer {
+  width: 100%;
+  padding: 40px 0px;
+  padding-top: 60px;
+  height: 100%;
+  width: 100vw;
+  background-color: #f7f7fa;
+  border-top: 0.5px solid rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.footer-upper-container {
+  width: 100%;
+  max-width: var(--max-elements-width);
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-desc {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.footer-desc img {
+  width: 60px;
+  height: 60px;
+}
+
+.footer-desc p {
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 21px;
+  letter-spacing: 0.01em;
+  color: rgba(0, 0, 0, 0.56);
+  max-width: 40ch;
+}
+
+.footer-links {
+  display: flex;
+  gap: 60px;
+}
+.footer-links > div {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.footer-link-title {
+  font-weight: 600;
+  font-size: 23px;
+  line-height: 28px;
+  letter-spacing: 0.01em;
+
+  color: var(--text-primary);
+}
+
+.footer-link-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-link-container a {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 0.01em;
+
+  color: rgba(17, 24, 28, 0.75);
+
+  transition: 0.25s;
+}
+
+.contact-us a {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.footer-link-container a:hover {
+  color: var(--text-primary);
+}
+
+.footer-link-container a.active {
+  color: var(--text-primary);
+}
+
+.line {
+  width: 100%;
+  max-width: var(--max-elements-width);
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+footer > p {
+  font-size: 1.11rem;
+  font-weight: 500;
+  text-align: center;
+  max-width: var(--max-elements-width);
+}
+
+@media screen and (max-width: 1280px) {
+  .footer-upper-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .footer-desc {
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-links {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .footer-links {
+    justify-content: space-around;
+    gap: 20px;
+  }
+
+  .footer-link-container {
+    width: 100%;
+  }
+  .contact-us {
+    width: 100%;
+    align-items: center;
+  }
+
+  .contact-us a {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .footer-links {
+    gap: 30px;
+  }
+  .footer-links > div {
+    align-items: center;
+  }
+
+  .footer-link-container {
+    width: 100%;
+    align-items: center;
+  }
+}
