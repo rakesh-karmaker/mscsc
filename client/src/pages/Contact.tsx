@@ -1,4 +1,4 @@
-import Contact from "@/components/contactComponents/ContactSection";
+import ContactContainer from "@/components/contact/ContactContainer";
 
 export default function ContactPage() {
   return (
@@ -10,7 +10,7 @@ export default function ContactPage() {
           minHeight: "calc(100vh - var(--nav-height))",
         }}
       >
-        <Contact style={{ height: "100vh" }} />
+        <ContactContainer />
       </main>
     </>
   );
