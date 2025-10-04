@@ -1,0 +1,48 @@
+/* ------------ events section starts here ----------- */
+#events {
+  padding: 90px 0px;
+  height: 100%;
+  width: 100vw;
+  background-color: var(--secondary-bg);
+  gap: 20px;
+}
+
+#events > div {
+  width: 100%;
+  max-width: var(--max-elements-width);
+}
+
+.event-status-nav {
+  width: 400px;
+  padding: 6px 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 0.3px solid var(--lightest-black);
+  border-radius: 80px;
+  margin-bottom: 50px;
+}
+.event-status-nav > button {
+  padding: 4px 14px;
+  border-radius: 40px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.25s;
+}
+
+.event-status-nav > button:hover,
+.event-status-nav > button.nav-active {
+  background-color: var(--highlighted-color);
+  color: var(--text-white);
+}
+
+/* -------------------- events section ends here ----------- */
+
+@media screen and (max-width: 600px) {
+  .event-status-nav {
+    width: auto;
+    gap: 20px;
+  }
+}

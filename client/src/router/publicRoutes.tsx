@@ -2,8 +2,8 @@ import { lazy, Suspense } from "react";
 import Loader from "@/components/ui/loader/Loader";
 
 // Lazy load pages
-// const Home = lazy(() => import("@/pages/home/Home.jsx"));
-// const About = lazy(() => import("@/pages/about/About.jsx"));
+const Home = lazy(() => import("@/pages/Home"));
+const About = lazy(() => import("@/pages/About"));
 // const MemberPage = lazy(() => import("@/pages/members/Members"));
 // const Activities = lazy(() => import("@/pages/activities/Activities.jsx"));
 // const Activity = lazy(() => import("@/pages/activity/Activity"));
@@ -31,32 +31,32 @@ export const publicRoutes = {
   element: <UserLayout />,
   children: [
     // Home Route
-    // {
-    //   path: "/",
-    //   element: (
-    //     <Suspense fallback={<Loader />}>
-    //       <Home />
-    //     </Suspense>
-    //   ),
-    // },
-    // {
-    //   path: "/home",
-    //   element: (
-    //     <Suspense fallback={<Loader />}>
-    //       <Home />
-    //     </Suspense>
-    //   ),
-    // },
+    {
+      path: "/",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <Home />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/home",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <Home />
+        </Suspense>
+      ),
+    },
 
-    // // About Route
-    // {
-    //   path: "/about",
-    //   element: (
-    //     <Suspense fallback={<Loader />}>
-    //       <About />
-    //     </Suspense>
-    //   ),
-    // },
+    // About Route
+    {
+      path: "/about",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <About />
+        </Suspense>
+      ),
+    },
 
     // // Members Route
     // {

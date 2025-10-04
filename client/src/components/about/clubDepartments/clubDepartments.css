@@ -1,0 +1,86 @@
+.dpts-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.dpts-section > div > p {
+  margin: 20px 0px 10px 0px;
+}
+
+.dpt-container {
+  width: 100%;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.dpt {
+  list-style: none;
+  min-width: 160px;
+  min-height: 230px;
+  flex: 1;
+  border-radius: 15px;
+  background-color: var(--third-level-bg);
+  border: 0.5px solid rgba(0, 0, 0, 0.1);
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.dpt path {
+  fill: var(--highlighted-color);
+}
+
+.dpt:hover path {
+  fill: var(--text-white);
+}
+
+.dpt p,
+.dpt .icon {
+  z-index: 9;
+  transition: 0.2s;
+}
+
+.dpt .icon svg {
+  width: 108px;
+  height: 108px;
+}
+
+.dpt:hover p {
+  color: var(--text-white);
+}
+
+.dpt::before {
+  content: "";
+  width: 0%;
+  height: 100%;
+  position: absolute;
+  z-index: 9;
+  left: 0;
+  top: 0;
+  background: var(--highlighted-color);
+  transition: 0.25s;
+}
+
+.dpt:hover:before {
+  width: 100%;
+}
+
+@media screen and (max-width: 750px) {
+  .dpt {
+    gap: 0px;
+    min-height: 0px;
+    padding: 40px 0px;
+  }
+  .dpt .icon svg {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .dpts-section > div > p {
+    margin-top: 10px;
+  }
+}

@@ -1,0 +1,28 @@
+#articles {
+  padding: 100px 0px;
+  height: 100%;
+  width: 100vw;
+  max-width: var(--max-elements-width);
+  gap: 20px;
+}
+
+.articles-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 400px;
+}
+
+@media screen and (max-width: 1120px) {
+  .articles-container {
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .articles-container {
+    gap: 40px;
+  }
+}

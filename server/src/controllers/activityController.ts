@@ -110,13 +110,27 @@ export async function getHomeActivities(
     })
       .sort({ date: -1 })
       .limit(8)
-      .select("-gallery" + " -content" + " -coverImageId");
+      .select(
+        "-gallery" +
+          " -content" +
+          " -coverImageId" +
+          " -updatedAt" +
+          " -createdAt" +
+          " -__v"
+      );
 
     // get the articles
     const articles = await Activity.find({ tag: "Article" })
       .sort({ date: -1 })
       .limit(3)
-      .select("-gallery" + " -content" + " -coverImageId");
+      .select(
+        "-gallery" +
+          " -content" +
+          " -coverImageId" +
+          " -updatedAt" +
+          " -createdAt" +
+          " -__v"
+      );
 
     res.status(200).send({ events, articles });
   } catch (err) {

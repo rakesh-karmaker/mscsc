@@ -12,3 +12,13 @@ export interface Activity {
 }
 
 export type ActivityPreview = Omit<Activity, "gallery" | "content">;
+
+export type Event = Pick<
+  Activity,
+  "_id" | "slug" | "title" | "tag" | "date" | "coverImageUrl" | "summary"
+>;
+
+export type Article = Pick<
+  Activity,
+  "_id" | "slug" | "title" | "tag" | "date" | "coverImageUrl" | "summary"
+>;
