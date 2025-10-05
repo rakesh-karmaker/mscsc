@@ -1,0 +1,110 @@
+.yarl__container,
+.yarl__thumbnails_container {
+  background-color: transparent;
+}
+
+.yarl__portal {
+  backdrop-filter: blur(16px);
+  background-color: rgba(0, 0, 0, 0.473);
+}
+
+.yarl__thumbnails_vignette {
+  background: none !important;
+}
+
+.yarl__toolbar {
+  display: flex;
+  gap: 10px;
+}
+
+.yarl__toolbar > button {
+  filter: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #000000b4 !important;
+  border: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.25s;
+}
+
+.yarl__toolbar > button:hover {
+  background: var(--highlighted-color) !important;
+}
+
+.yarl__toolbar > button > svg {
+  width: 20px;
+  height: 20px;
+}
+
+.yarl__toolbar > button[disabled] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.yarl__slide_image {
+  height: 100%;
+  border-radius: 7px;
+}
+
+.yarl__thumbnails_thumbnail {
+  border: none !important;
+  background: none !important;
+}
+
+.yarl__thumbnails_thumbnail > img {
+  transition: 0.25s;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+.yarl__thumbnails_thumbnail > img:hover {
+  filter: brightness(0.8);
+}
+
+.yarl__thumbnails_thumbnail_active > img {
+  outline: 3px solid var(--highlighted-color) !important;
+}
+
+.yarl__navigation_prev,
+.yarl__navigation_next {
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50% !important;
+  background: #000000b4 !important;
+  border: none !important;
+  box-shadow: none;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  cursor: pointer !important;
+  color: #fff !important;
+  font-size: 1.5rem !important;
+  padding: 0px !important;
+  filter: none;
+  margin: 0px 20px !important;
+  transition: 0.25s;
+}
+
+.yarl__navigation_prev[disabled],
+.yarl__navigation_next[disabled] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.yarl__navigation_prev:hover,
+.yarl__navigation_next:hover {
+  background: var(--highlighted-color) !important;
+}
+
+@media screen and (max-width: 550px) {
+  .yarl__navigation_prev,
+  .yarl__navigation_next {
+    width: 35px !important;
+    height: 35px !important;
+    font-size: 1rem !important;
+    margin: 0px 10px !important;
+  }
+}

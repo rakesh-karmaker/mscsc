@@ -6,7 +6,7 @@ import "./paginationContainer.css";
 type PaginationContainerProps = {
   length: number;
   elementsPerPage: number;
-  setPage: Dispatch<SetStateAction<number>>;
+  setPage: Dispatch<SetStateAction<number>> | ((page: number) => void);
   currentPage: number;
 };
 

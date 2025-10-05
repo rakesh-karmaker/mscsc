@@ -5,8 +5,8 @@ import Loader from "@/components/ui/loader/Loader";
 const Home = lazy(() => import("@/pages/Home"));
 const About = lazy(() => import("@/pages/About"));
 const MembersPage = lazy(() => import("@/pages/members/Members"));
-// const Activities = lazy(() => import("@/pages/activities/Activities.jsx"));
-// const Activity = lazy(() => import("@/pages/activity/Activity"));
+const ActivitiesPage = lazy(() => import("@/pages/Activities"));
+const Activity = lazy(() => import("@/pages/activity/Activity"));
 const ContactPage = lazy(() => import("@/pages/Contact"));
 const Executives = lazy(() => import("@/pages/executives/Executives"));
 const ProfilePage = lazy(() => import("@/pages/profile/Profile.jsx"));
@@ -19,7 +19,7 @@ const PrivacyPolicy = lazy(() => import("@/pages/legalPages/PrivacyPolicy"));
 const NotFound = lazy(() => import("@/pages/errorPages/NotFound"));
 
 // Contexts
-// import { ActivitiesProvider } from "@/contexts/ActivitiesContext";
+import { ActivitiesProvider } from "@/contexts/ActivitiesContext";
 import { MembersProvider } from "@/contexts/MembersProvider";
 // import { TasksProvider } from "@/contexts/TasksContext";
 
@@ -84,29 +84,29 @@ export const publicRoutes = {
     },
 
     // Activities Route
-    // {
-    //   path: "/activities",
-    //   element: (
-    //     <Suspense fallback={<Loader />}>
-    //       <ActivitiesProvider>
-    //         <Activities />
-    //       </ActivitiesProvider>
-    //     </Suspense>
-    //   ),
-    // },
-    // {
-    //   path: "/activity/:activityName",
-    //   element: (
-    //     <Suspense fallback={<Loader />}>
-    //       <Activity />
-    //     </Suspense>
-    //   ),
-    //   errorElement: (
-    //     <Suspense fallback={<Loader />}>
-    //       <NotFound />
-    //     </Suspense>
-    //   ),
-    // },
+    {
+      path: "/activities",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ActivitiesProvider>
+            <ActivitiesPage />
+          </ActivitiesProvider>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/activity/:activityName",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <Activity />
+        </Suspense>
+      ),
+      errorElement: (
+        <Suspense fallback={<Loader />}>
+          <NotFound />
+        </Suspense>
+      ),
+    },
 
     // Contact Route
     {
