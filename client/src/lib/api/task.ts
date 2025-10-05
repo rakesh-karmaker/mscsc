@@ -45,9 +45,9 @@ export async function getTopSubmitters() {
 //   return api.patch("/task/edit-task", formData);
 // }
 
-// export async function deleteTask(slug: string) {
-//   return api.delete("/task/delete-task", { data: { slug: slug } });
-// }
+export async function deleteTask(slug: string) {
+  return api.delete("/task/delete-task", { data: { slug: slug } });
+}
 
 export async function submitTask(data: {
   slug: string;

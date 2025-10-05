@@ -92,10 +92,10 @@ export async function getTopSubmitters(
         batch: member.batch,
         slug: member.slug,
         image: member.image,
-        submissionsCount: member.submissions ? member.submissions.length : 0,
+        submissionCount: member.submissions ? member.submissions.length : 0,
         isImageHidden: member.isImageHidden,
       }))
-      .sort((a, b) => b.submissionsCount - a.submissionsCount)
+      .sort((a, b) => b.submissionCount - a.submissionCount)
       .slice(0, 10); // Get top 10
 
     if (!topSubmitters || topSubmitters.length === 0) {
@@ -111,7 +111,7 @@ export async function getTopSubmitters(
         branch: member.branch,
         batch: member.batch,
         image: member.image,
-        submissionsCount: member.submissionsCount,
+        submissionCount: member.submissionCount,
         isImageHidden: member.isImageHidden,
       }))
     );

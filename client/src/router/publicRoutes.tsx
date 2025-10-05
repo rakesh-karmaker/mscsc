@@ -6,12 +6,12 @@ const Home = lazy(() => import("@/pages/Home"));
 const About = lazy(() => import("@/pages/About"));
 const MembersPage = lazy(() => import("@/pages/members/Members"));
 const ActivitiesPage = lazy(() => import("@/pages/Activities"));
-const Activity = lazy(() => import("@/pages/activity/Activity"));
+const ActivityPage = lazy(() => import("@/pages/activity/Activity"));
 const ContactPage = lazy(() => import("@/pages/Contact"));
 const Executives = lazy(() => import("@/pages/executives/Executives"));
 const ProfilePage = lazy(() => import("@/pages/profile/Profile.jsx"));
-// const Tasks = lazy(() => import("@/pages/tasks/Tasks"));
-// const Task = lazy(() => import("@/pages/task/Task"));
+const TasksPage = lazy(() => import("@/pages/Tasks"));
+const TaskPage = lazy(() => import("@/pages/task/Task"));
 const TermsOfService = lazy(() => import("@/pages/legalPages/TermsOfService"));
 const PrivacyPolicy = lazy(() => import("@/pages/legalPages/PrivacyPolicy"));
 
@@ -21,7 +21,7 @@ const NotFound = lazy(() => import("@/pages/errorPages/NotFound"));
 // Contexts
 import { ActivitiesProvider } from "@/contexts/ActivitiesContext";
 import { MembersProvider } from "@/contexts/MembersProvider";
-// import { TasksProvider } from "@/contexts/TasksContext";
+import { TasksProvider } from "@/contexts/TasksContext";
 
 // Layouts
 import UserLayout from "@/layouts/UserLayout";
@@ -98,7 +98,7 @@ export const publicRoutes = {
       path: "/activity/:activityName",
       element: (
         <Suspense fallback={<Loader />}>
-          <Activity />
+          <ActivityPage />
         </Suspense>
       ),
       errorElement: (
@@ -129,29 +129,29 @@ export const publicRoutes = {
     },
 
     // Tasks Route
-    // {
-    //   path: "/tasks",
-    //   element: (
-    //     <Suspense fallback={<Loader />}>
-    //       <TasksProvider>
-    //         <Tasks />
-    //       </TasksProvider>
-    //     </Suspense>
-    //   ),
-    // },
-    // {
-    //   path: "/task/:taskName",
-    //   element: (
-    //     <Suspense fallback={<Loader />}>
-    //       <Task />
-    //     </Suspense>
-    //   ),
-    //   errorElement: (
-    //     <Suspense fallback={<Loader />}>
-    //       <NotFound />
-    //     </Suspense>
-    //   ),
-    // },
+    {
+      path: "/tasks",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <TasksProvider>
+            <TasksPage />
+          </TasksProvider>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/task/:taskName",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <TaskPage />
+        </Suspense>
+      ),
+      errorElement: (
+        <Suspense fallback={<Loader />}>
+          <NotFound />
+        </Suspense>
+      ),
+    },
 
     // Legal Routes
     {

@@ -26,7 +26,8 @@ export async function getAllTasks(req: Request, res: Response): Promise<void> {
     // Pagination and sorting options
     const sorted = {
       sort: { createdAt: -1 as 1 | -1 },
-      select: "_id name slug summary deadline category submissions", // Select only necessary fields
+      select:
+        "_id name slug summary deadline category submissions first second third", // Select only necessary fields
     };
 
     // Get paginated results
@@ -88,7 +89,7 @@ export async function getTask(req: Request, res: Response): Promise<void> {
         s.image = member.image;
         s.branch = member.branch;
         s.batch = member.batch;
-        s.isImageHidden = member.isImageHidden || true;
+        s.isImageHidden = member.isImageHidden ?? true; // default to true if undefined
       }
     });
 

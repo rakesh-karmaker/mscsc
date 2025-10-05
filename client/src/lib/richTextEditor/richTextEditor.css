@@ -1,0 +1,363 @@
+/* Editor Container */
+.editor-container {
+  position: relative;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  height: 100%;
+  width: 100%;
+  font-size: 1.1em;
+}
+
+/* Editor Content Area */
+.editor-content {
+  padding: 1rem;
+  min-height: 400px;
+  outline: none;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #1a202c;
+}
+
+/* Typography Styles */
+.editor-content h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.editor-content h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.editor-content h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.editor-content h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.editor-content h5 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.editor-content p {
+  margin-bottom: 1rem;
+}
+
+.editor-content ul,
+.editor-content ol {
+  padding-left: 2rem;
+  margin-bottom: 1rem;
+}
+
+.editor-content ul ul,
+.editor-content ol ol,
+.editor-content ul ol,
+.editor-content ol ul {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.editor-content blockquote {
+  border-left: 4px solid #e2e8f0;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #4a5568;
+}
+
+.editor-content pre {
+  background-color: #f7fafc;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  font-family: monospace;
+  margin-bottom: 1rem;
+}
+
+/* Links */
+.editor-link {
+  color: #3182ce;
+  text-decoration: underline;
+}
+
+/* Math Styles */
+.math-inline {
+  font-family: "KaTeX_Math", serif;
+  padding: 0 0.25rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  margin: 0 0.25rem;
+  position: relative;
+}
+
+.math-block {
+  display: block;
+  text-align: center;
+  padding: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  margin: 1rem 0;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+/* Hover effects for math elements */
+.math-inline:hover,
+.math-block:hover {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* Tooltip for math elements */
+.math-inline:hover::after,
+.math-block:hover::after {
+  content: "Double-click to edit";
+  position: absolute;
+  background: #333;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 0.9;
+  z-index: 10;
+  white-space: nowrap;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* KaTeX specific styles */
+.katex {
+  white-space: pre !important;
+}
+
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 28rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.modal-description {
+  font-size: 0.875rem;
+  color: #4a5568;
+  margin-bottom: 0.5rem;
+}
+
+.modal-hint {
+  font-size: 0.75rem;
+  color: #718096;
+  margin-bottom: 1rem;
+}
+
+.modal-input {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.modal-textarea {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  height: 6rem;
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+/* Button Styles */
+.button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.button-primary {
+  background-color: #3182ce;
+  color: white;
+  border: 1px solid #3182ce;
+}
+
+.button-primary:hover {
+  background-color: #2c5282;
+  border-color: #2c5282;
+}
+
+.button-secondary {
+  background-color: white;
+  color: #4a5568;
+  border: 1px solid #e2e8f0;
+}
+
+.button-secondary:hover {
+  background-color: #f7fafc;
+  border-color: #cbd5e0;
+}
+
+/* Indented paragraphs */
+p[style*="padding-left"] {
+  font-style: normal !important;
+}
+
+/*! ------------------------------------------------------------------ */
+/*! ------------------------------------------------------------------ */
+/*! ------------------------------------------------------------------ */
+/*! ------------------------------------------------------------------ */
+/*! ------------------------------------------------------------------ */
+
+/* Editor Styles */
+[contenteditable="true"] {
+  outline: none;
+  /* min-height: 200px; */
+}
+
+[contenteditable="true"]:empty:before {
+  content: attr(placeholder);
+  color: #adb5bd;
+  pointer-events: none;
+}
+
+/* Blockquote styles */
+.editor-container blockquote {
+  border-left: 4px solid #e5e7eb;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #6b7280;
+}
+
+/* Code block styles */
+.editor-container pre {
+  background-color: #f3f4f6;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  font-family: monospace;
+}
+
+/* List indentation */
+.editor-container ul,
+.editor-container ol {
+  padding-left: 2rem;
+}
+
+.editor-container ul ul,
+.editor-container ol ol,
+.editor-container ul ol,
+.editor-container ol ul {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.editor-container h1,
+.editor-container h2,
+.editor-container h3,
+.editor-container h4,
+.editor-container h5,
+.editor-container h6,
+.editor-container strong {
+  font-weight: 600 !important;
+  line-height: 1.1;
+}
+
+.editor-container h1,
+.editor-container h2 {
+  padding-top: 1.5rem !important;
+}
+
+.editor-container h3 {
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
+}
+
+.editor-container p {
+  margin: 0.8em 0;
+  line-height: 1.6;
+}
+
+.editor-container sub {
+  position: relative;
+  top: 0.5ex;
+  font-size: 0.8em;
+}
+
+.editor-container sup {
+  position: relative;
+  top: -0.5ex;
+  font-size: 0.8em;
+}
+
+.editor-container blockquote {
+  padding-left: 1rem;
+  border-left: 2px solid rgba(13, 13, 13, 0.1);
+  font-style: italic;
+  font-size: 0.95em;
+}
+
+.editor-container a {
+  color: var(--highlighted-color) !important;
+  transition: 0.25s ease-in-out;
+  text-decoration: none !important;
+  cursor: pointer !important;
+}
+
+.editor-container a:hover {
+  opacity: 0.7 !important;
+}
