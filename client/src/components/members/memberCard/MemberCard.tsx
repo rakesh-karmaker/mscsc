@@ -16,7 +16,6 @@ export default function MemberCard({
   member: MemberPreview;
   showExecutives?: boolean;
   isAdmin?: boolean;
-  deleteMember?: (slug: string) => void;
 }) {
   const navigate = useNavigate();
   const { slug, name, branch, batch, image, isImageHidden, isImageVerified } =
@@ -60,7 +59,7 @@ export default function MemberCard({
           </>
         )}
       </div>
-      {props?.isAdmin && <MemberEditDialog member={member} {...props} />}
+      {props?.isAdmin && <MemberEditDialog member={member} />}
     </div>
   );
 }

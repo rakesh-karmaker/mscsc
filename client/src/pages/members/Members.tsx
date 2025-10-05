@@ -10,7 +10,7 @@ import "./members.css";
 export default function MemberPage(props: {
   showExecutives?: boolean;
   showAdmins?: boolean;
-  deleteMember?: (slug: string) => void;
+  isAdmin?: boolean;
 }): ReactNode {
   const {
     members,

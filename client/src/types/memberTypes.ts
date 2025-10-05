@@ -13,3 +13,11 @@ export type MemberPreview = Pick<
   | "isImageHidden"
   | "isImageVerified"
 > & { new: boolean };
+
+export type MemberEditTypes = {
+  slug: string;
+  isImageVerified?: boolean | undefined;
+  isImageHidden?: boolean | undefined;
+  position?: string | undefined;
+  role?: string | undefined;
+};

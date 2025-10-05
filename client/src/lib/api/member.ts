@@ -1,7 +1,7 @@
 import { api } from "@/config/axios";
 import type { EditUserSchemaType } from "../validation/editUserSchema";
 import type { TimelineSchemaType } from "../validation/timelineSchema";
-import type { MemberEditSchema } from "../validation/memberEditSchema";
+import type { MemberEditTypes } from "@/types/memberTypes";
 
 export async function getMember(slug: string) {
   const response = await api.get(`/member/${slug}`);
@@ -75,26 +75,11 @@ export async function editTimeline(data: {
 }
 
 export async function editMember(
-  data: MemberEditSchema | { slug: string; new: boolean }
+  data: MemberEditTypes | { slug: string; new: boolean }
 ) {
   const formData = new FormData();
   for (const key in data) {
-    // Type guard for MemberEditSchema
-    if (
-      (key === "position" || key === "role" || key === "showImage") &&
-      "position" in data &&
-      "role" in data
-    ) {
-      formData.append(key, String(data[key as keyof MemberEditSchema]));
-    }
-    // Type guard for { slug: string; new: boolean }
-    else if (
-      (key === "slug" || key === "new") &&
-      "slug" in data &&
-      "new" in data
-    ) {
-      formData.append(key, String(data[key as "slug" | "new"]));
-    }
+    formData.append(key, String(data[key as keyof typeof data]));
   }
 
   return api.patch("/member/edit-member", formData, {

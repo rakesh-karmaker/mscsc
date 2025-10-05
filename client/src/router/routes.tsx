@@ -11,7 +11,7 @@ const Unauthorized = lazy(() => import("@/pages/errorPages/Unauthorized"));
 // Layouts
 import { publicRoutes } from "./publicRoutes";
 import { authRoutes } from "./authRoutes";
-// import { adminRoutes } from "./adminRoutes";
+import { adminRoutes } from "./adminRoutes";
 import App from "@/App";
 
 // Router configuration for navigating between pages
@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    children: [publicRoutes, authRoutes], // Merged routes
+    children: [publicRoutes, authRoutes, adminRoutes], // Merged routes
     errorElement: (
       <Suspense fallback={<Loader />}>
         <ServerError />

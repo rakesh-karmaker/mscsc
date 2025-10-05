@@ -57,7 +57,8 @@ export default function MemberEditForm({
     mutationFn: (props: MemberMutationProps) => {
       const { method, ...data } = props;
       if (method == "edit") {
-        return editMember(data as MemberEditSchema);
+        console.log("Editing member with data:", data);
+        return editMember(data);
       } else {
         return deleteMember({ slug: data.slug });
       }
@@ -81,7 +82,8 @@ export default function MemberEditForm({
       slug: member.slug,
       isImageVerified: data.showImage,
       isImageHidden: !data.showImage,
-      ...data,
+      position: data.position,
+      role: data.role,
     });
   };
 
