@@ -13,7 +13,7 @@ export default function NavbarToggleBtn({
 }): ReactNode {
   return (
     <button
-      className="navbar-toggler"
+      className="navbar-toggler flex justify-center items-center"
       onClick={() =>
         handleNavbarTogglerClick({ navbar, isOpened, setIsOpened })
       }

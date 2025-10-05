@@ -1,31 +1,42 @@
 import type React from "react";
 import { useRef, type ReactNode } from "react";
 import { FaUpload } from "react-icons/fa";
-import type { FieldErrors, UseFormRegister } from "react-hook-form";
+import type { FieldErrors, UseFormRegister, Path } from "react-hook-form";
 import type { RegisterSchemaType } from "@/lib/validation/registerSchema";
+import type { EditUserSchemaType } from "@/lib/validation/editUserSchema";
 
 import "./fileInput.css";
 
-export default function FileInput({
+type FileInputProps<T extends RegisterSchemaType | EditUserSchemaType> = {
+  register: UseFormRegister<T>;
+  errors: FieldErrors<T>;
+  children: string;
+  name: Path<T>;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+export default function FileInput<
+  T extends RegisterSchemaType | EditUserSchemaType
+>({
   register,
   errors,
   children,
   name,
   onChange,
-}: {
-  register: UseFormRegister<RegisterSchemaType>;
-  errors: FieldErrors<RegisterSchemaType>;
-  children: string;
-  name: keyof RegisterSchemaType;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}): ReactNode {
+}: FileInputProps<T>): ReactNode {
   const labelRef = useRef<HTMLLabelElement>(null);
 
+  const { onChange: registerOnChange, ...registerProps } = register(name);
+
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Call React Hook Form's onChange first
+    registerOnChange(e);
+
     if (e.target.files && e.target.files.length) {
       const fileName = e.target.files[0].name;
       if (labelRef.current) {
-        labelRef.current.innerHTML = fileName;
+        labelRef.current.innerHTML =
+          fileName.slice(0, 20) + (fileName.length > 20 ? "..." : "");
       }
     } else {
       if (labelRef.current) {
@@ -46,23 +57,31 @@ export default function FileInput({
     <div className="file-input">
       <p className="input-heading">{children}</p>
       <input
-        {...register(name)}
-        id={name}
+        {...registerProps}
+        id={name as string}
         type="file"
         accept="image/*"
-        onChange={(e) => handleFileInput(e)}
+        onChange={handleFileInput}
+        className="hidden"
       />
       <label
         ref={labelRef}
-        htmlFor={name}
+        htmlFor={name as string}
         className="highlighted-text file-label flex gap-2 items-center"
       >
         <FaUpload /> <span>Upload File</span>
       </label>
 
-      {errors[name]?.message && typeof errors[name]?.message === "string" && (
-        <p className="error-message">{errors[name]?.message}</p>
-      )}
+      {"message" in (errors?.[name as keyof typeof errors] ?? {}) &&
+        typeof (errors?.[name as keyof typeof errors] as { message?: unknown })
+          ?.message === "string" && (
+          <p className="error-message">
+            {
+              (errors?.[name as keyof typeof errors] as { message?: string })
+                ?.message
+            }
+          </p>
+        )}
     </div>
   );
 }

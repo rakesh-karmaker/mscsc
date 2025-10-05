@@ -69,6 +69,7 @@ export const editUserSchema = z.object({
         message: "Batch must contain only numbers",
       }
     ),
+  hideImage: z.boolean().optional(),
 });
 
 // Type for the form data derived from the Zod schema

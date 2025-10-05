@@ -4,23 +4,23 @@ import Loader from "@/components/ui/loader/Loader";
 // Lazy load pages
 const Home = lazy(() => import("@/pages/Home"));
 const About = lazy(() => import("@/pages/About"));
-// const MemberPage = lazy(() => import("@/pages/members/Members"));
+const MembersPage = lazy(() => import("@/pages/members/Members"));
 // const Activities = lazy(() => import("@/pages/activities/Activities.jsx"));
 // const Activity = lazy(() => import("@/pages/activity/Activity"));
 const ContactPage = lazy(() => import("@/pages/Contact"));
 const Executives = lazy(() => import("@/pages/executives/Executives"));
-// const Profile = lazy(() => import("@/pages/profile/Profile.jsx"));
+const ProfilePage = lazy(() => import("@/pages/profile/Profile.jsx"));
 // const Tasks = lazy(() => import("@/pages/tasks/Tasks"));
 // const Task = lazy(() => import("@/pages/task/Task"));
 const TermsOfService = lazy(() => import("@/pages/legalPages/TermsOfService"));
 const PrivacyPolicy = lazy(() => import("@/pages/legalPages/PrivacyPolicy"));
 
 // Lazy load error pages
-// const NotFound = lazy(() => import("@/pages/errorPages/NotFound"));
+const NotFound = lazy(() => import("@/pages/errorPages/NotFound"));
 
 // Contexts
 // import { ActivitiesProvider } from "@/contexts/ActivitiesContext";
-// import { MembersProvider } from "@/contexts/MembersProvider";
+import { MembersProvider } from "@/contexts/MembersProvider";
 // import { TasksProvider } from "@/contexts/TasksContext";
 
 // Layouts
@@ -58,30 +58,30 @@ export const publicRoutes = {
       ),
     },
 
-    // // Members Route
-    // {
-    //   path: "/members",
-    //   element: (
-    //     <Suspense fallback={<Loader />}>
-    //       <MembersProvider>
-    //         <MemberPage />
-    //       </MembersProvider>
-    //     </Suspense>
-    //   ),
-    // },
-    // {
-    //   path: "/member/:username",
-    //   element: (
-    //     <Suspense fallback={<Loader />}>
-    //       <Profile />
-    //     </Suspense>
-    //   ),
-    //   errorElement: (
-    //     <Suspense fallback={<Loader />}>
-    //       <NotFound />
-    //     </Suspense>
-    //   ),
-    // },
+    // Members Route
+    {
+      path: "/members",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <MembersProvider>
+            <MembersPage />
+          </MembersProvider>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/member/:username",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProfilePage />
+        </Suspense>
+      ),
+      errorElement: (
+        <Suspense fallback={<Loader />}>
+          <NotFound />
+        </Suspense>
+      ),
+    },
 
     // Activities Route
     // {

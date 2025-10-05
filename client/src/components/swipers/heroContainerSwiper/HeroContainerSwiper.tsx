@@ -26,8 +26,8 @@ export default function HeroContainerSwiper(): ReactNode {
             <LazyLoadImage
               src={`/hero-img-${index + 1}.webp`}
               {...(index == 0
-                ? { fetchpriority: "high" }
-                : { fetchpriority: "low" })}
+                ? { fetchPriority: "high" }
+                : { fetchPriority: "low" })}
               alt={`hero image ${index + 1}`}
               effect="blur"
             />

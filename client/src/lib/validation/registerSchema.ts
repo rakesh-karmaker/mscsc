@@ -8,7 +8,7 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/webp",
 ] as const;
 
-type FileFromForm = File[];
+type FileFromForm = FileList;
 
 // Zod schema for form validation
 export const registerSchema = z.object({
@@ -52,23 +52,24 @@ export const registerSchema = z.object({
       message: "Branch is required",
     }),
   image: z
-    .custom<FileFromForm>((fileList) => Array.isArray(fileList), {
+    .custom<FileFromForm>((fileList) => fileList instanceof FileList, {
       message: "Please upload a valid file",
-    })
-    .refine((files) => files.length > 0, {
-      message: "Image is required",
-    })
-    .refine((files) => files[0].size <= MAX_FILE_SIZE, {
-      message: `Max image size is ${MAX_FILE_SIZE / 1024 / 1024}MB.`,
     })
     .refine(
       (files) =>
+        files.length > 0 &&
+        files[0].size <= MAX_FILE_SIZE &&
         ACCEPTED_IMAGE_TYPES.includes(
           files[0].type as (typeof ACCEPTED_IMAGE_TYPES)[number]
         ),
-      {
-        message: "Only JPG, JPEG, PNG, and WebP formats are supported.",
-      }
+      (files) => ({
+        message:
+          files.length === 0
+            ? "Image is required"
+            : files[0].size > MAX_FILE_SIZE
+            ? `Max image size is ${MAX_FILE_SIZE / 1024 / 1024}MB.`
+            : "Only JPG, JPEG, PNG, and WebP formats are supported.",
+      })
     ),
   reason: z
     .string({ required_error: "Give a description of yourself" })

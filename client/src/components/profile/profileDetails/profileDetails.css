@@ -1,0 +1,141 @@
+.user-info {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* margin-bottom: 30px; */
+}
+
+.user-name-position {
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.user-name-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user-name-position .primary-button {
+  padding: 10px 20px;
+  height: fit-content;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: 0.25s;
+  border-radius: 5px;
+  background-color: var(--highlighted-color);
+  color: var(--text-white);
+}
+
+.user-name {
+  font-size: 3rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 45px;
+}
+
+.user-position {
+  font-size: 1.05rem;
+  color: var(--highlighted-color);
+  transform: translateY(-3px);
+  text-transform: capitalize;
+}
+
+.user-position.ec {
+  color: rgba(255, 0, 0, 0.82);
+}
+
+.user-school-info {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-school-info > span {
+  color: var(--highlighted-color);
+}
+
+.user-reason {
+  font-size: 1.5rem;
+}
+
+.user-reason-text {
+  font-size: 1rem;
+  color: #7d7d7d;
+  max-width: 69ch;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.user-reason-text:hover {
+  overflow: visible;
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: unset;
+}
+
+@media screen and (max-width: 1080px) {
+  .user-name-position {
+    flex-direction: column;
+  }
+  .user-name-container {
+    gap: 7px;
+  }
+  .user-name {
+    font-size: 2.5rem;
+    line-height: 42px;
+  }
+  .user-position,
+  .user-reason-text {
+    font-size: 0.93rem;
+  }
+  .user-info {
+    gap: 3px;
+  }
+  .user-reason,
+  .user-school-info {
+    font-size: 1.2rem;
+  }
+  .user-reason-text {
+    line-height: 22px;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .user-name-position {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .user-name-container {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .user-name {
+    font-size: 2.5rem;
+    line-height: 40px;
+  }
+
+  .user-info {
+    gap: 5px;
+  }
+
+  .user-school-info,
+  .user-reason {
+    font-size: 1.3rem;
+  }
+}

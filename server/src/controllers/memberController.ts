@@ -180,7 +180,7 @@ export async function editMember(req: Request, res: Response): Promise<void> {
     if (updates?.password === "") {
       updates.password = previousUser.password;
     } else if (updates && updates.password) {
-      updates.password = generateHash(updates.password);
+      updates.password = await generateHash(updates.password);
     }
 
     // Trim certain fields

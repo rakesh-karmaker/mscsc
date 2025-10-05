@@ -98,10 +98,6 @@ main.page-executives {
     border-radius: 10px;
     transition: 0.25s;
   }
-
-  .year-dropdown {
-    display: block;
-  }
   .panel-year {
     box-shadow: none;
     padding: 0px;

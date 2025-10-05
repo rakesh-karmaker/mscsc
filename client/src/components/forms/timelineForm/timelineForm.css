@@ -1,0 +1,86 @@
+.timeline-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  color: rgb(93, 93, 93);
+  font-size: 1.1rem;
+  margin-top: 30px;
+}
+
+.timeline-header::after {
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: #ababab;
+  border-radius: 10px;
+}
+
+.timeline-inputs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.timeline-inputs-container button {
+  background-color: rgb(201, 224, 255);
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: 0.25s;
+  border-radius: 5px;
+}
+
+.timeline-inputs-container button:hover {
+  opacity: 0.6;
+}
+
+.timeline-inputs-container button.active {
+  background-color: var(--highlighted-color);
+  color: var(--text-white);
+}
+
+.timeline-inputs-container button.add {
+  width: fit-content;
+  background-color: rgb(201, 255, 201);
+}
+.timeline-inputs-container button.remove {
+  background-color: rgb(255, 201, 201);
+}
+
+.timeline-actions {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.timeline-input-fields {
+  display: grid;
+  transition: 0.35s;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+}
+
+.timeline-input-fields > div {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  overflow: hidden;
+}
+
+.timeline-input-fields.active {
+  grid-template-rows: 1fr;
+}
+
+.timeline-submit {
+  width: fit-content;
+  background-color: var(--highlighted-color) !important;
+  color: var(--text-white) !important;
+}
+
+@media screen and (max-width: 400px) {
+  .timeline-input-fields.active {
+    max-height: 600px;
+  }
+}

@@ -1,0 +1,207 @@
+.member-card {
+  width: 100%;
+  max-width: 360px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+  padding-top: 3rem;
+  align-items: center;
+  border-radius: 14px;
+  text-decoration: none;
+  transition: 0.25s;
+  background-color: var(--primary-bg);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  position: relative;
+  cursor: pointer;
+}
+
+.member-card:hover {
+  box-shadow: 0px 0px 1.1px rgba(0, 0, 0, 0.5);
+}
+
+.lock-icon {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  font-size: 1.25rem;
+  color: var(--highlighted-color);
+}
+
+.role-icon {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 1.25rem;
+  color: var(--highlighted-color);
+}
+
+.role-icon > .admin {
+  color: #ff1818;
+}
+
+.member-image-container {
+  width: 260px;
+  height: 260px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  position: relative;
+}
+
+.member-image-container::after {
+  content: "View Profile";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-white);
+  font-size: 1.25rem;
+  opacity: 0;
+  transition: 0.25s;
+}
+
+.member-card:hover .member-image-container::after {
+  opacity: 1;
+}
+
+.member-card span:has(img) {
+  width: 260px;
+  aspect-ratio: 1;
+}
+
+.member-card img {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.member-info {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 1rem;
+  padding-left: 1.5rem;
+}
+
+.member-card h3 {
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 28px;
+  overflow-wrap: break-word;
+  max-width: 20ch;
+  text-align: center;
+
+  color: var(--text-primary);
+}
+
+.member-card p {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 22px;
+
+  color: rgba(17, 24, 28, 0.78);
+}
+
+.member-info > p {
+  text-align: center;
+}
+
+.member-actions {
+  width: 100%;
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.member-actions > button.admin::before {
+  background-color: #ff1818;
+  color: var(--text-white);
+}
+
+@media screen and (max-width: 1600px) {
+  .member-card {
+    max-width: 300px;
+    padding: 1.3rem;
+    padding-top: 2.5rem;
+  }
+
+  .role-icon {
+    top: 1.3rem;
+  }
+
+  .member-image-container {
+    width: 210px;
+    height: 210px;
+  }
+
+  .member-card img {
+    width: 210px;
+  }
+
+  .member-info {
+    gap: 0.2rem;
+  }
+
+  .member-card h3 {
+    font-size: 19px;
+  }
+
+  .member-card p {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .member-card {
+    max-width: 270px;
+    gap: 0.3rem;
+  }
+  .role-icon svg {
+    font-size: 1rem;
+  }
+  .member-image-container {
+    width: 180px;
+    height: 180px;
+  }
+  .member-card img {
+    width: 180px;
+  }
+
+  .member-card h3 {
+    max-width: 17ch;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .member-card {
+    max-width: 270px;
+    gap: 0.3rem;
+  }
+  .member-image-container {
+    width: 200px;
+    height: 200px;
+  }
+  .member-card img {
+    width: 200px;
+  }
+
+  .member-card h3 {
+    max-width: 15ch;
+  }
+}

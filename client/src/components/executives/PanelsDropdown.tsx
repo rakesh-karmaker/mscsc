@@ -8,12 +8,12 @@ export function PanelsDropdown({
 }): ReactNode {
   return (
     <button
-      className="year-dropdown"
+      className="year-dropdown flex justify-center items-center"
       onClick={onClick}
       aria-label="Toggle years dropdown"
       type="button"
     >
-      <FaAngleDown className="!mt-0.5 transition-all duration-200 text-[1.1em]" />
+      <FaAngleDown className="!mt-0.5 transition-all duration-200" />
     </button>
   );
 }

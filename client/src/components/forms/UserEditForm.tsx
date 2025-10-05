@@ -2,24 +2,27 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Stack, TextField } from "@mui/material";
-import { registerUser } from "@/lib/api/auth";
 import { branches } from "@/services/data/data";
+import { editUser } from "@/lib/api/member";
+import { useUser } from "@/contexts/UserContext";
 import {
-  registerSchema,
-  type RegisterSchemaType,
-} from "@/lib/validation/registerSchema";
+  editUserSchema,
+  type EditUserSchemaType,
+} from "@/lib/validation/editUserSchema";
+import type { ReactNode } from "react";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
-import Consent from "./Consent";
-import SelectInput from "@/components/ui/SelectInput";
 import type { AxiosError } from "axios";
-import FormSubmitBtn from "@/components/ui/FormSubmitBtn";
-import FileInput from "@/components/ui/fileInput/FileInput";
+import SelectInput from "../ui/SelectInput";
+import FileInput from "../ui/fileInput/FileInput";
+import HideImage from "./HideImage";
+import FormSubmitBtn from "../ui/FormSubmitBtn";
 
-import "./userForm.css";
+import "./registrationForm/userForm.css";
 
-export default function RegistrationForm() {
+export default function UserEditForm(): ReactNode {
+  const { user } = useUser();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const {
@@ -28,16 +31,31 @@ export default function RegistrationForm() {
     setError,
     control,
     formState: { errors },
-  } = useForm<RegisterSchemaType>({
-    resolver: zodResolver(registerSchema),
+  } = useForm({
+    resolver: zodResolver(editUserSchema),
     defaultValues: {
-      branch: "",
+      name: user?.name,
+      email: user?.email,
+      password: "",
+      contactNumber: user?.contactNumber,
+      branch: user?.branch,
+      reason: user?.reason,
+      socialLink: user?.socialLink,
+      batch: user?.batch,
+      hideImage: user?.isImageHidden ? true : false,
     },
     mode: "onChange",
   });
 
   const userMutation = useMutation({
-    mutationFn: registerUser,
+    mutationFn: (data: EditUserSchemaType) => {
+      return editUser({
+        ...data,
+        new: data.image.length !== 0,
+        slug: user?.slug || "",
+      });
+    },
+
     onSuccess: (data) => {
       toast.success(data?.data?.message);
       if (data?.data?.subject === "register") {
@@ -53,21 +71,21 @@ export default function RegistrationForm() {
     },
 
     onError: (err: AxiosError<{ message: string }>) => {
-      if (err.response?.status === 409) {
+      if (err.status === 409) {
         setError("email", {
-          message: err.response.data.message,
+          message: err.response?.data.message || "Email already exists",
         });
       } else {
         useErrorNavigator(true, err);
       }
       setError("root", {
-        message: err.response?.data.message,
+        message: err.response?.data.message || "An error occurred",
       });
-      toast.error(err.response?.data.message || "Something went wrong");
+      toast.error(err.response?.data.message || "An error occurred");
     },
   });
 
-  const onSubmit = async (data: RegisterSchemaType) => {
+  const onSubmit = async (data: EditUserSchemaType) => {
     data.email = data.email.toLowerCase().trim();
     data.name = data.name.trim();
     data.password = data.password.trim();
@@ -152,7 +170,7 @@ export default function RegistrationForm() {
       </Stack>
 
       <FileInput register={register} name="image" errors={errors}>
-        Give us your formal photo:
+        Edit your photo:
       </FileInput>
 
       <TextField
@@ -175,35 +193,30 @@ export default function RegistrationForm() {
           error={!!errors.socialLink}
           helperText={errors.socialLink?.message}
         />
-
-        <TextField
-          {...register("reference")}
-          id="reference"
-          label="Reference"
-          variant="outlined"
-          fullWidth
-          error={!!errors.reference}
-          helperText={errors.reference?.message}
-        />
       </Stack>
 
       <div className="checkbox-submission">
-        <Consent register={register} errors={errors} />
+        <HideImage
+          register={register}
+          isHidden={user?.isImageHidden ? true : false}
+        />
 
         <div className="submission">
-          <div className="state-redirect">
-            <p>Already have an account?</p>
-            <NavLink to="/auth/login">Login Now</NavLink>
-          </div>
-
           <FormSubmitBtn
             isLoading={userMutation.isPending}
-            pendingText={"Registering"}
+            pendingText={"Updating"}
           >
-            Register as a Member
+            Update
           </FormSubmitBtn>
         </div>
         {errors.root && <p className="error-message">{errors.root.message}</p>}
+        {user?.isImageVerified ? null : (
+          <p className="user-form-note">
+            *Unverified Image: To make your image verified and visible to other
+            members, please give us a formal photo and contact with your
+            executives.
+          </p>
+        )}
       </div>
     </form>
   );
