@@ -1,4 +1,3 @@
-import "@/components/UI/ExecutiveCard/ExecutiveCard.css";
 import type { Executive } from "@/types/executiveTypes";
 import type { ReactNode } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
