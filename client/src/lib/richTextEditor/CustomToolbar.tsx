@@ -1,5 +1,3 @@
-"use client";
-
 import {
   useCallback,
   useState,
@@ -7,7 +5,6 @@ import {
   useEffect,
   type RefObject,
 } from "react";
-import "./CustomToolbar.css";
 import {
   LuAlignCenter,
   LuAlignLeft,
@@ -38,6 +35,7 @@ import {
 } from "react-icons/lu";
 import { TbPlusEqual } from "react-icons/tb";
 import { MdEmojiEmotions } from "react-icons/md";
+
 import "./customToolbar.css";
 
 export function CustomToolbar({
