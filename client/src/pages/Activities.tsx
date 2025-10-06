@@ -51,7 +51,13 @@ export default function Activities({
   };
   return (
     <>
-      <main className="page-activities w-full min-h-screen max-w-max-width !pt-[calc(var(--nav-height)+3rem)] !pb-25 flex flex-col max-[1000px]:!pt-[calc(var(--nav-height)+2rem)] max-[1000px]:gap-10">
+      <main
+        className={`page-activities w-full min-h-screen max-w-max-width ${
+          admin
+            ? ""
+            : "!pt-[calc(var(--nav-height)+3rem)] !pb-25 max-[1000px]:!pt-[calc(var(--nav-height)+2rem)]"
+        } flex flex-col max-[1000px]:gap-10`}
+      >
         <ActivitiesNavbar
           tag={tag}
           setTag={setTag}

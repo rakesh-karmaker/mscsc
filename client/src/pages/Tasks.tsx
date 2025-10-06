@@ -15,7 +15,13 @@ export default function Tasks({ admin }: { admin?: boolean }) {
     useTasks();
 
   return (
-    <main className="w-full max-w-[1400px] h-full min-h-[calc(100svh-var(--nav-height))] !pt-[calc(var(--nav-height)+3rem)] !pb-25 flex !flex-row  justify-between !items-start gap-4 max-[1500px]:max-w-max-width max-[1000px]:!flex-col max-[1000px]:!pt-[calc(var(--nav-height)+2rem)] max-[1000px]:gap-10">
+    <main
+      className={`w-full ${
+        admin
+          ? "w-full !pt-5"
+          : "max-w-[1400px] min-h-[calc(100svh-var(--nav-height))] !pt-[calc(var(--nav-height)+3rem)] !pb-25 max-[1000px]:!pt-[calc(var(--nav-height)+2rem)]"
+      } h-full flex !flex-row  justify-between !items-start gap-4 max-[1500px]:max-w-max-width max-[1000px]:!flex-col max-[1000px]:gap-10`}
+    >
       {isVerifying ? (
         <Loader />
       ) : (

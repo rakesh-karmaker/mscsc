@@ -1,7 +1,5 @@
 import AdminDashboardHeader from "@/components/ui/AdminDashboardHeader";
-import Tasks from "../Tasks";
-
-import "./taskDashboard.css";
+import Tasks from "./Tasks";
 
 export default function TasksDashboard() {
   return (

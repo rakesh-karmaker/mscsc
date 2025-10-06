@@ -11,11 +11,7 @@ import {
 import { useLocation, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-
-// server request functions
 import { editSubmission, getTask, submitTask } from "@/lib/api/task";
-
-import "./task.css";
 import type { Submission, Task as TaskType } from "@/types/taskTypes";
 import type { AxiosError } from "axios";
 import Loader from "@/components/ui/loader/Loader";
@@ -25,6 +21,8 @@ import type { User } from "@/types/userTypes";
 import TaskSubmissionPreview from "@/components/task/taskSubmissionPreview/TaskSubmissionPreview";
 import TaskSubmissionForm from "@/components/task/TaskSubmissionForm";
 import TaskSidebar from "@/layouts/taskSidebar/TaskSidebar";
+
+import "./task.css";
 
 export default function Task({
   admin,

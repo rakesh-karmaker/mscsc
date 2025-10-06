@@ -16,9 +16,7 @@ const ActivitiesDashboard = lazy(
 const ActivityForm = lazy(
   () => import("@/components/forms/activityForm/ActivityForm")
 );
-const TasksDashBoard = lazy(
-  () => import("@/pages/tasksDashboard/TasksDashboard")
-);
+const TasksDashBoard = lazy(() => import("@/pages/TasksDashboard"));
 const TaskDashboard = lazy(() => import("@/pages/taskDashboard/TaskDashboard"));
 const TaskForm = lazy(() => import("@/components/forms/taskForm/TaskForm"));
 const MessagesDashboard = lazy(
