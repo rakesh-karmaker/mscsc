@@ -10,12 +10,12 @@ const AdminDashboard = lazy(
 const MembersDashboard = lazy(
   () => import("@/pages/membersDashboard/MembersDashboard")
 );
-// const ActivitiesDashboard = lazy(
-//   () => import("@/components/admin/activitiesDashboard/ActivitiesDashboard")
-// );
-// const ActivityForm = lazy(
-//   () => import("@/components/admin/components/ActivityForm/ActivityForm")
-// );
+const ActivitiesDashboard = lazy(
+  () => import("@/pages/activitiesDashboard/ActivitiesDashboard")
+);
+const ActivityForm = lazy(
+  () => import("@/components/forms/activityEditForm/ActivityEditForm")
+);
 // const MessagesDashboard = lazy(
 //   () => import("@/components/admin/messagesDashboard/MessagesDashboard")
 // );
@@ -35,7 +35,7 @@ const MembersDashboard = lazy(
 // Contexts
 import MessagesProvider from "@/contexts/MessagesContext";
 import { MembersProvider } from "@/contexts/MembersProvider";
-// import { ActivitiesProvider } from "@/contexts/ActivitiesContext";
+import { ActivitiesProvider } from "@/contexts/ActivitiesContext";
 // import { TasksProvider } from "@/contexts/TasksContext";
 
 // Layouts
@@ -75,50 +75,50 @@ export const adminRoutes = {
         </Suspense>
       ),
     },
-    // {
-    //   path: "/admin/executives",
-    //   element: (
-    //     <Suspense fallback={<Loader />}>
-    //       <MembersDashboard
-    //         type="executive"
-    //         title="Executives"
-    //         des="View all the executives of the club"
-    //       />
-    //     </Suspense>
-    //   ),
-    // },
-    // {
-    //   path: "/admin/admins",
-    //   element: (
-    //     <Suspense fallback={<Loader />}>
-    //       <MembersDashboard
-    //         type="admin"
-    //         title="Admins"
-    //         des="View all the admins of the club"
-    //       />
-    //     </Suspense>
-    //   ),
-    // },
+    {
+      path: "/admin/executives",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <MembersDashboard
+            type="executive"
+            title="Executives"
+            des="View all the executives of the club"
+          />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/admin/admins",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <MembersDashboard
+            type="admin"
+            title="Admins"
+            des="View all the admins of the club"
+          />
+        </Suspense>
+      ),
+    },
 
     // Activities Routes
-    // {
-    //   path: "/admin/activities",
-    //   element: (
-    //     <Suspense fallback={<Loader />}>
-    //       <ActivitiesProvider>
-    //         <ActivitiesDashboard />
-    //       </ActivitiesProvider>
-    //     </Suspense>
-    //   ),
-    // },
-    // {
-    //   path: "/admin/add-activity",
-    //   element: (
-    //     <Suspense fallback={<Loader />}>
-    //       <ActivityForm method={"add"} />
-    //     </Suspense>
-    //   ),
-    // },
+    {
+      path: "/admin/activities",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ActivitiesProvider>
+            <ActivitiesDashboard />
+          </ActivitiesProvider>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/admin/add-activity",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ActivityForm method={"add"} />
+        </Suspense>
+      ),
+    },
 
     // Tasks Routes
     // {

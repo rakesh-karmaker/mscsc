@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, type Dispatch, type SetStateAction } from "react";
 import { useActivities } from "@/contexts/ActivitiesContext";
 import { useLocation } from "react-router-dom";
 import Loader from "@/components/ui/loader/Loader";
@@ -6,8 +6,15 @@ import Empty from "@/components/ui/empty/Empty";
 import PaginationContainer from "@/components/ui/paginationContainer/PaginationContainer";
 import ActivitiesNavbar from "@/layouts/activitiesNavbar/ActivitiesNavbar";
 import ActivityCard from "@/components/activityCard/ActivityCard";
+import type { ActivityPreview } from "@/types/activityTypes";
 
-export default function Activities({ admin, ...rest }: { admin?: boolean }) {
+export default function Activities({
+  admin,
+  ...rest
+}: {
+  admin?: boolean;
+  setSelectedActivity?: Dispatch<SetStateAction<ActivityPreview | null>>;
+}) {
   const link = useLocation();
   const searchParams = new URLSearchParams(link.search);
   const linkTag = searchParams.get("tag");

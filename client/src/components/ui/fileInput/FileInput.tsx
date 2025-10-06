@@ -4,10 +4,13 @@ import { FaUpload } from "react-icons/fa";
 import type { FieldErrors, UseFormRegister, Path } from "react-hook-form";
 import type { RegisterSchemaType } from "@/lib/validation/registerSchema";
 import type { EditUserSchemaType } from "@/lib/validation/editUserSchema";
+import type { ActivitySchemaType } from "@/lib/validation/activitySchema";
 
 import "./fileInput.css";
 
-type FileInputProps<T extends RegisterSchemaType | EditUserSchemaType> = {
+type FileInputProps<
+  T extends RegisterSchemaType | EditUserSchemaType | ActivitySchemaType
+> = {
   register: UseFormRegister<T>;
   errors: FieldErrors<T>;
   children: string;
@@ -16,7 +19,7 @@ type FileInputProps<T extends RegisterSchemaType | EditUserSchemaType> = {
 };
 
 export default function FileInput<
-  T extends RegisterSchemaType | EditUserSchemaType
+  T extends RegisterSchemaType | EditUserSchemaType | ActivitySchemaType
 >({
   register,
   errors,

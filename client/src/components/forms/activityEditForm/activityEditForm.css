@@ -1,0 +1,34 @@
+.activity-form {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.activity-form .combined-btns {
+  display: flex;
+  gap: 20px;
+}
+
+.activity-form .combined-btns > * > .danger-button {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0px 29px;
+  font-size: 20px;
+  height: 50px;
+}
+
+.activity-form .combined-btns .danger-button::before {
+  background-color: red;
+}
+
+@media screen and (max-width: 430px) {
+  .activity-form .combined-btns {
+    flex-direction: column;
+  }
+  .activity-form .combined-btns button.primary-button {
+    width: 100% !important;
+  }
+}
