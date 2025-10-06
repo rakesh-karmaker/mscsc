@@ -1,7 +1,7 @@
 import { FaCheck, FaCloudArrowUp } from "react-icons/fa6";
 import { useRef, useState } from "react";
 
-import "./ImageDropper.css";
+import "./imageDropper.css";
 
 export default function ImageDropper({
   title,
