@@ -10,11 +10,11 @@ Welcome to MSCSC’s official website repository. This platform highlights our c
 
 ## Tech Stack
 
-|  Front-End  |     |  Back-End  |     | Hosting |
-| :---------: | --- | :--------: | --- | :-----: |
-| Javascript  |     | Typescript |     | Netlify |
-| React.js 18 |     |   Nodejs   |     | Render  |
-|     CSS     |     |  MongoDB   |     |         |
+|  Front-End   |     |   Back-End   |     | Hosting |
+| :----------: | --- | :----------: | --- | :-----: |
+| Typescript 5 |     | Typescript 5 |     | Netlify |
+| React.js 19  |     |   Express    |     | Render  |
+|     CSS      |     |   MongoDB    |     |         |
 
 ## Contributions
 
