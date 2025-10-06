@@ -68,6 +68,7 @@ export async function register(req: Request, res: Response): Promise<void> {
       password: hashedPassword,
       image: url,
       imgId: imgId,
+      new: true,
     };
     const newMember = await Member.create(newMemberData);
 
@@ -150,7 +151,9 @@ export async function login(req: Request, res: Response): Promise<void> {
 export async function verifyUser(req: Request, res: Response): Promise<void> {
   try {
     const data = req.user;
-    const user = await Member.findById(data?._id || "").select("-password");
+    const user = await Member.findById(data?._id || "").select(
+      "-password -imgId -reference -updatedAt -new -__v"
+    );
     if (!user) {
       res.status(404).send({ message: "User not found" });
       return;

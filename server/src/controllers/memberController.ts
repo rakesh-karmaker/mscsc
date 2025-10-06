@@ -92,10 +92,10 @@ export async function getTopSubmitters(
         batch: member.batch,
         slug: member.slug,
         image: member.image,
-        submissionsCount: member.submissions ? member.submissions.length : 0,
+        submissionCount: member.submissions ? member.submissions.length : 0,
         isImageHidden: member.isImageHidden,
       }))
-      .sort((a, b) => b.submissionsCount - a.submissionsCount)
+      .sort((a, b) => b.submissionCount - a.submissionCount)
       .slice(0, 10); // Get top 10
 
     if (!topSubmitters || topSubmitters.length === 0) {
@@ -111,7 +111,7 @@ export async function getTopSubmitters(
         branch: member.branch,
         batch: member.batch,
         image: member.image,
-        submissionsCount: member.submissionsCount,
+        submissionCount: member.submissionCount,
         isImageHidden: member.isImageHidden,
       }))
     );
@@ -140,6 +140,15 @@ export async function editMember(req: Request, res: Response): Promise<void> {
     if (!previousUser) {
       res.status(404).send({ message: "User not found" });
       return;
+    }
+
+    // check if the user is trying to change email address
+    if (updates && updates.email && updates.email !== previousUser.email) {
+      const emailExists = await Member.findOne({ email: updates.email });
+      if (emailExists) {
+        res.status(409).send({ message: "Email already in use" });
+        return;
+      }
     }
 
     // Authorization: only the user themselves or an admin can edit
@@ -174,13 +183,14 @@ export async function editMember(req: Request, res: Response): Promise<void> {
       const { url, imgId } = await uploadImage(req.file);
       updates.image = url;
       updates.imgId = imgId;
+      updates.new = true; // Once edited, set new to true
     }
 
     // If password is empty string, retain previous password
     if (updates?.password === "") {
       updates.password = previousUser.password;
     } else if (updates && updates.password) {
-      updates.password = generateHash(updates.password);
+      updates.password = await generateHash(updates.password);
     }
 
     // Trim certain fields
