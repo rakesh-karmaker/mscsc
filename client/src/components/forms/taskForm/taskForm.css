@@ -1,0 +1,20 @@
+.task-form {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 45px;
+}
+
+.task-form .combined-btns {
+  display: flex;
+  gap: 20px;
+}
+
+@media screen and (max-width: 430px) {
+  .task-form .combined-btns {
+    flex-direction: column;
+  }
+  .task-form .combined-btns button.primary-button {
+    width: 100% !important;
+  }
+}

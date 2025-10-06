@@ -26,7 +26,13 @@ import TaskSubmissionPreview from "@/components/task/taskSubmissionPreview/TaskS
 import TaskSubmissionForm from "@/components/task/TaskSubmissionForm";
 import TaskSidebar from "@/layouts/taskSidebar/TaskSidebar";
 
-export default function Task({ admin, ...rest }: { admin?: boolean }) {
+export default function Task({
+  admin,
+  ...rest
+}: {
+  admin?: boolean;
+  setSelectedTask?: Dispatch<SetStateAction<TaskType | null>>;
+}) {
   const queryClient = useQueryClient();
   const { user, isVerifying } = useUser();
 

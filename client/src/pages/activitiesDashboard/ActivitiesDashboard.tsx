@@ -4,7 +4,7 @@ import { getActivity } from "@/lib/api/activities";
 import type { Activity, ActivityPreview } from "@/types/activityTypes";
 import AdminDashboardHeader from "@/components/ui/AdminDashboardHeader";
 import Activities from "../Activities";
-import ActivityEditForm from "@/components/forms/activityEditForm/ActivityEditForm";
+import ActivityForm from "@/components/forms/activityForm/ActivityForm";
 
 import "./activitiesDashboard.css";
 
@@ -41,7 +41,7 @@ export default function ActivitiesDashboard() {
           View and manage all the activities of the club
         </AdminDashboardHeader>
         {selectedActivityDetail != null ? (
-          <ActivityEditForm
+          <ActivityForm
             defaultValues={selectedActivityDetail}
             setSelectedActivity={setSelectedActivity}
             method={"edit"}

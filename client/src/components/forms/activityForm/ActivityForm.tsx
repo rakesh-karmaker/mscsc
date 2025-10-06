@@ -33,15 +33,15 @@ import FormSubmitBtn from "@/components/ui/FormSubmitBtn";
 import DeleteWarning from "@/components/ui/DeleteWarning";
 import ImageDropper from "@/components/ui/imageDropper/ImageDropper";
 
-import "./activityEditForm.css";
+import "./activityForm.css";
 
-type ActivityEditFormProps = {
+type ActivityFormProps = {
   defaultValues?: Activity;
   method: "add" | "edit" | "delete";
   setSelectedActivity?: Dispatch<SetStateAction<ActivityPreview | null>>;
 };
 
-export default function ActivityEditForm(props: ActivityEditFormProps) {
+export default function ActivityForm(props: ActivityFormProps) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
@@ -173,6 +173,7 @@ export default function ActivityEditForm(props: ActivityEditFormProps) {
               ? "Change Activity Cover Image"
               : "Activity Cover Image:"}
           </FileInput>
+
           <FormControl fullWidth error={!!errors.tag}>
             <InputLabel id={"select-activity-type"}>Activity Type</InputLabel>
             <Controller

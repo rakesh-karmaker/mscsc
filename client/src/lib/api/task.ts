@@ -1,4 +1,5 @@
 import { api } from "@/config/axios";
+import type { TaskSchemaType } from "../validation/taskSchema";
 
 export async function getAllTasks(
   page: number,
@@ -28,22 +29,34 @@ export async function getTopSubmitters() {
   return api.get("/member/top-submitters");
 }
 
-// export async function addTask(data) {
-//   const formData = new FormData();
-//   for (const key in data) {
-//     formData.append(key, data[key]);
-//   }
+export async function addTask(
+  data: Omit<TaskSchemaType, "content" | "deadline" | "imageRequired"> & {
+    instructions: string;
+    deadline: string;
+    imageRequired: string;
+  }
+) {
+  const formData = new FormData();
+  for (const key in data) {
+    formData.append(key, data[key as keyof typeof data]);
+  }
 
-//   return api.post("/task/create", formData);
-// }
+  return api.post("/task/create", formData);
+}
 
-// export async function editTask(data) {
-//   const formData = new FormData();
-//   for (const key in data) {
-//     formData.append(key, data[key]);
-//   }
-//   return api.patch("/task/edit-task", formData);
-// }
+export async function editTask(
+  data: Omit<TaskSchemaType, "content" | "deadline" | "imageRequired"> & {
+    instructions: string;
+    deadline: string;
+    imageRequired: string;
+  } & { slug: string }
+) {
+  const formData = new FormData();
+  for (const key in data) {
+    formData.append(key, data[key as keyof typeof data]);
+  }
+  return api.patch("/task/edit-task", formData);
+}
 
 export async function deleteTask(slug: string) {
   return api.delete("/task/delete-task", { data: { slug: slug } });
