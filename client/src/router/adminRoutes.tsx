@@ -21,10 +21,9 @@ const TasksDashBoard = lazy(
 );
 const TaskDashboard = lazy(() => import("@/pages/taskDashboard/TaskDashboard"));
 const TaskForm = lazy(() => import("@/components/forms/taskForm/TaskForm"));
-
-// const MessagesDashboard = lazy(
-//   () => import("@/components/admin/messagesDashboard/MessagesDashboard")
-// );
+const MessagesDashboard = lazy(
+  () => import("@/pages/messagesDashboard/MessagesDashboard")
+);
 
 // Lazy load error pages
 const NotFound = lazy(() => import("@/pages/errorPages/NotFound"));
@@ -151,13 +150,13 @@ export const adminRoutes = {
     },
 
     // Messages Route
-    // {
-    //   path: "/admin/messages",
-    //   element: (
-    //     <Suspense fallback={<Loader />}>
-    //       <MessagesDashboard />
-    //     </Suspense>
-    //   ),
-    // },
+    {
+      path: "/admin/messages",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <MessagesDashboard />
+        </Suspense>
+      ),
+    },
   ],
 };

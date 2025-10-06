@@ -142,6 +142,15 @@ export async function editMember(req: Request, res: Response): Promise<void> {
       return;
     }
 
+    // check if the user is trying to change email address
+    if (updates && updates.email && updates.email !== previousUser.email) {
+      const emailExists = await Member.findOne({ email: updates.email });
+      if (emailExists) {
+        res.status(409).send({ message: "Email already in use" });
+        return;
+      }
+    }
+
     // Authorization: only the user themselves or an admin can edit
     if (previousUser._id.toString() !== req.user?._id) {
       const adminData = await Member.findById(req.user?._id);
@@ -174,6 +183,7 @@ export async function editMember(req: Request, res: Response): Promise<void> {
       const { url, imgId } = await uploadImage(req.file);
       updates.image = url;
       updates.imgId = imgId;
+      updates.new = true; // Once edited, set new to true
     }
 
     // If password is empty string, retain previous password

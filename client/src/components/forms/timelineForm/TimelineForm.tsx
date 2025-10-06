@@ -106,6 +106,11 @@ export default function TimelineForm({
   });
 
   function onSubmit(data: { timeline: TimelineSchemaType[] }) {
+    if (data.timeline.length === 0) {
+      toast.error("Add at least one timeline event or cancel");
+      return;
+    }
+
     data.timeline = data.timeline.map((item) => {
       const date = dayjs(item.date);
       return {

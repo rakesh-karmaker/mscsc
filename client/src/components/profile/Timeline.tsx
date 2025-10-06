@@ -19,8 +19,6 @@ export default function Timeline({
     return <Empty style={{ marginTop: "3rem" }} />;
   }
 
-  console.log(timelineData);
-
   const sortedTimelineData = timelineData.sort((a, b) => {
     const dateA = new Date(a.date);
     const dateB = new Date(b.date);

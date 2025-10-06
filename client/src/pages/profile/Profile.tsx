@@ -101,7 +101,7 @@ export default function Profile(): ReactNode {
                 {isEditing ? (
                   isOwner && (
                     <>
-                      <UserEditForm />
+                      <UserEditForm setIsEditing={setIsEditing} />
                       <TimelineForm
                         timeline={profileData.timeline}
                         user={user as User}

@@ -42,6 +42,7 @@ export type NewMemberDataType = {
   image: string;
   imgId: string;
   slug: string;
+  new: boolean;
 };
 
 export type GetAllMembersRegexType = {

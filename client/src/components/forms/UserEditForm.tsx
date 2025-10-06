@@ -11,7 +11,7 @@ import {
   editUserSchema,
   type EditUserSchemaType,
 } from "@/lib/validation/editUserSchema";
-import type { ReactNode } from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
 import useErrorNavigator from "@/hooks/useErrorNavigator";
 import type { AxiosError } from "axios";
 import SelectInput from "../ui/SelectInput";
@@ -21,7 +21,11 @@ import FormSubmitBtn from "../ui/FormSubmitBtn";
 
 import "./registrationForm/userForm.css";
 
-export default function UserEditForm(): ReactNode {
+export default function UserEditForm({
+  setIsEditing,
+}: {
+  setIsEditing: Dispatch<SetStateAction<boolean>>;
+}): ReactNode {
   const { user } = useUser();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -66,6 +70,8 @@ export default function UserEditForm(): ReactNode {
         navigate(`/member/${data?.data?.member?.slug}`, { replace: true });
       } else {
         queryClient.invalidateQueries({ queryKey: ["user"] });
+        queryClient.invalidateQueries({ queryKey: ["members"] });
+        setIsEditing(false);
         window.scrollTo(0, 0);
       }
     },

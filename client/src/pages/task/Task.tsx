@@ -39,7 +39,7 @@ export default function Task({
   // get the data from the url
   const link = useLocation();
   const url = new URLSearchParams(link.search);
-  const username = url.get("user") || (!admin ? user?.slug : null);
+  const username = url.get("user") || (!admin ? user?.slug : undefined);
   const { taskName } = useParams();
 
   // init all the necessary states
@@ -50,7 +50,7 @@ export default function Task({
   // get the task
   const { data, isLoading, error, isError } = useQuery({
     queryKey: ["task", taskName, username],
-    queryFn: () => getTask(taskName || "", username || ""),
+    queryFn: () => getTask(taskName || "", username),
     staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: false,
     retry: 0,

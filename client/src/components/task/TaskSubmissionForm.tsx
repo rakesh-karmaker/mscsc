@@ -29,12 +29,12 @@ export default function TaskSubmissionForm({
     <>
       <div className="flex flex-col gap-[0.7em]">
         <div>
-          <h3 className="text-2xl">Instructions</h3>
+          <h3 className="text-2xl font-semibold">Instructions</h3>
           <FormattedTextContent content={task.instructions} />
         </div>
         {canSubmit ? (
           <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-            <h3 className="text-2xl">Answer</h3>
+            <h3 className="text-2xl font-semibold !mb-2">Answer</h3>
             <RichTextEditor
               key={submission ? submission.username : "new"}
               content={submission?.answer || ""}

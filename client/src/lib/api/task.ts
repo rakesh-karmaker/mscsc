@@ -17,7 +17,7 @@ export async function getAllTasks(
   });
 }
 
-export async function getTask(slug: string, username: string) {
+export async function getTask(slug: string, username: string | undefined) {
   return api.get(`/task/${slug}`, {
     params: {
       username: username,

@@ -68,6 +68,7 @@ export async function register(req: Request, res: Response): Promise<void> {
       password: hashedPassword,
       image: url,
       imgId: imgId,
+      new: true,
     };
     const newMember = await Member.create(newMemberData);
 
