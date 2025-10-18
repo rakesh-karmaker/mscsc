@@ -8,10 +8,12 @@ import "./executiveCard.css";
 
 export default function ExecutiveCard({
   executiveData,
+  panel,
 }: {
   executiveData: Executive;
+  panel: string;
 }): ReactNode {
-  const { name, position, image, socials, panel } = executiveData;
+  const { name, position, image, socials } = executiveData;
   return (
     <div className="executive-member">
       <div>

@@ -1,7 +1,6 @@
 export interface Executive {
   name: string;
   position: string;
-  panel: string;
   image: string;
   socials: {
     linkedin?: string;
@@ -11,3 +10,5 @@ export interface Executive {
     github?: string;
   };
 }
+
+export type ExecutivesData = { [year: string]: Executive[] };

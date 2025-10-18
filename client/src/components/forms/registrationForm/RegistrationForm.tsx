@@ -95,6 +95,7 @@ export default function RegistrationForm() {
           fullWidth
           error={!!errors.name}
           helperText={errors.name?.message}
+          placeholder="Enter your full name"
         />
 
         <TextField
@@ -128,6 +129,7 @@ export default function RegistrationForm() {
           fullWidth
           error={!!errors.contactNumber}
           helperText={errors.contactNumber?.message}
+          placeholder="Enter your phone number"
         />
       </Stack>
 
@@ -135,11 +137,12 @@ export default function RegistrationForm() {
         <TextField
           {...register("batch")}
           id="batch"
-          label="Batch"
+          label="SSC Batch"
           variant="outlined"
           fullWidth
           error={!!errors.batch}
           helperText={errors.batch?.message}
+          placeholder="Enter your SSC batch"
         />
         <SelectInput
           control={control}
@@ -158,11 +161,13 @@ export default function RegistrationForm() {
       <TextField
         {...register("reason")}
         id="reason"
-        label="Your Description"
+        label="Your Reason"
         variant="outlined"
         fullWidth
         error={!!errors.reason}
         helperText={errors.reason?.message}
+        multiline
+        placeholder="Enter your reason to join MSCSC"
       />
 
       <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
@@ -174,6 +179,7 @@ export default function RegistrationForm() {
           fullWidth
           error={!!errors.socialLink}
           helperText={errors.socialLink?.message}
+          placeholder="Enter your facebook profile link"
         />
 
         <TextField
@@ -184,6 +190,7 @@ export default function RegistrationForm() {
           fullWidth
           error={!!errors.reference}
           helperText={errors.reference?.message}
+          placeholder="Enter your reference's name else type N/A"
         />
       </Stack>
 

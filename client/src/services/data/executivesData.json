@@ -1,204 +1,268 @@
-[
-  {
-    "name": "Alvi Abid",
-    "position": "President",
-    "image": "2024-2025/alvipfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/Alvi.abid.realest/",
-      "linkedin": "https://www.linkedin.com/in/alvi-abid-2076012a6/"
+{
+  "2025-2026": [
+    {
+      "name": "Lazim Mustahab Adib",
+      "position": "President",
+      "image": "2025-2026/adibpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/sinobi.hayato.2024/"
+      }
     },
-    "panel": "2024-2025"
-  },
-  {
-    "name": "Taharat Rahman",
-    "position": "VP of Administration",
-    "image": "2023-2024/taharatpfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/taharat.rahman.18"
+    {
+      "name": "Wasik Shahriar",
+      "position": "Vice President",
+      "image": "2025-2026/wasikpfp.png",
+      "socials": {
+        "facebook": "https://www.facebook.com/wasik.shahariar/"
+      }
     },
-    "panel": "2024-2025"
-  },
-  {
-    "name": "Muhammad Saad",
-    "position": "VP of Learning & Head of Physics and Math Dpt.",
-    "image": "2023-2024/saadpfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/MD.SDBS"
+    {
+      "name": "Fayruj Humayra Binta Hashib",
+      "position": "General Secretary",
+      "image": "2024-2025/fayrujpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/sharaban.tohura.108"
+      }
     },
-    "panel": "2024-2025"
-  },
-  {
-    "name": "Raqin Shahrier",
-    "position": "VP of management",
-    "image": "2023-2024/raqinpfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/raqin.shahrier"
+    {
+      "name": "Sanjida Siddika",
+      "position": "Assistant General Secretary",
+      "image": "2025-2026/sanjidapfp.png",
+      "socials": {
+        "facebook": "https://www.facebook.com/sanjida.siddika.328660"
+      }
     },
-    "panel": "2024-2025"
-  },
-  {
-    "name": "Md Tanvir Ahmed",
-    "position": "General Secretary",
-    "image": "2024-2025/tanvirpfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/virtangog",
-      "github": "https://github.com/TanvirPlayzXX"
+    {
+      "name": "Nusrat Jahan Fiya",
+      "position": "Assistant General Secretary",
+      "image": "2025-2026/fiyapfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/nusrat.jahan.fiya.916253"
+      }
     },
-    "panel": "2024-2025"
-  },
-  {
-    "name": "Alif Khandaker",
-    "position": "Organizing Secretary",
-    "image": "2024-2025/alifpfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/profile.php?id=100026608211528"
+    {
+      "name": "Boniraj Madhurjyo",
+      "position": "Organizing Secretary",
+      "image": "2025-2026/bonirajpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/arafatbin.bonirajmadhurjyo"
+      }
     },
-    "panel": "2024-2025"
-  },
-  {
-    "name": "Rakesh Karmaker",
-    "position": "Web Developer",
-    "image": "2024-2025/rakeshpfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/rakesh.karmaker.980",
-      "github": "https://github.com/rakesh-karmaker"
+    {
+      "name": "Rafidul Haque",
+      "position": "Assistant Organizing Secretary",
+      "image": "2025-2026/rafidulpfp.png",
+      "socials": {
+        "facebook": "https://www.facebook.com/rafidul.hoque.47642"
+      }
     },
-    "panel": "2024-2025"
-  },
-  {
-    "name": "Shaikh Sadi",
-    "position": "Graphics Designer",
-    "image": "2024-2025/sadipfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/ShaikhSadi2008"
+    {
+      "name": "Rakesh Karmaker",
+      "position": "Department Head of IT",
+      "image": "2024-2025/rakeshpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/rakesh.karmaker.980",
+        "github": "https://github.com/rakeshkarmaker"
+      }
     },
-    "panel": "2024-2025"
-  },
-  {
-    "name": "Zannatul Zafrin",
-    "position": "Press and Publication",
-    "image": "2024-2025/zannatulpfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/profile.php?id=100058734297302"
+    {
+      "name": "Mifta Rahman",
+      "position": "Assistant Dpt. Head of IT",
+      "image": "2025-2026/miftapfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/m.if.ta.705441"
+      }
     },
-    "panel": "2024-2025"
-  },
-  {
-    "name": "Fayruj Humayra Binta Hashib",
-    "position": "Head of Eco and Space Dpt.",
-    "image": "2024-2025/fayrujpfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/sharaban.tohura.108"
+    {
+      "name": "Nafisa Yamin",
+      "position": "Press and Publication Secretary",
+      "image": "2025-2026/nafisapfp.png",
+      "socials": {
+        "facebook": "https://www.facebook.com/nafisa.yamin.2024"
+      }
+    }
+  ],
+  "2024-2025": [
+    {
+      "name": "Alvi Abid",
+      "position": "President",
+      "image": "2024-2025/alvipfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/Alvi.abid.realest/",
+        "linkedin": "https://www.linkedin.com/in/alvi-abid-2076012a6/"
+      }
     },
-    "panel": "2024-2025"
-  },
-  {
-    "name": "Ahana Rahman",
-    "position": "Assistant Head of Eco and Space Dpt.",
-    "image": "2024-2025/ahanapfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/karima.khanam.186"
+    {
+      "name": "Taharat Rahman",
+      "position": "VP of Administration",
+      "image": "2023-2024/taharatpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/taharat.rahman.18"
+      }
     },
-    "panel": "2024-2025"
-  },
-  {
-    "name": "Nur Saba",
-    "position": "President",
-    "image": "placeholderpfp.webp",
-    "socials": {},
-    "panel": "2023-2024"
-  },
-  {
-    "name": "Faiza Karim",
-    "position": "General Secretary",
-    "image": "placeholderpfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/faizakarim1311"
+    {
+      "name": "Muhammad Saad",
+      "position": "VP of Learning & Head of Physics and Math Dpt.",
+      "image": "2023-2024/saadpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/MD.SDBS"
+      }
     },
-    "panel": "2023-2024"
-  },
-  {
-    "name": "Turjo Ghosh",
-    "position": "Organizing Secretary",
-    "image": "2023-2024/turjopfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/profile.php?id=100074396814474"
+    {
+      "name": "Raqin Shahrier",
+      "position": "VP of management",
+      "image": "2023-2024/raqinpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/raqin.shahrier"
+      }
     },
-    "panel": "2023-2024"
-  },
-  {
-    "name": "Raqin Shahrier",
-    "position": "Assistant General Secretary",
-    "image": "2023-2024/raqinpfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/raqin.shahrier"
+    {
+      "name": "Md Tanvir Ahmed",
+      "position": "General Secretary",
+      "image": "2024-2025/tanvirpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/virtangog",
+        "github": "https://github.com/virtangog"
+      }
     },
-    "panel": "2023-2024"
-  },
-  {
-    "name": "Muhammad Saad",
-    "position": "Assistant General Secretary",
-    "image": "2023-2024/saadpfp.webp",
-    "socials": {},
-    "panel": "2023-2024"
-  },
-  {
-    "name": "Ahanaf Muntasir",
-    "position": "Assistant General Secretary",
-    "image": "placeholderpfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/MD.AHANAF.4741"
+    {
+      "name": "Alif Khandaker",
+      "position": "Organizing Secretary",
+      "image": "2024-2025/alifpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/profile.php?id=100026608211528"
+      }
     },
-    "panel": "2023-2024"
-  },
-  {
-    "name": "MD. Sheam Haque",
-    "position": "Assistant Organizing Secretary",
-    "image": "placeholderpfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/mdsheam.haque"
+    {
+      "name": "Rakesh Karmaker",
+      "position": "Web Developer",
+      "image": "2024-2025/rakeshpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/rakesh.karmaker.980",
+        "github": "https://github.com/rakeshkarmaker"
+      }
     },
-    "panel": "2023-2024"
-  },
-  {
-    "name": "Taharat Rahman",
-    "position": "Assistant Organizing Secretary",
-    "image": "2023-2024/taharatpfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/taharat.rahman.18"
+    {
+      "name": "Shaikh Sadi",
+      "position": "Graphics Designer",
+      "image": "2024-2025/sadipfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/ShaikhSadi2008"
+      }
     },
-    "panel": "2023-2024"
-  },
-  {
-    "name": "Adnan Adib",
-    "position": "Assistant Organizing Secretary",
-    "image": "2023-2024/adnanpfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/kamaboko.gonpachiro.393"
+    {
+      "name": "Zannatul Zafrin",
+      "position": "Press and Publication",
+      "image": "2024-2025/zannatulpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/profile.php?id=100058734297302"
+      }
     },
-    "panel": "2023-2024"
-  },
-  {
-    "name": "Dhrubo Nur Ahammed",
-    "position": "Head of IT & Graphics Team",
-    "image": "placeholderpfp.webp",
-    "socials": {
-      "facebook": "https://www.facebook.com/the.legendary.boy.134"
+    {
+      "name": "Fayruj Humayra Binta Hashib",
+      "position": "Head of Eco and Space Dpt.",
+      "image": "2024-2025/fayrujpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/sharaban.tohura.108"
+      }
     },
-    "panel": "2023-2024"
-  },
-  {
-    "name": "Kazi Maisha",
-    "position": "Secretary of Press and Publication",
-    "image": "placeholderpfp.webp",
-    "socials": {},
-    "panel": "2023-2024"
-  },
-  {
-    "name": "Sadaf Bin Azhar",
-    "position": "Secretary of Press and Publication",
-    "image": "placeholderpfp.webp",
-    "socials": {},
-    "panel": "2023-2024"
-  }
-]
+    {
+      "name": "Ahana Rahman",
+      "position": "Assistant Head of Eco and Space Dpt.",
+      "image": "2024-2025/ahanapfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/karima.khanam.186"
+      }
+    }
+  ],
+  "2023-2024": [
+    {
+      "name": "Nur Saba",
+      "position": "President",
+      "image": "placeholderpfp.webp",
+      "socials": {}
+    },
+    {
+      "name": "Faiza Karim",
+      "position": "General Secretary",
+      "image": "placeholderpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/faizakarim1311"
+      }
+    },
+    {
+      "name": "Turjo Ghosh",
+      "position": "Organizing Secretary",
+      "image": "2023-2024/turjopfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/profile.php?id=100074396814474"
+      }
+    },
+    {
+      "name": "Raqin Shahrier",
+      "position": "Assistant General Secretary",
+      "image": "2023-2024/raqinpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/raqin.shahrier"
+      }
+    },
+    {
+      "name": "Muhammad Saad",
+      "position": "Assistant General Secretary",
+      "image": "2023-2024/saadpfp.webp",
+      "socials": {}
+    },
+    {
+      "name": "Ahanaf Muntasir",
+      "position": "Assistant General Secretary",
+      "image": "placeholderpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/MD.AHANAF.4741"
+      }
+    },
+    {
+      "name": "MD. Sheam Haque",
+      "position": "Assistant Organizing Secretary",
+      "image": "placeholderpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/mdsheam.haque"
+      }
+    },
+    {
+      "name": "Taharat Rahman",
+      "position": "Assistant Organizing Secretary",
+      "image": "2023-2024/taharatpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/taharat.rahman.18"
+      }
+    },
+    {
+      "name": "Adnan Adib",
+      "position": "Assistant Organizing Secretary",
+      "image": "2023-2024/adnanpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/kamaboko.gonpachiro.393"
+      }
+    },
+    {
+      "name": "Dhrubo Nur Ahammed",
+      "position": "Head of IT & Graphics Team",
+      "image": "placeholderpfp.webp",
+      "socials": {
+        "facebook": "https://www.facebook.com/the.legendary.boy.134"
+      }
+    },
+    {
+      "name": "Kazi Maisha",
+      "position": "Secretary of Press and Publication",
+      "image": "placeholderpfp.webp",
+      "socials": {}
+    },
+    {
+      "name": "Sadaf Bin Azhar",
+      "position": "Secretary of Press and Publication",
+      "image": "placeholderpfp.webp",
+      "socials": {}
+    }
+  ]
+}

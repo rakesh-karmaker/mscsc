@@ -1,15 +1,17 @@
-import type { Executive } from "@/types/executiveTypes";
 import { useEffect, type ReactNode } from "react";
 import ExecutiveCard from "@/components/ui/executiveCard/ExecutiveCard";
 import PrimaryBtn from "@/components/ui/PrimaryBtn";
 import SectionHeader from "@/components/ui/SectionHeader";
+import type { ExecutivesData } from "@/types/executiveTypes";
 
 export default function HomeExecutivesContainer({
   data,
 }: {
-  data: Executive[];
+  data: ExecutivesData;
 }): ReactNode {
-  const filteredEcs = data.slice(0, 4);
+  const latestPanel: string = Object.keys(data)[0];
+  const filteredEcs = data[latestPanel].slice(0, 4);
+
   useEffect(() => {
     document
       .querySelectorAll(".executive-member")
@@ -34,7 +36,11 @@ export default function HomeExecutivesContainer({
         </SectionHeader>
         <div className="mt-12 w-full flex flex-warp gap-15">
           {filteredEcs.map((ec) => (
-            <ExecutiveCard key={ec.name} executiveData={ec} />
+            <ExecutiveCard
+              key={ec.name}
+              executiveData={ec}
+              panel={latestPanel}
+            />
           ))}
         </div>
       </div>

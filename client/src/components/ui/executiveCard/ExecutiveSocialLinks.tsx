@@ -29,6 +29,8 @@ export default function ExecutiveSocials({
               className="row-center"
               title={social}
               aria-label={`Go to ${name}'s ${social} page`}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <SocialIcon social={social} />
             </Link>
