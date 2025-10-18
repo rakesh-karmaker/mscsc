@@ -161,13 +161,13 @@ export default function RegistrationForm() {
       <TextField
         {...register("reason")}
         id="reason"
-        label="Your Reason"
+        label="Description"
         variant="outlined"
         fullWidth
         error={!!errors.reason}
         helperText={errors.reason?.message}
         multiline
-        placeholder="Enter your reason to join MSCSC"
+        placeholder="Tell us something about yourself and why you want to join MSCSC"
       />
 
       <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
