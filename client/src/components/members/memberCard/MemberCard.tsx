@@ -40,7 +40,7 @@ export default function MemberCard({
       <div className="member-image-container">
         <LazyLoadImage
           src={
-            isImageHidden && !isExecutive
+            (isImageHidden || !isImageVerified) && !isExecutive
               ? "/executive-members/placeholderpfp.webp"
               : image
           }
