@@ -20,8 +20,8 @@ export default function ContactContainer(): ReactNode {
         <div className="contacts-container">
           <ContactInfo
             title="Call us"
-            href="tel: 01329-600430"
-            content="+880 1329-600430"
+            href="tel: 01644-330810"
+            content="+880 1644-330810"
           >
             <FaPhoneAlt />
           </ContactInfo>
