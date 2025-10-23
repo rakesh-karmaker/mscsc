@@ -29,8 +29,8 @@ export default function FooterLinks(): ReactNode {
           <Link to="mailto:mscscofficial17@gmail">
             <FaEnvelope /> mscscofficial17@gmail
           </Link>
-          <Link to="tel: 01329-600430">
-            <FaPhoneAlt /> +880 1329-600430
+          <Link to="tel: 01644-330810">
+            <FaPhoneAlt /> +880 1644-330810
           </Link>
         </div>
       </div>
