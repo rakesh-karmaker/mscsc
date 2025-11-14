@@ -66,6 +66,13 @@
   margin-bottom: 1rem;
 }
 
+.editor-content ul {
+  list-style: disc;
+}
+.editor-content ol {
+  list-style: decimal;
+}
+
 .editor-content ul ul,
 .editor-content ol ol,
 .editor-content ul ol,

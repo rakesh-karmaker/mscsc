@@ -34,7 +34,7 @@ export default function HomeExecutivesContainer({
             See Others
           </PrimaryBtn>
         </SectionHeader>
-        <div className="mt-12 w-full flex flex-warp gap-15">
+        <div className="mt-12 w-full flex flex-wrap gap-15">
           {filteredEcs.map((ec) => (
             <ExecutiveCard
               key={ec.name}

@@ -128,8 +128,12 @@
   padding-left: 2em;
 }
 
+.content-container ul {
+  list-style: disc;
+}
+
 .content-container ol {
-  list-style: inside lead;
+  list-style: inside lead decimal;
   padding-left: 1.7em;
 }
 
