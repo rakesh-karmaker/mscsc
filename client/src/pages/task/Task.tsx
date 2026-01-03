@@ -1,4 +1,4 @@
-import { useUser } from "@/contexts/UserContext";
+import { useUser } from "@/contexts/user-context";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   useEffect,
@@ -12,15 +12,15 @@ import { useLocation, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { editSubmission, getTask, submitTask } from "@/lib/api/task";
-import type { Submission, Task as TaskType } from "@/types/taskTypes";
+import type { Submission, Task as TaskType } from "@/types/task-types";
 import type { AxiosError } from "axios";
-import Loader from "@/components/ui/loader/Loader";
-import TaskHeader from "@/components/task/TaskHeader";
-import TaskTags from "@/components/ui/taskTags/TaskTags";
-import type { User } from "@/types/userTypes";
-import TaskSubmissionPreview from "@/components/task/taskSubmissionPreview/TaskSubmissionPreview";
-import TaskSubmissionForm from "@/components/task/TaskSubmissionForm";
-import TaskSidebar from "@/layouts/taskSidebar/TaskSidebar";
+import Loader from "@/components/ui/loader/loader";
+import TaskHeader from "@/components/task/task-header";
+import TaskTags from "@/components/ui/task-tags/task-tags";
+import type { User } from "@/types/user-types";
+import TaskSubmissionPreview from "@/components/task/task-submission-preview/task-submission-preview";
+import TaskSubmissionForm from "@/components/task/task-submission-form";
+import TaskSidebar from "@/layouts/taskSidebar/task-sidebar";
 
 import "./task.css";
 

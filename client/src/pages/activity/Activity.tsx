@@ -3,11 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useState, type ReactNode } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { getActivity } from "@/lib/api/activities";
-import Loader from "@/components/ui/loader/Loader";
-import formatDate from "@/utils/formatDate";
-import Gallery from "@/components/ui/gallery/Gallery";
-import FormattedTextContent from "@/components/ui/formattedTextContent/FormattedTextContent";
-import ImageViewer from "@/components/ui/imageViewer/ImageViewer";
+import Loader from "@/components/ui/loader/loader";
+import formatDate from "@/utils/format-date";
+import Gallery from "@/components/ui/gallery/gallery";
+import FormattedTextContent from "@/components/ui/formatted-text-content/formatted-text-content";
+import ImageViewer from "@/components/ui/image-viewer/image-viewer";
 
 import "./activity.css";
 

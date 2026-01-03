@@ -1,17 +1,17 @@
-import { useUser } from "@/contexts/UserContext";
+import { useUser } from "@/contexts/user-context";
 import { useParams } from "react-router-dom";
 import { useState, useEffect, type ReactNode } from "react";
-import AboutProfile from "@/components/profile/aboutProfile/AboutProfile";
+import AboutProfile from "@/components/profile/about-profile/about-profile";
 import { useQuery } from "@tanstack/react-query";
 import { getMember } from "@/lib/api/member";
 import { HiPencil } from "react-icons/hi2";
 import { FaEye } from "react-icons/fa";
-import Loader from "@/components/ui/loader/Loader";
-import ProfileDetails from "@/components/profile/profileDetails/ProfileDetails";
-import Timeline from "@/components/profile/Timeline";
-import TimelineForm from "@/components/forms/timelineForm/TimelineForm";
-import type { User } from "@/types/userTypes";
-import UserEditForm from "@/components/forms/UserEditForm";
+import Loader from "@/components/ui/loader/loader";
+import ProfileDetails from "@/components/profile/profile-details/profile-details";
+import Timeline from "@/components/profile/timeline";
+import TimelineForm from "@/components/forms/timeline-form/timeline-form";
+import type { User } from "@/types/user-types";
+import UserEditForm from "@/components/forms/user-edit-form";
 
 import "./profile.css";
 
@@ -19,7 +19,7 @@ export default function Profile(): ReactNode {
   const { username } = useParams();
   const { user } = useUser();
   const isOwner = user?.slug === username;
-  const isExecutive = user && user?.position !== "member";
+  const isExecutive = user && user?.position !== "member" ? true : false;
   const [isEditing, setIsEditing] = useState(false);
   useEffect(() => {
     setIsEditing(false);
@@ -61,9 +61,10 @@ export default function Profile(): ReactNode {
           <div className="profile-left">
             <img
               src={
-                profileData?.isImageHidden && !isOwner && !isExecutive
+                (profileData.isImageHidden || !profileData.isImageVerified) &&
+                !isExecutive
                   ? "/executive-members/placeholderpfp.webp"
-                  : profileData?.image
+                  : profileData.image
               }
               alt={profileData.name}
               rel="preload"

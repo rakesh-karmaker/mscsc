@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import executivesData from "@/services/data/executivesData.json";
-import ExecutivesContainer from "@/components/executives/ExecutivesContainer";
+import executivesData from "@/services/data/executives-data.json";
+import ExecutivesContainer from "@/components/executives/executives-container";
 
 import "./executives.css";
 

@@ -1,9 +1,9 @@
 import { useEffect, type ReactNode } from "react";
-import { useMembers } from "@/contexts/MembersProvider";
-import Loader from "@/components/ui/loader/Loader";
-import SearchInput from "@/components/ui/searchInput/SearchInput";
-import BranchTags from "@/components/members/BranchTags";
-import MembersContainer from "@/components/members/MembersContainer";
+import { useMembers } from "@/contexts/members-context";
+import Loader from "@/components/ui/loader/loader";
+import SearchInput from "@/components/ui/search-input/search-input";
+import BranchTags from "@/components/members/branch-tags";
+import MembersContainer from "@/components/members/members-container";
 
 import "./members.css";
 

@@ -1,12 +1,12 @@
 import { useEffect, type Dispatch, type SetStateAction } from "react";
-import { useActivities } from "@/contexts/ActivitiesContext";
+import { useActivities } from "@/contexts/activities-context";
 import { useLocation } from "react-router-dom";
-import Loader from "@/components/ui/loader/Loader";
-import Empty from "@/components/ui/empty/Empty";
-import PaginationContainer from "@/components/ui/paginationContainer/PaginationContainer";
-import ActivitiesNavbar from "@/layouts/activitiesNavbar/ActivitiesNavbar";
-import ActivityCard from "@/components/activityCard/ActivityCard";
-import type { ActivityPreview } from "@/types/activityTypes";
+import Loader from "@/components/ui/loader/loader";
+import Empty from "@/components/ui/empty/empty";
+import PaginationContainer from "@/components/ui/pagination-container/pagination-container";
+import ActivitiesNavbar from "@/layouts/activities-navbar/activities-navbar";
+import ActivityCard from "@/components/activity-card/activity-card";
+import type { ActivityPreview } from "@/types/activity-types";
 
 export default function Activities({
   admin,

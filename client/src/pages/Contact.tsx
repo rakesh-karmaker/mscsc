@@ -1,4 +1,4 @@
-import ContactContainer from "@/components/contact/ContactContainer";
+import ContactContainer from "@/components/contact/contact-container";
 
 export default function ContactPage() {
   return (

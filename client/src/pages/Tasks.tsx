@@ -1,9 +1,9 @@
-import { useTasks } from "@/contexts/TasksContext";
-import { useUser } from "@/contexts/UserContext";
-import SearchInput from "@/components/ui/searchInput/SearchInput";
-import Loader from "@/components/ui/loader/Loader";
-import TaskList from "@/components/tasks/taskList/TaskList";
-import TasksSidebar from "@/layouts/tasksSidebar/TasksSidebar";
+import { useTasks } from "@/contexts/tasks-context";
+import { useUser } from "@/contexts/user-context";
+import SearchInput from "@/components/ui/search-input/search-input";
+import Loader from "@/components/ui/loader/loader";
+import TaskList from "@/components/tasks/taskList/task-list";
+import TasksSidebar from "@/layouts/tasks-sidebar/tasks-sidebar";
 
 export default function Tasks({ admin }: { admin?: boolean }) {
   // check if the user is logged in

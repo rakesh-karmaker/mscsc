@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "@/contexts/UserContext";
-import FormHeading from "@/components/ui/formHeading/FromHeading";
-import RegistrationForm from "@/components/forms/registrationForm/RegistrationForm";
-import LoginForm from "@/components/forms/loginForm/LoginForm";
+import { useUser } from "@/contexts/user-context";
+import FormHeading from "@/components/ui/form-heading/from-heading";
+import RegistrationForm from "@/components/forms/registration-form/registration-form";
+import LoginForm from "@/components/forms/login-form/login-form";
 
 import "./auth.css";
 

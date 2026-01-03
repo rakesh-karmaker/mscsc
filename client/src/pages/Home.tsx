@@ -1,12 +1,12 @@
-import HeroContainer from "@/components/home/hero/heroContainer/HeroContainer";
-import AboutContainer from "@/components/about/aboutContainer/AboutContainer";
-import EventsContainer from "@/components/home/events/eventsContainer/EventsContainer";
-import ArticlesContainer from "@/components/home/articles/articlesContainer/ArticlesContainer";
-import HomeExecutivesContainer from "@/components/home/HomeExecutivesContainer";
-import ContactContainer from "@/components/contact/ContactContainer";
-import executivesData from "@/services/data/executivesData.json";
+import HeroContainer from "@/components/home/hero/hero-container/hero-container";
+import AboutContainer from "@/components/about/about-container/about-container";
+import EventsContainer from "@/components/home/events/events-container/events-container";
+import ArticlesContainer from "@/components/home/articles/articles-container/articles-container";
+import HomeExecutivesContainer from "@/components/home/home-executives-container";
+import ContactContainer from "@/components/contact/contact-container";
+import executivesData from "@/services/data/executives-data.json";
 import { useQuery } from "@tanstack/react-query";
-import useErrorNavigator from "@/hooks/useErrorNavigator";
+import useErrorNavigator from "@/hooks/use-error-navigator";
 import { getHomeActivities } from "@/lib/api/activities";
 import type { ReactNode } from "react";
 

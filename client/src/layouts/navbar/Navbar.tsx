@@ -1,4 +1,4 @@
-import { useUser } from "@/contexts/UserContext";
+import { useUser } from "@/contexts/user-context";
 import { navLinks } from "@/services/data/data";
 import {
   useRef,
@@ -9,9 +9,9 @@ import {
   type SetStateAction,
 } from "react";
 import { NavLink } from "react-router-dom";
-import NavbarToggleBtn from "./NavbarToggleBtn";
-import Avatar from "@/components/ui/Avatar";
-import PrimaryBtn from "@/components/ui/PrimaryBtn";
+import NavbarToggleBtn from "./navbar-toggle-btn";
+import Avatar from "@/components/ui/avatar";
+import PrimaryBtn from "@/components/ui/primary-btn";
 
 import "./navbar.css";
 

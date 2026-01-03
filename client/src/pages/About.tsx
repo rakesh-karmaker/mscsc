@@ -1,4 +1,4 @@
-import AboutContainer from "@/components/about/aboutContainer/AboutContainer";
+import AboutContainer from "@/components/about/about-container/about-container";
 import type { ReactNode } from "react";
 
 export default function AboutPage(): ReactNode {

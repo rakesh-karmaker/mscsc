@@ -1,5 +1,5 @@
 import { api } from "@/config/axios";
-import type { ActivitySchemaType } from "../validation/activitySchema";
+import type { ActivitySchemaType } from "../validation/activity-schema";
 
 export async function getAllActivities(
   page: number,

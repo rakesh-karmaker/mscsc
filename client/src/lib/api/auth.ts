@@ -1,6 +1,6 @@
 import { api } from "@/config/axios";
-import type { RegisterSchemaType } from "../validation/registerSchema";
-import type { LoginSchemaType } from "../validation/loginSchema";
+import type { RegisterSchemaType } from "../validation/register-schema";
+import type { LoginSchemaType } from "../validation/login-schema";
 
 // Verify JWT Token and get user data
 export async function verifyToken() {
