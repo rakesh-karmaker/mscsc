@@ -1,6 +1,6 @@
 import express from "express";
-import { getDashboardData } from "../controllers/adminController.js";
-import { isAdmin, isAuthorized } from "../middlewares/authMiddleware.js";
+import { getDashboardData } from "../controllers/admin-controller.js";
+import { isAdmin, isAuthorized } from "../middlewares/auth-middleware.js";
 
 const dashboardRouter = express.Router();
 

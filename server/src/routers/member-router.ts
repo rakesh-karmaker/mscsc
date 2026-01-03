@@ -5,9 +5,9 @@ import {
   getAllMembers,
   getMember,
   getTopSubmitters,
-} from "../controllers/memberController.js";
+} from "../controllers/member-controller.js";
 import upload from "../middlewares/multer.js";
-import { isAdmin, isAuthorized } from "../middlewares/authMiddleware.js";
+import { isAdmin, isAuthorized } from "../middlewares/auth-middleware.js";
 
 const memberRouter = express.Router();
 

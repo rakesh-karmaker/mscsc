@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import generateSlug from "../utils/generateSlug.js";
+import generateSlug from "../utils/generate-slug.js";
 import Member from "../models/Member.js";
 import jwt from "jsonwebtoken";
 import config from "../config/config.js";
-import getDate from "../utils/getDate.js";
-import { registerSchema } from "../lib/validation/authSchema.js";
-import { uploadImage } from "../lib/imageUploader.js";
+import getDate from "../utils/get-date.js";
+import { registerSchema } from "../lib/validation/auth-schema.js";
+import { uploadImage } from "../lib/image-uploader.js";
 import { compareHash, generateHash } from "../utils/hash.js";
-import { NewMemberDataType } from "../types/memberTypes.js";
+import { NewMemberDataType } from "../types/member-types.js";
 
 const JWT_EXPIRATION = "30d"; // Token valid for 30 days
 

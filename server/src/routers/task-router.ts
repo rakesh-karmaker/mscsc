@@ -1,5 +1,5 @@
 import express from "express";
-import { isAdmin, isAuthorized } from "../middlewares/authMiddleware.js";
+import { isAdmin, isAuthorized } from "../middlewares/auth-middleware.js";
 import upload from "../middlewares/multer.js";
 import {
   createTask,
@@ -7,14 +7,14 @@ import {
   editTask,
   getAllTasks,
   getTask,
-} from "../controllers/taskController.js";
+} from "../controllers/task-controller.js";
 import {
   deleteSubmission,
   editSubmission,
   makeWinner,
   removeWinner,
   submitTask,
-} from "../controllers/taskSubmissionController.js";
+} from "../controllers/task-submission-controller.js";
 
 const taskRouter = express.Router();
 

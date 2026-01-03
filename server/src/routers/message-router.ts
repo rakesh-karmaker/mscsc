@@ -1,11 +1,11 @@
 import express from "express";
-import { isAdmin, isAuthorized } from "../middlewares/authMiddleware.js";
+import { isAdmin, isAuthorized } from "../middlewares/auth-middleware.js";
 import {
   deleteMessage,
   getAllMessages,
   markMessageAsRead,
   sendMessage,
-} from "../controllers/messageController.js";
+} from "../controllers/message-controller.js";
 
 const messageRouter = express.Router();
 

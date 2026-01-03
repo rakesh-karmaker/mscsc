@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import paginateResults from "../lib/paginateResults.js";
+import paginateResults from "../lib/paginate-results.js";
 import Message from "../models/Message.js";
-import { messageSchema } from "../lib/validation/messageScheme.js";
+import { messageSchema } from "../lib/validation/message-scheme.js";
 
 // Get all messages with pagination, sorting, and filtering
 export async function getAllMessages(

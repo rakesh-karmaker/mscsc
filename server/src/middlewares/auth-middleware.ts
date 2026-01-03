@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import getDate from "../utils/getDate.js";
+import getDate from "../utils/get-date.js";
 import Member from "../models/Member.js";
 import config from "../config/config.js";
 

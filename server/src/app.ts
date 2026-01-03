@@ -1,14 +1,14 @@
 import express from "express";
-import { errorHandler } from "./middlewares/errorHandler.js";
+import { errorHandler } from "./middlewares/error-handler.js";
 import cors from "cors";
 import config from "./config/config.js";
-import authRouter from "./routers/authRouter.js";
-import forgotPasswordRouter from "./routers/forgotPasswordRouter.js";
-import taskRouter from "./routers/taskRouter.js";
-import memberRouter from "./routers/memberRouter.js";
-import activityRouter from "./routers/activityRouter.js";
-import messageRouter from "./routers/messageRouter.js";
-import dashboardRouter from "./routers/dashboardRouter.js";
+import authRouter from "./routers/auth-router.js";
+import forgotPasswordRouter from "./routers/forgot-password-router.js";
+import taskRouter from "./routers/task-router.js";
+import memberRouter from "./routers/member-router.js";
+import activityRouter from "./routers/activity-router.js";
+import messageRouter from "./routers/message-router.js";
+import dashboardRouter from "./routers/dashboard-router.js";
 
 const app = express();
 

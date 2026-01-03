@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import Member from "../models/Member.js";
-import { GetAllMembersRegexType } from "../types/memberTypes.js";
-import paginateResults from "../lib/paginateResults.js";
-import { deleteImage, uploadImage } from "../lib/imageUploader.js";
+import { GetAllMembersRegexType } from "../types/member-types.js";
+import paginateResults from "../lib/paginate-results.js";
+import { deleteImage, uploadImage } from "../lib/image-uploader.js";
 import { generateHash } from "../utils/hash.js";
 
 // Get all members

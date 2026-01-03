@@ -1,5 +1,5 @@
 import express from "express";
-import { isAdmin, isAuthorized } from "../middlewares/authMiddleware.js";
+import { isAdmin, isAuthorized } from "../middlewares/auth-middleware.js";
 import upload from "../middlewares/multer.js";
 import {
   createActivity,
@@ -8,7 +8,7 @@ import {
   getActivity,
   getAllActivities,
   getHomeActivities,
-} from "../controllers/activityController.js";
+} from "../controllers/activity-controller.js";
 
 const activityRouter = express.Router();
 

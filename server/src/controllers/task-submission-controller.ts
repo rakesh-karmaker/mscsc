@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import Task from "../models/Task.js";
 import Member from "../models/Member.js";
-import { deleteImage, uploadImage } from "../lib/imageUploader.js";
-import { SubmissionType, SubmissionUpdateType } from "../types/taskTypes.js";
-import getPosition from "../utils/getPosition.js";
+import { deleteImage, uploadImage } from "../lib/image-uploader.js";
+import { SubmissionType, SubmissionUpdateType } from "../types/task-types.js";
+import getPosition from "../utils/get-position.js";
 
 // submit a task
 export async function submitTask(req: Request, res: Response): Promise<void> {

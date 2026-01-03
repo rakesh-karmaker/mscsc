@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { TaskSchemaType } from "../types/taskTypes.js";
+import { TaskSchemaType } from "../types/task-types.js";
 
 const SubmissionSchema = new mongoose.Schema({
   username: { type: String },

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { ActivitySchemaType } from "../types/activityTypes.js";
+import { ActivitySchemaType } from "../types/activity-types.js";
 
 const ActivitySchema = new mongoose.Schema<ActivitySchemaType>(
   {

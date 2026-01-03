@@ -1,7 +1,7 @@
 import express from "express";
 import upload from "../middlewares/multer.js";
-import { login, register, verifyUser } from "../controllers/authController.js";
-import { isAuthorized } from "../middlewares/authMiddleware.js";
+import { login, register, verifyUser } from "../controllers/auth-controller.js";
+import { isAuthorized } from "../middlewares/auth-middleware.js";
 
 const authRouter = express.Router();
 

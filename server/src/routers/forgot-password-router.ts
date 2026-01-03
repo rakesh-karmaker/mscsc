@@ -3,7 +3,7 @@ import {
   resetPassword,
   sendOTP,
   verifyOTP,
-} from "../controllers/forgotPasswordController.js";
+} from "../controllers/forgot-password-controller.js";
 
 const forgotPasswordRouter = express.Router();
 

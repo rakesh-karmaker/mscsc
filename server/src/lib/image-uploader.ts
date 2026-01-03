@@ -1,6 +1,6 @@
 import sharp from "sharp";
 import imagekit from "../config/imagekit.js";
-import getDate from "../utils/getDate.js";
+import getDate from "../utils/get-date.js";
 
 // Upload image to ImageKit and return the URL and image ID
 export async function uploadImage(

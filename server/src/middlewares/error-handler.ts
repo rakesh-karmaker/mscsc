@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import getDate from "../utils/getDate.js";
+import getDate from "../utils/get-date.js";
 
 export interface AppError extends Error {
   status?: number;

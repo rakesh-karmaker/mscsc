@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import paginateResults from "../lib/paginateResults.js";
+import paginateResults from "../lib/paginate-results.js";
 import Task from "../models/Task.js";
-import { getTaskQuery } from "../queries/taskQuery.js";
+import { getTaskQuery } from "../queries/task-query.js";
 import Member from "../models/Member.js";
-import generateSlug from "../utils/generateSlug.js";
-import getDate from "../utils/getDate.js";
-import { taskSchema } from "../lib/validation/taskSchema.js";
-import { deleteImage } from "../lib/imageUploader.js";
+import generateSlug from "../utils/generate-slug.js";
+import getDate from "../utils/get-date.js";
+import { taskSchema } from "../lib/validation/task-schema.js";
+import { deleteImage } from "../lib/image-uploader.js";
 
 // get all tasks
 export async function getAllTasks(req: Request, res: Response): Promise<void> {

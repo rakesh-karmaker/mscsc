@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import Member from "../models/Member.js";
-import generateOTP from "../utils/generateOTP.js";
-import sendEmail from "../lib/sendEmail.js";
+import generateOTP from "../utils/generate-otp.js";
+import sendEmail from "../lib/send-email.js";
 import { compareHash, generateHash } from "../utils/hash.js";
 import ForgotPasswordOTP from "../models/ForgotPasswordOTP.js";
-import generateId from "../utils/generateId.js";
+import generateId from "../utils/generate-id.js";
 
 // Send OTP to the user's email
 export async function sendOTP(req: Request, res: Response): Promise<void> {

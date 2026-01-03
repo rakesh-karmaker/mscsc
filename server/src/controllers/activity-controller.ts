@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import paginateResults from "../lib/paginateResults.js";
+import paginateResults from "../lib/paginate-results.js";
 import Activity from "../models/Activity.js";
-import generateSlug from "../utils/generateSlug.js";
+import generateSlug from "../utils/generate-slug.js";
 import {
   deleteImage,
   uploadImage,
   uploadMultipleImages,
-} from "../lib/imageUploader.js";
-import { activitySchema } from "../lib/validation/activitySchema.js";
+} from "../lib/image-uploader.js";
+import { activitySchema } from "../lib/validation/activity-schema.js";
 
 // Get all activities
 export async function getAllActivities(
