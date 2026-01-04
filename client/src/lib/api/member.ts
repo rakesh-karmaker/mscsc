@@ -1,7 +1,7 @@
 import { api } from "@/config/axios";
-import type { EditUserSchemaType } from "../validation/editUserSchema";
-import type { TimelineSchemaType } from "../validation/timelineSchema";
-import type { MemberEditTypes } from "@/types/memberTypes";
+import type { EditUserSchemaType } from "../validation/edit-user-schema";
+import type { TimelineSchemaType } from "../validation/timeline-schema";
+import type { MemberEditTypes } from "@/types/member-types";
 
 export async function getMember(slug: string) {
   const response = await api.get(`/member/${slug}`);

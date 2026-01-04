@@ -1,4 +1,4 @@
-import { useUser } from "@/contexts/UserContext";
+import { useUser } from "@/contexts/user-context";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   useEffect,
@@ -12,17 +12,18 @@ import { useLocation, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { editSubmission, getTask, submitTask } from "@/lib/api/task";
-import type { Submission, Task as TaskType } from "@/types/taskTypes";
+import type { Submission, Task as TaskType } from "@/types/task-types";
 import type { AxiosError } from "axios";
-import Loader from "@/components/ui/loader/Loader";
-import TaskHeader from "@/components/task/TaskHeader";
-import TaskTags from "@/components/ui/taskTags/TaskTags";
-import type { User } from "@/types/userTypes";
-import TaskSubmissionPreview from "@/components/task/taskSubmissionPreview/TaskSubmissionPreview";
-import TaskSubmissionForm from "@/components/task/TaskSubmissionForm";
-import TaskSidebar from "@/layouts/taskSidebar/TaskSidebar";
+import Loader from "@/components/ui/loader/loader";
+import TaskHeader from "@/components/task/task-header";
+import TaskTags from "@/components/ui/task-tags/task-tags";
+import type { User } from "@/types/user-types";
+import TaskSubmissionPreview from "@/components/task/task-submission-preview/task-submission-preview";
+import TaskSubmissionForm from "@/components/task/task-submission-form";
+import TaskSidebar from "@/layouts/taskSidebar/task-sidebar";
 
 import "./task.css";
+import { Helmet } from "react-helmet-async";
 
 export default function Task({
   admin,
@@ -152,67 +153,88 @@ export default function Task({
   };
 
   return (
-    <main className="page-task">
-      {isLoading || isVerifying ? (
-        <Loader />
-      ) : (
-        <>
-          <div className="task-section">
-            <TaskHeader
-              task={task}
-              mode={mode}
-              setMode={setMode}
-              showModeChanger={showModeChanger}
-            />
+    <>
+      {/* page metadata */}
+      <Helmet>
+        <title>MSCSC - {task?.name || "Task"}</title>
+        <meta property="og:title" content={`MSCSC - ${task?.name || "Task"}`} />
+        <meta
+          name="twitter:title"
+          content={`MSCSC - ${task?.name || "Task"}`}
+        />
+        <meta
+          name="og:url"
+          content={`https://mscsc.netlify.app/task/${task?.slug}`}
+        />
+        <link
+          rel="canonical"
+          href={`https://mscsc.netlify.app/task/${task?.slug}`}
+        />
+      </Helmet>
 
-            {mode === "preview" ? (
-              <TaskSubmissionPreview
-                submission={task?.submissions?.find(
-                  (s: Submission) => s.username === username
-                )}
+      {/* page content */}
+      <main className="page-task">
+        {isLoading || isVerifying ? (
+          <Loader />
+        ) : (
+          <div>
+            <div className="task-section">
+              <TaskHeader
                 task={task}
+                mode={mode}
+                setMode={setMode}
+                showModeChanger={showModeChanger}
               />
-            ) : (
-              <TaskSubmissionForm
-                task={task}
-                username={username || ""}
-                formRef={formRef as RefObject<HTMLFormElement>}
-                onSubmit={onSubmit}
-                register={register}
-                handleSubmit={handleSubmit}
-                canSubmit={canSubmit}
-              />
-            )}
 
-            <div className="task-info">
-              <TaskTags
-                task={task}
-                userSubmissions={
-                  user?.submissions.map((s) => s.taskId.toString()) || []
-                }
-                taskSubmissionCount={task?.submissions?.length || 0}
-                username={username || ""}
-                admin={admin}
-              />
+              {mode === "preview" ? (
+                <TaskSubmissionPreview
+                  submission={task?.submissions?.find(
+                    (s: Submission) => s.username === username
+                  )}
+                  task={task}
+                />
+              ) : (
+                <TaskSubmissionForm
+                  task={task}
+                  username={username || ""}
+                  formRef={formRef as RefObject<HTMLFormElement>}
+                  onSubmit={onSubmit}
+                  register={register}
+                  handleSubmit={handleSubmit}
+                  canSubmit={canSubmit}
+                />
+              )}
+
+              <div className="task-info">
+                <TaskTags
+                  task={task}
+                  userSubmissions={
+                    user?.submissions.map((s) => s.taskId.toString()) || []
+                  }
+                  taskSubmissionCount={task?.submissions?.length || 0}
+                  username={username || ""}
+                  admin={admin}
+                />
+              </div>
             </div>
-          </div>
 
-          <TaskSidebar
-            task={task}
-            onClick={handleSubmitClick}
-            register={register}
-            errors={errors}
-            mode={mode}
-            isSubmitting={taskMutation.isPending}
-            username={username || ""}
-            admin={admin}
-            canSubmit={canSubmit}
-            setShowModeChange={setShowModeChange}
-            {...rest}
-          />
-        </>
-      )}
-    </main>
+            <TaskSidebar
+              task={task}
+              onClick={handleSubmitClick}
+              register={register}
+              errors={errors}
+              mode={mode}
+              isSubmitting={taskMutation.isPending}
+              username={username || ""}
+              admin={admin}
+              canSubmit={canSubmit}
+              setShowModeChange={setShowModeChange}
+              {...rest}
+            />
+          </div>
+        )}
+      </main>
+    </>
   );
 }
 

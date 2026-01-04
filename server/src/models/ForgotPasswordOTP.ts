@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { ForgotPasswordOTPSchemaType } from "../types/forgotPasswordTypes.js";
+import { ForgotPasswordOTPSchemaType } from "../types/forgot-password-types.js";
 
 const ForgotPasswordOTPSchema =
   new mongoose.Schema<ForgotPasswordOTPSchemaType>({

@@ -3,13 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useState, type ReactNode } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { getActivity } from "@/lib/api/activities";
-import Loader from "@/components/ui/loader/Loader";
-import formatDate from "@/utils/formatDate";
-import Gallery from "@/components/ui/gallery/Gallery";
-import FormattedTextContent from "@/components/ui/formattedTextContent/FormattedTextContent";
-import ImageViewer from "@/components/ui/imageViewer/ImageViewer";
+import Loader from "@/components/ui/loader/loader";
+import formatDate from "@/utils/format-date";
+import Gallery from "@/components/ui/gallery/gallery";
+import FormattedTextContent from "@/components/ui/formatted-text-content/formatted-text-content";
+import ImageViewer from "@/components/ui/image-viewer/image-viewer";
 
 import "./activity.css";
+import { Helmet } from "react-helmet-async";
 
 export default function Activity(): ReactNode {
   const [open, setOpen] = useState(false);
@@ -43,54 +44,76 @@ export default function Activity(): ReactNode {
   const others = response?.data?.sameTags;
 
   return (
-    <main className="page-activity">
-      <div className="activity-details">
-        <div className="cover-image-container" onClick={() => setOpen(true)}>
-          <LazyLoadImage
-            src={coverImageUrl}
-            alt={`cover image of ${title}`}
-            className="cover"
-            onClick={() => setOpen(true)}
+    <>
+      {/* page metadata */}
+      <Helmet>
+        <title>MSCSC - {title || "Activity"}</title>
+        <meta property="og:title" content={`MSCSC - ${title || "Activity"}`} />
+        <meta name="twitter:title" content={`MSCSC - ${title || "Activity"}`} />
+        <meta
+          name="og:url"
+          content={`https://mscsc.netlify.app/activity/${response?.data?.activity.slug}`}
+        />
+        <link
+          rel="canonical"
+          href={`https://mscsc.netlify.app/activity/${response?.data?.activity.slug}`}
+        />
+      </Helmet>
+
+      {/* page content */}
+      <main className="page-activity">
+        <div className="activity-details">
+          <div className="cover-image-container" onClick={() => setOpen(true)}>
+            <LazyLoadImage
+              src={coverImageUrl}
+              alt={`cover image of ${title}`}
+              className="cover"
+              onClick={() => setOpen(true)}
+            />
+            <p>View full image</p>
+          </div>
+
+          <p className="title">{title}</p>
+          <p className="tags">
+            <a href={`/activities?tag=${tag}`} className="tag">
+              {tag}
+            </a>
+            <span>/</span>
+            <span className="date">{formatDate(date)}</span>
+          </p>
+          <p className="summary">{summary}</p>
+          <Gallery title="Gallery" images={gallery} />
+
+          <FormattedTextContent content={content} />
+
+          <ImageViewer
+            data={[{ url: coverImageUrl }]}
+            open={open}
+            setOpen={setOpen}
+            index={0}
           />
-          <p>View full image</p>
         </div>
 
-        <p className="title">{title}</p>
-        <p className="tags">
-          <a href={`/activities?tag=${tag}`} className="tag">
-            {tag}
-          </a>
-          <span>/</span>
-          <span className="date">{formatDate(date)}</span>
-        </p>
-        <p className="summary">{summary}</p>
-        <Gallery title="Gallery" images={gallery} />
-
-        <FormattedTextContent content={content} />
-
-        <ImageViewer
-          data={[{ url: coverImageUrl }]}
-          open={open}
-          setOpen={setOpen}
-          index={0}
-        />
-      </div>
-
-      <aside className="others">
-        <p className="others-title">Other {tag}s</p>
-        <ul className="others-container">
-          {others?.map((act: { slug: string; title: string; date: string }) => {
-            return (
-              <li key={act.slug} className="other-activity">
-                <Link to={`/activity/${act.slug}`}>
-                  <p className="other-activity-title">{act.title}</p>
-                  <p className="other-activity-date">{formatDate(act.date)}</p>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </aside>
-    </main>
+        <aside className="others">
+          <p className="others-title">Other {tag}s</p>
+          <ul className="others-container">
+            {others?.map(
+              (act: { slug: string; title: string; date: string }) => {
+                return (
+                  <li key={act.slug} className="other-activity">
+                    <Link to={`/activity/${act.slug}`}>
+                      <p className="other-activity-title">{act.title}</p>
+                      <p className="other-activity-date">
+                        {formatDate(act.date)}
+                      </p>
+                    </Link>
+                  </li>
+                );
+              }
+            )}
+          </ul>
+        </aside>
+      </main>
+    </>
   );
 }

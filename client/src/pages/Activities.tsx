@@ -1,12 +1,13 @@
 import { useEffect, type Dispatch, type SetStateAction } from "react";
-import { useActivities } from "@/contexts/ActivitiesContext";
+import { useActivities } from "@/contexts/activities-context";
 import { useLocation } from "react-router-dom";
-import Loader from "@/components/ui/loader/Loader";
-import Empty from "@/components/ui/empty/Empty";
-import PaginationContainer from "@/components/ui/paginationContainer/PaginationContainer";
-import ActivitiesNavbar from "@/layouts/activitiesNavbar/ActivitiesNavbar";
-import ActivityCard from "@/components/activityCard/ActivityCard";
-import type { ActivityPreview } from "@/types/activityTypes";
+import Loader from "@/components/ui/loader/loader";
+import Empty from "@/components/ui/empty/empty";
+import PaginationContainer from "@/components/ui/pagination-container/pagination-container";
+import ActivitiesNavbar from "@/layouts/activities-navbar/activities-navbar";
+import ActivityCard from "@/components/activity-card/activity-card";
+import type { ActivityPreview } from "@/types/activity-types";
+import { Helmet } from "react-helmet-async";
 
 export default function Activities({
   admin,
@@ -51,6 +52,16 @@ export default function Activities({
   };
   return (
     <>
+      {/* page meta data */}
+      <Helmet>
+        <title>MSCSC - Activities</title>
+        <meta property="og:title" content="MSCSC - Activities" />
+        <meta name="twitter:title" content="MSCSC - Activities" />
+        <meta name="og:url" content="https://mscsc.netlify.app/activities" />
+        <link rel="canonical" href={`https://mscsc.netlify.app/activities`} />
+      </Helmet>
+
+      {/* page content */}
       <main
         className={`page-activities w-full min-h-screen max-w-max-width ${
           admin

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import type { User } from "@/types/userTypes";
-import formatDate from "@/utils/formatDate";
-import Empty from "@/components/ui/empty/Empty";
+import type { User } from "@/types/user-types";
+import formatDate from "@/utils/format-date";
+import Empty from "@/components/ui/empty/empty";
 import {
   FaCalendarAlt,
   FaCertificate,

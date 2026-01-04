@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import ImageViewer from "@/components/ui/imageViewer/ImageViewer";
+import ImageViewer from "@/components/ui/image-viewer/image-viewer";
 
 import "./gallery.css";
 

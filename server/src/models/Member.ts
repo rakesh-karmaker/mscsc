@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import { MemberSchemaType } from "../types/memberTypes.js";
+import { MemberSchemaType } from "../types/member-types.js";
 
 const SubmissionSchema = new mongoose.Schema({
   taskId: { type: mongoose.Schema.Types.ObjectId, ref: "Task" },

@@ -1,4 +1,4 @@
-import { useUser } from "@/contexts/UserContext";
+import { useUser } from "@/contexts/user-context";
 import type { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 

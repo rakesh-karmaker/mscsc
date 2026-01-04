@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import FooterLinks from "./FooterLinks";
+import FooterLinks from "./footer-links";
 
 import "./footer.css";
 

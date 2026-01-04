@@ -1,5 +1,5 @@
 import { api } from "@/config/axios";
-import type { ContactSchemaType } from "../validation/contactSchema";
+import type { ContactSchemaType } from "../validation/contact-schema";
 
 export async function getAllMessages(
   page: number,

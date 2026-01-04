@@ -1,5 +1,5 @@
 import { api } from "@/config/axios";
-import type { TaskSchemaType } from "../validation/taskSchema";
+import type { TaskSchemaType } from "../validation/task-schema";
 
 export async function getAllTasks(
   page: number,

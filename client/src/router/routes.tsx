@@ -1,18 +1,18 @@
 import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
-import Loader from "@/components/ui/loader/Loader";
+import Loader from "@/components/ui/loader/loader";
 
 // Lazy load error pages
-const NotFound = lazy(() => import("@/pages/errorPages/NotFound"));
-const ServerError = lazy(() => import("@/pages/errorPages/ServerError"));
-const BadRequest = lazy(() => import("@/pages/errorPages/BadRequest"));
-const Unauthorized = lazy(() => import("@/pages/errorPages/Unauthorized"));
+const NotFound = lazy(() => import("@/pages/error-pages/not-found"));
+const ServerError = lazy(() => import("@/pages/error-pages/server-error"));
+const BadRequest = lazy(() => import("@/pages/error-pages/bad-request"));
+const Unauthorized = lazy(() => import("@/pages/error-pages/unauthorized"));
 
 // Layouts
-import { publicRoutes } from "./publicRoutes";
-import { authRoutes } from "./authRoutes";
-import { adminRoutes } from "./adminRoutes";
-import App from "@/App";
+import { publicRoutes } from "./public-routes";
+import { authRoutes } from "./auth-routes";
+import { adminRoutes } from "./admin-routes";
+import App from "@/app";
 
 // Router configuration for navigating between pages
 export const router = createBrowserRouter([
