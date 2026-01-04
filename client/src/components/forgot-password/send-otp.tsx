@@ -48,7 +48,7 @@ export default function SendOTP({
 
   return (
     <ForgotPasswordLayout
-      title="Forgot Password?"
+      title="Forgot Password"
       description="Enter your email and will send you an OTP to reset your password."
       stage={1}
     >

@@ -10,6 +10,7 @@ import SearchInput from "@/components/ui/search-input/search-input";
 import Loader from "@/components/ui/loader/loader";
 import MessageBox from "@/components/message-box";
 import MessageTable from "@/components/tables/message-table/message-table";
+import { Helmet } from "react-helmet-async";
 
 import "./messages-dashboard.css";
 
@@ -54,6 +55,22 @@ export default function MessagesDashboard(): ReactNode {
 
   return (
     <>
+      {/* page metadata */}
+      <Helmet>
+        <title>MSCSC - Messages</title>
+        <meta property="og:title" content={`MSCSC - Messages`} />
+        <meta name="twitter:title" content={`MSCSC - Messages`} />
+        <meta
+          name="og:url"
+          content={`https://mscsc.netlify.app/admin/messages`}
+        />
+        <link
+          rel="canonical"
+          href={`https://mscsc.netlify.app/admin/messages`}
+        />
+      </Helmet>
+
+      {/* page content */}
       <div className="admin-messages">
         <AdminDashboardHeader title={"Messages"}>
           View all the messages sent by members

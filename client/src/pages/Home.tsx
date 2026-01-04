@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import useErrorNavigator from "@/hooks/use-error-navigator";
 import { getHomeActivities } from "@/lib/api/activities";
 import type { ReactNode } from "react";
+import { Helmet } from "react-helmet-async";
 
 export default function Home(): ReactNode {
   const {
@@ -28,6 +29,22 @@ export default function Home(): ReactNode {
 
   return (
     <>
+      {/* page meta data */}
+      <Helmet>
+        <title>MSCSC - Monipur School & College Science Club</title>
+        <meta
+          property="og:title"
+          content="MSCSC - Monipur School & College Science Club"
+        />
+        <meta
+          name="twitter:title"
+          content="MSCSC - Monipur School & College Science Club"
+        />
+        <meta name="og:url" content="https://mscsc.netlify.app/" />
+        <link rel="canonical" href={`https://mscsc.netlify.app/`} />
+      </Helmet>
+
+      {/* page content */}
       <main className="page-home">
         <HeroContainer />
         <AboutContainer />

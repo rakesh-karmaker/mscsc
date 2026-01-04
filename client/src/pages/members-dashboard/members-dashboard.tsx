@@ -1,5 +1,6 @@
 import AdminDashboardHeader from "@/components/ui/admin-dashboard-header";
 import MemberPage from "@/pages/members/members";
+import { Helmet } from "react-helmet-async";
 
 import "./members-dashboard.css";
 
@@ -16,6 +17,22 @@ export default function MembersDashboard({
 }: MembersDashboardProps) {
   return (
     <>
+      {/* page metadata */}
+      <Helmet>
+        <title>MSCSC - {title}</title>
+        <meta property="og:title" content={`MSCSC - ${title}`} />
+        <meta name="twitter:title" content={`MSCSC - ${title}`} />
+        <meta
+          name="og:url"
+          content={`https://mscsc.netlify.app/admin/${title.toLowerCase()}`}
+        />
+        <link
+          rel="canonical"
+          href={`https://mscsc.netlify.app/admin/${title.toLowerCase()}`}
+        />
+      </Helmet>
+
+      {/* page content */}
       <div className="admin-members">
         <AdminDashboardHeader title={title}>{des}</AdminDashboardHeader>
 
