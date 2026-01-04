@@ -9,7 +9,7 @@ const ActivitiesPage = lazy(() => import("@/pages/activities"));
 const ActivityPage = lazy(() => import("@/pages/activity/activity"));
 const ContactPage = lazy(() => import("@/pages/contact"));
 const Executives = lazy(() => import("@/pages/executives/executives"));
-const ProfilePage = lazy(() => import("@/pages/profile/profile.js"));
+const ProfilePage = lazy(() => import("@/pages/profile/profile"));
 const TasksPage = lazy(() => import("@/pages/tasks"));
 const TaskPage = lazy(() => import("@/pages/task/task"));
 const TermsOfService = lazy(

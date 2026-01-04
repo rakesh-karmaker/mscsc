@@ -20,7 +20,7 @@ import TaskTags from "@/components/ui/task-tags/task-tags";
 import type { User } from "@/types/user-types";
 import TaskSubmissionPreview from "@/components/task/task-submission-preview/task-submission-preview";
 import TaskSubmissionForm from "@/components/task/task-submission-form";
-import TaskSidebar from "@/layouts/taskSidebar/task-sidebar";
+import TaskSidebar from "@/layouts/task-sidebar/task-sidebar";
 
 import "./task.css";
 import { Helmet } from "react-helmet-async";
