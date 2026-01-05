@@ -5,7 +5,8 @@ import getDate from "../utils/get-date.js";
 // Upload image to ImageKit and return the URL and image ID
 export async function uploadImage(
   file: Express.Multer.File,
-  crop: boolean = false
+  crop: boolean = false,
+  folder: string = ""
 ): Promise<{ url: string; imgId: string }> {
   try {
     let resizedImageBuffer;
@@ -26,6 +27,7 @@ export async function uploadImage(
     const uploadedImage = await imagekit.upload({
       file: resizedImageBuffer,
       fileName: `${Date.now()}-${file.originalname}`,
+      folder: folder,
     });
 
     return { url: uploadedImage.url, imgId: uploadedImage.fileId };
@@ -37,7 +39,8 @@ export async function uploadImage(
 
 // Upload multiple images to ImageKit and return the URLs and image IDs
 export async function uploadMultipleImages(
-  files: Express.Multer.File[]
+  files: Express.Multer.File[],
+  folder: string = ""
 ): Promise<{ url: string; imgId: string }[]> {
   try {
     if (files.length === 0) {
@@ -56,6 +59,7 @@ export async function uploadMultipleImages(
           fileName: `${Date.now()}-${file.originalname}-${Math.floor(
             Math.random() * 1000
           )}`,
+          folder: folder,
         });
 
         return { url: uploadedImage.url, imgId: uploadedImage.fileId };
@@ -75,8 +79,29 @@ export async function uploadMultipleImages(
   }
 }
 
-// Delete image from ImageKit using the image ID
-export function deleteImage(imageId: string) {
+// Upload json file to ImageKit and return the URL and image ID
+export async function uploadJsonFile(
+  jsonData: object,
+  fileName: string,
+  folder: string
+): Promise<{ url: string; imgId: string }> {
+  try {
+    const jsonString = JSON.stringify(jsonData);
+    const buffer = Buffer.from(jsonString, "utf-8");
+    const uploadedFile = await imagekit.upload({
+      file: buffer,
+      fileName: `${Date.now()}-${fileName}.json`,
+      folder: folder,
+    });
+    return { url: uploadedFile.url, imgId: uploadedFile.fileId };
+  } catch (err) {
+    console.log("Error uploading JSON file - ", getDate(), "\n---\n", err);
+    throw new Error("JSON file upload failed");
+  }
+}
+
+// Delete file from ImageKit using the file ID
+export function deleteFile(imageId: string) {
   try {
     // Delete the image from ImageKit
     imagekit.deleteFile(imageId, (err, _) => {

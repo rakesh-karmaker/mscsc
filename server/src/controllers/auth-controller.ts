@@ -46,7 +46,7 @@ export async function register(req: Request, res: Response): Promise<void> {
     const slug = await generateSlug(body.name, Member);
 
     // upload and get the image URL and image ID
-    const { url, imgId } = await uploadImage(file, true);
+    const { url, imgId } = await uploadImage(file, true, "members");
     if (!url) {
       throw new Error("No image URL found");
     }

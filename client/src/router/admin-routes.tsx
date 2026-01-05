@@ -24,6 +24,7 @@ const TaskForm = lazy(() => import("@/components/forms/task-form/task-form"));
 const MessagesDashboard = lazy(
   () => import("@/pages/messages-dashboard/messages-dashboard")
 );
+const AddEvent = lazy(() => import("@/pages/add-event"));
 
 // Lazy load error pages
 const NotFound = lazy(() => import("@/pages/error-pages/not-found"));
@@ -155,6 +156,16 @@ export const adminRoutes = {
       element: (
         <Suspense fallback={<Loader />}>
           <MessagesDashboard />
+        </Suspense>
+      ),
+    },
+
+    // Events Routes
+    {
+      path: "/admin/add-event",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <AddEvent />
         </Suspense>
       ),
     },

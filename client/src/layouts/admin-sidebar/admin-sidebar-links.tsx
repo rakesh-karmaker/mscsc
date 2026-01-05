@@ -70,6 +70,20 @@ export default function AdminSidebarLinks({
           />
         </ul>
       </li>
+
+      <li>
+        <p className="sub-text">Events</p>
+        <ul>
+          {adminSidebarLinkData.slice(9).map((link) => (
+            <AdminSidebarLink
+              key={link.name}
+              data={link}
+              isSidebarOpen={isSidebarOpen}
+              setIsSidebarOpen={setIsSidebarOpen}
+            />
+          ))}
+        </ul>
+      </li>
     </menu>
   );
 }

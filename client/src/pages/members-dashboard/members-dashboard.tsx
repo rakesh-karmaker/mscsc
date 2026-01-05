@@ -19,9 +19,9 @@ export default function MembersDashboard({
     <>
       {/* page metadata */}
       <Helmet>
-        <title>MSCSC - {title}</title>
-        <meta property="og:title" content={`MSCSC - ${title}`} />
-        <meta name="twitter:title" content={`MSCSC - ${title}`} />
+        <title>MSCSC - {title} Dashboard</title>
+        <meta property="og:title" content={`MSCSC - ${title} Dashboard`} />
+        <meta name="twitter:title" content={`MSCSC - ${title} Dashboard`} />
         <meta
           name="og:url"
           content={`https://mscsc.netlify.app/admin/${title.toLowerCase()}`}

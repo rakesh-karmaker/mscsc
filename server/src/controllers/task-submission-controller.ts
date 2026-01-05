@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Task from "../models/Task.js";
 import Member from "../models/Member.js";
-import { deleteImage, uploadImage } from "../lib/image-uploader.js";
+import { deleteFile, uploadImage } from "../lib/image-uploader.js";
 import { SubmissionType, SubmissionUpdateType } from "../types/task-types.js";
 import getPosition from "../utils/get-position.js";
 
@@ -68,7 +68,7 @@ export async function submitTask(req: Request, res: Response): Promise<void> {
 
     // upload the image if exists
     if (req.file) {
-      const { url, imgId } = await uploadImage(req.file, true);
+      const { url, imgId } = await uploadImage(req.file, true, `tasks/${slug}`);
       submission.poster = url;
       submission.posterId = imgId;
     }
@@ -150,10 +150,10 @@ export async function editSubmission(
     if (file) {
       // delete the previous image if it exists
       if (previousSubmission.posterId) {
-        deleteImage(previousSubmission.posterId);
+        deleteFile(previousSubmission.posterId);
       }
       // upload the poster
-      const { url, imgId } = await uploadImage(file, true);
+      const { url, imgId } = await uploadImage(file, true, `tasks/${slug}`);
 
       // add the poster
       updates["submissions.$.poster"] = url;
@@ -212,7 +212,7 @@ export async function deleteSubmission(
 
     // delete the poster if exists
     if (previousSubmission.posterId) {
-      deleteImage(previousSubmission.posterId);
+      deleteFile(previousSubmission.posterId);
     }
 
     // update the task

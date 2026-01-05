@@ -3,7 +3,7 @@ import paginateResults from "../lib/paginate-results.js";
 import Activity from "../models/Activity.js";
 import generateSlug from "../utils/generate-slug.js";
 import {
-  deleteImage,
+  deleteFile,
   uploadImage,
   uploadMultipleImages,
 } from "../lib/image-uploader.js";
@@ -243,7 +243,7 @@ export async function editActivity(req: Request, res: Response): Promise<void> {
         "activityImage" in req.files &&
         Array.isArray(req.files.activityImage)
       ) {
-        deleteImage(previousActivity.coverImageId);
+        deleteFile(previousActivity.coverImageId);
         const { url, imgId } = await uploadImage(
           req.files.activityImage[0],
           true
@@ -259,7 +259,7 @@ export async function editActivity(req: Request, res: Response): Promise<void> {
         !Array.isArray(req.files) &&
         "gallery" in req.files
       ) {
-        previousActivity.gallery.forEach((image) => deleteImage(image.imgId));
+        previousActivity.gallery.forEach((image) => deleteFile(image.imgId));
         const gallery = await uploadMultipleImages(req.files.gallery);
         updates.gallery = gallery;
       }
@@ -300,8 +300,8 @@ export async function deleteActivity(
     }
 
     // Delete activity images from imageKit
-    deleteImage(activity.coverImageId);
-    activity.gallery.forEach((image) => deleteImage(image.imgId));
+    deleteFile(activity.coverImageId);
+    activity.gallery.forEach((image) => deleteFile(image.imgId));
 
     res.status(200).send({ message: "Activity deleted" });
   } catch (err) {

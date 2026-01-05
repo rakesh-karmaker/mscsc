@@ -15,6 +15,7 @@ import MemberList from "../lists/member-list";
 import MessageList from "../lists/message-list";
 
 import "./admin-dashboard.css";
+import { Helmet } from "react-helmet-async";
 
 const AdminDashboard = () => {
   const { members, setSearch, setPage, setRole } = useMembers();
@@ -49,6 +50,22 @@ const AdminDashboard = () => {
 
   return (
     <>
+      {/* page meta data */}
+      <Helmet>
+        <title>MSCSC - Admin Dashboard</title>
+        <meta property="og:title" content={`MSCSC - Admin Dashboard`} />
+        <meta name="twitter:title" content={`MSCSC - Admin Dashboard`} />
+        <meta
+          name="og:url"
+          content={`https://mscsc.netlify.app/admin/dashboard`}
+        />
+        <link
+          rel="canonical"
+          href={`https://mscsc.netlify.app/admin/dashboard`}
+        />
+      </Helmet>
+
+      {/* page content */}
       <AdminDashboardHeader title={"Dashboard"}>
         Welcome to the admin dashboard
       </AdminDashboardHeader>

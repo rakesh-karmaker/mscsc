@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import Member from "../models/Member.js";
 import { GetAllMembersRegexType } from "../types/member-types.js";
 import paginateResults from "../lib/paginate-results.js";
-import { deleteImage, uploadImage } from "../lib/image-uploader.js";
+import { deleteFile, uploadImage } from "../lib/image-uploader.js";
 import { generateHash } from "../utils/hash.js";
 
 // Get all members
@@ -179,8 +179,8 @@ export async function editMember(req: Request, res: Response): Promise<void> {
 
     // Update image if new image is uploaded
     if (req?.file) {
-      deleteImage(previousUser.imgId);
-      const { url, imgId } = await uploadImage(req.file);
+      deleteFile(previousUser.imgId);
+      const { url, imgId } = await uploadImage(req.file, true, "members");
       updates.image = url;
       updates.imgId = imgId;
       updates.new = true; // Once edited, set new to true
@@ -231,7 +231,7 @@ export async function deleteMember(req: Request, res: Response): Promise<void> {
 
     // Delete member image from imageKit
     if (member.imgId) {
-      deleteImage(member.imgId);
+      deleteFile(member.imgId);
     }
 
     console.log(`Member deleted - ${member.name} - ${member._id}`);

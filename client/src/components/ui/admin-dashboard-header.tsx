@@ -10,8 +10,8 @@ export default function AdminDashboardHeader({
 }) {
   return (
     <div className="w-full flex justify-between gap-3.75 flex-wrap">
-      <div className="flex flex-col gap-1.25">
-        <h1 className="text-[2.5em] uppercase text-text-primary font-semibold">
+      <div className="flex flex-col">
+        <h1 className="text-[2.25em] uppercase text-text-primary font-semibold">
           {title}
         </h1>
         <p className="text-[#000000c9]">{children}</p>

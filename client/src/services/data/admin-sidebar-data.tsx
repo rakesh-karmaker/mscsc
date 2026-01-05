@@ -60,4 +60,9 @@ export const adminSidebarLinkData: AdminSidebarLinkDataType[] = [
     icon: <FaEnvelopeSquare />,
     to: "/admin/messages",
   },
+  {
+    name: "Add New",
+    icon: <FaPlus />,
+    to: "/admin/add-event",
+  },
 ];

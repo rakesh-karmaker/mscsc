@@ -6,7 +6,7 @@ import Member from "../models/Member.js";
 import generateSlug from "../utils/generate-slug.js";
 import getDate from "../utils/get-date.js";
 import { taskSchema } from "../lib/validation/task-schema.js";
-import { deleteImage } from "../lib/image-uploader.js";
+import { deleteFile } from "../lib/image-uploader.js";
 
 // get all tasks
 export async function getAllTasks(req: Request, res: Response): Promise<void> {
@@ -214,7 +214,7 @@ export async function deleteTask(req: Request, res: Response): Promise<void> {
         typeof submissions[i].posterId === "string" &&
         submissions[i].posterId !== null
       ) {
-        await deleteImage(submissions[i].posterId as string);
+        await deleteFile(submissions[i].posterId as string);
       }
     }
 
