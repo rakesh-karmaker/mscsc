@@ -1,3 +1,4 @@
+import EventForm from "@/components/forms/event-form/event-form";
 import AdminDashboardHeader from "@/components/ui/admin-dashboard-header";
 import type { ReactNode } from "react";
 import { Helmet } from "react-helmet-async";
@@ -26,7 +27,9 @@ export default function AddEvent(): ReactNode {
           Create a new event for the club
         </AdminDashboardHeader>
 
-        <div className="pt-5!">Hello</div>
+        <div className="pt-5! flex justify-center">
+          <EventForm />
+        </div>
       </div>
     </>
   );
