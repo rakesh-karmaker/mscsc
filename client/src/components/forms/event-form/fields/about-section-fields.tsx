@@ -4,11 +4,11 @@ import type {
   RegisterOptions,
   SetValueConfig,
 } from "react-hook-form";
-import FormLayout from "./form-layout";
-import { Button, styled, TextField } from "@mui/material";
+import FormLayout, { VisuallyHiddenInput } from "../form-layout";
+import { Button, TextField } from "@mui/material";
 import { IoMdCloudUpload } from "react-icons/io";
 
-type AboutSectionFormProps = {
+type AboutSectionFieldsProps = {
   register: (
     name: string,
     options?: RegisterOptions
@@ -22,23 +22,11 @@ type AboutSectionFormProps = {
   errors: { [key: string]: any };
 };
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
-
-export default function AboutSectionForm({
+export default function AboutSectionFields({
   register,
   setValue,
   errors,
-}: AboutSectionFormProps): ReactNode {
+}: AboutSectionFieldsProps): ReactNode {
   const [hasAboutImageSelected, setHasAboutImageSelected] =
     useState<boolean>(false);
 
@@ -57,7 +45,6 @@ export default function AboutSectionForm({
           fullWidth
           variant="outlined"
           {...register("aboutTitle", {
-            required: "Title is required",
             maxLength: {
               value: 60,
               message: "Title cannot exceed 60 characters",
@@ -72,7 +59,6 @@ export default function AboutSectionForm({
           fullWidth
           variant="outlined"
           {...register("aboutHeading", {
-            required: "Heading is required",
             maxLength: {
               value: 100,
               message: "Heading cannot exceed 100 characters",
@@ -86,9 +72,7 @@ export default function AboutSectionForm({
         <TextField
           fullWidth
           variant="outlined"
-          {...register("aboutText", {
-            required: "Text is required",
-          })}
+          {...register("aboutText")}
           multiline
           minRows={5}
           label="About Text"
@@ -104,6 +88,7 @@ export default function AboutSectionForm({
               overall design of the about section.
             </p>
           }
+          textSize="xl"
         >
           <div className="flex flex-col gap-3">
             <Button

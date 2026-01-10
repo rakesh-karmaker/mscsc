@@ -8,15 +8,20 @@ import {
 } from "react";
 import Tooltip from "./tooltip";
 import { BsInfoCircleFill, BsInfoCircle } from "react-icons/bs";
+import { styled } from "@mui/material";
 
 export default function FormLayout({
   title,
   description,
   children,
+  textSize = "2xl",
+  fontWeight = "semibold",
 }: {
   title: string;
   description: ReactNode;
   children: ReactNode;
+  textSize?: "sm" | "base" | "lg" | "xl" | "2xl" | "3xl";
+  fontWeight?: "normal" | "medium" | "semibold" | "bold";
 }): ReactNode {
   const [showOnRight, setShowOnRight] = useState<boolean>(false);
   const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(false);
@@ -40,7 +45,7 @@ export default function FormLayout({
   return (
     <div className="w-full h-full flex flex-col gap-2">
       <div className="flex items-center gap-2">
-        <h2 className="text-2xl font-semibold">{title}</h2>
+        <h2 className={`font-${fontWeight} text-${textSize}`}>{title}</h2>
         <div className="w-fit h-fit relative">
           <button
             ref={btnRef}
@@ -64,3 +69,15 @@ export default function FormLayout({
     </div>
   );
 }
+
+export const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});

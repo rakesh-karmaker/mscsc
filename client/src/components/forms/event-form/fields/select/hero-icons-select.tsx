@@ -26,6 +26,7 @@ export default function HeroIconsSelect({
         <FormControl
           fullWidth
           error={Boolean(getValues(`heroIcon${num}`) === "")}
+          key={`hero-icon-form-control-${num}`}
         >
           <InputLabel id={`hero-icon-${num}`}>Icon {num}</InputLabel>
           <Select

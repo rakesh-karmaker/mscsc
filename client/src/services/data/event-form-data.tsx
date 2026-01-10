@@ -13,11 +13,9 @@ export const sectionsData: {
     "hero",
     "video",
     "about",
-    "events",
     "segments",
     "schedule",
     "sp",
     "faqs",
-    "contact",
   ],
 };

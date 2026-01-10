@@ -11,7 +11,13 @@ export const DateTimePicker = React.forwardRef(
       value,
       onChange,
       label,
-    }: { value: Dayjs; onChange: (date: Dayjs | null) => void; label: string },
+      timeField = true,
+    }: {
+      value: Dayjs;
+      onChange: (date: Dayjs | null) => void;
+      label: string;
+      timeField?: boolean;
+    },
     ref: React.Ref<HTMLDivElement>
   ) => {
     return (
@@ -23,6 +29,15 @@ export const DateTimePicker = React.forwardRef(
             onChange={onChange}
             ref={ref}
             sx={{ width: "100%" }}
+            viewRenderers={
+              timeField
+                ? {}
+                : {
+                    hours: null,
+                    minutes: null,
+                    seconds: null,
+                  }
+            }
           />
         ) : (
           <DesktopDateTimePicker
@@ -31,6 +46,15 @@ export const DateTimePicker = React.forwardRef(
             onChange={onChange}
             ref={ref}
             sx={{ width: "100%" }}
+            viewRenderers={
+              timeField
+                ? {}
+                : {
+                    hours: null,
+                    minutes: null,
+                    seconds: null,
+                  }
+            }
           />
         )}
       </LocalizationProvider>

@@ -15,9 +15,11 @@ import "./rich-text-editor.css";
 
 export default function RichTextEditor<T extends { content: string }>({
   content = "",
+  label = "",
   register,
 }: {
   content: string;
+  label: string;
   register: UseFormRegister<T>;
 }) {
   const [showLinkMenu, setShowLinkMenu] = useState(false);
@@ -209,17 +211,21 @@ export default function RichTextEditor<T extends { content: string }>({
 
       // If the content is effectively empty, set it to an empty string
       if (isEmpty) {
-        register("content" as Path<T>, { onChange: () => {} }).onChange({
+        register((label ? label : "content") as Path<T>, {
+          onChange: () => {},
+        }).onChange({
           target: {
-            name: "content",
+            name: label ? label : "content",
             value: "",
           },
         });
       } else {
         // Otherwise, update with the current HTML content
-        register("content" as Path<T>, { onChange: () => {} }).onChange({
+        register((label ? label : "content") as Path<T>, {
+          onChange: () => {},
+        }).onChange({
           target: {
-            name: "content",
+            name: label ? label : "content",
             value: contentRef.current.innerHTML.trim(),
           },
         });
