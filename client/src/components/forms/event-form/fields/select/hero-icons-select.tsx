@@ -1,63 +1,36 @@
+import SelectIconField from "@/components/ui/select-icon-field";
 import { icons } from "@/services/data/icons-data";
-import capitalize from "@/utils/capitalize";
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { useState, type ReactNode } from "react";
-import type { SetValueConfig } from "react-hook-form";
+import { type ReactNode } from "react";
+import type { Control } from "react-hook-form";
 
 export default function HeroIconsSelect({
-  setValue,
-  getValues,
+  control,
+  errors,
 }: {
-  setValue: (name: string, value: unknown, config?: SetValueConfig) => void;
-  getValues: (payload?: string | string[]) => Object;
+  control: Control<any>;
+  errors: { [key: string]: any };
 }): ReactNode {
-  const [selectedHeroIcons, setSelectedHeroIcons] = useState<{
-    [key: string]: string;
-  }>({
+  const defaultIcons: { [key: string]: string } = {
     icon1: "division",
     icon2: "rocket",
     icon3: "chess",
     icon4: "atom",
-  });
+  };
 
   return (
     <div className="flex flex-col gap-2 min-w-1/4">
       {Array.from({ length: 4 }, (_, i) => i + 1).map((num) => (
-        <FormControl
-          fullWidth
-          error={Boolean(getValues(`heroIcon${num}`) === "")}
-          key={`hero-icon-form-control-${num}`}
+        <SelectIconField
+          id={`hero-icon-select-${num}`}
+          name={`heroIcon${num}`}
+          icons={icons}
+          control={control}
+          hasErrors={Boolean(errors[`heroIcon${num}`])}
+          errorMessage={errors[`heroIcon${num}`]?.message as string}
+          defaultValue={defaultIcons[`icon${num}`]}
         >
-          <InputLabel id={`hero-icon-${num}`}>Icon {num}</InputLabel>
-          <Select
-            labelId={`hero-icon-${num}`}
-            id={`hero-icon-${num}`}
-            value={selectedHeroIcons[`icon${num}`]}
-            onChange={(e) => {
-              setSelectedHeroIcons((prev) => ({
-                ...prev,
-                [`icon${num}`]: e.target.value,
-              }));
-              setValue(`heroIcon${num}`, e.target.value);
-            }}
-            label={`Icon ${num}`}
-          >
-            {Object.keys(icons).map((iconName) => (
-              <MenuItem key={`hero-${num}-${iconName}`} value={iconName}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1,
-                  }}
-                >
-                  {icons[iconName]}
-                  {capitalize(iconName)}
-                </Box>
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          Icon {num}
+        </SelectIconField>
       ))}
     </div>
   );

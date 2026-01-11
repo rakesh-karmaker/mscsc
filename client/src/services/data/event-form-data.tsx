@@ -14,6 +14,7 @@ export const sectionsData: {
     "video",
     "about",
     "segments",
+    "experiences",
     "schedule",
     "sp",
     "faqs",

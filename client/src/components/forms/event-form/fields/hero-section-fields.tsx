@@ -1,9 +1,5 @@
 import { TextField } from "@mui/material";
-import type {
-  ChangeHandler,
-  RegisterOptions,
-  SetValueConfig,
-} from "react-hook-form";
+import type { ChangeHandler, Control, RegisterOptions } from "react-hook-form";
 import FormLayout from "../form-layout";
 import HeroIconsSelect from "./select/hero-icons-select";
 import type { ReactNode } from "react";
@@ -18,16 +14,14 @@ type HeroSectionFieldsProps = {
     onChange: ChangeHandler;
     onBlur: ChangeHandler;
   };
-  setValue: (name: string, value: unknown, config?: SetValueConfig) => void;
+  control: Control<any>;
   errors: { [key: string]: any };
-  getValues: (payload?: string | string[]) => Object;
 };
 
 export default function HeroSectionFields({
   register,
-  setValue,
+  control,
   errors,
-  getValues,
 }: HeroSectionFieldsProps): ReactNode {
   return (
     <FormLayout
@@ -66,7 +60,7 @@ export default function HeroSectionFields({
             helperText={errors.heroText?.message as string}
           />
         </div>
-        <HeroIconsSelect setValue={setValue} getValues={getValues} />
+        <HeroIconsSelect control={control} errors={errors} />
       </div>
     </FormLayout>
   );

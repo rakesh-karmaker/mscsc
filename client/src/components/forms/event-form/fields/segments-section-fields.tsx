@@ -1,32 +1,22 @@
 import { useEffect, type ReactNode } from "react";
 import { useFieldArray, type Control } from "react-hook-form";
 import FormLayout from "../form-layout";
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-} from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import { FaGlobeAsia } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import { icons } from "@/services/data/icons-data";
-import capitalize from "@/utils/capitalize";
 import RichTextEditor from "@/lib/rich-text-editor/rich-text-editor";
+import SelectIconField from "@/components/ui/select-icon-field";
 
 type SegmentsSectionFieldsProps = {
   register: any;
   control: Control<any>;
-  getValues: (payload?: string | string[]) => Object;
   errors: { [key: string]: any };
 };
 
 export default function SegmentsSectionFields({
   register,
   control,
-  getValues,
   errors,
 }: SegmentsSectionFieldsProps): ReactNode {
   const { fields, append, remove } = useFieldArray({
@@ -34,21 +24,27 @@ export default function SegmentsSectionFields({
     name: "segments",
   });
 
+  function handleAppend() {
+    append({
+      title: "",
+      content: "",
+      locationType: "onsite",
+      teamType: "solo",
+      icon: "bulb",
+      summary: "",
+      rules: "",
+    });
+  }
+
+  function handleRemove(index: number) {
+    remove(index);
+  }
+
   useEffect(() => {
     if (fields.length === 0) {
-      append({
-        title: "",
-        content: "",
-        icon: "",
-        locationType: "",
-        teamType: "",
-        summary: "",
-        rules: "",
-      });
+      handleAppend();
     }
   }, [fields, append]);
-
-  console.log("errors in segments section:", errors);
 
   return (
     <FormLayout
@@ -79,110 +75,39 @@ export default function SegmentsSectionFields({
                 spacing={2}
                 sx={{ width: "100%" }}
               >
-                <div className="w-full flex flex-col gap-2">
-                  <FormControl
-                    fullWidth
-                    error={Boolean(
-                      getValues(`segments.${index}.locationType`) === ""
-                    )}
-                  >
-                    <InputLabel id={`segments-location-type`}>
-                      Location Type
-                    </InputLabel>
-                    <Select
-                      labelId={`segments-location-type`}
-                      id={`segments-location-type`}
-                      {...register(`segments.${index}.locationType`)}
-                      label={`Location Type`}
-                      error={Boolean(
-                        getValues(`segments.${index}.locationType`) === ""
-                      )}
-                    >
-                      <MenuItem value={"onsite"}>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 1,
-                          }}
-                        >
-                          <IoLocationOutline />
-                          <span>On Site</span>
-                        </Box>
-                      </MenuItem>
-                      <MenuItem value={"online"}>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 1,
-                          }}
-                        >
-                          <FaGlobeAsia />
-                          <span>Online</span>
-                        </Box>
-                      </MenuItem>
-                    </Select>
-                  </FormControl>
+                <SelectIconField
+                  id={`segments-location-type-${index}`}
+                  name={`segments.${index}.locationType`}
+                  icons={{
+                    onsite: <IoLocationOutline />,
+                    online: <FaGlobeAsia />,
+                  }}
+                  control={control}
+                  hasErrors={Boolean(errors?.segments?.[index]?.locationType)}
+                  errorMessage={
+                    errors.segments?.[index]?.locationType?.message as string
+                  }
+                  defaultValue="onsite"
+                >
+                  Location Type
+                </SelectIconField>
 
-                  {errors.segments &&
-                    errors.segments[index] &&
-                    errors.segments[index].locationType && (
-                      <p className="text-red-600 text-sm">
-                        {errors.segments[index].locationType.message as string}
-                      </p>
-                    )}
-                </div>
-
-                <div key={field.id} className="w-full flex flex-col gap-2">
-                  <FormControl
-                    fullWidth
-                    error={Boolean(
-                      getValues(`segments.${index}.teamType`) === ""
-                    )}
-                  >
-                    <InputLabel id={`segments-team-type`}>Team Type</InputLabel>
-                    <Select
-                      labelId={`segments-team-type`}
-                      id={`segments-team-type`}
-                      {...register(`segments.${index}.teamType`)}
-                      label={`Team Type`}
-                      error={Boolean(
-                        getValues(`segments.${index}.teamType`) === ""
-                      )}
-                    >
-                      <MenuItem value={"solo"}>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 1,
-                          }}
-                        >
-                          <span>Solo</span>
-                        </Box>
-                      </MenuItem>
-                      <MenuItem value={"team"}>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 1,
-                          }}
-                        >
-                          <span>Team</span>
-                        </Box>
-                      </MenuItem>
-                    </Select>
-                  </FormControl>
-                  {errors.segments &&
-                    errors.segments[index] &&
-                    errors.segments[index].teamType && (
-                      <p className="text-red-600 text-sm">
-                        {errors.segments[index].teamType.message as string}
-                      </p>
-                    )}
-                </div>
+                <SelectIconField
+                  id={`segments-team-type-${index}`}
+                  name={`segments.${index}.teamType`}
+                  icons={{
+                    solo: <FaGlobeAsia />,
+                    team: <IoLocationOutline />,
+                  }}
+                  control={control}
+                  hasErrors={Boolean(errors?.segments?.[index]?.teamType)}
+                  errorMessage={
+                    errors.segments?.[index]?.teamType?.message as string
+                  }
+                  defaultValue="solo"
+                >
+                  Team Type
+                </SelectIconField>
               </Stack>
 
               <Stack
@@ -213,50 +138,19 @@ export default function SegmentsSectionFields({
                   }
                 />
 
-                <div key={field.id} className="w-full flex flex-col gap-2">
-                  <FormControl
-                    fullWidth
-                    error={Boolean(getValues(`segments.${index}.icon`) === "")}
-                  >
-                    <InputLabel id={`segments-icon-${index}`}>
-                      Segment Icon
-                    </InputLabel>
-                    <Select
-                      labelId={`segments-icon-${index}`}
-                      id={`segments-icon-${index}`}
-                      {...register(`segments.${index}.icon`)}
-                      label={`Segment Icon`}
-                      error={Boolean(
-                        getValues(`segments.${index}.icon`) === ""
-                      )}
-                    >
-                      {Object.keys(icons).map((iconName) => (
-                        <MenuItem
-                          key={`segments-${index}-${iconName}`}
-                          value={iconName}
-                        >
-                          <Box
-                            sx={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 1,
-                            }}
-                          >
-                            {icons[iconName]}
-                            {capitalize(iconName)}
-                          </Box>
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  {errors.segments &&
-                    errors.segments[index] &&
-                    errors.segments[index].icon && (
-                      <p className="text-red-600 text-sm">
-                        {errors.segments[index].icon.message as string}
-                      </p>
-                    )}
-                </div>
+                <SelectIconField
+                  id={`segments-icon-${index}`}
+                  name={`segments.${index}.icon`}
+                  icons={icons}
+                  control={control}
+                  hasErrors={Boolean(errors?.segments?.[index]?.icon)}
+                  errorMessage={
+                    errors.segments?.[index]?.icon?.message as string
+                  }
+                  defaultValue="bulb"
+                >
+                  Segment Icon
+                </SelectIconField>
               </Stack>
 
               <TextField
@@ -293,7 +187,7 @@ export default function SegmentsSectionFields({
               >
                 <RichTextEditor
                   content=""
-                  label={`segments.${index}.Details`}
+                  label={`segments.${index}.content`}
                   register={register}
                 />
               </FormLayout>
@@ -322,17 +216,7 @@ export default function SegmentsSectionFields({
           <button
             type="button"
             className="primary-button w-fit! min-w-fit! px-4! py-2! text-base! font-normal! h-fit!"
-            onClick={() =>
-              append({
-                title: "",
-                content: "",
-                icon: "",
-                locationType: "",
-                teamType: "",
-                summary: "",
-                rules: "",
-              })
-            }
+            onClick={() => handleAppend()}
           >
             Add Segment
           </button>
@@ -340,7 +224,7 @@ export default function SegmentsSectionFields({
             <button
               type="button"
               className="primary-button w-fit! min-w-fit! px-4! py-2! text-base! font-normal! h-fit! before:bg-red-500!"
-              onClick={() => remove(fields.length - 1)}
+              onClick={() => handleRemove(fields.length - 1)}
             >
               Remove Last Segment
             </button>

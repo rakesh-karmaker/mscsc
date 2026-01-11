@@ -15,18 +15,7 @@ import VideoSectionFields from "./fields/video-section-fields";
 import HeroSectionFields from "./fields/hero-section-fields";
 import RichTextEditor from "@/lib/rich-text-editor/rich-text-editor";
 import SegmentsSectionFields from "./fields/segments-section-fields";
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
+import ExperiencesFields from "./fields/experiences-fields";
 
 export default function EventForm({
   defaultValues,
@@ -57,8 +46,6 @@ export default function EventForm({
       // Handle add event logic
     }
   }
-
-  console.log(errors);
 
   return (
     <form
@@ -99,9 +86,8 @@ export default function EventForm({
       <Activity mode={selectedSections.includes("hero") ? "visible" : "hidden"}>
         <HeroSectionFields
           register={register}
-          setValue={setValue}
+          control={control}
           errors={errors}
-          getValues={getValues}
         />
       </Activity>
 
@@ -130,7 +116,17 @@ export default function EventForm({
         <SegmentsSectionFields
           register={register}
           control={control}
-          getValues={getValues}
+          errors={errors}
+        />
+      </Activity>
+
+      {/* website experiences section form fields */}
+      <Activity
+        mode={selectedSections.includes("experiences") ? "visible" : "hidden"}
+      >
+        <ExperiencesFields
+          register={register}
+          control={control}
           errors={errors}
         />
       </Activity>
