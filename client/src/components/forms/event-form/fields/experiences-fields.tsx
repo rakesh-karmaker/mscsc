@@ -120,7 +120,7 @@ export default function ExperiencesFields({
               >
                 <RichTextEditor
                   content=""
-                  label={`experiences.${index}.content`}
+                  label={`experiences.${index}.details`}
                   register={register}
                 />
               </FormLayout>

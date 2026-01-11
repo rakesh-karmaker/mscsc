@@ -15,7 +15,7 @@ import "./rich-text-editor.css";
 
 export default function RichTextEditor<T extends { content: string }>({
   content = "",
-  label = "",
+  label = "content",
   register,
 }: {
   content: string;
@@ -211,21 +211,21 @@ export default function RichTextEditor<T extends { content: string }>({
 
       // If the content is effectively empty, set it to an empty string
       if (isEmpty) {
-        register((label ? label : "content") as Path<T>, {
+        register(label as Path<T>, {
           onChange: () => {},
         }).onChange({
           target: {
-            name: label ? label : "content",
+            name: label,
             value: "",
           },
         });
       } else {
         // Otherwise, update with the current HTML content
-        register((label ? label : "content") as Path<T>, {
+        register(label as Path<T>, {
           onChange: () => {},
         }).onChange({
           target: {
-            name: label ? label : "content",
+            name: label,
             value: contentRef.current.innerHTML.trim(),
           },
         });

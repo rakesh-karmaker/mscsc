@@ -2,7 +2,6 @@ import { Activity, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import FormLayout from "./form-layout";
 import { sectionsData } from "@/services/data/event-form-data";
-import { Button } from "@mui/material";
 import SectionsSelect from "./fields/select/sections-select";
 import AboutSectionFields from "./fields/about-section-fields";
 import BasicInfoFields from "./fields/basic-info-fields";
@@ -11,6 +10,9 @@ import HeroSectionFields from "./fields/hero-section-fields";
 import SegmentsSectionFields from "./fields/segments-section-fields";
 import ExperiencesFields from "./fields/experiences-fields";
 import ScheduleSectionFields from "./fields/schedule-section-fields";
+import FaqSectionFields from "./fields/faq-section-fields";
+import FormSubmitBtn from "@/components/ui/form-submit-btn";
+import SpSectionFields from "./fields/sp-section-fields";
 
 export default function EventForm({
   defaultValues,
@@ -137,9 +139,31 @@ export default function EventForm({
         />
       </Activity>
 
-      <Button type="submit" variant="contained" className="max-w-fit">
+      {/* website sponsors & partners section form fields */}
+      <Activity mode={selectedSections.includes("sp") ? "visible" : "hidden"}>
+        <SpSectionFields
+          register={register}
+          control={control}
+          errors={errors}
+        />
+      </Activity>
+
+      {/* website faq section form fields */}
+      <Activity mode={selectedSections.includes("faqs") ? "visible" : "hidden"}>
+        <FaqSectionFields
+          register={register}
+          control={control}
+          errors={errors}
+        />
+      </Activity>
+
+      <FormSubmitBtn
+        isLoading={false}
+        pendingText={isEditMode ? "Updating Event..." : "Creating Event..."}
+        className="w-fit! min-w-fit! px-4! py-2! text-base! font-normal! h-fit!"
+      >
         {isEditMode ? "Update Event" : "Create Event"}
-      </Button>
+      </FormSubmitBtn>
     </form>
   );
 }

@@ -4,12 +4,14 @@ type FormSubmitBtnProps = {
   isLoading: boolean;
   pendingText: string;
   children: ReactNode;
+  className?: string;
   width?: string;
 };
 
 export default function FormSubmitBtn({
   isLoading,
   pendingText,
+  className,
   children,
   ...rest
 }: FormSubmitBtnProps): ReactNode {
@@ -29,7 +31,7 @@ export default function FormSubmitBtn({
       <button
         disabled={isLoading}
         type="submit"
-        className="primary-button"
+        className={"primary-button" + (className ? ` ${className}` : "")}
         style={{ width: width }}
       >
         {innerText}

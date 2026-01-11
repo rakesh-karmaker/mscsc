@@ -11,6 +11,7 @@ import { DateTimePicker } from "@/components/ui/date-time-picker";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { IoMdCloudUpload } from "react-icons/io";
+import { DatePicker } from "@/components/ui/date-picker";
 
 type BasicInfoFieldsProps = {
   register: (
@@ -73,12 +74,11 @@ export default function BasicInfoFields({
             name="eventDate"
             control={control}
             render={({ field }) => (
-              <DateTimePicker
+              <DatePicker
                 {...field}
                 value={field.value || dayjs(defaultValues?.eventDate)}
                 onChange={(date: Dayjs | null) => field.onChange(date)}
                 label="Event Date"
-                timeField={false}
               />
             )}
           />

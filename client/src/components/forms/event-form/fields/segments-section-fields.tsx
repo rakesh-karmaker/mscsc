@@ -27,7 +27,7 @@ export default function SegmentsSectionFields({
   function handleAppend() {
     append({
       title: "",
-      content: "",
+      details: "",
       locationType: "onsite",
       teamType: "solo",
       icon: "bulb",
@@ -187,7 +187,7 @@ export default function SegmentsSectionFields({
               >
                 <RichTextEditor
                   content=""
-                  label={`segments.${index}.content`}
+                  label={`segments.${index}.details`}
                   register={register}
                 />
               </FormLayout>

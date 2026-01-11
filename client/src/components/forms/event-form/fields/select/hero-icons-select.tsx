@@ -21,6 +21,7 @@ export default function HeroIconsSelect({
     <div className="flex flex-col gap-2 min-w-1/4">
       {Array.from({ length: 4 }, (_, i) => i + 1).map((num) => (
         <SelectIconField
+          key={num}
           id={`hero-icon-select-${num}`}
           name={`heroIcon${num}`}
           icons={icons}
