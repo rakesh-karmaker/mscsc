@@ -9,7 +9,7 @@ import {
   FaPhoneAlt,
   FaPuzzlePiece,
 } from "react-icons/fa";
-import { FaEnvelope, FaRobot, FaStar } from "react-icons/fa6";
+import { FaClock, FaEnvelope, FaRobot, FaStar } from "react-icons/fa6";
 import { GiChessQueen } from "react-icons/gi";
 import { HiLightBulb } from "react-icons/hi";
 import { IoMdRocket } from "react-icons/io";
@@ -40,4 +40,5 @@ export const icons: { [iconName: string]: ReactNode } = {
   star: <FaStar />,
   games: <MdGames />,
   workshops: <FaChalkboardTeacher />,
+  clock: <FaClock />,
 };

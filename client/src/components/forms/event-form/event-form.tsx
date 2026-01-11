@@ -1,21 +1,16 @@
 import { Activity, useState, type ReactNode } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import FormLayout from "./form-layout";
 import { sectionsData } from "@/services/data/event-form-data";
-import { Button, Stack, styled, TextField, Tooltip } from "@mui/material";
-import HeroIconsSelect from "./fields/select/hero-icons-select";
+import { Button } from "@mui/material";
 import SectionsSelect from "./fields/select/sections-select";
-import { IoMdCloudUpload } from "react-icons/io";
 import AboutSectionFields from "./fields/about-section-fields";
-import { DateTimePicker } from "@/components/ui/date-time-picker";
-import type { Dayjs } from "dayjs";
-import dayjs from "dayjs";
 import BasicInfoFields from "./fields/basic-info-fields";
 import VideoSectionFields from "./fields/video-section-fields";
 import HeroSectionFields from "./fields/hero-section-fields";
-import RichTextEditor from "@/lib/rich-text-editor/rich-text-editor";
 import SegmentsSectionFields from "./fields/segments-section-fields";
 import ExperiencesFields from "./fields/experiences-fields";
+import ScheduleSectionFields from "./fields/schedule-section-fields";
 
 export default function EventForm({
   defaultValues,
@@ -30,9 +25,9 @@ export default function EventForm({
     register,
     handleSubmit,
     formState: { errors },
-    setError,
+    // setError,
     setValue,
-    getValues,
+    // getValues,
     control,
   } = useForm({
     defaultValues: defaultValues || {},
@@ -125,6 +120,17 @@ export default function EventForm({
         mode={selectedSections.includes("experiences") ? "visible" : "hidden"}
       >
         <ExperiencesFields
+          register={register}
+          control={control}
+          errors={errors}
+        />
+      </Activity>
+
+      {/* website schedule section form fields */}
+      <Activity
+        mode={selectedSections.includes("schedule") ? "visible" : "hidden"}
+      >
+        <ScheduleSectionFields
           register={register}
           control={control}
           errors={errors}

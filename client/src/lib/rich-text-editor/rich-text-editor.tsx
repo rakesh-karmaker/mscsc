@@ -19,7 +19,7 @@ export default function RichTextEditor<T extends { content: string }>({
   register,
 }: {
   content: string;
-  label: string;
+  label?: string;
   register: UseFormRegister<T>;
 }) {
   const [showLinkMenu, setShowLinkMenu] = useState(false);
