@@ -47,7 +47,7 @@ export default function EventForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full h-full flex flex-col gap-7 max-w-4xl"
+      className="w-full h-full flex flex-col gap-7 max-w-[min(var(--container-4xl),var(--max-elements-width))] mx-auto"
     >
       {/* event basic info fields */}
       <BasicInfoFields
@@ -92,18 +92,14 @@ export default function EventForm({
       <Activity
         mode={selectedSections.includes("video") ? "visible" : "hidden"}
       >
-        <VideoSectionFields setValue={setValue} errors={errors} />
+        <VideoSectionFields register={register} errors={errors} />
       </Activity>
 
       {/* website about section form fields */}
       <Activity
         mode={selectedSections.includes("about") ? "visible" : "hidden"}
       >
-        <AboutSectionFields
-          register={register}
-          setValue={setValue}
-          errors={errors}
-        />
+        <AboutSectionFields register={register} errors={errors} />
       </Activity>
 
       {/* website segments section form fields */}

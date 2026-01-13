@@ -1,20 +1,16 @@
-import { Button } from "@mui/material";
-import { useState, type ReactNode } from "react";
-import type { SetValueConfig } from "react-hook-form";
-import FormLayout, { VisuallyHiddenInput } from "../form-layout";
-import { IoMdCloudUpload } from "react-icons/io";
+import { type ReactNode } from "react";
+import FormLayout from "../form-layout";
+import FileInput from "@/components/ui/file-input";
 
 type VideoSectionFieldsProps = {
-  setValue: (name: string, value: unknown, config?: SetValueConfig) => void;
+  register: any;
   errors: { [key: string]: any };
 };
 
 export default function VideoSectionFields({
-  setValue,
+  register,
   errors,
 }: VideoSectionFieldsProps): ReactNode {
-  const [hasVideoSelected, setHasVideoSelected] = useState<boolean>(false);
-
   return (
     <FormLayout
       title={"Video Section"}
@@ -26,33 +22,15 @@ export default function VideoSectionFields({
         </p>
       }
     >
-      <div className="flex flex-col gap-3">
-        <Button
-          component="label"
-          role={undefined}
-          variant="contained"
-          tabIndex={-1}
-          startIcon={<IoMdCloudUpload />}
-          className="max-w-fit"
-        >
-          {hasVideoSelected ? "Video Selected" : "Upload Video"}
-          <VisuallyHiddenInput
-            type="file"
-            onChange={(event) => {
-              setValue("videoFile", event.target.files);
-              setHasVideoSelected(
-                Boolean(event.target.files && event.target.files.length > 0)
-              );
-            }}
-            accept="video/*"
-          />
-        </Button>
-        {errors.videoFile && (
-          <p className="text-red-600 text-sm">
-            {errors.videoFile.message as string}
-          </p>
-        )}
-      </div>
+      <FileInput
+        register={register}
+        name="videoFile"
+        errors={errors}
+        labelText="Upload Video File"
+        accept="video/*"
+      >
+        Upload Video
+      </FileInput>
     </FormLayout>
   );
 }

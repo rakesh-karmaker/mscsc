@@ -1,35 +1,17 @@
-import { useState, type ReactNode } from "react";
-import type {
-  ChangeHandler,
-  RegisterOptions,
-  SetValueConfig,
-} from "react-hook-form";
-import FormLayout, { VisuallyHiddenInput } from "../form-layout";
-import { Button, TextField } from "@mui/material";
-import { IoMdCloudUpload } from "react-icons/io";
+import { type ReactNode } from "react";
+import FormLayout from "../form-layout";
+import { TextField } from "@mui/material";
+import FileInput from "@/components/ui/file-input";
 
 type AboutSectionFieldsProps = {
-  register: (
-    name: string,
-    options?: RegisterOptions
-  ) => {
-    ref: React.Ref<any>;
-    name: string;
-    onChange: ChangeHandler;
-    onBlur: ChangeHandler;
-  };
-  setValue: (name: string, value: unknown, config?: SetValueConfig) => void;
+  register: any;
   errors: { [key: string]: any };
 };
 
 export default function AboutSectionFields({
   register,
-  setValue,
   errors,
 }: AboutSectionFieldsProps): ReactNode {
-  const [hasAboutImageSelected, setHasAboutImageSelected] =
-    useState<boolean>(false);
-
   return (
     <FormLayout
       title={"About Section"}
@@ -90,33 +72,9 @@ export default function AboutSectionFields({
           }
           textSize="xl"
         >
-          <div className="flex flex-col gap-3">
-            <Button
-              component="label"
-              role={undefined}
-              variant="contained"
-              tabIndex={-1}
-              startIcon={<IoMdCloudUpload />}
-              className="max-w-fit"
-            >
-              {hasAboutImageSelected ? "Image Selected" : "Upload Image"}
-              <VisuallyHiddenInput
-                type="file"
-                onChange={(event) => {
-                  setValue("aboutImageFile", event.target.files);
-                  setHasAboutImageSelected(
-                    Boolean(event.target.files && event.target.files.length > 0)
-                  );
-                }}
-                accept="image/*"
-              />
-            </Button>
-            {errors.aboutImageFile && (
-              <p className="text-red-600 text-sm">
-                {errors.aboutImageFile.message as string}
-              </p>
-            )}
-          </div>
+          <FileInput register={register} name="aboutImageFile" errors={errors}>
+            Upload Image
+          </FileInput>
         </FormLayout>
       </div>
     </FormLayout>

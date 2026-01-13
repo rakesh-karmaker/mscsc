@@ -142,7 +142,7 @@ export default function MemberEditForm({
         <div className="edit-dialog-actions flex flex-wrap gap-2.5">
           <button
             type="submit"
-            className="primary-button !text-[1.1em] !py-[10px] !px-[20px] !w-fit !h-fit"
+            className="primary-button text-[1.1em]! py-2.5! px-5! w-fit! h-fit!"
             onClick={(e) => {
               e.stopPropagation();
             }}
@@ -151,7 +151,7 @@ export default function MemberEditForm({
           </button>
 
           <button
-            className="danger-button primary-button !text-[1.1em] !py-[10px] !px-[20px] !w-fit !h-fit"
+            className="danger-button primary-button text-[1.1em]! py-2.5! px-5! w-fit! h-fit!"
             aria-label="Delete this data"
             type="button"
             onClick={(e) => {

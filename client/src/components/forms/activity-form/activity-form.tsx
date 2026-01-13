@@ -27,7 +27,7 @@ import {
 import type { AxiosError } from "axios";
 import FormHeading from "@/components/ui/form-heading/from-heading";
 import { DateTimePicker } from "@/components/ui/date-time-picker";
-import FileInput from "@/components/ui/file-input/file-input";
+import FileInput from "@/components/ui/file-input";
 import RichTextEditor from "@/lib/rich-text-editor/rich-text-editor";
 import FormSubmitBtn from "@/components/ui/form-submit-btn";
 import DeleteWarning from "@/components/ui/delete-warning";
@@ -63,6 +63,7 @@ export default function ActivityForm(props: ActivityFormProps) {
     handleSubmit,
     control,
     formState: { errors },
+    setError,
   } = useForm({
     resolver: zodResolver(activitySchema),
     defaultValues,
@@ -77,7 +78,19 @@ export default function ActivityForm(props: ActivityFormProps) {
     ) => {
       const { method, ...rest } = data;
       if (method == "add") {
-        return addActivity(rest);
+        const { slug, ...activityData } = rest;
+        if (
+          !activityData.activityImage ||
+          activityData.activityImage.length === 0
+        ) {
+          setError("root", {
+            message: "Activity cover image is required.",
+          });
+          toast.error("Activity cover image is required.");
+          return Promise.reject("Activity cover image is required.");
+        }
+
+        return addActivity(activityData);
       } else if (method == "delete") {
         return deleteActivity(rest.slug || "");
       } else if (method == "edit") {
@@ -90,12 +103,6 @@ export default function ActivityForm(props: ActivityFormProps) {
     onSuccess: (res) => {
       toast.success(res?.data?.message);
       queryClient.invalidateQueries({ queryKey: ["activities"] });
-    },
-    onError: (err: AxiosError<{ message: string }>) => {
-      console.log(err);
-      toast.error(err?.response?.data?.message || "An error occurred");
-    },
-    onSettled: () => {
       if (props?.method == "edit") {
         if (props?.setSelectedActivity) {
           props?.setSelectedActivity(null);
@@ -103,6 +110,10 @@ export default function ActivityForm(props: ActivityFormProps) {
       } else {
         navigate("/admin/activities");
       }
+    },
+    onError: (err: AxiosError<{ message: string }>) => {
+      console.log(err);
+      toast.error(err?.response?.data?.message || "An error occurred");
     },
   });
 
@@ -128,11 +139,14 @@ export default function ActivityForm(props: ActivityFormProps) {
 
   return (
     <>
-      <div>
+      <div className="w-full h-full flex flex-col">
         <FormHeading style={{ fontSize: "42px", lineHeight: "52px" }}>
           {props?.defaultValues ? "Edit Activity" : "Add Activity"}
         </FormHeading>
-        <form onSubmit={handleSubmit(onSubmit)} className="activity-form">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="activity-form max-w-[min(var(--container-4xl),var(--max-elements-width))] mx-auto!"
+        >
           <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
             <TextField
               fullWidth
@@ -168,10 +182,17 @@ export default function ActivityForm(props: ActivityFormProps) {
             rows={3}
           />
 
-          <FileInput register={register} name="date" errors={errors}>
-            {props?.defaultValues
-              ? "Change Activity Cover Image"
-              : "Activity Cover Image:"}
+          <FileInput
+            register={register}
+            name="activityImage"
+            errors={errors}
+            labelText={
+              props?.defaultValues
+                ? "Change Activity Cover Image"
+                : "Activity Cover Image:"
+            }
+          >
+            Add Photo
           </FileInput>
 
           <FormControl fullWidth error={!!errors.tag}>
@@ -210,25 +231,30 @@ export default function ActivityForm(props: ActivityFormProps) {
             content={props?.defaultValues?.content || ""}
           />
 
-          <div className="combined-btns">
-            <FormSubmitBtn
-              isLoading={activityMutation.isPending}
-              pendingText={props?.defaultValues ? "Updating" : "Adding"}
-            >
-              {props?.defaultValues ? "Update" : "Add"} Activity
-            </FormSubmitBtn>
-
-            {props?.defaultValues && (
-              <button
-                className="danger-button primary-button"
-                aria-label="Delete this data"
-                type="button"
-                onClick={(_) => {
-                  setOpen(true);
-                }}
+          <div className="w-full flex flex-col gap-2">
+            <div className="combined-btns">
+              <FormSubmitBtn
+                isLoading={activityMutation.isPending}
+                pendingText={props?.defaultValues ? "Updating" : "Adding"}
               >
-                Delete Activity
-              </button>
+                {props?.defaultValues ? "Update" : "Add"} Activity
+              </FormSubmitBtn>
+
+              {props?.defaultValues && (
+                <button
+                  className="danger-button primary-button"
+                  aria-label="Delete this data"
+                  type="button"
+                  onClick={(_) => {
+                    setOpen(true);
+                  }}
+                >
+                  Delete Activity
+                </button>
+              )}
+            </div>
+            {errors.root?.message && (
+              <p style={{ color: "red" }}>{String(errors.root?.message)}</p>
             )}
           </div>
         </form>

@@ -15,7 +15,7 @@ import type { Dispatch, ReactNode, SetStateAction } from "react";
 import useErrorNavigator from "@/hooks/use-error-navigator";
 import type { AxiosError } from "axios";
 import SelectInput from "../ui/select-input";
-import FileInput from "../ui/file-input/file-input";
+import FileInput from "../ui/file-input";
 import HideImage from "./hide-image";
 import FormSubmitBtn from "../ui/form-submit-btn";
 
@@ -175,8 +175,13 @@ export default function UserEditForm({
         </SelectInput>
       </Stack>
 
-      <FileInput register={register} name="image" errors={errors}>
-        Edit your photo:
+      <FileInput
+        register={register}
+        name="image"
+        errors={errors}
+        labelText="Edit your photo:"
+      >
+        Add Photo
       </FileInput>
 
       <TextField

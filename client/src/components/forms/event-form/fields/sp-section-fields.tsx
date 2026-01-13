@@ -1,8 +1,8 @@
 import { useEffect, type ReactNode } from "react";
 import { useFieldArray, type Control } from "react-hook-form";
-import FormLayout, { VisuallyHiddenInput } from "../form-layout";
-import { Button, Stack, TextField, Tooltip } from "@mui/material";
-import { IoMdCloudUpload } from "react-icons/io";
+import FormLayout from "../form-layout";
+import { Stack, TextField } from "@mui/material";
+import FileInput from "@/components/ui/file-input";
 
 type SpSectionFieldsProps = {
   register: any;
@@ -89,30 +89,15 @@ export default function SpSectionFields({
                   }
                 />
 
-                <div className="flex flex-col gap-3 min-w-fit">
-                  <Tooltip title="Upload an event logo" arrow>
-                    <Button
-                      component="label"
-                      role={undefined}
-                      variant="contained"
-                      tabIndex={-1}
-                      startIcon={<IoMdCloudUpload />}
-                      className="max-w-fit"
-                    >
-                      Upload Logo
-                      <VisuallyHiddenInput
-                        type="file"
-                        {...register(`sp.${index}.logo`)}
-                        accept="image/*"
-                      />
-                    </Button>
-                  </Tooltip>
-                  {errors.sp && errors.sp[index] && errors.sp[index].logo && (
-                    <p className="text-red-600 text-sm">
-                      {errors.sp[index].logo.message as string}
-                    </p>
-                  )}
-                </div>
+                <FileInput
+                  register={register}
+                  name={`sp.${index}.logoFile`}
+                  errors={errors}
+                  labelText="Upload Logo File"
+                  accept="image/*"
+                >
+                  Upload Logo
+                </FileInput>
               </Stack>
 
               <TextField

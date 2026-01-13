@@ -21,6 +21,7 @@ const EventCASchema = new mongoose.Schema<EventCASchemaType>(
     grade: { type: String, required: true },
 
     havePreviousExperience: { type: Boolean, required: true },
+
     description: { type: String, required: true },
 
     isValidated: { type: Boolean, required: true, default: false },

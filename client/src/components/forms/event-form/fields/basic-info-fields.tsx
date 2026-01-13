@@ -1,28 +1,14 @@
-import { Button, Stack, TextField, Tooltip } from "@mui/material";
-import { useState, type ReactNode } from "react";
-import {
-  Controller,
-  type ChangeHandler,
-  type RegisterOptions,
-  type SetValueConfig,
-} from "react-hook-form";
-import FormLayout, { VisuallyHiddenInput } from "../form-layout";
+import { Stack, TextField } from "@mui/material";
+import { type ReactNode } from "react";
+import { Controller, type SetValueConfig } from "react-hook-form";
+import FormLayout from "../form-layout";
 import { DateTimePicker } from "@/components/ui/date-time-picker";
 import type { Dayjs } from "dayjs";
-import dayjs from "dayjs";
-import { IoMdCloudUpload } from "react-icons/io";
 import { DatePicker } from "@/components/ui/date-picker";
+import FileInput from "@/components/ui/file-input";
 
 type BasicInfoFieldsProps = {
-  register: (
-    name: string,
-    options?: RegisterOptions
-  ) => {
-    ref: React.Ref<any>;
-    name: string;
-    onChange: ChangeHandler;
-    onBlur: ChangeHandler;
-  };
+  register: any;
   setValue: (name: string, value: unknown, config?: SetValueConfig) => void;
   errors: { [key: string]: any };
   control: any;
@@ -31,14 +17,9 @@ type BasicInfoFieldsProps = {
 
 export default function BasicInfoFields({
   register,
-  setValue,
   errors,
   control,
-  defaultValues,
 }: BasicInfoFieldsProps): ReactNode {
-  const [hasEventLogoSelected, setHasEventLogoSelected] =
-    useState<boolean>(false);
-
   return (
     <FormLayout
       title={"Event Basic Information"}
@@ -76,7 +57,7 @@ export default function BasicInfoFields({
             render={({ field }) => (
               <DatePicker
                 {...field}
-                value={field.value || dayjs(defaultValues?.eventDate)}
+                value={field.value}
                 onChange={(date: Dayjs | null) => field.onChange(date)}
                 label="Event Date"
               />
@@ -110,9 +91,7 @@ export default function BasicInfoFields({
             render={({ field }) => (
               <DateTimePicker
                 {...field}
-                value={
-                  field.value || dayjs(defaultValues?.registrationDeadline)
-                }
+                value={field.value}
                 onChange={(date: Dayjs | null) => field.onChange(date)}
                 label="Registration Deadline"
                 timeField={false}
@@ -153,37 +132,16 @@ export default function BasicInfoFields({
             helperText={errors.registrationUrl?.message as string}
             placeholder="Only enter if you have an external form link"
           />
-
-          <div className="flex flex-col gap-3 min-w-fit">
-            <Tooltip title="Upload an event logo" arrow>
-              <Button
-                component="label"
-                role={undefined}
-                variant="contained"
-                tabIndex={-1}
-                startIcon={<IoMdCloudUpload />}
-                className="max-w-fit"
-              >
-                {hasEventLogoSelected ? "Logo Selected" : "Upload Logo"}
-                <VisuallyHiddenInput
-                  type="file"
-                  onChange={(event) => {
-                    setValue("eventLogoUrl", event.target.files);
-                    setHasEventLogoSelected(
-                      Boolean(
-                        event.target.files && event.target.files.length > 0
-                      )
-                    );
-                  }}
-                  accept="image/*"
-                />
-              </Button>
-            </Tooltip>
-            {errors.eventLogoUrl && (
-              <p className="text-red-600 text-sm">
-                {errors.eventLogoUrl.message as string}
-              </p>
-            )}
+          <div className="w-fit">
+            <FileInput
+              register={register}
+              name="eventLogoUrl"
+              errors={errors}
+              addText={false}
+              className="p-[14px_22px]! min-w-fit!"
+            >
+              Upload Logo
+            </FileInput>
           </div>
         </Stack>
       </div>

@@ -136,7 +136,10 @@ export default function TaskForm(props: TaskFormProps) {
         {props?.method == "add" ? "Add Task" : "Edit Task"}
       </FormHeading>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="task-form">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="task-form max-w-[min(var(--container-4xl),var(--max-elements-width))] mx-auto!"
+      >
         <Stack
           direction={{ xs: "column", sm: "row" }}
           spacing={2}
