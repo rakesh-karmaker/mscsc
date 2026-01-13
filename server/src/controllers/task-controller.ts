@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import paginateResults from "../lib/paginate-results.js";
-import Task from "../models/Task.js";
+import Task from "../models/task.js";
 import { getTaskQuery } from "../queries/task-query.js";
-import Member from "../models/Member.js";
+import Member from "../models/member.js";
 import generateSlug from "../utils/generate-slug.js";
 import getDate from "../utils/get-date.js";
 import { taskSchema } from "../lib/validation/task-schema.js";

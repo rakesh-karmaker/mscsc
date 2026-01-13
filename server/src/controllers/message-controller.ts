@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import paginateResults from "../lib/paginate-results.js";
-import Message from "../models/Message.js";
+import Message from "../models/message.js";
 import { messageSchema } from "../lib/validation/message-scheme.js";
 
 // Get all messages with pagination, sorting, and filtering

@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import Member from "../models/Member.js";
+import Member from "../models/member.js";
 import generateOTP from "../utils/generate-otp.js";
 import sendEmail from "../lib/send-email.js";
 import { compareHash, generateHash } from "../utils/hash.js";
-import ForgotPasswordOTP from "../models/ForgotPasswordOTP.js";
+import ForgotPasswordOTP from "../models/forgot-password-otp.js";
 import generateId from "../utils/generate-id.js";
 
 // Send OTP to the user's email

@@ -1,4 +1,4 @@
-import Task from "../models/Task.js";
+import Task from "../models/task.js";
 
 export async function getTaskQuery(slug: string, username: string) {
   // Find the task and filter the submissions

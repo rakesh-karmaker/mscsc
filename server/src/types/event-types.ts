@@ -51,3 +51,30 @@ export type EventRegistrationSchemaType = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type EventCASchemaType = {
+  _id: mongoose.Types.ObjectId;
+
+  eventId: mongoose.Types.ObjectId;
+  name: string;
+  email: string;
+  phoneNumber: string;
+  facebookUrl: string;
+  photoUrl: string;
+  photoPublicId: string;
+  address: string;
+  gender: "male" | "female";
+
+  institution: string;
+  grade: string;
+
+  havePreviousExperience: boolean;
+
+  description: string;
+
+  isValidated: boolean;
+  caCode: string;
+
+  createdAt: string;
+  updatedAt: string;
+};

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Member from "../models/Member.js";
+import Member from "../models/member.js";
 import { GetAllMembersRegexType } from "../types/member-types.js";
 import paginateResults from "../lib/paginate-results.js";
 import { deleteFile, uploadImage } from "../lib/image-uploader.js";

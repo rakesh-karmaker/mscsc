@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import generateSlug from "../utils/generate-slug.js";
-import Member from "../models/Member.js";
+import Member from "../models/member.js";
 import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 import getDate from "../utils/get-date.js";

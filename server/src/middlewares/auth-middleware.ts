@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import getDate from "../utils/get-date.js";
-import Member from "../models/Member.js";
+import Member from "../models/member.js";
 import config from "../config/config.js";
 
 declare global {

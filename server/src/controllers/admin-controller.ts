@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import Member from "../models/Member.js";
-import Message from "../models/Message.js";
+import Member from "../models/member.js";
+import Message from "../models/message.js";
 import Activity from "../models/Activity.js";
-import Task from "../models/Task.js";
+import Task from "../models/task.js";
 
 export async function getDashboardData(
   req: Request,
