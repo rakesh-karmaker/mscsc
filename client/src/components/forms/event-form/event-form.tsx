@@ -13,6 +13,7 @@ import ScheduleSectionFields from "./fields/schedule-section-fields";
 import FaqSectionFields from "./fields/faq-section-fields";
 import FormSubmitBtn from "@/components/ui/form-submit-btn";
 import SpSectionFields from "./fields/sp-section-fields";
+import CAApplicationFields from "./fields/ca-application-fields";
 
 export default function EventForm({
   defaultValues,
@@ -152,6 +153,14 @@ export default function EventForm({
           errors={errors}
         />
       </Activity>
+
+      {/* website CA Application form fields */}
+      <CAApplicationFields
+        register={register}
+        control={control}
+        errors={errors}
+        setValue={setValue}
+      />
 
       <FormSubmitBtn
         isLoading={false}
