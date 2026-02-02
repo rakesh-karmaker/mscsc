@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 type HeroSectionFieldsProps = {
   register: (
     name: string,
-    options?: RegisterOptions
+    options?: RegisterOptions,
   ) => {
     ref: React.Ref<any>;
     name: string;
@@ -38,26 +38,26 @@ export default function HeroSectionFields({
           <TextField
             fullWidth
             variant="outlined"
-            {...register("heroHeading", {
+            {...register("heroData.heading", {
               maxLength: {
                 value: 60,
                 message: "Heading cannot exceed 60 characters",
               },
             })}
             label="Hero Heading"
-            error={Boolean(errors.heroHeading)}
-            helperText={errors.heroHeading?.message as string}
+            error={Boolean(errors.heroData?.heading)}
+            helperText={errors.heroData?.heading?.message as string}
           />
 
           <TextField
             fullWidth
             variant="outlined"
-            {...register("heroText")}
+            {...register("heroData.text")}
             multiline
             minRows={5}
             label="Hero Text"
-            error={Boolean(errors.heroText)}
-            helperText={errors.heroText?.message as string}
+            error={Boolean(errors.heroData?.text)}
+            helperText={errors.heroData?.text?.message as string}
           />
         </div>
         <HeroIconsSelect control={control} errors={errors} />

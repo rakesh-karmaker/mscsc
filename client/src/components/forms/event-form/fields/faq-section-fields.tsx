@@ -16,7 +16,7 @@ export default function FaqSectionFields({
 }: FaqSectionFieldsProps): ReactNode {
   const { fields, append, remove } = useFieldArray({
     control: control,
-    name: "faq",
+    name: "faqData",
   });
 
   function handleAppend() {
@@ -63,17 +63,19 @@ export default function FaqSectionFields({
               <TextField
                 fullWidth
                 variant="outlined"
-                {...register(`faq.${index}.question`)}
+                {...register(`faqData.${index}.question`)}
                 label="Question"
                 multiline
                 error={Boolean(
-                  errors.faq && errors.faq[index] && errors.faq[index].question
+                  errors.faqData &&
+                  errors.faqData[index] &&
+                  errors.faqData[index].question,
                 )}
                 helperText={
-                  errors.faq &&
-                  errors.faq[index] &&
-                  errors.faq[index].question &&
-                  (errors.faq[index].question.message as string)
+                  errors.faqData &&
+                  errors.faqData[index] &&
+                  errors.faqData[index].question &&
+                  (errors.faqData[index].question.message as string)
                 }
                 placeholder="Enter the frequently asked question here."
               />
@@ -81,18 +83,20 @@ export default function FaqSectionFields({
               <TextField
                 fullWidth
                 variant="outlined"
-                {...register(`faq.${index}.answer`)}
+                {...register(`faqData.${index}.answer`)}
                 label="Answer"
                 multiline
                 minRows={4}
                 error={Boolean(
-                  errors.faq && errors.faq[index] && errors.faq[index].answer
+                  errors.faqData &&
+                  errors.faqData[index] &&
+                  errors.faqData[index].answer,
                 )}
                 helperText={
-                  errors.faq &&
-                  errors.faq[index] &&
-                  errors.faq[index].answer &&
-                  (errors.faq[index].answer.message as string)
+                  errors.faqData &&
+                  errors.faqData[index] &&
+                  errors.faqData[index].answer &&
+                  (errors.faqData[index].answer.message as string)
                 }
                 placeholder="Provide a detailed answer to the question."
               />

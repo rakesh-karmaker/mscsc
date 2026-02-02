@@ -61,16 +61,16 @@ export default function CAApplicationFields({
             <TextField
               fullWidth
               variant="outlined"
-              {...register("caApplicationTitle", {
+              {...register("caFormData.title", {
                 required: "CA Application Form title is required",
               })}
               label="CA Application Form Title"
-              error={Boolean(errors.eventName)}
-              helperText={errors.eventName?.message as string}
+              error={Boolean(errors.caFormData?.title)}
+              helperText={errors.caFormData?.title?.message as string}
             />
 
             <Controller
-              name="CAApplicationDeadline"
+              name="caFormData.applicationDeadline"
               control={control}
               render={({ field }) => (
                 <DateTimePicker
@@ -95,7 +95,7 @@ export default function CAApplicationFields({
           >
             <RichTextEditor
               register={register}
-              label="caApplicationDetails"
+              label="caFormData.details"
               content=""
             />
           </FormLayout>

@@ -17,7 +17,7 @@ export default function SpSectionFields({
 }: SpSectionFieldsProps): ReactNode {
   const { fields, append, remove } = useFieldArray({
     control: control,
-    name: "sp",
+    name: "spData",
   });
 
   function handleAppend() {
@@ -71,7 +71,7 @@ export default function SpSectionFields({
                 <TextField
                   fullWidth
                   variant="outlined"
-                  {...register(`sp.${index}.name`, {
+                  {...register(`spData.${index}.name`, {
                     maxLength: {
                       value: 100,
                       message: "Name cannot exceed 100 characters",
@@ -79,19 +79,21 @@ export default function SpSectionFields({
                   })}
                   label="Sponsor/Partner Name"
                   error={Boolean(
-                    errors.sp && errors.sp[index] && errors.sp[index].name,
+                    errors.spData &&
+                    errors.spData[index] &&
+                    errors.spData[index].name,
                   )}
                   helperText={
-                    errors.sp &&
-                    errors.sp[index] &&
-                    errors.sp[index].name &&
-                    (errors.sp[index].name.message as string)
+                    errors.spData &&
+                    errors.spData[index] &&
+                    errors.spData[index].name &&
+                    (errors.spData[index].name.message as string)
                   }
                 />
 
                 <FileInput
                   register={register}
-                  name={`sp.${index}.logoFile`}
+                  name={`spData.${index}.logoFile`}
                   errors={errors}
                   labelText="Upload Logo File"
                   accept="image/*"
@@ -103,7 +105,7 @@ export default function SpSectionFields({
               <TextField
                 fullWidth
                 variant="outlined"
-                {...register(`sp.${index}.websiteUrl`, {
+                {...register(`spData.${index}.websiteUrl`, {
                   pattern: {
                     value:
                       /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w-./?%&=]*)?$/,
@@ -113,13 +115,15 @@ export default function SpSectionFields({
                 label="Website URL"
                 multiline
                 error={Boolean(
-                  errors.sp && errors.sp[index] && errors.sp[index].websiteUrl,
+                  errors.spData &&
+                  errors.spData[index] &&
+                  errors.spData[index].websiteUrl,
                 )}
                 helperText={
-                  errors.sp &&
-                  errors.sp[index] &&
-                  errors.sp[index].websiteUrl &&
-                  (errors.sp[index].websiteUrl.message as string)
+                  errors.spData &&
+                  errors.spData[index] &&
+                  errors.spData[index].websiteUrl &&
+                  (errors.spData[index].websiteUrl.message as string)
                 }
                 placeholder="Enter the website or social URL of the sponsor/partner."
               />

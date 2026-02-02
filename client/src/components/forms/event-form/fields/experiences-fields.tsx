@@ -19,7 +19,7 @@ export default function ExperiencesFields({
 }: ExperiencesFieldsProps): ReactNode {
   const { fields, append, remove } = useFieldArray({
     control: control,
-    name: "experiences",
+    name: "experienceData",
   });
 
   function handleAppend() {
@@ -72,34 +72,34 @@ export default function ExperiencesFields({
                 <TextField
                   fullWidth
                   variant="outlined"
-                  {...register(`experiences.${index}.title`, {
+                  {...register(`experienceData.${index}.title`, {
                     maxLength: {
                       value: 100,
                       message: "Title cannot exceed 100 characters",
                     },
                   })}
-                  label="Segment Title"
+                  label="Experience Title"
                   error={Boolean(
-                    errors.experiences &&
-                      errors.experiences[index] &&
-                      errors.experiences[index].title
+                    errors.experienceData &&
+                    errors.experienceData[index] &&
+                    errors.experienceData[index].title,
                   )}
                   helperText={
-                    errors.experiences &&
-                    errors.experiences[index] &&
-                    errors.experiences[index].title &&
-                    (errors.experiences[index].title.message as string)
+                    errors.experienceData &&
+                    errors.experienceData[index] &&
+                    errors.experienceData[index].title &&
+                    (errors.experienceData[index].title.message as string)
                   }
                 />
 
                 <SelectIconField
-                  id={`experiences-icon-${index}`}
-                  name={`experiences.${index}.icon`}
+                  id={`experienceData-icon-${index}`}
+                  name={`experienceData.${index}.icon`}
                   icons={icons}
                   control={control}
-                  hasErrors={Boolean(errors?.experiences?.[index]?.icon)}
+                  hasErrors={Boolean(errors?.experienceData?.[index]?.icon)}
                   errorMessage={
-                    errors.experiences?.[index]?.icon?.message as string
+                    errors.experienceData?.[index]?.icon?.message as string
                   }
                   defaultValue="games"
                 >
@@ -120,7 +120,7 @@ export default function ExperiencesFields({
               >
                 <RichTextEditor
                   content=""
-                  label={`experiences.${index}.details`}
+                  label={`experienceData.${index}.details`}
                   register={register}
                 />
               </FormLayout>

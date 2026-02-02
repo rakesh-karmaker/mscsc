@@ -21,7 +21,7 @@ export default function SegmentsSectionFields({
 }: SegmentsSectionFieldsProps): ReactNode {
   const { fields, append, remove } = useFieldArray({
     control: control,
-    name: "segments",
+    name: "segmentsData",
   });
 
   function handleAppend() {
@@ -77,15 +77,18 @@ export default function SegmentsSectionFields({
               >
                 <SelectIconField
                   id={`segments-location-type-${index}`}
-                  name={`segments.${index}.locationType`}
+                  name={`segmentsData.${index}.locationType`}
                   icons={{
                     onsite: <IoLocationOutline />,
                     online: <FaGlobeAsia />,
                   }}
                   control={control}
-                  hasErrors={Boolean(errors?.segments?.[index]?.locationType)}
+                  hasErrors={Boolean(
+                    errors?.segmentsData?.[index]?.locationType,
+                  )}
                   errorMessage={
-                    errors.segments?.[index]?.locationType?.message as string
+                    errors.segmentsData?.[index]?.locationType
+                      ?.message as string
                   }
                   defaultValue="onsite"
                 >
@@ -94,15 +97,15 @@ export default function SegmentsSectionFields({
 
                 <SelectIconField
                   id={`segments-team-type-${index}`}
-                  name={`segments.${index}.teamType`}
+                  name={`segmentsData.${index}.teamType`}
                   icons={{
                     solo: <FaGlobeAsia />,
                     team: <IoLocationOutline />,
                   }}
                   control={control}
-                  hasErrors={Boolean(errors?.segments?.[index]?.teamType)}
+                  hasErrors={Boolean(errors?.segmentsData?.[index]?.teamType)}
                   errorMessage={
-                    errors.segments?.[index]?.teamType?.message as string
+                    errors.segmentsData?.[index]?.teamType?.message as string
                   }
                   defaultValue="solo"
                 >
@@ -118,7 +121,7 @@ export default function SegmentsSectionFields({
                 <TextField
                   fullWidth
                   variant="outlined"
-                  {...register(`segments.${index}.title`, {
+                  {...register(`segmentsData.${index}.title`, {
                     maxLength: {
                       value: 100,
                       message: "Title cannot exceed 100 characters",
@@ -126,26 +129,26 @@ export default function SegmentsSectionFields({
                   })}
                   label="Segment Title"
                   error={Boolean(
-                    errors.segments &&
-                      errors.segments[index] &&
-                      errors.segments[index].title
+                    errors.segmentsData &&
+                    errors.segmentsData[index] &&
+                    errors.segmentsData[index].title,
                   )}
                   helperText={
-                    errors.segments &&
-                    errors.segments[index] &&
-                    errors.segments[index].title &&
-                    (errors.segments[index].title.message as string)
+                    errors.segmentsData &&
+                    errors.segmentsData[index] &&
+                    errors.segmentsData[index].title &&
+                    (errors.segmentsData[index].title.message as string)
                   }
                 />
 
                 <SelectIconField
                   id={`segments-icon-${index}`}
-                  name={`segments.${index}.icon`}
+                  name={`segmentsData.${index}.icon`}
                   icons={icons}
                   control={control}
-                  hasErrors={Boolean(errors?.segments?.[index]?.icon)}
+                  hasErrors={Boolean(errors?.segmentsData?.[index]?.icon)}
                   errorMessage={
-                    errors.segments?.[index]?.icon?.message as string
+                    errors.segmentsData?.[index]?.icon?.message as string
                   }
                   defaultValue="bulb"
                 >
@@ -156,21 +159,21 @@ export default function SegmentsSectionFields({
               <TextField
                 fullWidth
                 variant="outlined"
-                {...register(`segments.${index}.summary`)}
+                {...register(`segmentsData.${index}.summary`)}
                 label="Segment Summary"
                 placeholder="A brief summary of the segment."
                 multiline
                 minRows={4}
                 error={Boolean(
-                  errors.segments &&
-                    errors.segments[index] &&
-                    errors.segments[index].summary
+                  errors.segmentsData &&
+                  errors.segmentsData[index] &&
+                  errors.segmentsData[index].summary,
                 )}
                 helperText={
-                  errors.segments &&
-                  errors.segments[index] &&
-                  errors.segments[index].summary &&
-                  (errors.segments[index].summary.message as string)
+                  errors.segmentsData &&
+                  errors.segmentsData[index] &&
+                  errors.segmentsData[index].summary &&
+                  (errors.segmentsData[index].summary.message as string)
                 }
               />
 
@@ -187,7 +190,7 @@ export default function SegmentsSectionFields({
               >
                 <RichTextEditor
                   content=""
-                  label={`segments.${index}.details`}
+                  label={`segmentsData.${index}.details`}
                   register={register}
                 />
               </FormLayout>
@@ -205,7 +208,7 @@ export default function SegmentsSectionFields({
               >
                 <RichTextEditor
                   content=""
-                  label={`segments.${index}.rules`}
+                  label={`segmentsData.${index}.rules`}
                   register={register}
                 />
               </FormLayout>

@@ -60,23 +60,23 @@ export default function RegistrationFormFields({
             <TextField
               fullWidth
               variant="outlined"
-              {...register("registrationFormTitle", {
+              {...register("formData.title", {
                 required: "Registration Form title is required",
               })}
               label="Registration Form Title"
-              error={Boolean(errors.registrationFormTitle)}
-              helperText={errors.registrationFormTitle?.message as string}
+              error={Boolean(errors.formData?.title)}
+              helperText={errors.formData?.title?.message as string}
             />
 
             <TextField
               fullWidth
               variant="outlined"
-              {...register("registrationFees", {
+              {...register("formData.fees", {
                 required: "Registration Fees is required",
               })}
               label="Registration Fees"
-              error={Boolean(errors.registrationFees)}
-              helperText={errors.registrationFees?.message as string}
+              error={Boolean(errors.formData?.fees)}
+              helperText={errors.formData?.fees?.message as string}
             />
           </Stack>
 
@@ -92,7 +92,7 @@ export default function RegistrationFormFields({
           >
             <RichTextEditor
               register={register}
-              label="registrationFormDetails"
+              label="formData.details"
               content=""
             />
           </FormLayout>
@@ -123,7 +123,6 @@ export default function RegistrationFormFields({
                         updatedMethods.push(platform);
                       }
                       setSelectedMethods(updatedMethods);
-                      setValue("paymentMethods", updatedMethods);
                     }}
                   />
 
@@ -140,11 +139,15 @@ export default function RegistrationFormFields({
                       <TextField
                         fullWidth
                         variant="outlined"
-                        {...register(`paymentDetails.${method}.number`)}
+                        {...register(
+                          `formData.transactionMethods.${method}.number`,
+                        )}
                         label="Account Number"
-                        error={Boolean(errors.paymentDetails?.[method]?.number)}
+                        error={Boolean(
+                          errors.formData?.transactionMethods?.[method]?.number,
+                        )}
                         helperText={
-                          errors.paymentDetails?.[method]?.number
+                          errors.formData?.transactionMethods?.[method]?.number
                             ?.message as string
                         }
                         placeholder="e.g., 01XXXXXXXXX"
@@ -152,7 +155,7 @@ export default function RegistrationFormFields({
                       <div className="w-fit">
                         <FileInput
                           register={register}
-                          name={`paymentDetails.${method}.qrCode`}
+                          name={`${method}PaymentQrCode`}
                           errors={errors}
                           addText={false}
                           className="p-[14px_22px]! min-w-fit!"

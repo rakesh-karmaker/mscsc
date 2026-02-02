@@ -26,40 +26,35 @@ export default function AboutSectionFields({
         <TextField
           fullWidth
           variant="outlined"
-          {...register("aboutTitle", {
+          {...register("aboutData.title", {
             maxLength: {
               value: 60,
               message: "Title cannot exceed 60 characters",
             },
           })}
           label="About Title"
-          error={Boolean(errors.aboutTitle)}
-          helperText={errors.aboutTitle?.message as string}
+          error={Boolean(errors.aboutData?.title)}
+          helperText={errors.aboutData?.title?.message as string}
         />
 
         <TextField
           fullWidth
           variant="outlined"
-          {...register("aboutHeading", {
-            maxLength: {
-              value: 100,
-              message: "Heading cannot exceed 100 characters",
-            },
-          })}
+          {...register("aboutData.heading")}
           label="About Heading"
-          error={Boolean(errors.aboutHeading)}
-          helperText={errors.aboutHeading?.message as string}
+          error={Boolean(errors.aboutData?.heading)}
+          helperText={errors.aboutData?.heading?.message as string}
         />
 
         <TextField
           fullWidth
           variant="outlined"
-          {...register("aboutText")}
+          {...register("aboutData.text")}
           multiline
           minRows={5}
           label="About Text"
-          error={Boolean(errors.aboutText)}
-          helperText={errors.aboutText?.message as string}
+          error={Boolean(errors.aboutData?.text)}
+          helperText={errors.aboutData?.text?.message as string}
         />
 
         <FormLayout

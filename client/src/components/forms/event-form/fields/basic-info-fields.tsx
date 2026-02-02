@@ -86,7 +86,7 @@ export default function BasicInfoFields({
           />
 
           <Controller
-            name="registrationDeadline"
+            name="formData.registrationDeadline"
             control={control}
             render={({ field }) => (
               <DateTimePicker
