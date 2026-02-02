@@ -14,8 +14,8 @@ export default function FormLayout({
   title,
   description,
   children,
-  textSize = "2xl",
-  fontWeight = "semibold",
+  textSize = "xl",
+  fontWeight = "medium",
 }: {
   title: string;
   description: ReactNode;

@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 import FormLayout from "../form-layout";
-import { TextField } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import FileInput from "@/components/ui/file-input";
 
 type AboutSectionFieldsProps = {
@@ -23,19 +23,41 @@ export default function AboutSectionFields({
       }
     >
       <div className="flex flex-col gap-4">
-        <TextField
-          fullWidth
-          variant="outlined"
-          {...register("aboutData.title", {
-            maxLength: {
-              value: 60,
-              message: "Title cannot exceed 60 characters",
-            },
-          })}
-          label="About Title"
-          error={Boolean(errors.aboutData?.title)}
-          helperText={errors.aboutData?.title?.message as string}
-        />
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={2}
+          sx={{ width: "100%" }}
+        >
+          <TextField
+            fullWidth
+            variant="outlined"
+            {...register("aboutData.title", {
+              maxLength: {
+                value: 60,
+                message: "Title cannot exceed 60 characters",
+              },
+            })}
+            label="About Title"
+            error={Boolean(errors.aboutData?.title)}
+            helperText={errors.aboutData?.title?.message as string}
+          />
+
+          <TextField
+            fullWidth
+            variant="outlined"
+            {...register("aboutData.prizeCount", {
+              valueAsNumber: true,
+              min: {
+                value: 0,
+                message: "Prize count cannot be negative",
+              },
+            })}
+            label="Number of Prizes"
+            error={Boolean(errors.aboutData?.prizeCount)}
+            helperText={errors.aboutData?.prizeCount?.message as string}
+            sx={{ maxWidth: "300px" }}
+          />
+        </Stack>
 
         <TextField
           fullWidth
@@ -67,7 +89,12 @@ export default function AboutSectionFields({
           }
           textSize="xl"
         >
-          <FileInput register={register} name="aboutImageFile" errors={errors}>
+          <FileInput
+            register={register}
+            name="aboutImageFile"
+            errors={errors}
+            labelText="Add about image (optional)"
+          >
             Upload Image
           </FileInput>
         </FormLayout>
