@@ -18,14 +18,14 @@ import { LuDivide } from "react-icons/lu";
 import { TbMath } from "react-icons/tb";
 import { MdGames } from "react-icons/md";
 
-export const icons: { [iconName: string]: ReactNode } = {
-  // social media icons
+export const socialMediaIcons: { [iconName: string]: ReactNode } = {
   facebook: <FaFacebook />,
   instagram: <FaInstagram />,
   email: <FaEnvelope />,
   phone: <FaPhoneAlt />,
+};
 
-  // general icons
+export const generalIcons: { [iconName: string]: ReactNode } = {
   division: <LuDivide />,
   rocket: <IoMdRocket />,
   chess: <GiChessQueen />,
@@ -41,4 +41,9 @@ export const icons: { [iconName: string]: ReactNode } = {
   games: <MdGames />,
   workshops: <FaChalkboardTeacher />,
   clock: <FaClock />,
+};
+
+export const icons: { [iconName: string]: ReactNode } = {
+  ...socialMediaIcons,
+  ...generalIcons,
 };

@@ -114,7 +114,7 @@ export default function BasicInfoFields({
         />
 
         <Stack
-          direction={{ xs: "column", sm: "row" }}
+          direction={{ sm: "column", md: "row" }}
           spacing={2}
           sx={{ width: "100%" }}
         >
@@ -132,7 +132,8 @@ export default function BasicInfoFields({
             helperText={errors.registrationUrl?.message as string}
             placeholder="Only enter if you have an external form link"
           />
-          <div className="w-fit">
+
+          <div className="w-fit max-md:mt-3!">
             <FileInput
               register={register}
               name="eventLogoUrl"
@@ -141,6 +142,18 @@ export default function BasicInfoFields({
               className="p-[14px_22px]! min-w-fit!"
             >
               Upload Logo
+            </FileInput>
+          </div>
+
+          <div className="w-fit max-md:mt-3!">
+            <FileInput
+              register={register}
+              name="eventLogoFaviconUrl"
+              errors={errors}
+              addText={false}
+              className="p-[14px_22px]! min-w-fit!"
+            >
+              Upload Favicon
             </FileInput>
           </div>
         </Stack>

@@ -15,6 +15,7 @@ import FormSubmitBtn from "@/components/ui/form-submit-btn";
 import SpSectionFields from "./fields/sp-section-fields";
 import CAApplicationFields from "./fields/ca-application-fields";
 import RegistrationFormFields from "./fields/registration-form-fields/registration-form-fields";
+import ContactInfoFields from "./fields/contact-info-fields";
 
 export default function EventForm({
   defaultValues,
@@ -38,7 +39,7 @@ export default function EventForm({
   });
 
   function onSubmit(data: any) {
-    console.log("Form Data:", data);
+    console.log("Form Data:", JSON.stringify(data));
     if (isEditMode) {
       // Handle edit event logic
     } else {
@@ -168,6 +169,13 @@ export default function EventForm({
         control={control}
         errors={errors}
         setValue={setValue}
+      />
+
+      {/* website contact info section form fields */}
+      <ContactInfoFields
+        register={register}
+        control={control}
+        errors={errors}
       />
 
       <FormSubmitBtn

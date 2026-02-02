@@ -23,7 +23,7 @@ export default function SpSectionFields({
   function handleAppend() {
     append({
       name: "",
-      logo: "",
+      logoFile: "",
       websiteUrl: "",
     });
   }
@@ -79,7 +79,7 @@ export default function SpSectionFields({
                   })}
                   label="Sponsor/Partner Name"
                   error={Boolean(
-                    errors.sp && errors.sp[index] && errors.sp[index].name
+                    errors.sp && errors.sp[index] && errors.sp[index].name,
                   )}
                   helperText={
                     errors.sp &&
@@ -113,7 +113,7 @@ export default function SpSectionFields({
                 label="Website URL"
                 multiline
                 error={Boolean(
-                  errors.sp && errors.sp[index] && errors.sp[index].websiteUrl
+                  errors.sp && errors.sp[index] && errors.sp[index].websiteUrl,
                 )}
                 helperText={
                   errors.sp &&

@@ -76,7 +76,7 @@ export default function Task({
         setCanSubmit,
         setMode,
         setShowModeChange,
-        admin
+        admin,
       );
     }
   }, [isVerifying, isLoading, username]);
@@ -131,7 +131,7 @@ export default function Task({
     const answer = data?.content;
     const poster = data?.poster;
     const previousAnswer = task?.submissions?.find(
-      (s: Submission) => s.username === username
+      (s: Submission) => s.username === username,
     )?.answer;
     if (!answer && !previousAnswer) {
       toast.error("Nothing to submit");
@@ -177,7 +177,7 @@ export default function Task({
         {isLoading || isVerifying ? (
           <Loader />
         ) : (
-          <div>
+          <>
             <div className="task-section">
               <TaskHeader
                 task={task}
@@ -189,7 +189,7 @@ export default function Task({
               {mode === "preview" ? (
                 <TaskSubmissionPreview
                   submission={task?.submissions?.find(
-                    (s: Submission) => s.username === username
+                    (s: Submission) => s.username === username,
                   )}
                   task={task}
                 />
@@ -231,7 +231,7 @@ export default function Task({
               setShowModeChange={setShowModeChange}
               {...rest}
             />
-          </div>
+          </>
         )}
       </main>
     </>
@@ -246,7 +246,7 @@ const changeStates = (
   setCanSubmit: Dispatch<SetStateAction<boolean>>,
   setMode: Dispatch<SetStateAction<"edit" | "preview">>,
   setShowModeChange: Dispatch<SetStateAction<boolean>>,
-  admin?: boolean
+  admin?: boolean,
 ) => {
   if (!task) {
     throw Error("Task not found");
