@@ -52,7 +52,7 @@ export default function CAApplicationFields({
           gridTemplateRows: hasCAForm == "yes" ? "1fr" : "0fr",
         }}
       >
-        <div className="flex flex-col gap-4 mt-2! h-fit w-fit overflow-hidden">
+        <div className="flex flex-col gap-4 pt-2! h-fit w-fit overflow-hidden">
           <Stack
             direction={{ xs: "column", sm: "row" }}
             spacing={2}
