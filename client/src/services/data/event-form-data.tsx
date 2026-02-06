@@ -20,3 +20,16 @@ export const sectionsData: {
     "faqs",
   ],
 };
+
+export const sectionsTitle: { [section: string]: string } = {
+  basic: "Create New Event",
+  hero: "Website Hero Section",
+  video: "Website Video Section",
+  about: "About the Event Section",
+  segments: "Event Segments Section",
+  experiences: "Experiences Section",
+  schedule: "Event Schedule Section",
+  sp: "Sponsors & Partners Section",
+  faqs: "FAQs Section",
+  final: "Finalize Event Creation",
+};

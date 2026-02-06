@@ -6,6 +6,7 @@ type FormSubmitBtnProps = {
   children: ReactNode;
   className?: string;
   width?: string;
+  onClick?: () => void;
 };
 
 export default function FormSubmitBtn({
@@ -33,6 +34,7 @@ export default function FormSubmitBtn({
         type="submit"
         className={"primary-button" + (className ? ` ${className}` : "")}
         style={{ width: width }}
+        {...rest}
       >
         {innerText}
       </button>

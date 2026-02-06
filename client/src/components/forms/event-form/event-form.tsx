@@ -1,7 +1,7 @@
 import { Activity, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import FormLayout from "./form-layout";
-import { sectionsData } from "@/services/data/event-form-data";
+import { sectionsData, sectionsTitle } from "@/services/data/event-form-data";
 import SectionsSelect from "./fields/select/sections-select";
 import AboutSectionFields from "./fields/about-section-fields";
 import BasicInfoFields from "./fields/basic-info-fields";
@@ -82,21 +82,26 @@ export default function EventForm({
   }
 
   const totalSections = selectedSections.length + 2;
+  const sectionTitle: string =
+    currentField === "basic" && isEditMode
+      ? "Edit Event Details"
+      : sectionsTitle[currentField];
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="w-full h-full flex flex-col gap-7 max-w-[min(var(--container-4xl),var(--max-elements-width))] mx-auto"
     >
-      <Activity mode={currentField === "basic" ? "visible" : "hidden"}>
-        <FormSectionLayout
-          title={`${isEditMode ? "Edit Event Details" : "Create New Event"}`}
-          currentField={currentField}
-          handleFieldChange={handleFieldChange}
-          isEditMode={isEditMode}
-          totalSections={totalSections}
-          currentNumber={currentNumber}
-        >
+      <FormSectionLayout
+        title={sectionTitle}
+        currentField={currentField}
+        handleFieldChange={handleFieldChange}
+        isEditMode={isEditMode}
+        totalSections={totalSections}
+        currentNumber={currentNumber}
+        errors={errors}
+      >
+        <Activity mode={currentField === "basic" ? "visible" : "hidden"}>
           {/* event basic info fields */}
           <BasicInfoFields
             register={register}
@@ -126,154 +131,73 @@ export default function EventForm({
               )}
             </div>
           </FormLayout>
-        </FormSectionLayout>
-      </Activity>
+        </Activity>
 
-      {/* website hero section form fields */}
-      <Activity mode={currentField === "hero" ? "visible" : "hidden"}>
-        <FormSectionLayout
-          title="Website Hero Section"
-          currentField={currentField}
-          handleFieldChange={handleFieldChange}
-          isEditMode={isEditMode}
-          totalSections={totalSections}
-          currentNumber={currentNumber}
-        >
+        {/* website hero section form fields */}
+        <Activity mode={currentField === "hero" ? "visible" : "hidden"}>
           <HeroSectionFields
             register={register}
             control={control}
             errors={errors}
           />
-        </FormSectionLayout>
-      </Activity>
+        </Activity>
 
-      {/* website video section form fields */}
-      <Activity mode={currentField === "video" ? "visible" : "hidden"}>
-        <FormSectionLayout
-          title="Website Video Section"
-          currentField={currentField}
-          handleFieldChange={handleFieldChange}
-          isEditMode={isEditMode}
-          totalSections={totalSections}
-          currentNumber={currentNumber}
-        >
+        {/* website video section form fields */}
+        <Activity mode={currentField === "video" ? "visible" : "hidden"}>
           <VideoSectionFields register={register} errors={errors} />
-        </FormSectionLayout>
-      </Activity>
+        </Activity>
 
-      {/* website about section form fields */}
-      <Activity mode={currentField === "about" ? "visible" : "hidden"}>
-        <FormSectionLayout
-          title="Website About Section"
-          currentField={currentField}
-          handleFieldChange={handleFieldChange}
-          isEditMode={isEditMode}
-          totalSections={totalSections}
-          currentNumber={currentNumber}
-        >
+        {/* website about section form fields */}
+        <Activity mode={currentField === "about" ? "visible" : "hidden"}>
           <AboutSectionFields register={register} errors={errors} />
-        </FormSectionLayout>
-      </Activity>
+        </Activity>
 
-      {/* website segments section form fields */}
-      <Activity mode={currentField === "segments" ? "visible" : "hidden"}>
-        <FormSectionLayout
-          title="Website Segments Section"
-          currentField={currentField}
-          handleFieldChange={handleFieldChange}
-          isEditMode={isEditMode}
-          totalSections={totalSections}
-          currentNumber={currentNumber}
-        >
+        {/* website segments section form fields */}
+        <Activity mode={currentField === "segments" ? "visible" : "hidden"}>
           <SegmentsSectionFields
             register={register}
             control={control}
             errors={errors}
           />
-        </FormSectionLayout>
-      </Activity>
+        </Activity>
 
-      {/* website experiences section form fields */}
-      <Activity mode={currentField === "experiences" ? "visible" : "hidden"}>
-        <FormSectionLayout
-          title="Website Experiences Section"
-          currentField={currentField}
-          handleFieldChange={handleFieldChange}
-          isEditMode={isEditMode}
-          totalSections={totalSections}
-          currentNumber={currentNumber}
-        >
+        {/* website experiences section form fields */}
+        <Activity mode={currentField === "experiences" ? "visible" : "hidden"}>
           <ExperiencesFields
             register={register}
             control={control}
             errors={errors}
           />
-        </FormSectionLayout>
-      </Activity>
+        </Activity>
 
-      {/* website schedule section form fields */}
-      <Activity mode={currentField === "schedule" ? "visible" : "hidden"}>
-        <FormSectionLayout
-          title="Website Schedule Section"
-          currentField={currentField}
-          handleFieldChange={handleFieldChange}
-          isEditMode={isEditMode}
-          totalSections={totalSections}
-          currentNumber={currentNumber}
-        >
+        {/* website schedule section form fields */}
+        <Activity mode={currentField === "schedule" ? "visible" : "hidden"}>
           <ScheduleSectionFields
             register={register}
             control={control}
             errors={errors}
           />
-        </FormSectionLayout>
-      </Activity>
+        </Activity>
 
-      {/* website sponsors & partners section form fields */}
-      <Activity mode={currentField === "sp" ? "visible" : "hidden"}>
-        <FormSectionLayout
-          title="Website Sponsors & Partners Section"
-          currentField={currentField}
-          handleFieldChange={handleFieldChange}
-          isEditMode={isEditMode}
-          totalSections={totalSections}
-          currentNumber={currentNumber}
-        >
+        {/* website sponsors & partners section form fields */}
+        <Activity mode={currentField === "sp" ? "visible" : "hidden"}>
           <SpSectionFields
             register={register}
             control={control}
             errors={errors}
           />
-        </FormSectionLayout>
-      </Activity>
+        </Activity>
 
-      {/* website faq section form fields */}
-      <Activity mode={currentField === "faqs" ? "visible" : "hidden"}>
-        <FormSectionLayout
-          title="Website FAQ Section"
-          currentField={currentField}
-          handleFieldChange={handleFieldChange}
-          isEditMode={isEditMode}
-          totalSections={totalSections}
-          currentNumber={currentNumber}
-        >
+        {/* website faq section form fields */}
+        <Activity mode={currentField === "faqs" ? "visible" : "hidden"}>
           <FaqSectionFields
             register={register}
             control={control}
             errors={errors}
           />
-        </FormSectionLayout>
-      </Activity>
+        </Activity>
 
-      <Activity mode={currentField === "final" ? "visible" : "hidden"}>
-        <FormSectionLayout
-          title="Contact Info & Forms"
-          currentField={currentField}
-          handleFieldChange={handleFieldChange}
-          isEditMode={isEditMode}
-          totalSections={totalSections}
-          currentNumber={currentNumber}
-        >
+        <Activity mode={currentField === "final" ? "visible" : "hidden"}>
           {/* website contact info section form fields */}
           <ContactInfoFields
             register={register}
@@ -295,8 +219,8 @@ export default function EventForm({
             errors={errors}
             setValue={setValue}
           />
-        </FormSectionLayout>
-      </Activity>
+        </Activity>
+      </FormSectionLayout>
     </form>
   );
 }

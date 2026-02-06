@@ -86,7 +86,7 @@ function MemberListItem({
         </div>
 
         <button
-          className="danger-button primary-button !text-[1em] !py-[7px] !px-[15px] !w-fit !h-fit"
+          className="danger-button primary-button text-[1em]! py-1.75! px-3.75! w-fit! h-fit!"
           aria-label="Delete this data"
           type="button"
           onClick={(e) => {
