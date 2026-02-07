@@ -16,12 +16,14 @@ type HeroSectionFieldsProps = {
   };
   control: Control<any>;
   errors: { [key: string]: any };
+  isSectionSelected: boolean;
 };
 
 export default function HeroSectionFields({
   register,
   control,
   errors,
+  isSectionSelected,
 }: HeroSectionFieldsProps): ReactNode {
   return (
     <FormLayout
@@ -43,6 +45,7 @@ export default function HeroSectionFields({
                 value: 60,
                 message: "Heading cannot exceed 60 characters",
               },
+              required: isSectionSelected ? "Hero heading is required" : false,
             })}
             label="Hero Heading"
             error={Boolean(errors.heroData?.heading)}
@@ -52,7 +55,9 @@ export default function HeroSectionFields({
           <TextField
             fullWidth
             variant="outlined"
-            {...register("heroData.text")}
+            {...register("heroData.text", {
+              required: isSectionSelected ? "Hero text is required" : false,
+            })}
             multiline
             minRows={5}
             label="Hero Text"

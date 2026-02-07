@@ -30,7 +30,7 @@ export default function FormErrorsModal({
         e.stopPropagation();
       }}
     >
-      <div className="w-full max-w-[28.75em] max-sm:max-w-full max-sm:min-h-screen bg-primary-bg max-h-screen overflow-y-auto border-none! outline-none! focus-visible:outline-none rounded-lg">
+      <div className="w-full max-w-[28.75em] max-h-[92vh] max-sm:max-h-screen max-sm:max-w-full max-sm:min-h-screen bg-primary-bg overflow-y-auto border-none! outline-none! focus-visible:outline-none rounded-lg">
         <div className="min-h-fit max-sm:max-h-full p-7! flex flex-col max-xs:justify-center gap-3 relative">
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center gap-3">
@@ -84,7 +84,7 @@ function FormErrors({
         }
 
         // array of messages / errors
-        if (Array.isArray(val)) {
+        if (Array.isArray(val) && val.length > 0 && Array.isArray(val[0])) {
           return (
             <div key={key}>
               <h4 className="font-medium text-[1.1rem]/[115%]">

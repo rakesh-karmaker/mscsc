@@ -75,10 +75,6 @@ export default function BasicInfoFields({
             variant="outlined"
             {...register("eventLocation", {
               required: "Event location is required",
-              maxLength: {
-                value: 100,
-                message: "Event location cannot exceed 100 characters",
-              },
             })}
             label="Event Location"
             error={Boolean(errors.eventLocation)}

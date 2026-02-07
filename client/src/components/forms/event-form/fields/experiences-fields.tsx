@@ -10,12 +10,14 @@ type ExperiencesFieldsProps = {
   register: any;
   control: Control<any>;
   errors: { [key: string]: any };
+  isSectionSelected: boolean;
 };
 
 export default function ExperiencesFields({
   register,
   control,
   errors,
+  isSectionSelected,
 }: ExperiencesFieldsProps): ReactNode {
   const { fields, append, remove } = useFieldArray({
     control: control,
@@ -73,6 +75,9 @@ export default function ExperiencesFields({
                   fullWidth
                   variant="outlined"
                   {...register(`experienceData.${index}.title`, {
+                    required: isSectionSelected
+                      ? "Experience title is required"
+                      : false,
                     maxLength: {
                       value: 100,
                       message: "Title cannot exceed 100 characters",

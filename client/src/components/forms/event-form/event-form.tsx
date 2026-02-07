@@ -124,9 +124,9 @@ export default function EventForm({
                 setSelectedSections={setSelectedSections}
               />
 
-              {errors.segments && (
+              {errors.sections && (
                 <p className="text-red-600 text-sm">
-                  {errors.segments.message as string}
+                  {errors.sections.message as string}
                 </p>
               )}
             </div>
@@ -139,6 +139,7 @@ export default function EventForm({
             register={register}
             control={control}
             errors={errors}
+            isSectionSelected={selectedSections.includes("hero")}
           />
         </Activity>
 
@@ -149,7 +150,11 @@ export default function EventForm({
 
         {/* website about section form fields */}
         <Activity mode={currentField === "about" ? "visible" : "hidden"}>
-          <AboutSectionFields register={register} errors={errors} />
+          <AboutSectionFields
+            register={register}
+            errors={errors}
+            isSectionSelected={selectedSections.includes("about")}
+          />
         </Activity>
 
         {/* website segments section form fields */}
@@ -158,6 +163,7 @@ export default function EventForm({
             register={register}
             control={control}
             errors={errors}
+            isSectionSelected={selectedSections.includes("segments")}
           />
         </Activity>
 
@@ -167,6 +173,7 @@ export default function EventForm({
             register={register}
             control={control}
             errors={errors}
+            isSectionSelected={selectedSections.includes("experiences")}
           />
         </Activity>
 
@@ -176,6 +183,7 @@ export default function EventForm({
             register={register}
             control={control}
             errors={errors}
+            isSectionSelected={selectedSections.includes("schedule")}
           />
         </Activity>
 
@@ -185,6 +193,7 @@ export default function EventForm({
             register={register}
             control={control}
             errors={errors}
+            isSectionSelected={selectedSections.includes("sp")}
           />
         </Activity>
 
@@ -194,6 +203,7 @@ export default function EventForm({
             register={register}
             control={control}
             errors={errors}
+            isSectionSelected={selectedSections.includes("faqs")}
           />
         </Activity>
 

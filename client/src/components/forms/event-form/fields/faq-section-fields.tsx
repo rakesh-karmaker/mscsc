@@ -7,12 +7,14 @@ type FaqSectionFieldsProps = {
   register: any;
   control: Control<any>;
   errors: { [key: string]: any };
+  isSectionSelected: boolean;
 };
 
 export default function FaqSectionFields({
   register,
   control,
   errors,
+  isSectionSelected,
 }: FaqSectionFieldsProps): ReactNode {
   const { fields, append, remove } = useFieldArray({
     control: control,
@@ -63,7 +65,9 @@ export default function FaqSectionFields({
               <TextField
                 fullWidth
                 variant="outlined"
-                {...register(`faqData.${index}.question`)}
+                {...register(`faqData.${index}.question`, {
+                  required: isSectionSelected ? "Question is required" : false,
+                })}
                 label="Question"
                 multiline
                 error={Boolean(
@@ -83,7 +87,9 @@ export default function FaqSectionFields({
               <TextField
                 fullWidth
                 variant="outlined"
-                {...register(`faqData.${index}.answer`)}
+                {...register(`faqData.${index}.answer`, {
+                  required: isSectionSelected ? "Answer is required" : false,
+                })}
                 label="Answer"
                 multiline
                 minRows={4}

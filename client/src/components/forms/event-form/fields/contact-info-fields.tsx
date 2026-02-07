@@ -27,7 +27,7 @@ export default function ContactInfoFields({
 
   function handleAppend() {
     append({
-      platform: "",
+      platform: "facebook",
       url: "",
     });
   }
@@ -82,7 +82,13 @@ export default function ContactInfoFields({
             </div>
 
             <TextField
-              {...register(`contactLinks.${index}.url`)}
+              {...register(`contactLinks.${index}.url`, {
+                required: "URL is required",
+                pattern: {
+                  value: /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w-./?%&=]*)?$/,
+                  message: "Please enter a valid URL",
+                },
+              })}
               label="Link"
               variant="outlined"
               error={!!errors.contactLinks?.[index]?.url}

@@ -6,11 +6,13 @@ import FileInput from "@/components/ui/file-input";
 type AboutSectionFieldsProps = {
   register: any;
   errors: { [key: string]: any };
+  isSectionSelected: boolean;
 };
 
 export default function AboutSectionFields({
   register,
   errors,
+  isSectionSelected,
 }: AboutSectionFieldsProps): ReactNode {
   return (
     <FormLayout
@@ -32,6 +34,7 @@ export default function AboutSectionFields({
             fullWidth
             variant="outlined"
             {...register("aboutData.title", {
+              required: isSectionSelected ? "About title is required" : false,
               maxLength: {
                 value: 60,
                 message: "Title cannot exceed 60 characters",
@@ -46,6 +49,7 @@ export default function AboutSectionFields({
             fullWidth
             variant="outlined"
             {...register("aboutData.prizeCount", {
+              required: isSectionSelected ? "Prize count is required" : false,
               valueAsNumber: true,
               min: {
                 value: 0,
@@ -62,7 +66,9 @@ export default function AboutSectionFields({
         <TextField
           fullWidth
           variant="outlined"
-          {...register("aboutData.heading")}
+          {...register("aboutData.heading", {
+            required: isSectionSelected ? "About heading is required" : false,
+          })}
           label="About Heading"
           error={Boolean(errors.aboutData?.heading)}
           helperText={errors.aboutData?.heading?.message as string}
@@ -71,7 +77,9 @@ export default function AboutSectionFields({
         <TextField
           fullWidth
           variant="outlined"
-          {...register("aboutData.text")}
+          {...register("aboutData.text", {
+            required: isSectionSelected ? "About text is required" : false,
+          })}
           multiline
           minRows={5}
           label="About Text"

@@ -61,7 +61,10 @@ export default function RegistrationFormFields({
               fullWidth
               variant="outlined"
               {...register("formData.title", {
-                required: "Registration Form title is required",
+                required:
+                  hasRegistrationForm === "yes"
+                    ? "Registration form title is required"
+                    : false,
               })}
               label="Registration Form Title"
               error={Boolean(errors.formData?.title)}
@@ -72,7 +75,10 @@ export default function RegistrationFormFields({
               fullWidth
               variant="outlined"
               {...register("formData.fees", {
-                required: "Registration Fees is required",
+                required:
+                  hasRegistrationForm === "yes"
+                    ? "Registration fees information is required"
+                    : false,
               })}
               label="Registration Fees"
               error={Boolean(errors.formData?.fees)}
@@ -141,6 +147,13 @@ export default function RegistrationFormFields({
                         variant="outlined"
                         {...register(
                           `formData.transactionMethods.${method}.number`,
+                          {
+                            required:
+                              selectedMethods.includes(method) &&
+                              hasRegistrationForm === "yes"
+                                ? "Account number is required"
+                                : false,
+                          },
                         )}
                         label="Account Number"
                         error={Boolean(

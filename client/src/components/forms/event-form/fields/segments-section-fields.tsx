@@ -12,12 +12,14 @@ type SegmentsSectionFieldsProps = {
   register: any;
   control: Control<any>;
   errors: { [key: string]: any };
+  isSectionSelected: boolean;
 };
 
 export default function SegmentsSectionFields({
   register,
   control,
   errors,
+  isSectionSelected,
 }: SegmentsSectionFieldsProps): ReactNode {
   const { fields, append, remove } = useFieldArray({
     control: control,
@@ -122,6 +124,9 @@ export default function SegmentsSectionFields({
                   fullWidth
                   variant="outlined"
                   {...register(`segmentsData.${index}.title`, {
+                    required: isSectionSelected
+                      ? "Segment title is required"
+                      : false,
                     maxLength: {
                       value: 100,
                       message: "Title cannot exceed 100 characters",
@@ -159,7 +164,11 @@ export default function SegmentsSectionFields({
               <TextField
                 fullWidth
                 variant="outlined"
-                {...register(`segmentsData.${index}.summary`)}
+                {...register(`segmentsData.${index}.summary`, {
+                  required: isSectionSelected
+                    ? "Segment summary is required"
+                    : false,
+                })}
                 label="Segment Summary"
                 placeholder="A brief summary of the segment."
                 multiline

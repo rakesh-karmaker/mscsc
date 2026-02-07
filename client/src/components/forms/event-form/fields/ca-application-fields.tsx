@@ -6,6 +6,7 @@ import { Stack, TextField } from "@mui/material";
 import type { Dayjs } from "dayjs";
 import { DateTimePicker } from "@/components/ui/date-time-picker";
 import RichTextEditor from "@/lib/rich-text-editor/rich-text-editor";
+import dayjs from "dayjs";
 
 type CAApplicationFieldsProps = {
   register: any;
@@ -62,7 +63,10 @@ export default function CAApplicationFields({
               fullWidth
               variant="outlined"
               {...register("caFormData.title", {
-                required: "CA Application Form title is required",
+                required:
+                  hasCAForm === "yes"
+                    ? "CA Application form title is required"
+                    : false,
               })}
               label="CA Application Form Title"
               error={Boolean(errors.caFormData?.title)}
@@ -75,7 +79,7 @@ export default function CAApplicationFields({
               render={({ field }) => (
                 <DateTimePicker
                   {...field}
-                  value={field.value}
+                  value={field.value || dayjs()}
                   onChange={(date: Dayjs | null) => field.onChange(date)}
                   label="CA Application Deadline"
                 />

@@ -12,12 +12,14 @@ type ScheduleSectionFieldsProps = {
   register: any;
   control: Control<any>;
   errors: { [key: string]: any };
+  isSectionSelected: boolean;
 };
 
 export default function ScheduleSectionFields({
   register,
   control,
   errors,
+  isSectionSelected,
 }: ScheduleSectionFieldsProps): ReactNode {
   const { fields, append, remove } = useFieldArray({
     control: control,
@@ -78,6 +80,9 @@ export default function ScheduleSectionFields({
                   fullWidth
                   variant="outlined"
                   {...register(`schedule.${index}.title`, {
+                    required: isSectionSelected
+                      ? "Schedule title is required"
+                      : false,
                     maxLength: {
                       value: 100,
                       message: "Title cannot exceed 100 characters",
@@ -86,8 +91,8 @@ export default function ScheduleSectionFields({
                   label="Schedule Title"
                   error={Boolean(
                     errors.schedule &&
-                      errors.schedule[index] &&
-                      errors.schedule[index].title
+                    errors.schedule[index] &&
+                    errors.schedule[index].title,
                   )}
                   helperText={
                     errors.schedule &&
@@ -168,14 +173,18 @@ export default function ScheduleSectionFields({
               <TextField
                 fullWidth
                 variant="outlined"
-                {...register(`schedule.${index}.description`)}
+                {...register(`schedule.${index}.description`, {
+                  required: isSectionSelected
+                    ? "Schedule description is required"
+                    : false,
+                })}
                 label="Schedule Description"
                 multiline
                 minRows={4}
                 error={Boolean(
                   errors.schedule &&
-                    errors.schedule[index] &&
-                    errors.schedule[index].description
+                  errors.schedule[index] &&
+                  errors.schedule[index].description,
                 )}
                 helperText={
                   errors.schedule &&

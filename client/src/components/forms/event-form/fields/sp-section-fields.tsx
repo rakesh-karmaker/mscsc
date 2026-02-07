@@ -8,12 +8,14 @@ type SpSectionFieldsProps = {
   register: any;
   control: Control<any>;
   errors: { [key: string]: any };
+  isSectionSelected: boolean;
 };
 
 export default function SpSectionFields({
   register,
   control,
   errors,
+  isSectionSelected,
 }: SpSectionFieldsProps): ReactNode {
   const { fields, append, remove } = useFieldArray({
     control: control,
@@ -76,6 +78,9 @@ export default function SpSectionFields({
                       value: 100,
                       message: "Name cannot exceed 100 characters",
                     },
+                    required: isSectionSelected
+                      ? "Sponsor/Partner name is required"
+                      : false,
                   })}
                   label="Sponsor/Partner Name"
                   error={Boolean(
@@ -106,6 +111,9 @@ export default function SpSectionFields({
                 fullWidth
                 variant="outlined"
                 {...register(`spData.${index}.websiteUrl`, {
+                  required: isSectionSelected
+                    ? "Website URL is required"
+                    : false,
                   pattern: {
                     value:
                       /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w-./?%&=]*)?$/,
