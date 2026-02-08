@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import paginateResults from "../lib/paginate-results.js";
-import Message from "../models/message.js";
+import Message from "../models/Message.js";
 import { messageSchema } from "../lib/validation/message-scheme.js";
 
 // Get all messages with pagination, sorting, and filtering
 export async function getAllMessages(
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> {
   try {
     const nameQuery = Array.isArray(req.query.name)
@@ -56,7 +56,7 @@ export async function sendMessage(req: Request, res: Response): Promise<void> {
 // Mark a message as read
 export async function markMessageAsRead(
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> {
   try {
     const messageId = req.body.id;
@@ -83,7 +83,7 @@ export async function markMessageAsRead(
 // Delete a message
 export async function deleteMessage(
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> {
   try {
     const messageId = req.query.id;

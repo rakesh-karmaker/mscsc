@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import paginateResults from "../lib/paginate-results.js";
-import Activity from "../models/activity.js";
+import Activity from "../models/Activity.js";
 import generateSlug from "../utils/generate-slug.js";
 import {
   deleteFile,

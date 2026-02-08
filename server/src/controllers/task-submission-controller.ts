@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import Task from "../models/task.js";
-import Member from "../models/member.js";
+import Task from "../models/Task.js";
+import Member from "../models/Member.js";
 import { deleteFile, uploadImage } from "../lib/image-uploader.js";
 import { SubmissionType, SubmissionUpdateType } from "../types/task-types.js";
 import getPosition from "../utils/get-position.js";
@@ -33,7 +33,7 @@ export async function submitTask(req: Request, res: Response): Promise<void> {
 
     // check if the submission exists
     const previousSubmission = task.submissions.find(
-      (s) => s.username === username
+      (s) => s.username === username,
     );
     if (previousSubmission) {
       res.status(400).send({ message: "Submission already exists" });
@@ -77,14 +77,14 @@ export async function submitTask(req: Request, res: Response): Promise<void> {
     await Task.findOneAndUpdate(
       { slug },
       { $push: { submissions: submission } },
-      { new: true }
+      { new: true },
     );
 
     // add the submission into the member's profile
     await Member.findOneAndUpdate(
       { slug: username },
       { $push: { submissions: { taskId: task._id } } },
-      { new: true }
+      { new: true },
     );
 
     res.status(200).send({ message: "Task submitted successfully" });
@@ -100,7 +100,7 @@ export async function submitTask(req: Request, res: Response): Promise<void> {
 // edit a submission
 export async function editSubmission(
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> {
   try {
     const { slug, username, answer } = req.body;
@@ -119,7 +119,7 @@ export async function editSubmission(
       return;
     }
     const previousSubmission = task.submissions.find(
-      (s) => s.username === username
+      (s) => s.username === username,
     );
     if (!previousSubmission) {
       res.status(404).send({ message: "Submission not found" });
@@ -164,7 +164,7 @@ export async function editSubmission(
     await Task.findOneAndUpdate(
       { slug, "submissions.username": username },
       { $set: updates },
-      { new: true }
+      { new: true },
     );
 
     res.status(200).send({ message: "Submission edited successfully" });
@@ -180,7 +180,7 @@ export async function editSubmission(
 // delete a submission
 export async function deleteSubmission(
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> {
   try {
     const { slug, username } = req.body;
@@ -203,7 +203,7 @@ export async function deleteSubmission(
 
     // find the previous submission
     const previousSubmission = task.submissions.find(
-      (s) => s.username === username
+      (s) => s.username === username,
     );
     if (!previousSubmission) {
       res.status(404).send({ message: "Submission not found" });
@@ -220,7 +220,7 @@ export async function deleteSubmission(
       { slug, "submissions.username": username },
       {
         $pull: { submissions: { username } },
-      }
+      },
     );
 
     if (!updatedTask) {
@@ -234,7 +234,7 @@ export async function deleteSubmission(
       await Member.findOneAndUpdate(
         { slug: username },
         { $pull: { submissions: { taskId: updatedTask._id } } },
-        { new: true }
+        { new: true },
       );
     }
 
@@ -251,7 +251,7 @@ export async function deleteSubmission(
               taskId: updatedTask._id,
             },
           },
-        }
+        },
       );
 
       // update the task
@@ -323,7 +323,7 @@ export async function makeWinner(req: Request, res: Response): Promise<void> {
               taskId: task._id,
             },
           },
-        }
+        },
       );
       task[previousPosition] = undefined;
       await task.save();
@@ -333,7 +333,7 @@ export async function makeWinner(req: Request, res: Response): Promise<void> {
     const updatedTask = await Task.findOneAndUpdate(
       { slug },
       { $set: { [position]: username } },
-      { new: true }
+      { new: true },
     );
     if (!updatedTask) {
       res.status(404).send({ message: "Task not found" });
@@ -368,7 +368,7 @@ export async function makeWinner(req: Request, res: Response): Promise<void> {
           },
         },
       },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedTimeline) {
@@ -423,7 +423,7 @@ export async function removeWinner(req: Request, res: Response): Promise<void> {
               taskId: task._id,
             },
           },
-        }
+        },
       );
     }
 
@@ -431,7 +431,7 @@ export async function removeWinner(req: Request, res: Response): Promise<void> {
     const updatedTask = await Task.findOneAndUpdate(
       { slug },
       { $set: { [position]: null } },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedTask) {

@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import Member from "../models/member.js";
+import Member from "../models/Member.js";
 import generateOTP from "../utils/generate-otp.js";
 import sendEmail from "../lib/send-email.js";
 import { compareHash, generateHash } from "../utils/hash.js";
-import ForgotPasswordOTP from "../models/forgot-password-otp.js";
+import ForgotPasswordOTP from "../models/ForgotPasswordOtp.js";
 import generateId from "../utils/generate-id.js";
 
 // Send OTP to the user's email
@@ -97,7 +97,7 @@ export async function verifyOTP(req: Request, res: Response): Promise<void> {
 // Reset the password using the verified OTP token
 export async function resetPassword(
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> {
   try {
     const { email, newPassword, token } = req.body;

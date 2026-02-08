@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import getDate from "../utils/get-date.js";
-import Member from "../models/member.js";
+import Member from "../models/Member.js";
 import config from "../config/config.js";
 
 declare global {
@@ -18,7 +18,7 @@ declare global {
 export async function isAuthorized(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> {
   try {
     // Check for token
@@ -44,7 +44,7 @@ export async function isAuthorized(
       console.log(
         "Authorization error - Token Expired - ",
         getDate(),
-        "\n---\n"
+        "\n---\n",
       );
     } else {
       console.log("Authorization error - ", getDate(), "\n---\n");
@@ -57,7 +57,7 @@ export async function isAuthorized(
 export async function isAdmin(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> {
   // Fetch member from DB
   const member = await Member.findById(req.user?._id ?? "").select("role");

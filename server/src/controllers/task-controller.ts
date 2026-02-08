@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import paginateResults from "../lib/paginate-results.js";
-import Task from "../models/task.js";
+import Task from "../models/Task.js";
 import { getTaskQuery } from "../queries/task-query.js";
-import Member from "../models/member.js";
+import Member from "../models/Member.js";
 import generateSlug from "../utils/generate-slug.js";
 import getDate from "../utils/get-date.js";
 import { taskSchema } from "../lib/validation/task-schema.js";
@@ -15,11 +15,11 @@ export async function getAllTasks(req: Request, res: Response): Promise<void> {
     const regex = {
       name: new RegExp(
         typeof req.query.name === "string" ? req.query.name : "",
-        "i"
+        "i",
       ),
       category: new RegExp(
         typeof req.query.category === "string" ? req.query.category : "",
-        "i"
+        "i",
       ),
     };
 
@@ -224,7 +224,7 @@ export async function deleteTask(req: Request, res: Response): Promise<void> {
         { slug: submissions[i].username },
         {
           $pull: { submissions: { taskId: task._id } }, // remove the task from the submissions array
-        }
+        },
       );
     }
 
@@ -248,7 +248,7 @@ export async function deleteTask(req: Request, res: Response): Promise<void> {
                     taskId: task._id, // remove the task from the timeline array
                   },
                 },
-              }
+              },
             );
           }
         }
