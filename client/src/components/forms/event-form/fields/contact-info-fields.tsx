@@ -84,10 +84,6 @@ export default function ContactInfoFields({
             <TextField
               {...register(`contactLinks.${index}.url`, {
                 required: "URL is required",
-                pattern: {
-                  value: /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w-./?%&=]*)?$/,
-                  message: "Please enter a valid URL",
-                },
               })}
               label="Link"
               variant="outlined"

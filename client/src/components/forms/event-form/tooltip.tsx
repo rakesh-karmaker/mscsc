@@ -59,6 +59,7 @@ export default function Tooltip({
             <button
               className="w-fit bg-secondary-bg text-red-500 p-1! rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-400/30 transition"
               onClick={() => setIsTooltipVisible(false)}
+              type="button"
             >
               <RxCross1 />
             </button>

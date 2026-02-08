@@ -60,6 +60,7 @@ export default function BasicInfoFields({
                 value={field.value}
                 onChange={(date: Dayjs | null) => field.onChange(date)}
                 label="Event Date"
+                errMessage={errors.eventDate?.message as string}
               />
             )}
           />
@@ -91,6 +92,9 @@ export default function BasicInfoFields({
                 onChange={(date: Dayjs | null) => field.onChange(date)}
                 label="Registration Deadline"
                 timeField={false}
+                errMessage={
+                  errors.formData?.registrationDeadline?.message as string
+                }
               />
             )}
           />
@@ -132,7 +136,7 @@ export default function BasicInfoFields({
           <div className="w-fit max-md:mt-3!">
             <FileInput
               register={register}
-              name="eventLogoUrl"
+              name="eventLogo"
               errors={errors}
               addText={false}
               className="p-[14px_22px]! min-w-fit!"
@@ -144,7 +148,7 @@ export default function BasicInfoFields({
           <div className="w-fit max-md:mt-3!">
             <FileInput
               register={register}
-              name="eventLogoFaviconUrl"
+              name="eventLogoFavicon"
               errors={errors}
               addText={false}
               className="p-[14px_22px]! min-w-fit!"

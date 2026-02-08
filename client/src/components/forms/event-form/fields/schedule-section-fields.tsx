@@ -133,6 +133,9 @@ export default function ScheduleSectionFields({
                       value={field.value || dayjs()}
                       onChange={(date: Dayjs | null) => field.onChange(date)}
                       label="Schedule Date"
+                      errMessage={
+                        errors.schedule?.[index]?.date?.message as string
+                      }
                     />
                   )}
                 />
@@ -151,6 +154,9 @@ export default function ScheduleSectionFields({
                         value={field.value || dayjs()}
                         onChange={(date: Dayjs | null) => field.onChange(date)}
                         label="From Time"
+                        errMessage={
+                          errors.schedule?.[index]?.fromTime?.message as string
+                        }
                       />
                     )}
                   />
@@ -164,6 +170,9 @@ export default function ScheduleSectionFields({
                         value={field.value || dayjs()}
                         onChange={(date: Dayjs | null) => field.onChange(date)}
                         label="To Time"
+                        errMessage={
+                          errors.schedule?.[index]?.toTime?.message as string
+                        }
                       />
                     )}
                   />

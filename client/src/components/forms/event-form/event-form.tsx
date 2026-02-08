@@ -16,6 +16,7 @@ import CAApplicationFields from "./fields/ca-application-fields";
 import RegistrationFormFields from "./fields/registration-form-fields/registration-form-fields";
 import ContactInfoFields from "./fields/contact-info-fields";
 import FormSectionLayout from "./form-section-layout";
+import useEventFormValidator from "@/hooks/use-event-form-validator";
 
 export default function EventForm({
   defaultValues,
@@ -53,6 +54,15 @@ export default function EventForm({
     } else {
       let newIndex: number = currentIndex + (method === "next" ? 1 : -1);
       while (!selectedSections.includes(sections[newIndex])) {
+        if (newIndex == sections.length - 1 && method === "next") {
+          setCurrentField("final");
+          setCurrentNumber(sections.length + 1);
+          return;
+        } else if (newIndex === 0 && method === "previous") {
+          setCurrentField("basic");
+          setCurrentNumber(1);
+          return;
+        }
         newIndex = method === "next" ? newIndex + 1 : newIndex - 1;
       }
       setCurrentField(sections[newIndex]);
@@ -64,16 +74,24 @@ export default function EventForm({
     register,
     handleSubmit,
     formState: { errors },
-    // setError,
+    setError,
     setValue,
     // getValues,
     control,
+    clearErrors,
   } = useForm({
     defaultValues: defaultValues || {},
   });
 
+  console.log("Form Errors:", errors);
+
   function onSubmit(data: any) {
-    console.log("Form Data:", JSON.stringify(data));
+    const { filteredData, isValid } = useEventFormValidator({
+      data,
+      setError,
+      clearErrors,
+    });
+    console.log("Form Data:", JSON.stringify(filteredData));
     if (isEditMode) {
       // Handle edit event logic
     } else {
