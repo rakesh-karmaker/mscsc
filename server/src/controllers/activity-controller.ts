@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import paginateResults from "../lib/paginate-results.js";
-import Activity from "../models/Activity.js";
+import Activity from "../models/activity.js";
 import generateSlug from "../utils/generate-slug.js";
 import {
   deleteFile,
@@ -12,18 +12,18 @@ import { activitySchema } from "../lib/validation/activity-schema.js";
 // Get all activities
 export async function getAllActivities(
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> {
   try {
     // Create regex for filtering
     const regex = {
       title: new RegExp(
         typeof req.query.title === "string" ? req.query.title : "",
-        "i"
+        "i",
       ),
       tag: new RegExp(
         typeof req.query.tag === "string" ? req.query.tag : "",
-        "i"
+        "i",
       ),
     };
 
@@ -56,7 +56,7 @@ export async function getActivity(req: Request, res: Response): Promise<void> {
     const activity = await Activity.findOne({ slug }).select(
       isEdit
         ? "-gallery -coverImageId -coverImageUrl -createdAt -updatedAt -__v"
-        : "-updatedAt -coverImageId -__v"
+        : "-updatedAt -coverImageId -__v",
     );
     if (!activity) {
       res.status(404).send({ message: "Activity not found" });
@@ -84,7 +84,7 @@ export async function getActivity(req: Request, res: Response): Promise<void> {
             "-createdAt",
             "-updatedAt",
             "-__v",
-          ].join(" ")
+          ].join(" "),
         );
     }
 
@@ -101,7 +101,7 @@ export async function getActivity(req: Request, res: Response): Promise<void> {
 // Get home page activities
 export async function getHomeActivities(
   _: Request,
-  res: Response
+  res: Response,
 ): Promise<void> {
   try {
     // get the events
@@ -116,7 +116,7 @@ export async function getHomeActivities(
           " -coverImageId" +
           " -updatedAt" +
           " -createdAt" +
-          " -__v"
+          " -__v",
       );
 
     // get the articles
@@ -129,7 +129,7 @@ export async function getHomeActivities(
           " -coverImageId" +
           " -updatedAt" +
           " -createdAt" +
-          " -__v"
+          " -__v",
       );
 
     res.status(200).send({ events, articles });
@@ -145,7 +145,7 @@ export async function getHomeActivities(
 // Create new activity
 export async function createActivity(
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> {
   try {
     const { files, body } = req;
@@ -246,7 +246,7 @@ export async function editActivity(req: Request, res: Response): Promise<void> {
         deleteFile(previousActivity.coverImageId);
         const { url, imgId } = await uploadImage(
           req.files.activityImage[0],
-          true
+          true,
         );
         updates.coverImageUrl = url;
         updates.coverImageId = imgId;
@@ -283,7 +283,7 @@ export async function editActivity(req: Request, res: Response): Promise<void> {
 // Delete activity
 export async function deleteActivity(
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> {
   try {
     const slug = req.body.slug;

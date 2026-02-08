@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import Member from "../models/member.js";
 import Message from "../models/message.js";
-import Activity from "../models/Activity.js";
+import Activity from "../models/activity.js";
 import Task from "../models/task.js";
 
 export async function getDashboardData(
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> {
   try {
     let end = new Date();
@@ -35,11 +35,11 @@ export async function getDashboardData(
       let current = new Date(start.getFullYear(), start.getMonth(), 1);
       const endMonth = new Date(end.getFullYear(), end.getMonth(), 1);
       const growthMap = Object.fromEntries(
-        memberGrowth.map((item) => [item._id, item.count])
+        memberGrowth.map((item) => [item._id, item.count]),
       );
       while (current <= endMonth) {
         const monthStr = `${current.getFullYear()}-${String(
-          current.getMonth() + 1
+          current.getMonth() + 1,
         ).padStart(2, "0")}`;
         filledData.push({
           date: monthStr,
