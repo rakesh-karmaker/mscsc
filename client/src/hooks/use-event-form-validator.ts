@@ -1,3 +1,5 @@
+import useFilterEventForm from "./use-filter-event-form";
+
 type useEventFormValidatorProps = {
   data: any;
   setError: any;
@@ -9,7 +11,6 @@ export default function useEventFormValidator({
   setError,
   clearErrors,
 }: useEventFormValidatorProps): { filteredData: any; isValid: boolean } {
-  const filteredData: any = {};
   let isValid: boolean = true;
 
   // clear manual errors from previous submit (if provided)
@@ -196,6 +197,9 @@ export default function useEventFormValidator({
       }
     }
   }
+
+  // filter the data
+  const { filteredData } = useFilterEventForm({ data, sections });
 
   return { filteredData, isValid };
 }
