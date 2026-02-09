@@ -168,7 +168,7 @@ export default function RegistrationFormFields({
                       <div className="w-fit">
                         <FileInput
                           register={register}
-                          name={`${method}PaymentQrCode`}
+                          name={`${method}QrCode`}
                           errors={errors}
                           addText={false}
                           className="p-[14px_22px]! min-w-fit!"

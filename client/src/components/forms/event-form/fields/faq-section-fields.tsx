@@ -1,7 +1,7 @@
 import { useEffect, type ReactNode } from "react";
 import { useFieldArray, type Control } from "react-hook-form";
 import FormLayout from "../form-layout";
-import { TextField } from "@mui/material";
+import { TextField, Tooltip } from "@mui/material";
 
 type FaqSectionFieldsProps = {
   register: any;
@@ -48,7 +48,7 @@ export default function FaqSectionFields({
         </p>
       }
     >
-      <div className="w-full h-full flex flex-col gap-4">
+      <div className="w-full h-full flex flex-col gap-10">
         {fields.map((field, index) => (
           <FormLayout
             key={field.id}
@@ -60,6 +60,18 @@ export default function FaqSectionFields({
             }
             textSize="lg"
             fontWeight="medium"
+            cancelButton={
+              <Tooltip title="Remove Segment" placement="top" arrow>
+                <button
+                  type="button"
+                  className="primary-button before:bg-red-500! w-fit! min-w-fit! px-3! py-1.5! text-base! font-normal! h-fit! transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={() => handleRemove(index)}
+                  disabled={fields.length <= 1}
+                >
+                  Remove
+                </button>
+              </Tooltip>
+            }
           >
             <div className="w-full flex flex-col gap-4">
               <TextField

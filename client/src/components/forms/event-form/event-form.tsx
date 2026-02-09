@@ -1,4 +1,4 @@
-import { Activity, useState, type ReactNode } from "react";
+import { Activity, useEffect, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import FormLayout from "./form-layout";
 import { sectionsData, sectionsTitle } from "@/services/data/event-form-data";
@@ -26,47 +26,36 @@ export default function EventForm({
   const isEditMode = Boolean(defaultValues);
 
   const [selectedSections, setSelectedSections] = useState<string[]>([]);
+  const [filteredSections, setFilteredSections] = useState<string[]>([]);
   const [currentField, setCurrentField] = useState<string>("basic");
   const [currentNumber, setCurrentNumber] = useState<number>(1);
 
-  function handleFieldChange(method: "next" | "previous") {
-    const sections: string[] = sectionsData.sectionOptions;
+  useEffect(() => {
+    const filtered = sectionsData.sectionOptions.filter((section) =>
+      selectedSections.includes(section),
+    );
+    setFilteredSections(filtered);
+  }, [selectedSections]);
+
+  function handleFieldChange(
+    method: "next" | "previous" | "jump",
+    jumpToField?: string,
+  ) {
+    const sections: string[] = ["basic", ...filteredSections, "final"];
+
+    if (method === "jump" && jumpToField) {
+      setCurrentField(jumpToField);
+      setCurrentNumber(sections.indexOf(jumpToField) + 1);
+    }
+
     const currentIndex: number = sections.indexOf(currentField);
 
-    if (method === "next" && currentIndex === selectedSections.length - 1) {
-      setCurrentField("final");
-      setCurrentNumber(selectedSections.length + 2);
-    } else if (method === "previous" && currentIndex === 0) {
-      setCurrentField("basic");
-      setCurrentNumber(1);
-    } else if (method === "previous" && currentField === "final") {
-      if (selectedSections.length === 0) {
-        setCurrentField("basic");
-        setCurrentNumber(1);
-      } else {
-        let newIndex: number = sections.length - 1;
-        while (!selectedSections.includes(sections[newIndex])) {
-          newIndex--;
-        }
-        setCurrentField(sections[newIndex]);
-        setCurrentNumber(newIndex + 2);
-      }
-    } else {
-      let newIndex: number = currentIndex + (method === "next" ? 1 : -1);
-      while (!selectedSections.includes(sections[newIndex])) {
-        if (newIndex == sections.length - 1 && method === "next") {
-          setCurrentField("final");
-          setCurrentNumber(sections.length + 1);
-          return;
-        } else if (newIndex === 0 && method === "previous") {
-          setCurrentField("basic");
-          setCurrentNumber(1);
-          return;
-        }
-        newIndex = method === "next" ? newIndex + 1 : newIndex - 1;
-      }
-      setCurrentField(sections[newIndex]);
-      setCurrentNumber(newIndex + 2);
+    if (method === "next") {
+      setCurrentField(sections[currentIndex + 1]);
+      setCurrentNumber(currentIndex + 2);
+    } else if (method === "previous") {
+      setCurrentField(sections[currentIndex - 1]);
+      setCurrentNumber(currentIndex);
     }
   }
 
@@ -82,8 +71,6 @@ export default function EventForm({
   } = useForm({
     defaultValues: defaultValues || {},
   });
-
-  console.log("Form Errors:", errors);
 
   function onSubmit(data: any) {
     const { filteredData, isValid } = useEventFormValidator({
@@ -118,6 +105,7 @@ export default function EventForm({
         totalSections={totalSections}
         currentNumber={currentNumber}
         errors={errors}
+        sections={filteredSections}
       >
         <Activity mode={currentField === "basic" ? "visible" : "hidden"}>
           {/* event basic info fields */}

@@ -16,12 +16,14 @@ export default function FormLayout({
   children,
   textSize = "xl",
   fontWeight = "medium",
+  cancelButton,
 }: {
   title: string;
   description: ReactNode;
   children: ReactNode;
   textSize?: "sm" | "base" | "lg" | "xl" | "2xl" | "3xl";
   fontWeight?: "normal" | "medium" | "semibold" | "bold";
+  cancelButton?: ReactNode;
 }): ReactNode {
   const [showOnRight, setShowOnRight] = useState<boolean>(false);
   const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(false);
@@ -44,7 +46,7 @@ export default function FormLayout({
 
   return (
     <div className="w-full h-full flex flex-col gap-2">
-      <div className="flex items-center gap-2">
+      <div className="flex w-full items-center gap-2">
         <h2 className={`font-${fontWeight} text-${textSize}`}>{title}</h2>
         <div className="w-fit h-fit relative">
           <button
@@ -64,6 +66,7 @@ export default function FormLayout({
             />
           </Activity>
         </div>
+        {cancelButton && <div className="ml-auto!">{cancelButton}</div>}
       </div>
       {children}
     </div>

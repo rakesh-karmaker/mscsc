@@ -1,7 +1,7 @@
 import { useEffect, type ReactNode } from "react";
 import { Controller, useFieldArray, type Control } from "react-hook-form";
 import FormLayout from "../form-layout";
-import { Stack, TextField } from "@mui/material";
+import { Stack, TextField, Tooltip } from "@mui/material";
 import { icons } from "@/services/data/icons-data";
 import SelectIconField from "@/components/ui/select-icon-field";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -57,7 +57,7 @@ export default function ScheduleSectionFields({
         </p>
       }
     >
-      <div className="w-full h-full flex flex-col gap-4">
+      <div className="w-full h-full flex flex-col gap-10">
         {fields.map((field, index) => (
           <FormLayout
             key={field.id}
@@ -69,6 +69,18 @@ export default function ScheduleSectionFields({
             }
             textSize="lg"
             fontWeight="medium"
+            cancelButton={
+              <Tooltip title="Remove Segment" placement="top" arrow>
+                <button
+                  type="button"
+                  className="primary-button before:bg-red-500! w-fit! min-w-fit! px-3! py-1.5! text-base! font-normal! h-fit! transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={() => handleRemove(index)}
+                  disabled={fields.length <= 1}
+                >
+                  Remove
+                </button>
+              </Tooltip>
+            }
           >
             <div className="w-full flex flex-col gap-4">
               <Stack

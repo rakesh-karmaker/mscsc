@@ -1,7 +1,7 @@
 import { useEffect, type ReactNode } from "react";
 import { useFieldArray, type Control } from "react-hook-form";
 import FormLayout from "../form-layout";
-import { Stack, TextField } from "@mui/material";
+import { Stack, TextField, Tooltip } from "@mui/material";
 import { FaGlobeAsia } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import { icons } from "@/services/data/icons-data";
@@ -58,7 +58,7 @@ export default function SegmentsSectionFields({
         </p>
       }
     >
-      <div className="w-full h-full flex flex-col gap-4">
+      <div className="w-full h-full flex flex-col gap-10">
         {fields.map((field, index) => (
           <FormLayout
             key={field.id}
@@ -70,6 +70,18 @@ export default function SegmentsSectionFields({
             }
             textSize="lg"
             fontWeight="medium"
+            cancelButton={
+              <Tooltip title="Remove Segment" placement="top" arrow>
+                <button
+                  type="button"
+                  className="primary-button before:bg-red-500! w-fit! min-w-fit! px-3! py-1.5! text-base! font-normal! h-fit! transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={() => handleRemove(index)}
+                  disabled={fields.length <= 1}
+                >
+                  Remove
+                </button>
+              </Tooltip>
+            }
           >
             <div className="w-full flex flex-col gap-4">
               <Stack

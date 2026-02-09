@@ -1,4 +1,14 @@
-import type { ExperienceType, SegmentType } from "@/types/event-types";
+import type {
+  BasicInfoType,
+  CAFromDataType,
+  EventFormDataType,
+  ExperienceType,
+  FormDataType,
+  RawScheduleItemType,
+  ScheduleDataType,
+  SegmentType,
+  SpType,
+} from "@/types/event-types";
 import generateSlug from "@/utils/generate-slug";
 
 type useFilterEventFormProps = {
@@ -10,17 +20,17 @@ export default function useFilterEventForm({
   data,
   sections,
 }: useFilterEventFormProps): {
-  filteredData: any;
+  filteredData: EventFormDataType;
 } {
-  let filteredData: any = {};
+  let filteredData: EventFormDataType = {} as EventFormDataType;
 
-  const basicInfoFields = {
-    template: "Explorion", // default template
+  const basicInfoFields: BasicInfoType = {
+    template: "Explorion", // default template change it later if you want
     eventName: data.eventName,
     eventDate: data.eventDate,
     eventLocation: data.eventLocation,
     eventDescription: data.eventDescription,
-    registrationUrl: data.registrationUrl,
+    registrationUrl: data.registrationUrl || "",
     isInnerRegistration: data.isInnerRegistration,
     hasCAForm: data.hasCAForm,
   };
@@ -30,7 +40,7 @@ export default function useFilterEventForm({
       [platform]: url,
     }));
 
-  const formDataFields = {
+  const formDataFields: FormDataType = {
     registrationDeadline: data.formData.registrationDeadline,
     ...(data.isInnerRegistration
       ? {
@@ -42,20 +52,38 @@ export default function useFilterEventForm({
       : {}),
   };
 
-  const caFormFields = data.hasCAForm
+  if (data.isInnerRegistration) {
+    if (data.bkashQrCode && data.bkashQrCode.length > 0) {
+      filteredData.bkashQrCode = data.bkashQrCode[0];
+    }
+
+    if (data.nagadQrCode && data.nagadQrCode.length > 0) {
+      filteredData.nagadQrCode = data.nagadQrCode[0];
+    }
+
+    if (data.rocketQrCode && data.rocketQrCode.length > 0) {
+      filteredData.rocketQrCode = data.rocketQrCode[0];
+    }
+  }
+
+  const caFormFields: CAFromDataType | null = data.hasCAForm
     ? {
         title: data.caFormData.title,
         details: data.caFormData.details,
         applicationDeadline: data.caFormData.applicationDeadline,
       }
-    : {};
+    : null;
 
   filteredData = {
-    ...basicInfoFields,
+    basicInfo: basicInfoFields,
+    sections: sections,
     contactLinks: contactInfoFields,
     formData: formDataFields,
-    ...(data.hasCAForm ? { caFormData: caFormFields } : {}),
   };
+
+  if (caFormFields) {
+    filteredData.caFormData = caFormFields;
+  }
 
   // only include the fields for the sections that are selected
   if (sections.includes("hero")) {
@@ -66,6 +94,14 @@ export default function useFilterEventForm({
     };
   }
 
+  if (
+    sections.includes("video") &&
+    data.videoFile &&
+    data.videoFile.length > 0
+  ) {
+    filteredData.videoData = data.videoFile[0];
+  }
+
   if (sections.includes("about")) {
     filteredData.aboutData = {
       title: data.aboutData.title,
@@ -73,6 +109,10 @@ export default function useFilterEventForm({
       heading: data.aboutData.heading,
       text: data.aboutData.text,
     };
+
+    if (data.aboutImageFile && data.aboutImageFile.length > 0) {
+      filteredData.aboutImage = data.aboutImageFile[0];
+    }
   }
 
   if (sections.includes("segments")) {
@@ -93,8 +133,38 @@ export default function useFilterEventForm({
     );
   }
 
+  if (sections.includes("schedule")) {
+    const rawScheduleData: RawScheduleItemType[] = data.scheduleData;
+
+    // format them according to date
+    const formattedScheduleData: ScheduleDataType = {};
+    rawScheduleData.forEach((item) => {
+      const { date, ...rest } = item;
+      if (!formattedScheduleData[date]) {
+        formattedScheduleData[date] = [];
+      }
+      formattedScheduleData[date].push(rest);
+    });
+
+    filteredData.scheduleData = formattedScheduleData;
+  }
+
   if (sections.includes("sp")) {
-    filteredData.spData = data.spData;
+    filteredData.spData = data.spData.map(
+      (sp: SpType & { logoFile: File[] }) => ({
+        name: sp.name,
+        websiteUrl: sp.websiteUrl,
+      }),
+    );
+
+    const spLogos: File[] = [];
+    data.spData.forEach((sp: SpType & { logoFile: File[] }) => {
+      if (sp.logoFile && sp.logoFile.length > 0) {
+        spLogos.push(sp.logoFile[0]);
+      }
+    });
+
+    filteredData.spLogos = spLogos;
   }
 
   if (sections.includes("faq")) {

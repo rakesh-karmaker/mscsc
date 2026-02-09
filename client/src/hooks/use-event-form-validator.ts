@@ -1,3 +1,4 @@
+import type { EventFormDataType } from "@/types/event-types";
 import useFilterEventForm from "./use-filter-event-form";
 
 type useEventFormValidatorProps = {
@@ -10,7 +11,10 @@ export default function useEventFormValidator({
   data,
   setError,
   clearErrors,
-}: useEventFormValidatorProps): { filteredData: any; isValid: boolean } {
+}: useEventFormValidatorProps): {
+  filteredData: EventFormDataType;
+  isValid: boolean;
+} {
   let isValid: boolean = true;
 
   // clear manual errors from previous submit (if provided)
