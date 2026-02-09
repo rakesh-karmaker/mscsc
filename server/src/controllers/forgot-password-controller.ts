@@ -3,7 +3,7 @@ import Member from "../models/Member.js";
 import generateOTP from "../utils/generate-otp.js";
 import sendEmail from "../lib/send-email.js";
 import { compareHash, generateHash } from "../utils/hash.js";
-import ForgotPasswordOTP from "../models/ForgotPasswordOtp.js";
+import ForgotPasswordOTP from "../models/ForgotPasswordOTP.js";
 import generateId from "../utils/generate-id.js";
 
 // Send OTP to the user's email
