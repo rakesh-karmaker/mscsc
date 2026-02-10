@@ -15,8 +15,12 @@ import SpSectionFields from "./fields/sp-section-fields";
 import CAApplicationFields from "./fields/ca-application-fields";
 import RegistrationFormFields from "./fields/registration-form-fields/registration-form-fields";
 import ContactInfoFields from "./fields/contact-info-fields";
-import FormSectionLayout from "./form-section-layout";
+import FormSectionLayout from "./form-section-layout/form-section-layout";
 import useEventFormValidator from "@/hooks/use-event-form-validator";
+import { useMutation } from "@tanstack/react-query";
+import type { EventFormDataType } from "@/types/event-types";
+import { addEvent } from "@/lib/api/event";
+import toast from "react-hot-toast";
 
 export default function EventForm({
   defaultValues,
@@ -29,6 +33,7 @@ export default function EventForm({
   const [filteredSections, setFilteredSections] = useState<string[]>([]);
   const [currentField, setCurrentField] = useState<string>("basic");
   const [currentNumber, setCurrentNumber] = useState<number>(1);
+  const [hiddenSections, setHiddenSections] = useState<string[]>([]);
 
   useEffect(() => {
     const filtered = sectionsData.sectionOptions.filter((section) =>
@@ -59,13 +64,28 @@ export default function EventForm({
     }
   }
 
+  const eventMutation = useMutation({
+    mutationFn: (data: EventFormDataType) => {
+      return addEvent(data);
+    },
+    onSuccess: () => {
+      toast.success(
+        isEditMode
+          ? "Event updated successfully!"
+          : "Event created successfully!",
+      );
+    },
+    onError: () => {
+      toast.error("An error occurred. Please try again.");
+    },
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
     setValue,
-    // getValues,
     control,
     clearErrors,
   } = useForm({
@@ -73,16 +93,20 @@ export default function EventForm({
   });
 
   function onSubmit(data: any) {
+    setValue("hiddenSections", hiddenSections);
     const { filteredData, isValid } = useEventFormValidator({
       data,
       setError,
       clearErrors,
     });
-    console.log("Form Data:", JSON.stringify(filteredData));
+    if (!isValid) return;
+
     if (isEditMode) {
       // Handle edit event logic
+      eventMutation.mutate(data);
     } else {
       // Handle add event logic
+      eventMutation.mutate(filteredData);
     }
   }
 
@@ -106,6 +130,8 @@ export default function EventForm({
         currentNumber={currentNumber}
         errors={errors}
         sections={filteredSections}
+        hiddenSections={hiddenSections}
+        setHiddenSections={setHiddenSections}
       >
         <Activity mode={currentField === "basic" ? "visible" : "hidden"}>
           {/* event basic info fields */}

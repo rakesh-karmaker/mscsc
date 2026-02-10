@@ -65,15 +65,17 @@ export default function ExperiencesFields({
             textSize="lg"
             fontWeight="medium"
             cancelButton={
-              <Tooltip title="Remove Segment" placement="top" arrow>
-                <button
-                  type="button"
-                  className="primary-button before:bg-red-500! w-fit! min-w-fit! px-3! py-1.5! text-base! font-normal! h-fit! transition disabled:opacity-50 disabled:cursor-not-allowed"
-                  onClick={() => handleRemove(index)}
-                  disabled={fields.length <= 1}
-                >
-                  Remove
-                </button>
+              <Tooltip title="Remove Experience" placement="top" arrow>
+                <span>
+                  <button
+                    type="button"
+                    className="primary-button before:bg-red-500! w-fit! min-w-fit! px-3! py-1.5! text-base! font-normal! h-fit! transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={() => handleRemove(index)}
+                    disabled={fields.length <= 1}
+                  >
+                    Remove
+                  </button>
+                </span>
               </Tooltip>
             }
           >

@@ -77,8 +77,11 @@ export default function useFilterEventForm({
   filteredData = {
     basicInfo: basicInfoFields,
     sections: sections,
+    hiddenSections: data.hiddenSections || [],
     contactLinks: contactInfoFields,
     formData: formDataFields,
+    eventLogo: data.eventLogo[0],
+    eventLogoFavicon: data.eventLogoFavicon[0],
   };
 
   if (caFormFields) {

@@ -81,6 +81,7 @@ export type ScheduleDataType = { [date: string]: ScheduleItemType[] };
 export type EventFormDataType = {
   basicInfo: BasicInfoType;
   sections: string[];
+  hiddenSections: string[];
   contactLinks: { [platform: string]: string }[];
   formData: FormDataType;
   caFormData?: CAFromDataType;
@@ -94,6 +95,8 @@ export type EventFormDataType = {
   faqData?: FaqType[];
 
   // for file uploads
+  eventLogo: File;
+  eventLogoFavicon: File;
   bkashQrCode?: File;
   nagadQrCode?: File;
   rocketQrCode?: File;
