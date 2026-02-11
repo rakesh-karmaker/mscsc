@@ -8,6 +8,9 @@ export type EventSchemaType = {
   eventImgUrl: string;
   eventImgId: string;
 
+  eventFaviconUrl: string;
+  eventFaviconId: string;
+
   eventDescription: string;
   eventLocation: string;
   eventDate: string;
@@ -77,4 +80,122 @@ export type EventCASchemaType = {
 
   createdAt: string;
   updatedAt: string;
+};
+
+// event data type
+
+type BasicInfoType = {
+  template: string;
+  eventName: string;
+  eventDate: string;
+  eventLocation: string;
+  eventDescription: string;
+  registrationUrl: string;
+  isInnerRegistration: boolean;
+  hasCAForm: boolean;
+
+  eventLogoUrl: string;
+  eventLogoPublicId: string;
+
+  eventFaviconUrl: string;
+  eventFaviconPublicId: string;
+};
+
+type FormDataType = {
+  registrationDeadline: string;
+  title?: string;
+  details?: string;
+  fees?: string;
+  transactionMethods?: {
+    [method: string]: {
+      number: string;
+      qrCodeUrl?: string;
+      qrCodePublicId?: string;
+    };
+  };
+};
+
+type CAFromDataType = {
+  title: string;
+  details: string;
+  applicationDeadline: string;
+};
+
+type HeroDataType = {
+  heading: string;
+  text: string;
+  icons: string[];
+};
+
+type VideoDataType = {
+  hasAudio: boolean;
+  url: string;
+  videoPublicId: string;
+};
+
+type AboutDataType = {
+  title: string;
+  prizeCount: number;
+  heading: string;
+  text: string;
+
+  aboutImageUrl?: string;
+  aboutImagePublicId?: string;
+};
+
+type SegmentType = {
+  segmentSlug: string;
+  locationType: "onsite" | "online";
+  teamType: "solo" | "team";
+  icon: string;
+  title: string;
+  summary: string;
+  details: string;
+  rules: string;
+};
+
+type ExperienceType = {
+  experienceSlug: string;
+  icon: string;
+  title: string;
+  details: string;
+};
+
+type ScheduleItemType = {
+  icon: string;
+  fromTime: string;
+  toTime: string;
+  title: string;
+  description: string;
+};
+
+type SpType = {
+  name: string;
+  websiteUrl: string;
+
+  logoUrl: string;
+  logoPublicId: string;
+};
+
+type FaqType = {
+  question: string;
+  answer: string;
+};
+
+type ScheduleDataType = { [date: string]: ScheduleItemType[] };
+
+export type EventDataType = BasicInfoType & {
+  sections: string[];
+  hiddenSections: string[];
+  contactLinks: { [platform: string]: string };
+  formData: FormDataType;
+  caFormData?: CAFromDataType;
+  heroData?: HeroDataType;
+  videoData?: VideoDataType;
+  aboutData?: AboutDataType;
+  segmentsData?: SegmentType[];
+  experiencesData?: ExperienceType[];
+  scheduleData?: ScheduleDataType;
+  spData?: SpType[];
+  faqData?: FaqType[];
 };

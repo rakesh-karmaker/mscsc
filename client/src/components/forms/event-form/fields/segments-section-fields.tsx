@@ -13,6 +13,7 @@ type SegmentsSectionFieldsProps = {
   control: Control<any>;
   errors: { [key: string]: any };
   isSectionSelected: boolean;
+  getValues: (payload?: string | string[]) => Object;
 };
 
 export default function SegmentsSectionFields({
@@ -20,6 +21,7 @@ export default function SegmentsSectionFields({
   control,
   errors,
   isSectionSelected,
+  getValues,
 }: SegmentsSectionFieldsProps): ReactNode {
   const { fields, append, remove } = useFieldArray({
     control: control,
@@ -212,7 +214,9 @@ export default function SegmentsSectionFields({
                 }
               >
                 <RichTextEditor
-                  content=""
+                  content={
+                    (getValues(`segmentsData.${index}.details`) as string) || ""
+                  }
                   label={`segmentsData.${index}.details`}
                   register={register}
                 />
@@ -230,7 +234,9 @@ export default function SegmentsSectionFields({
                 }
               >
                 <RichTextEditor
-                  content=""
+                  content={
+                    (getValues(`segmentsData.${index}.rules`) as string) || ""
+                  }
                   label={`segmentsData.${index}.rules`}
                   register={register}
                 />

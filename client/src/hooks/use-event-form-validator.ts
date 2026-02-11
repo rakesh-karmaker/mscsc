@@ -1,5 +1,6 @@
 import type { EventFormDataType } from "@/types/event-types";
 import useFilterEventForm from "./use-filter-event-form";
+import dayjs from "dayjs";
 
 type useEventFormValidatorProps = {
   data: any;
@@ -48,8 +49,8 @@ export default function useEventFormValidator({
     isValid = false;
   }
 
-  if (!data.eventLogoFavicon || !data.eventLogoFavicon.length) {
-    setError("eventLogoFavicon", {
+  if (!data.eventFavicon || !data.eventFavicon.length) {
+    setError("eventFavicon", {
       type: "manual",
       message: "Event favicon logo is required",
     });
@@ -69,24 +70,11 @@ export default function useEventFormValidator({
 
   if (
     sections.includes("video") &&
-    (!data.videoData ||
-      !data.videoData.videoFile ||
-      !data.videoData.videoFile.length)
+    (!data || !data.videoFile || !data.videoFile.length)
   ) {
-    setError("videoData.videoFile", {
+    setError("videoFile", {
       type: "manual",
       message: "Video file is required",
-    });
-    isValid = false;
-  }
-
-  if (
-    sections.includes("about") &&
-    (!data.aboutImageFile || !data.aboutImageFile.length)
-  ) {
-    setError("aboutImageFile", {
-      type: "manual",
-      message: "About image is required",
     });
     isValid = false;
   }
@@ -146,10 +134,11 @@ export default function useEventFormValidator({
       isValid = false;
     } else {
       for (let i = 0; i < data.scheduleData.length; i++) {
-        if (
-          !data.scheduleData[i].date ||
-          data.scheduleData[i].date.trim() === ""
-        ) {
+        console.log(
+          "Validating schedule item:",
+          dayjs(data.scheduleData[i].date).format("MMM D, YYYY"),
+        );
+        if (!data.scheduleData[i].date) {
           setError(`scheduleData.${i}.date`, {
             type: "manual",
             message: "Schedule date is required",
@@ -157,10 +146,7 @@ export default function useEventFormValidator({
           isValid = false;
         }
 
-        if (
-          !data.scheduleData[i].fromTime ||
-          data.scheduleData[i].fromTime.trim() === ""
-        ) {
+        if (!data.scheduleData[i].fromTime) {
           setError(`scheduleData.${i}.fromTime`, {
             type: "manual",
             message: "Schedule start time is required",
@@ -168,10 +154,7 @@ export default function useEventFormValidator({
           isValid = false;
         }
 
-        if (
-          !data.scheduleData[i].toTime ||
-          data.scheduleData[i].toTime.trim() === ""
-        ) {
+        if (!data.scheduleData[i].toTime) {
           setError(`scheduleData.${i}.toTime`, {
             type: "manual",
             message: "Schedule end time is required",
@@ -199,6 +182,32 @@ export default function useEventFormValidator({
           isValid = false;
         }
       }
+    }
+  }
+
+  if (data.hasCAForm) {
+    if (!data.caFormData || !data.caFormData.title) {
+      setError("caFormData.title", {
+        type: "manual",
+        message: "CA form title is required",
+      });
+      isValid = false;
+    }
+
+    if (!data.caFormData || !data.caFormData.details) {
+      setError("caFormData.details", {
+        type: "manual",
+        message: "CA form details are required",
+      });
+      isValid = false;
+    }
+
+    if (!data.caFormData || !data.caFormData.applicationDeadline) {
+      setError("caFormData.applicationDeadline", {
+        type: "manual",
+        message: "CA form application deadline is required",
+      });
+      isValid = false;
     }
   }
 

@@ -9,6 +9,9 @@ const EventSchema = new mongoose.Schema<EventSchemaType>(
     eventImgUrl: { type: String, required: true },
     eventImgId: { type: String, required: true },
 
+    eventFaviconUrl: { type: String, required: true },
+    eventFaviconId: { type: String, required: true },
+
     eventDescription: { type: String, required: true },
     eventLocation: { type: String, required: true },
     eventDate: { type: String, required: true },
@@ -21,7 +24,7 @@ const EventSchema = new mongoose.Schema<EventSchemaType>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export default mongoose.model("Event", EventSchema);

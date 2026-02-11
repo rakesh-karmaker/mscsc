@@ -10,6 +10,7 @@ import type {
   SpType,
 } from "@/types/event-types";
 import generateSlug from "@/utils/generate-slug";
+import dayjs from "dayjs";
 
 type useFilterEventFormProps = {
   data: any;
@@ -31,14 +32,36 @@ export default function useFilterEventForm({
     eventLocation: data.eventLocation,
     eventDescription: data.eventDescription,
     registrationUrl: data.registrationUrl || "",
-    isInnerRegistration: data.isInnerRegistration,
-    hasCAForm: data.hasCAForm,
+    isInnerRegistration: data.isInnerRegistration || false,
+    hasCAForm: data.hasCAForm || false,
   };
 
-  const contactInfoFields: { [platform: string]: string }[] =
-    data.contactLinks.map(({ platform, url }: any) => ({
-      [platform]: url,
-    }));
+  const contactInfoFields: { [platform: string]: string } =
+    data.contactLinks.reduce(
+      (
+        acc: { [platform: string]: string },
+        { platform, url }: { platform: string; url: string },
+      ) => {
+        acc[platform] = url;
+        return acc;
+      },
+      {},
+    );
+
+  let transactionMethods: FormDataType["transactionMethods"] = {};
+  if (data.isInnerRegistration) {
+    const methods = Object.keys(data.formData.transactionMethods || {});
+    methods.forEach((method) => {
+      if (
+        data.formData.transactionMethods[method] &&
+        data.formData.transactionMethods[method].number
+      ) {
+        transactionMethods[method] = {
+          number: data.formData.transactionMethods[method].number,
+        };
+      }
+    });
+  }
 
   const formDataFields: FormDataType = {
     registrationDeadline: data.formData.registrationDeadline,
@@ -47,7 +70,7 @@ export default function useFilterEventForm({
           title: data.formData.title,
           details: data.formData.details,
           fees: data.formData.fees,
-          transactionMethods: data.formData.transactionMethods,
+          transactionMethods: transactionMethods,
         }
       : {}),
   };
@@ -81,7 +104,7 @@ export default function useFilterEventForm({
     contactLinks: contactInfoFields,
     formData: formDataFields,
     eventLogo: data.eventLogo[0],
-    eventLogoFavicon: data.eventLogoFavicon[0],
+    eventFavicon: data.eventFavicon[0],
   };
 
   if (caFormFields) {
@@ -128,7 +151,7 @@ export default function useFilterEventForm({
   }
 
   if (sections.includes("experiences")) {
-    filteredData.experiencesData = data.experiencesData.map(
+    filteredData.experiencesData = data.experienceData.map(
       (experience: Omit<ExperienceType, "experienceSlug">) => ({
         ...experience,
         experienceSlug: generateSlug(experience.title),
@@ -143,10 +166,11 @@ export default function useFilterEventForm({
     const formattedScheduleData: ScheduleDataType = {};
     rawScheduleData.forEach((item) => {
       const { date, ...rest } = item;
-      if (!formattedScheduleData[date]) {
-        formattedScheduleData[date] = [];
+      const formattedDate = dayjs(date).format("MMM D, YYYY");
+      if (!formattedScheduleData[formattedDate]) {
+        formattedScheduleData[formattedDate] = [];
       }
-      formattedScheduleData[date].push(rest);
+      formattedScheduleData[formattedDate].push(rest);
     });
 
     filteredData.scheduleData = formattedScheduleData;

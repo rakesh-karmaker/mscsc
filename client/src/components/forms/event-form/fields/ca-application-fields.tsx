@@ -13,6 +13,7 @@ type CAApplicationFieldsProps = {
   control: Control<any>;
   errors: { [key: string]: any };
   setValue: (name: string, value: unknown, config?: SetValueConfig) => void;
+  getValues: (payload?: string | string[]) => Object;
 };
 
 export default function CAApplicationFields({
@@ -20,6 +21,7 @@ export default function CAApplicationFields({
   control,
   errors,
   setValue,
+  getValues,
 }: CAApplicationFieldsProps): ReactNode {
   const [hasCAForm, setHasCAForm] = useState<string>("no");
 
@@ -100,7 +102,7 @@ export default function CAApplicationFields({
             <RichTextEditor
               register={register}
               label="caFormData.details"
-              content=""
+              content={(getValues("caFormData.details") as string) || ""}
             />
           </FormLayout>
         </div>

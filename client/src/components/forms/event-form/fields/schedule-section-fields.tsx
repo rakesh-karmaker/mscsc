@@ -23,15 +23,15 @@ export default function ScheduleSectionFields({
 }: ScheduleSectionFieldsProps): ReactNode {
   const { fields, append, remove } = useFieldArray({
     control: control,
-    name: "schedule",
+    name: "scheduleData",
   });
 
   function handleAppend() {
     append({
       icon: "games",
-      date: "",
-      fromTime: "",
-      toTime: "",
+      date: dayjs(),
+      fromTime: dayjs(),
+      toTime: dayjs().add(1, "hour"),
       title: "",
       description: "",
     });
@@ -93,7 +93,7 @@ export default function ScheduleSectionFields({
                 <TextField
                   fullWidth
                   variant="outlined"
-                  {...register(`schedule.${index}.title`, {
+                  {...register(`scheduleData.${index}.title`, {
                     required: isSectionSelected
                       ? "Schedule title is required"
                       : false,
@@ -104,27 +104,27 @@ export default function ScheduleSectionFields({
                   })}
                   label="Schedule Title"
                   error={Boolean(
-                    errors.schedule &&
-                    errors.schedule[index] &&
-                    errors.schedule[index].title,
+                    errors.scheduleData &&
+                    errors.scheduleData[index] &&
+                    errors.scheduleData[index].title,
                   )}
                   helperText={
-                    errors.schedule &&
-                    errors.schedule[index] &&
-                    errors.schedule[index].title &&
-                    (errors.schedule[index].title.message as string)
+                    errors.scheduleData &&
+                    errors.scheduleData[index] &&
+                    errors.scheduleData[index].title &&
+                    (errors.scheduleData[index].title.message as string)
                   }
                 />
 
                 <div className="min-w-70.5">
                   <SelectIconField
                     id={`schedule-icon-${index}`}
-                    name={`schedule.${index}.icon`}
+                    name={`scheduleData.${index}.icon`}
                     icons={icons}
                     control={control}
-                    hasErrors={Boolean(errors?.schedule?.[index]?.icon)}
+                    hasErrors={Boolean(errors?.scheduleData?.[index]?.icon)}
                     errorMessage={
-                      errors.schedule?.[index]?.icon?.message as string
+                      errors.scheduleData?.[index]?.icon?.message as string
                     }
                     defaultValue="clock"
                   >
@@ -139,16 +139,16 @@ export default function ScheduleSectionFields({
                 sx={{ width: "100%" }}
               >
                 <Controller
-                  name={`schedule.${index}.date`}
+                  name={`scheduleData.${index}.date`}
                   control={control}
                   render={({ field }) => (
                     <DatePicker
                       {...field}
-                      value={field.value || dayjs()}
+                      value={field.value}
                       onChange={(date: Dayjs | null) => field.onChange(date)}
                       label="Schedule Date"
                       errMessage={
-                        errors.schedule?.[index]?.date?.message as string
+                        errors.scheduleData?.[index]?.date?.message as string
                       }
                     />
                   )}
@@ -160,32 +160,34 @@ export default function ScheduleSectionFields({
                   sx={{ width: "100%" }}
                 >
                   <Controller
-                    name={`schedule.${index}.fromTime`}
+                    name={`scheduleData.${index}.fromTime`}
                     control={control}
                     render={({ field }) => (
                       <TimePicker
                         {...field}
-                        value={field.value || dayjs()}
+                        value={field.value}
                         onChange={(date: Dayjs | null) => field.onChange(date)}
                         label="From Time"
                         errMessage={
-                          errors.schedule?.[index]?.fromTime?.message as string
+                          errors.scheduleData?.[index]?.fromTime
+                            ?.message as string
                         }
                       />
                     )}
                   />
 
                   <Controller
-                    name={`schedule.${index}.toTime`}
+                    name={`scheduleData.${index}.toTime`}
                     control={control}
                     render={({ field }) => (
                       <TimePicker
                         {...field}
-                        value={field.value || dayjs()}
+                        value={field.value}
                         onChange={(date: Dayjs | null) => field.onChange(date)}
                         label="To Time"
                         errMessage={
-                          errors.schedule?.[index]?.toTime?.message as string
+                          errors.scheduleData?.[index]?.toTime
+                            ?.message as string
                         }
                       />
                     )}
@@ -196,7 +198,7 @@ export default function ScheduleSectionFields({
               <TextField
                 fullWidth
                 variant="outlined"
-                {...register(`schedule.${index}.description`, {
+                {...register(`scheduleData.${index}.description`, {
                   required: isSectionSelected
                     ? "Schedule description is required"
                     : false,
@@ -205,15 +207,15 @@ export default function ScheduleSectionFields({
                 multiline
                 minRows={4}
                 error={Boolean(
-                  errors.schedule &&
-                  errors.schedule[index] &&
-                  errors.schedule[index].description,
+                  errors.scheduleData &&
+                  errors.scheduleData[index] &&
+                  errors.scheduleData[index].description,
                 )}
                 helperText={
-                  errors.schedule &&
-                  errors.schedule[index] &&
-                  errors.schedule[index].description &&
-                  (errors.schedule[index].description.message as string)
+                  errors.scheduleData &&
+                  errors.scheduleData[index] &&
+                  errors.scheduleData[index].description &&
+                  (errors.scheduleData[index].description.message as string)
                 }
                 placeholder="A short summary of the event"
               />

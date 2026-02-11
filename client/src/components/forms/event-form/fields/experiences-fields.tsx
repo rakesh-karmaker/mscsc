@@ -11,6 +11,7 @@ type ExperiencesFieldsProps = {
   control: Control<any>;
   errors: { [key: string]: any };
   isSectionSelected: boolean;
+  getValues: (payload?: string | string[]) => Object;
 };
 
 export default function ExperiencesFields({
@@ -18,6 +19,7 @@ export default function ExperiencesFields({
   control,
   errors,
   isSectionSelected,
+  getValues,
 }: ExperiencesFieldsProps): ReactNode {
   const { fields, append, remove } = useFieldArray({
     control: control,
@@ -138,7 +140,10 @@ export default function ExperiencesFields({
                 }
               >
                 <RichTextEditor
-                  content=""
+                  content={
+                    (getValues(`experienceData.${index}.details`) as string) ||
+                    ""
+                  }
                   label={`experienceData.${index}.details`}
                   register={register}
                 />

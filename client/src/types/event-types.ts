@@ -54,7 +54,11 @@ export type FormDataType = {
   title?: string;
   details?: string;
   fees?: string;
-  transactionMethods?: string;
+  transactionMethods?: {
+    [method: string]: {
+      number: string;
+    };
+  };
 };
 
 export type CAFromDataType = {
@@ -82,11 +86,10 @@ export type EventFormDataType = {
   basicInfo: BasicInfoType;
   sections: string[];
   hiddenSections: string[];
-  contactLinks: { [platform: string]: string }[];
+  contactLinks: { [platform: string]: string };
   formData: FormDataType;
   caFormData?: CAFromDataType;
   heroData?: HeroDataType;
-  videoData?: File;
   aboutData?: AboutDataType;
   segmentsData?: SegmentType[];
   experiencesData?: ExperienceType[];
@@ -96,10 +99,11 @@ export type EventFormDataType = {
 
   // for file uploads
   eventLogo: File;
-  eventLogoFavicon: File;
+  eventFavicon: File;
   bkashQrCode?: File;
   nagadQrCode?: File;
   rocketQrCode?: File;
+  videoData?: File;
   aboutImage?: File;
   spLogos?: File[];
 };

@@ -1,7 +1,7 @@
 import multer from "multer";
 import path from "path";
 
-const LIMIT: number = 5 * 1024 * 1024; // 5MB
+const LIMIT: number = 100 * 1024 * 1024; // 100MB
 const allowedExtensions = [
   ".jpg",
   ".jpeg",
@@ -26,7 +26,7 @@ const upload = multer({
     const ext = path.extname(file.originalname).toLowerCase();
     if (!allowedExtensions.includes(ext)) {
       return cb(
-        new multer.MulterError("LIMIT_UNEXPECTED_FILE", file.fieldname)
+        new multer.MulterError("LIMIT_UNEXPECTED_FILE", file.fieldname),
       );
     }
     cb(null, true);

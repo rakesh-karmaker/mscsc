@@ -86,6 +86,7 @@ export default function EventForm({
     formState: { errors },
     setError,
     setValue,
+    getValues,
     control,
     clearErrors,
   } = useForm({
@@ -196,6 +197,7 @@ export default function EventForm({
             control={control}
             errors={errors}
             isSectionSelected={selectedSections.includes("segments")}
+            getValues={getValues}
           />
         </Activity>
 
@@ -206,6 +208,7 @@ export default function EventForm({
             control={control}
             errors={errors}
             isSectionSelected={selectedSections.includes("experiences")}
+            getValues={getValues}
           />
         </Activity>
 
@@ -252,6 +255,7 @@ export default function EventForm({
             register={register}
             errors={errors}
             setValue={setValue}
+            getValues={getValues}
           />
 
           {/* website CA Application form fields */}
@@ -260,6 +264,7 @@ export default function EventForm({
             control={control}
             errors={errors}
             setValue={setValue}
+            getValues={getValues}
           />
         </Activity>
       </FormSectionLayout>

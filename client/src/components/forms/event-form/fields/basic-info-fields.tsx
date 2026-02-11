@@ -148,7 +148,7 @@ export default function BasicInfoFields({
           <div className="w-fit max-md:mt-3!">
             <FileInput
               register={register}
-              name="eventLogoFavicon"
+              name="eventFavicon"
               errors={errors}
               addText={false}
               className="p-[14px_22px]! min-w-fit!"

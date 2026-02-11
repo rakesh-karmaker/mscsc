@@ -11,12 +11,14 @@ type RegistrationFormFields = {
   register: any;
   errors: { [key: string]: any };
   setValue: (name: string, value: unknown, config?: SetValueConfig) => void;
+  getValues: (payload?: string | string[]) => Object;
 };
 
 export default function RegistrationFormFields({
   register,
   errors,
   setValue,
+  getValues,
 }: RegistrationFormFields): ReactNode {
   const [hasRegistrationForm, setHasRegistrationForm] = useState<string>("no");
   const [selectedMethods, setSelectedMethods] = useState<string[]>([]);
@@ -99,7 +101,7 @@ export default function RegistrationFormFields({
             <RichTextEditor
               register={register}
               label="formData.details"
-              content=""
+              content={(getValues("formData.details") as string) || ""}
             />
           </FormLayout>
 

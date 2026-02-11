@@ -9,6 +9,7 @@ import memberRouter from "./routers/member-router.js";
 import activityRouter from "./routers/activity-router.js";
 import messageRouter from "./routers/message-router.js";
 import dashboardRouter from "./routers/dashboard-router.js";
+import eventRouter from "./routers/event-router.js";
 
 const app = express();
 
@@ -36,5 +37,6 @@ app.use("/api/message", messageRouter);
 app.use("/api/task", taskRouter);
 
 app.use("/api/admin", dashboardRouter);
+app.use("/api/event", eventRouter);
 
 export default app;
