@@ -5,18 +5,20 @@ export type EventSchemaType = {
   eventSlug: string;
   eventName: string;
 
-  eventImgUrl: string;
-  eventImgId: string;
+  eventLogoUrl: string;
+  eventLogoPublicId: string;
 
   eventFaviconUrl: string;
-  eventFaviconId: string;
+  eventFaviconPublicId: string;
 
   eventDescription: string;
   eventLocation: string;
   eventDate: string;
   participantCount: number;
   segmentCount: number;
+
   isUpcoming: boolean;
+  isHidden: boolean;
 
   dataUrl: string;
   dataPublicId: string;
@@ -101,7 +103,7 @@ type BasicInfoType = {
   eventFaviconPublicId: string;
 };
 
-type FormDataType = {
+export type FormDataType = {
   registrationDeadline: string;
   title?: string;
   details?: string;
@@ -133,7 +135,7 @@ type VideoDataType = {
   videoPublicId: string;
 };
 
-type AboutDataType = {
+export type AboutDataType = {
   title: string;
   prizeCount: number;
   heading: string;
@@ -169,7 +171,7 @@ type ScheduleItemType = {
   description: string;
 };
 
-type SpType = {
+export type SpType = {
   name: string;
   websiteUrl: string;
 

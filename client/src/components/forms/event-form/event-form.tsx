@@ -133,6 +133,7 @@ export default function EventForm({
         sections={filteredSections}
         hiddenSections={hiddenSections}
         setHiddenSections={setHiddenSections}
+        isLoading={eventMutation.isPending}
       >
         <Activity mode={currentField === "basic" ? "visible" : "hidden"}>
           {/* event basic info fields */}

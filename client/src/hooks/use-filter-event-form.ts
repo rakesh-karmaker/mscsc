@@ -98,6 +98,7 @@ export default function useFilterEventForm({
     : null;
 
   filteredData = {
+    ...filteredData,
     basicInfo: basicInfoFields,
     sections: sections,
     hiddenSections: data.hiddenSections || [],

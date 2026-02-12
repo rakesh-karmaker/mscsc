@@ -26,6 +26,7 @@ type FormSectionLayoutProps = {
   sections: string[];
   hiddenSections: string[];
   setHiddenSections: Dispatch<SetStateAction<string[]>>;
+  isLoading: boolean;
 };
 
 export default function FormSectionLayout({
@@ -40,6 +41,7 @@ export default function FormSectionLayout({
   sections,
   hiddenSections,
   setHiddenSections,
+  isLoading,
 }: FormSectionLayoutProps): ReactNode {
   const [isViewingErrors, setIsViewingErrors] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -103,7 +105,7 @@ export default function FormSectionLayout({
             )}
             {currentField === "final" && (
               <FormSubmitBtn
-                isLoading={false}
+                isLoading={isLoading}
                 pendingText={
                   isEditMode ? "Updating Event..." : "Creating Event..."
                 }

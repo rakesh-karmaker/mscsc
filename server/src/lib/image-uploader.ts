@@ -6,7 +6,7 @@ import getDate from "../utils/get-date.js";
 export async function uploadImage(
   file: Express.Multer.File,
   crop: boolean = false,
-  folder: string = ""
+  folder: string = "",
 ): Promise<{ url: string; imgId: string }> {
   try {
     let resizedImageBuffer;
@@ -40,7 +40,7 @@ export async function uploadImage(
 // Upload multiple images to ImageKit and return the URLs and image IDs
 export async function uploadMultipleImages(
   files: Express.Multer.File[],
-  folder: string = ""
+  folder: string = "",
 ): Promise<{ url: string; imgId: string }[]> {
   try {
     if (files.length === 0) {
@@ -57,13 +57,13 @@ export async function uploadMultipleImages(
         const uploadedImage = await imagekit.upload({
           file: convertedImageBuffer,
           fileName: `${Date.now()}-${file.originalname}-${Math.floor(
-            Math.random() * 1000
+            Math.random() * 1000,
           )}`,
           folder: folder,
         });
 
         return { url: uploadedImage.url, imgId: uploadedImage.fileId };
-      })
+      }),
     );
 
     // create an array of objects with url and imgId
@@ -79,12 +79,30 @@ export async function uploadMultipleImages(
   }
 }
 
+// upload video to ImageKit and return the URL and video ID
+export async function uploadVideo(
+  file: Express.Multer.File,
+  folder: string = "",
+): Promise<{ url: string; videoId: string }> {
+  try {
+    const uploadedVideo = await imagekit.upload({
+      file: file.buffer,
+      fileName: `${Date.now()}-${file.originalname}`,
+      folder: folder,
+    });
+    return { url: uploadedVideo.url, videoId: uploadedVideo.fileId };
+  } catch (err) {
+    console.log("Error uploading video - ", getDate(), "\n---\n", err);
+    throw new Error("Video upload failed");
+  }
+}
+
 // Upload json file to ImageKit and return the URL and image ID
 export async function uploadJsonFile(
   jsonData: object,
   fileName: string,
-  folder: string
-): Promise<{ url: string; imgId: string }> {
+  folder: string,
+): Promise<{ url: string; jsonPublicId: string }> {
   try {
     const jsonString = JSON.stringify(jsonData);
     const buffer = Buffer.from(jsonString, "utf-8");
@@ -93,7 +111,7 @@ export async function uploadJsonFile(
       fileName: `${Date.now()}-${fileName}.json`,
       folder: folder,
     });
-    return { url: uploadedFile.url, imgId: uploadedFile.fileId };
+    return { url: uploadedFile.url, jsonPublicId: uploadedFile.fileId };
   } catch (err) {
     console.log("Error uploading JSON file - ", getDate(), "\n---\n", err);
     throw new Error("JSON file upload failed");

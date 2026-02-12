@@ -3,7 +3,7 @@ import getDate from "./get-date.js";
 
 export default async function generateSlug(
   name: string,
-  model: mongoose.Model<any>
+  model: mongoose.Model<any>,
 ): Promise<string> {
   const formattedName = name
     .toLowerCase()
@@ -23,4 +23,15 @@ export default async function generateSlug(
     console.log("Error generating slug - ", getDate(), "\n---\n", err);
     throw err;
   }
+}
+
+export function generateSlugFromTitle(title: string): string {
+  return (
+    title
+      .toLowerCase()
+      .replace(/[^a-z0-9_ ]/g, "")
+      .replace(/\s+/g, "-") +
+    "-" +
+    Math.random().toString(36).substring(2, 8)
+  );
 }

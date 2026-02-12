@@ -13,6 +13,7 @@ export async function addEvent(data: EventFormDataType) {
       key === "videoData" ||
       key === "aboutImage"
     ) {
+      console.log("Processing file field:", key);
       const file = data[key as keyof typeof data] as File;
       if (file) {
         formData.append(key, file);

@@ -1,6 +1,5 @@
 import type { EventFormDataType } from "@/types/event-types";
 import useFilterEventForm from "./use-filter-event-form";
-import dayjs from "dayjs";
 
 type useEventFormValidatorProps = {
   data: any;
@@ -134,10 +133,6 @@ export default function useEventFormValidator({
       isValid = false;
     } else {
       for (let i = 0; i < data.scheduleData.length; i++) {
-        console.log(
-          "Validating schedule item:",
-          dayjs(data.scheduleData[i].date).format("MMM D, YYYY"),
-        );
         if (!data.scheduleData[i].date) {
           setError(`scheduleData.${i}.date`, {
             type: "manual",
