@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Task from "../models/Task.js";
 import Member from "../models/Member.js";
-import { deleteFile, uploadImage } from "../lib/image-uploader.js";
+import { deleteFile, uploadImage } from "../lib/file-uploader.js";
 import { SubmissionType, SubmissionUpdateType } from "../types/task-types.js";
 import getPosition from "../utils/get-position.js";
 

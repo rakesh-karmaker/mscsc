@@ -6,7 +6,7 @@ import Member from "../models/Member.js";
 import generateSlug from "../utils/generate-slug.js";
 import getDate from "../utils/get-date.js";
 import { taskSchema } from "../lib/validation/task-schema.js";
-import { deleteFile } from "../lib/image-uploader.js";
+import { deleteFile } from "../lib/file-uploader.js";
 
 // get all tasks
 export async function getAllTasks(req: Request, res: Response): Promise<void> {

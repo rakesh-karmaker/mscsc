@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 import getDate from "../utils/get-date.js";
 import { registerSchema } from "../lib/validation/auth-schema.js";
-import { uploadImage } from "../lib/image-uploader.js";
+import { uploadImage } from "../lib/file-uploader.js";
 import { compareHash, generateHash } from "../utils/hash.js";
 import { NewMemberDataType } from "../types/member-types.js";
 

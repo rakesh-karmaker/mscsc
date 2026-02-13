@@ -119,19 +119,35 @@ export async function uploadJsonFile(
 }
 
 // Delete file from ImageKit using the file ID
-export function deleteFile(imageId: string) {
+export function deleteFile(fileId: string) {
   try {
-    // Delete the image from ImageKit
-    imagekit.deleteFile(imageId, (err, _) => {
+    // Delete the file from ImageKit
+    imagekit.deleteFile(fileId, (err, _) => {
       if (err) {
-        console.log("Error deleting image - ", getDate(), "\n---\n", err);
-        throw new Error("Failed to delete image.");
+        console.log("Error deleting file - ", getDate(), "\n---\n", err);
+        throw new Error("Failed to delete file.");
       }
 
-      console.log("Image deleted successfully -", getDate(), "\n---\n");
+      console.log("File deleted successfully -", getDate(), "\n---\n");
     });
   } catch (err) {
-    console.log("Error deleting image - ", getDate(), "\n---\n", err);
-    throw new Error("Failed to delete image.");
+    console.log("Error deleting file - ", getDate(), "\n---\n", err);
+    throw new Error("Failed to delete file.");
+  }
+}
+
+// Delete folder
+export function deleteFolder(folderPath: string) {
+  try {
+    imagekit.deleteFolder(folderPath, (err, _) => {
+      if (err) {
+        console.log("Error deleting folder - ", getDate(), "\n---\n", err);
+        throw new Error("Failed to delete folder.");
+      }
+      console.log("Folder deleted successfully -", getDate(), "\n---\n");
+    });
+  } catch (err) {
+    console.log("Error deleting folder - ", getDate(), "\n---\n", err);
+    throw new Error("Failed to delete folder.");
   }
 }

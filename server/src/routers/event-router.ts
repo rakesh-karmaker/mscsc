@@ -1,7 +1,12 @@
 import express from "express";
 import { isAdmin, isAuthorized } from "../middlewares/auth-middleware.js";
 import upload from "../middlewares/multer.js";
-import { createEvent } from "../controllers/event-controller.js";
+import {
+  createEvent,
+  deleteEvent,
+  getAllEvents,
+  getEventBySlug,
+} from "../controllers/event-controller.js";
 
 const eventRouter = express.Router();
 const fileFields: { name: string; maxCount: number }[] = [
@@ -39,7 +44,10 @@ const fileFields: { name: string; maxCount: number }[] = [
   },
 ];
 
-//  event routes
+// event routes
+eventRouter.get("/all", getAllEvents);
+eventRouter.get("/:eventSlug", getEventBySlug);
+
 eventRouter.post(
   "/create",
   isAuthorized,
@@ -47,4 +55,7 @@ eventRouter.post(
   upload.fields(fileFields),
   createEvent,
 );
+
+eventRouter.delete("/delete/:eventSlug", isAuthorized, isAdmin, deleteEvent);
+
 export default eventRouter;

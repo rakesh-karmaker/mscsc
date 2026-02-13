@@ -1,6 +1,14 @@
 import { api } from "@/config/axios";
 import type { EventFormDataType } from "@/types/event-types";
 
+export async function getAllEvents() {
+  return api.get("/event/all");
+}
+
+export async function getEventBySlug(eventSlug: string) {
+  return api.get(`/event/${eventSlug}`);
+}
+
 export async function addEvent(data: EventFormDataType) {
   const formData = new FormData();
   for (const key in data) {
@@ -13,7 +21,6 @@ export async function addEvent(data: EventFormDataType) {
       key === "videoData" ||
       key === "aboutImage"
     ) {
-      console.log("Processing file field:", key);
       const file = data[key as keyof typeof data] as File;
       if (file) {
         formData.append(key, file);
@@ -35,4 +42,8 @@ export async function addEvent(data: EventFormDataType) {
       "Content-Type": "multipart/form-data",
     },
   });
+}
+
+async function deleteEvent(eventSlug: string) {
+  return api.delete(`/event/delete/${eventSlug}`);
 }

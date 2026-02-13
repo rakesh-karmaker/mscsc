@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import Member from "../models/Member.js";
 import { GetAllMembersRegexType } from "../types/member-types.js";
 import paginateResults from "../lib/paginate-results.js";
-import { deleteFile, uploadImage } from "../lib/image-uploader.js";
+import { deleteFile, uploadImage } from "../lib/file-uploader.js";
 import { generateHash } from "../utils/hash.js";
 
 // Get all members

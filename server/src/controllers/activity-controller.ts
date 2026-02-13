@@ -6,7 +6,7 @@ import {
   deleteFile,
   uploadImage,
   uploadMultipleImages,
-} from "../lib/image-uploader.js";
+} from "../lib/file-uploader.js";
 import { activitySchema } from "../lib/validation/activity-schema.js";
 
 // Get all activities

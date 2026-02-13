@@ -8,12 +8,52 @@ import {
 } from "../types/event-types.js";
 import { generateSlugFromTitle } from "../utils/generate-slug.js";
 import {
+  deleteFolder,
   uploadImage,
   uploadJsonFile,
   uploadMultipleImages,
   uploadVideo,
-} from "../lib/image-uploader.js";
+} from "../lib/file-uploader.js";
 import Event from "../models/Event.js";
+import axios from "axios";
+
+// get all events
+export async function getAllEvents(_: Request, res: Response): Promise<void> {
+  try {
+    const events = await Event.find().select(
+      "eventName eventSlug eventLogoUrl eventDescription eventLocation eventDate participantCount segmentCount isUpcoming",
+    );
+    res.status(200).send(events);
+  } catch (err) {
+    console.log("Error fetching events - ", err);
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    res
+      .status(500)
+      .send({ subject: "root", message: "Server error", error: errorMessage });
+  }
+}
+
+// get event by slug
+export async function getEventBySlug(
+  req: Request,
+  res: Response,
+): Promise<void> {
+  try {
+    const { eventSlug } = req.params;
+    const event = await Event.findOne({ eventSlug: eventSlug });
+    if (!event) {
+      res.status(404).send({ subject: "slug", message: "Event not found" });
+      return;
+    }
+    res.status(200).send(event);
+  } catch (err) {
+    console.log("Error fetching event by slug - ", err);
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    res
+      .status(500)
+      .send({ subject: "root", message: "Server error", error: errorMessage });
+  }
+}
 
 // create a new event
 export async function createEvent(req: Request, res: Response): Promise<void> {
@@ -242,6 +282,29 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
       .send({ message: "Event created successfully", event: newEvent });
   } catch (err) {
     console.log("Error creating event - ", err);
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    res
+      .status(500)
+      .send({ subject: "root", message: "Server error", error: errorMessage });
+  }
+}
+
+// delete an event by slug
+export async function deleteEvent(req: Request, res: Response): Promise<void> {
+  try {
+    const { eventSlug } = req.params;
+    const event = await Event.findOne({ eventSlug: eventSlug });
+    if (!event) {
+      res.status(404).send({ subject: "slug", message: "Event not found" });
+      return;
+    }
+
+    deleteFolder(`events/${eventSlug}`);
+    await Event.deleteOne({ eventSlug: eventSlug });
+
+    res.status(200).send({ message: "Event deleted successfully" });
+  } catch (err) {
+    console.log("Error deleting event - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
