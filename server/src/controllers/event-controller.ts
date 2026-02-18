@@ -16,6 +16,8 @@ import {
 } from "../lib/file-uploader.js";
 import Event from "../models/Event.js";
 import axios from "axios";
+import EventRegistration from "../models/EventRegistration.js";
+import EventCA from "../models/EventCA.js";
 
 // get all events
 export async function getAllEvents(_: Request, res: Response): Promise<void> {
@@ -40,11 +42,73 @@ export async function getEventBySlug(
 ): Promise<void> {
   try {
     const { eventSlug } = req.params;
-    const event = await Event.findOne({ eventSlug: eventSlug });
+
+    // if requestDetails includes includeRegistrations flag, fetch event + registrations + CAs in ONE DB call
+    if (req.user && req.requestDetails?.includeRegistrations) {
+      const [joined] = await Event.aggregate([
+        { $match: { eventSlug } },
+        { $limit: 1 },
+        {
+          $lookup: {
+            from: EventRegistration.collection.name,
+            let: { eventId: "$_id" },
+            pipeline: [
+              { $match: { $expr: { $eq: ["$eventId", "$$eventId"] } } },
+              {
+                $project: {
+                  _id: 1,
+                  name: 1,
+                  photoUrl: 1,
+                  institution: 1,
+                  grade: 1,
+                  isVerified: 1,
+                  hasAttended: 1,
+                },
+              },
+            ],
+            as: "registrations",
+          },
+        },
+        {
+          $lookup: {
+            from: EventCA.collection.name,
+            let: { eventId: "$_id" },
+            pipeline: [
+              { $match: { $expr: { $eq: ["$eventId", "$$eventId"] } } },
+              {
+                $project: {
+                  _id: 1,
+                  name: 1,
+                  institution: 1,
+                  grade: 1,
+                  isValidated: 1,
+                  caCode: 1,
+                },
+              },
+            ],
+            as: "eventCAs",
+          },
+        },
+      ]);
+
+      if (!joined) {
+        res.status(404).send({ subject: "slug", message: "Event not found" });
+        return;
+      }
+
+      // preserve original response shape: { event, registrations, eventCAs }
+      const { registrations, eventCAs, ...eventOnly } = joined as any;
+      res.status(200).send({ event: eventOnly, registrations, eventCAs });
+      return;
+    }
+
+    // simple/fast path (no registrations requested)
+    const event = await Event.findOne({ eventSlug: eventSlug }).lean();
     if (!event) {
       res.status(404).send({ subject: "slug", message: "Event not found" });
       return;
     }
+
     res.status(200).send(event);
   } catch (err) {
     console.log("Error fetching event by slug - ", err);

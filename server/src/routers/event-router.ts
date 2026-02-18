@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { isAdmin, isAuthorized } from "../middlewares/auth-middleware.js";
 import upload from "../middlewares/multer.js";
 import {
@@ -47,6 +47,16 @@ const fileFields: { name: string; maxCount: number }[] = [
 // event routes
 eventRouter.get("/all", getAllEvents);
 eventRouter.get("/:eventSlug", getEventBySlug);
+eventRouter.get(
+  "/with-registrations/:eventSlug",
+  isAuthorized,
+  isAdmin,
+  (req: Request, _: Response, next: NextFunction) => {
+    req.requestDetails = { includeRegistrations: true };
+    next();
+  },
+  getEventBySlug,
+);
 
 eventRouter.post(
   "/create",

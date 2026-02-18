@@ -10,6 +10,9 @@ declare global {
       user?: {
         _id: string;
       };
+      requestDetails?: {
+        includeRegistrations?: boolean;
+      };
     }
   }
 }

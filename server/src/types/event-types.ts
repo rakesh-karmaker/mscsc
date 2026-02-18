@@ -51,6 +51,7 @@ export type EventRegistrationSchemaType = {
 
   registrationDate: string;
   isVerified: boolean;
+  code: string;
   hasAttended: boolean;
 
   createdAt: string;

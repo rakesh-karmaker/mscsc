@@ -28,11 +28,12 @@ const EventRegistrationSchema =
 
       registrationDate: { type: String, required: true },
       isVerified: { type: Boolean, required: true, default: false },
+      code: { type: String, required: true, unique: true },
       hasAttended: { type: Boolean, required: true, default: false },
     },
     {
       timestamps: true,
-    }
+    },
   );
 
 export default mongoose.model("EventRegistration", EventRegistrationSchema);
