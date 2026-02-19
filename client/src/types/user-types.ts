@@ -4,7 +4,7 @@ export interface User {
   slug: string;
   email: string;
   contactNumber: string;
-  batch: string;
+  batch: number;
   branch:
     | "Main Boys"
     | "Main Girls"

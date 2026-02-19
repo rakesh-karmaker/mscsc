@@ -4,8 +4,13 @@ export interface MemberSchemaType {
   email: string;
   contactNumber: string;
   password: string;
-  batch: string;
-  branch: string;
+  batch: number;
+  branch:
+    | "Main Boys"
+    | "Main Girls"
+    | "Branch - 1"
+    | "Branch - 2"
+    | "Branch - 3";
   image: string;
   imgId: string;
   reason: string;

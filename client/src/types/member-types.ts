@@ -21,3 +21,8 @@ export type MemberEditTypes = {
   position?: string | undefined;
   role?: string | undefined;
 };
+
+export type MemberTableData = Omit<
+  User,
+  "contactNumber" | "reason" | "timeline" | "submissions"
+>;
