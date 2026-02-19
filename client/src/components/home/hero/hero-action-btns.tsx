@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 export function HeroActionBtns(): ReactNode {
   return (
     <div className="hero-action-btns row-center">
-      <NavLink className={"primary-button"} to="/register">
+      <NavLink className={"primary-button"} to="/auth/register">
         Join Us
       </NavLink>
       <NavLink className={"primary-button secondary-button"} to="/members">
