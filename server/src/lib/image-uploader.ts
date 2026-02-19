@@ -5,7 +5,8 @@ import getDate from "../utils/get-date.js";
 // Upload image to ImageKit and return the URL and image ID
 export async function uploadImage(
   file: Express.Multer.File,
-  crop: boolean = false
+  crop: boolean = false,
+  folder: string = "",
 ): Promise<{ url: string; imgId: string }> {
   try {
     let resizedImageBuffer;
@@ -26,6 +27,7 @@ export async function uploadImage(
     const uploadedImage = await imagekit.upload({
       file: resizedImageBuffer,
       fileName: `${Date.now()}-${file.originalname}`,
+      folder: folder,
     });
 
     return { url: uploadedImage.url, imgId: uploadedImage.fileId };
@@ -37,7 +39,7 @@ export async function uploadImage(
 
 // Upload multiple images to ImageKit and return the URLs and image IDs
 export async function uploadMultipleImages(
-  files: Express.Multer.File[]
+  files: Express.Multer.File[],
 ): Promise<{ url: string; imgId: string }[]> {
   try {
     if (files.length === 0) {
@@ -54,12 +56,12 @@ export async function uploadMultipleImages(
         const uploadedImage = await imagekit.upload({
           file: convertedImageBuffer,
           fileName: `${Date.now()}-${file.originalname}-${Math.floor(
-            Math.random() * 1000
+            Math.random() * 1000,
           )}`,
         });
 
         return { url: uploadedImage.url, imgId: uploadedImage.fileId };
-      })
+      }),
     );
 
     // create an array of objects with url and imgId

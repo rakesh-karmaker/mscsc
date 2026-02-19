@@ -8,22 +8,22 @@ import { generateHash } from "../utils/hash.js";
 // Get all members
 export async function getAllMembers(
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> {
   try {
     // Create regex for filtering
     const regex: GetAllMembersRegexType = {
       name: new RegExp(
         typeof req.query.name === "string" ? req.query.name : "",
-        "i"
+        "i",
       ),
       role: new RegExp(
         typeof req.query.role === "string" ? req.query.role : "",
-        "i"
+        "i",
       ),
       branch: new RegExp(
         typeof req.query.branch === "string" ? req.query.branch : "",
-        "i"
+        "i",
       ),
     };
 
@@ -80,7 +80,7 @@ export async function getMember(req: Request, res: Response): Promise<void> {
 // Get top 10 members with most submissions
 export async function getTopSubmitters(
   _: Request,
-  res: Response
+  res: Response,
 ): Promise<void> {
   try {
     const members = await Member.find();
@@ -113,7 +113,7 @@ export async function getTopSubmitters(
         image: member.image,
         submissionCount: member.submissionCount,
         isImageHidden: member.isImageHidden,
-      }))
+      })),
     );
   } catch (err) {
     console.log("Error getting top submitters - ", err);
@@ -167,7 +167,7 @@ export async function editMember(req: Request, res: Response): Promise<void> {
       const updatedMember = await Member.findOneAndUpdate(
         { slug },
         { timeline: timeline },
-        { new: true }
+        { new: true },
       ).select("-password");
 
       // return updated member
@@ -180,7 +180,7 @@ export async function editMember(req: Request, res: Response): Promise<void> {
     // Update image if new image is uploaded
     if (req?.file) {
       deleteImage(previousUser.imgId);
-      const { url, imgId } = await uploadImage(req.file);
+      const { url, imgId } = await uploadImage(req.file, true, "members");
       updates.image = url;
       updates.imgId = imgId;
       updates.new = true; // Once edited, set new to true

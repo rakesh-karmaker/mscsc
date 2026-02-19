@@ -46,7 +46,7 @@ export async function register(req: Request, res: Response): Promise<void> {
     const slug = await generateSlug(body.name, Member);
 
     // upload and get the image URL and image ID
-    const { url, imgId } = await uploadImage(file, true);
+    const { url, imgId } = await uploadImage(file, true, "members");
     if (!url) {
       throw new Error("No image URL found");
     }
@@ -80,7 +80,7 @@ export async function register(req: Request, res: Response): Promise<void> {
     console.log(
       `${newMember.name} registered successfully -`,
       getDate(),
-      "\n---\n"
+      "\n---\n",
     );
     res.status(201).send({
       subject: "register",
@@ -130,7 +130,7 @@ export async function login(req: Request, res: Response): Promise<void> {
     console.log(
       `${member.name} logged in successfully -`,
       getDate(),
-      "\n---\n"
+      "\n---\n",
     );
     res.status(200).send({
       subject: "login",
@@ -152,7 +152,7 @@ export async function verifyUser(req: Request, res: Response): Promise<void> {
   try {
     const data = req.user;
     const user = await Member.findById(data?._id || "").select(
-      "-password -imgId -reference -updatedAt -new -__v"
+      "-password -imgId -reference -updatedAt -new -__v",
     );
     if (!user) {
       res.status(404).send({ message: "User not found" });
