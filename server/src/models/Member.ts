@@ -13,7 +13,7 @@ const MemberSchema = new mongoose.Schema<MemberSchemaType>(
     email: { type: String, unique: true, required: true },
     contactNumber: { type: String, required: true },
     password: { type: String, required: true },
-    batch: { type: String, required: true },
+    batch: { type: Number, required: true },
     branch: { type: String, required: true },
     image: { type: String, required: true },
     imgId: { type: String, required: true },
@@ -43,19 +43,19 @@ const MemberSchema = new mongoose.Schema<MemberSchemaType>(
     isImageVerified: { type: Boolean, default: false },
     isImageHidden: { type: Boolean, default: false },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 MemberSchema.pre(
   "save",
   async function (
     this: MemberSchemaType & mongoose.Document,
-    next: () => void
+    next: () => void,
   ) {
     if (!this.isModified("password")) return next();
     this.password = await bcrypt.hash(this.password, 10);
     next();
-  }
+  },
 );
 
 export default mongoose.model("Member", MemberSchema);

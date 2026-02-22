@@ -194,7 +194,7 @@ export async function editMember(req: Request, res: Response): Promise<void> {
     }
 
     // Trim certain fields
-    updates.batch = updates.batch?.trim();
+    updates.batch = parseInt(updates.batch?.trim() || "0", 10);
     updates.name = updates.name?.trim();
     updates.branch = updates.branch?.trim();
 
