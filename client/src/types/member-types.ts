@@ -25,4 +25,4 @@ export type MemberEditTypes = {
 export type MemberTableData = Omit<
   User,
   "contactNumber" | "reason" | "timeline" | "submissions"
->;
+> & { new: boolean };

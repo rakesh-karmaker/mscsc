@@ -5,7 +5,6 @@ import { useUser } from "@/contexts/user-context";
 import type { MemberPreview } from "@/types/member-types";
 import { FaLock, FaUserTie } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
-import MemberEditDialog from "../member-edit-dialog";
 
 import "./member-card.css";
 
@@ -59,7 +58,6 @@ export default function MemberCard({
           </>
         )}
       </div>
-      {props?.isAdmin && <MemberEditDialog member={member} />}
     </div>
   );
 }

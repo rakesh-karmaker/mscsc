@@ -38,7 +38,7 @@ export type NewMemberDataType = {
   name: string;
   email: string;
   contactNumber: string;
-  batch: string;
+  batch: number;
   branch: string;
   reason: string;
   socialLink: string;

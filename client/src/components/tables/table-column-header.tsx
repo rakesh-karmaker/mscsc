@@ -70,7 +70,7 @@ export default function TableColumnHeader<TData, TValue>({
           horizontal: "left",
         }}
       >
-        <div className="w-full h-full p-1! bg-secondary-bg/70 backdrop-blur-2xl border border-gray-300">
+        <div className="w-full h-full p-1! bg-secondary-bg/70 backdrop-blur-2xl rounded-md border border-gray-300">
           {column.getCanSort() && (
             <>
               <HeaderPopoverItem
@@ -124,7 +124,7 @@ function HeaderPopoverItem({
 }) {
   return (
     <button
-      className="w-full h-full flex gap-4 justify-between items-center px-2! py-1! hover:bg-secondary-bg/70 transition-all cursor-pointer"
+      className="w-full h-full flex gap-4 justify-between rounded-sm items-center px-2! py-1! hover:bg-secondary-bg/70 transition-all cursor-pointer"
       type="button"
       onClick={onClick}
     >

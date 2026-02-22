@@ -2,6 +2,11 @@ import type { MemberTableData } from "@/types/member-types";
 import type { ColumnDef } from "@tanstack/react-table";
 import TableColumnHeader from "../table-column-header";
 import capitalize from "@/utils/capitalize";
+import { useState } from "react";
+import { Popover } from "@mui/material";
+import { Link, NavLink } from "react-router-dom";
+import { LuEllipsisVertical } from "react-icons/lu";
+import MemberEditDialog from "@/components/members/member-edit-dialog";
 
 export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
   return [
@@ -26,7 +31,7 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       ),
       meta: {
         label: "Full Name",
-        placeHolder: "Search names...",
+        placeholder: "Search names...",
         variant: "text",
       },
       enableColumnFilter: true,
@@ -39,9 +44,8 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       ),
       meta: {
         label: "Batch",
-        placeHolder: "Search batches...",
-        variant: "text",
-        isNumeric: true,
+        placeholder: "Search batches...",
+        variant: "number",
       },
       enableColumnFilter: true,
     },
@@ -53,7 +57,7 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       ),
       meta: {
         label: "Branch",
-        variant: "multiselect",
+        variant: "multiSelect",
         options: [
           "Main Boys",
           "Main Girls",
@@ -90,7 +94,7 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       ),
       meta: {
         label: "Position",
-        variant: "multiselect",
+        variant: "multiSelect",
         options: ["member", "executive", "admin"].map((position) => ({
           label: capitalize(position),
           value: position,
@@ -119,7 +123,62 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
     },
     {
       id: "actions",
-      cell: ({ row }) => {},
+      cell: ({ row }) => {
+        const [open, setOpen] = useState<boolean>(false);
+        const id = `popover-${row.id}`;
+
+        return (
+          <div>
+            <button
+              className={
+                "flex gap-1.5 items-center px-3! py-1.5! hover:bg-secondary-bg/70 transition-all cursor-pointer" +
+                row.original.new
+                  ? " bg-green"
+                  : ""
+              }
+              aria-describedby={id}
+              onClick={() => setOpen(!open)}
+            >
+              <LuEllipsisVertical />
+            </button>
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={document.getElementById(id)}
+              onClose={() => setOpen(false)}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+            >
+              <div className="w-full h-full bg-secondary-bg/70 backdrop-blur-2xl border rounded-sm border-gray-300">
+                <div className="flex flex-col p-1! border-b border-gray-300">
+                  <NavLink
+                    to={`/member/${row.original.slug}`}
+                    className="px-2! py-1! hover:bg-secondary-bg/70 transition-all rounded-sm"
+                    onClick={() => setOpen(false)}
+                  >
+                    View Profile
+                  </NavLink>
+
+                  <Link
+                    to={row.original.socialLink || "#"}
+                    className="px-2! py-1! hover:bg-secondary-bg/70 transition-all rounded-sm"
+                    onClick={() => setOpen(false)}
+                  >
+                    Facebook
+                  </Link>
+                </div>
+                <MemberEditDialog member={row.original} />
+              </div>
+            </Popover>
+          </div>
+        );
+      },
       size: 40,
     },
   ];

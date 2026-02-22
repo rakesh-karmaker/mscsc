@@ -60,7 +60,7 @@ export async function register(req: Request, res: Response): Promise<void> {
       slug: slug,
       email: body.email,
       contactNumber: body.contactNumber,
-      batch: body.batch,
+      batch: parseInt(body.batch),
       branch: body.branch,
       reason: body.reason,
       socialLink: body.socialLink,

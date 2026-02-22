@@ -1,4 +1,4 @@
-import type { MemberPreview } from "@/types/member-types";
+import type { MemberTableData } from "@/types/member-types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   useState,
@@ -17,6 +17,7 @@ import {
 import { Checkbox, FormControlLabel, TextField } from "@mui/material";
 import { deleteMember, editMember } from "@/lib/api/member";
 import DeleteWarning from "@/components/ui/delete-warning";
+import { useUser } from "@/contexts/user-context";
 
 export type MemberMutationProps = {
   method: string;
@@ -31,10 +32,11 @@ export default function MemberEditForm({
   member,
   setIsOpen,
 }: {
-  member: MemberPreview;
+  member: MemberTableData;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }): ReactNode {
   const queryClient = useQueryClient();
+  const { user } = useUser();
 
   const [open, setOpen] = useState(false);
 
@@ -71,7 +73,9 @@ export default function MemberEditForm({
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["members"] });
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      if (user && member._id === user._id) {
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+      }
       setIsOpen(false);
     },
   });
