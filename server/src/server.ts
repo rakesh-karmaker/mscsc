@@ -2,6 +2,13 @@ import app from "./app.js";
 import config from "./config/config.js";
 import mongoose from "mongoose";
 import https from "https";
+import dns from "node:dns/promises";
+
+// Force DNS change if specified in config
+if (config.forceDNSChange) {
+  console.log("Forcing DNS change to 1.1.1.1 and 8.8.8.8");
+  dns.setServers(["1.1.1.1", "8.8.8.8"]);
+}
 
 // Connect to MongoDB
 mongoose
@@ -26,7 +33,7 @@ setInterval(
       console.error(`Got error: ${e.message}`);
     });
   },
-  2 * 60 * 1000
+  2 * 60 * 1000,
 ); // every 2 minutes
 
 app.listen(config.port, () => {

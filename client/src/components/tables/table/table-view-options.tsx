@@ -71,7 +71,7 @@ export default function TableViewOptions<TData>({
           horizontal: "right",
         }}
       >
-        <div className="w-full h-full bg-secondary-bg/70 backdrop-blur-2xl rounded-md border border-gray-300">
+        <div className="w-full h-full flex flex-col bg-secondary-bg/70 backdrop-blur-2xl rounded-md border border-gray-300">
           <ColumnInput
             placeholder="Search columns..."
             value={searchValue}

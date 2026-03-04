@@ -26,7 +26,7 @@ export type SubmissionType = {
   name: string;
   email: string;
   branch: string;
-  batch: string;
+  batch: number;
   image: string;
   submissionDate: string;
   answer: string;

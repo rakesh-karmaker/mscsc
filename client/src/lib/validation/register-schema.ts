@@ -44,7 +44,7 @@ export const registerSchema = z.object({
           : false,
       {
         message: "Batch must contain only numbers",
-      }
+      },
     ),
   branch: z
     .string({ required_error: "Select your branch" })
@@ -60,16 +60,16 @@ export const registerSchema = z.object({
         files.length > 0 &&
         files[0].size <= MAX_FILE_SIZE &&
         ACCEPTED_IMAGE_TYPES.includes(
-          files[0].type as (typeof ACCEPTED_IMAGE_TYPES)[number]
+          files[0].type as (typeof ACCEPTED_IMAGE_TYPES)[number],
         ),
       (files) => ({
         message:
           files.length === 0
             ? "Image is required"
             : files[0].size > MAX_FILE_SIZE
-            ? `Max image size is ${MAX_FILE_SIZE / 1024 / 1024}MB.`
-            : "Only JPG, JPEG, PNG, and WebP formats are supported.",
-      })
+              ? `Max image size is ${MAX_FILE_SIZE / 1024 / 1024}MB.`
+              : "Only JPG, JPEG, PNG, and WebP formats are supported.",
+      }),
     ),
   reason: z
     .string({ required_error: "Give a description of yourself" })
@@ -78,6 +78,7 @@ export const registerSchema = z.object({
     }),
   socialLink: z
     .string({ required_error: "Enter your facebook link" })
+    .url({ message: "Invalid URL format" })
     .refine((value) => value !== null && value.trim() !== "", {
       message: "Social link is required",
     }),

@@ -4,6 +4,7 @@ import { useCallback, type ReactNode } from "react";
 import TableViewOptions from "./table/table-view-options";
 import { LuX } from "react-icons/lu";
 import { TextField } from "@mui/material";
+import TableMultiSelect from "./table/table-multi-select";
 
 interface TableToolbarProps<TData> extends React.ComponentProps<"div"> {
   table: Table<TData>;
@@ -100,6 +101,16 @@ function DataTableToolbarFilter<TData>({
             </div>
           );
         case "multiSelect":
+          return (
+            <TableMultiSelect
+              column={column}
+              options={columnMeta.options || []}
+              title={columnMeta.label ?? column.id}
+              multiple={true}
+            />
+          );
+        default:
+          return null;
       }
     }, [column, columnMeta]);
 
