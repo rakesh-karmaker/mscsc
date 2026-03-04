@@ -1,6 +1,6 @@
 import { Popover } from "@mui/material";
 import { type Column, type Table } from "@tanstack/react-table";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { LuCheck, LuSettings2 } from "react-icons/lu";
 import ColumnInput, { ColumnLists, EmptyResults } from "./column-input";
 
@@ -19,12 +19,14 @@ export default function TableViewOptions<TData>({
   const [open, setOpen] = useState<boolean>(false);
 
   const id = `popover-view-options`;
-  const columns = table
-    .getAllColumns()
-    .filter(
-      (column) =>
-        typeof column.accessorFn !== "undefined" && column.getCanHide(),
-    );
+  const columns = useMemo(() => {
+    return table
+      .getAllColumns()
+      .filter(
+        (column) =>
+          typeof column.accessorFn !== "undefined" && column.getCanHide(),
+      );
+  }, [table]);
 
   const [searchValue, setSearchValue] = useState<string>("");
   const [filteredColumns, setFilteredColumns] =
@@ -47,8 +49,10 @@ export default function TableViewOptions<TData>({
   }, [searchValue, columns]);
 
   return (
-    <div>
+    <div className="relative">
       <button
+        type="button"
+        id={id}
         className="flex gap-1.5 items-center px-3! py-1.5! hover:bg-secondary-bg/70 transition-all cursor-pointer"
         aria-describedby={id}
         onClick={() => setOpen(!open)}

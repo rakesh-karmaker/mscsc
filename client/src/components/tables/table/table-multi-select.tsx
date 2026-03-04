@@ -77,18 +77,20 @@ export default function TableMultiSelect<TData, TValue>({
   return (
     <div>
       <button
+        type="button"
+        id={id}
         className="flex gap-1.5 items-center px-3! py-1.5! hover:bg-secondary-bg/70 transition-all cursor-pointer"
         aria-describedby={id}
         onClick={() => setOpen(!open)}
       >
         {selectedValues?.size > 0 ? (
-          <button
+          <div
             aria-label={`Clear ${title} filter`}
             onClick={onReset}
             className="rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           >
             <LuX />
-          </button>
+          </div>
         ) : (
           <LuPlus />
         )}
@@ -126,11 +128,11 @@ export default function TableMultiSelect<TData, TValue>({
         onClose={() => setOpen(false)}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "right",
+          horizontal: "left",
         }}
         transformOrigin={{
           vertical: "top",
-          horizontal: "right",
+          horizontal: "left",
         }}
       >
         <div className="w-full h-full flex flex-col bg-secondary-bg/70 backdrop-blur-2xl rounded-md border border-gray-300">

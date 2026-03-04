@@ -43,6 +43,7 @@ export default function TableColumnHeader<TData, TValue>({
       <button
         className="flex gap-1.5 items-center px-3! py-1.5! hover:bg-secondary-bg/70 transition-all cursor-pointer"
         aria-describedby={id}
+        id={id}
         onClick={() => setOpen(!open)}
         {...rest}
       >

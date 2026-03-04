@@ -100,6 +100,7 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
           value: position,
         })),
       },
+      enableColumnFilter: true,
     },
     {
       id: "createdAt",

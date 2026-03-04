@@ -1,6 +1,6 @@
 import type { TableConfig } from "@/config/table";
 import type { FilterItemSchema } from "@/lib/parser";
-import type { ColumnSort, RowData } from "@tanstack/react-table";
+import type { ColumnSort, Row, RowData } from "@tanstack/react-table";
 
 declare module "@tanstack/react-table" {
   // biome-ignore lint/correctness/noUnusedVariables: TData is used in the TableMeta interface
@@ -40,6 +40,11 @@ export interface ExtendedColumnSort<TData> extends Omit<ColumnSort, "id"> {
 
 export interface ExtendedColumnFilter<TData> extends FilterItemSchema {
   id: Extract<keyof TData, string>;
+}
+
+export interface TableRowAction<TData> {
+  row: Row<TData>;
+  variant: "update" | "delete";
 }
 
 export type FilterVariant = TableConfig["filterVariants"][number];

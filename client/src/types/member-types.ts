@@ -1,3 +1,4 @@
+import type { ExtendedColumnSort } from "./table-types";
 import type { User } from "./user-types";
 
 export type MemberPreview = Pick<
@@ -26,3 +27,13 @@ export type MemberTableData = Omit<
   User,
   "contactNumber" | "reason" | "timeline" | "submissions"
 > & { new: boolean };
+
+export type MembersSearchParams = {
+  page: number;
+  perPage: number;
+  sort: ExtendedColumnSort<MemberTableData>[];
+  name: string;
+  batch: string[];
+  branch: string[];
+  position: string[];
+};

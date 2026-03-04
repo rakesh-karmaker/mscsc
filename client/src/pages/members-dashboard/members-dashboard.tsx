@@ -1,8 +1,9 @@
 import AdminDashboardHeader from "@/components/ui/admin-dashboard-header";
-import MemberPage from "@/pages/members/members";
+// import MemberPage from "@/pages/members/members";
 import { Helmet } from "react-helmet-async";
 
 import "./members-dashboard.css";
+import MembersTable from "@/components/tables/members-table/members-table";
 
 type MembersDashboardProps = {
   type?: "admin" | "executive" | "member";
@@ -11,7 +12,7 @@ type MembersDashboardProps = {
 };
 
 export default function MembersDashboard({
-  type,
+  // type,
   title = "Members",
   des = "View all the members of the club",
 }: MembersDashboardProps) {
@@ -36,11 +37,12 @@ export default function MembersDashboard({
       <div className="admin-members">
         <AdminDashboardHeader title={title}>{des}</AdminDashboardHeader>
 
-        <MemberPage
+        {/* <MemberPage
           isAdmin={true}
           showExecutives={type === "executive"}
           showAdmins={type === "admin"}
-        />
+        /> */}
+        <MembersTable />
       </div>
     </>
   );

@@ -1,11 +1,20 @@
 import { api } from "@/config/axios";
 import type { EditUserSchemaType } from "../validation/edit-user-schema";
 import type { TimelineSchemaType } from "../validation/timeline-schema";
-import type { MemberEditTypes } from "@/types/member-types";
+import type {
+  MemberEditTypes,
+  MembersSearchParams,
+} from "@/types/member-types";
 
 export async function getMember(slug: string) {
   const response = await api.get(`/member/${slug}`);
   return response.data;
+}
+
+export async function getMembers(params: MembersSearchParams) {
+  return api.get(`/member/all-table`, {
+    params,
+  });
 }
 
 export async function getAllMembers(
@@ -14,7 +23,7 @@ export async function getAllMembers(
   search: string,
   role: string,
   branch: string,
-  position: string
+  position: string,
 ) {
   return api.get(`/member/all`, {
     params: {
@@ -32,7 +41,7 @@ export async function editUser(
   data: EditUserSchemaType & {
     slug: string;
     new: boolean;
-  }
+  },
 ) {
   const formData = new FormData();
   for (const key in data) {
@@ -75,7 +84,7 @@ export async function editTimeline(data: {
 }
 
 export async function editMember(
-  data: MemberEditTypes | { slug: string; new: boolean }
+  data: MemberEditTypes | { slug: string; new: boolean },
 ) {
   const formData = new FormData();
   for (const key in data) {
