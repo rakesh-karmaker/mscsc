@@ -32,17 +32,7 @@ export async function getAllMessages(
     };
 
     // fetch messages based on filters
-    const messages = await Message.find({
-      name: new RegExp(typeof params.name === "string" ? params.name : "", "i"),
-      email: new RegExp(
-        typeof params.email === "string" ? params.email : "",
-        "i",
-      ),
-      source: new RegExp(
-        typeof params.source === "string" ? params.source : "",
-        "i",
-      ),
-    })
+    const messages = await Message.find(regex)
       .sort(
         sort && Object.keys(sort).length > 0 && "id" in sort && "desc" in sort
           ? { [String(sort.id)]: sort.desc === "true" ? -1 : 1 }
