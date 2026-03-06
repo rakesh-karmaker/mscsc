@@ -18,7 +18,7 @@ export default function MemberEditDialog({
   });
 
   return (
-    <div className="p-2! border-t border-gray-300">
+    <div className="p-2! px-1! border-t border-gray-300">
       <button
         type="button"
         className={
@@ -51,7 +51,7 @@ export default function MemberEditDialog({
             <div className="w-full flex flex-col">
               <div className="w-full flex justify-between items-center gap-2">
                 <h2 className="text-2xl font-medium max-xs:text-2xl">
-                  Edit Member
+                  Edit Member - {member.name}
                 </h2>
                 <button
                   onClick={() => setIsOpen(false)}

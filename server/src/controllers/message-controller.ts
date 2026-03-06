@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import paginateResults from "../lib/paginate-results.js";
 import Message from "../models/Message.js";
 import { messageSchema } from "../lib/validation/message-scheme.js";
 
@@ -9,16 +8,55 @@ export async function getAllMessages(
   res: Response,
 ): Promise<void> {
   try {
-    const nameQuery = Array.isArray(req.query.name)
-      ? req.query.name[0]
-      : req.query.name;
-    const regex = {
-      name: new RegExp(nameQuery ? String(nameQuery) : "", "i"),
-    };
-    const sorted = { sort: { createdAt: -1 as 1 | -1 } };
-    const messages = await paginateResults(req, Message, regex, sorted);
+    const params = req.query;
 
-    res.status(200).send(messages);
+    // Parse and validate query parameters
+    const pageNumber = parseInt(params.page as string) || 1;
+    const perPage = parseInt(params.perPage as string) || 12;
+    const skip = (pageNumber - 1) * perPage;
+    const sort: { id: string; desc: boolean } | {} =
+      Array.isArray(params.sort) && params.sort.length > 0
+        ? params.sort[0]
+        : {};
+    // Create regex for filtering
+    const regex = {
+      name: new RegExp(typeof params.name === "string" ? params.name : "", "i"),
+      email: new RegExp(
+        typeof params.email === "string" ? params.email : "",
+        "i",
+      ),
+      source: new RegExp(
+        typeof params.source === "string" ? params.source : "",
+        "i",
+      ),
+    };
+
+    // fetch messages based on filters
+    const messages = await Message.find({
+      name: new RegExp(typeof params.name === "string" ? params.name : "", "i"),
+      email: new RegExp(
+        typeof params.email === "string" ? params.email : "",
+        "i",
+      ),
+      source: new RegExp(
+        typeof params.source === "string" ? params.source : "",
+        "i",
+      ),
+    })
+      .sort(
+        sort && Object.keys(sort).length > 0 && "id" in sort && "desc" in sort
+          ? { [String(sort.id)]: sort.desc === "true" ? -1 : 1 }
+          : { createdAt: -1 },
+      )
+      .select("-__v -updatedAt");
+
+    const selectedMessageCount = messages.length;
+    const paginatedMessages = messages.slice(skip, skip + perPage);
+
+    res.status(200).send({
+      results: paginatedMessages,
+      selectedCount: selectedMessageCount,
+    });
   } catch (err) {
     console.log("Error getting messages - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);

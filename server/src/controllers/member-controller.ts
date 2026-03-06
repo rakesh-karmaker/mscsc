@@ -100,12 +100,12 @@ export async function getAllMembersForTable(
         "_id name slug email batch branch image role position contactNumber socialLink new isImageVerified isImageHidden createdAt",
       );
 
-    const selectedMembersCount = members.length;
+    const selectedMemberCount = members.length;
     const paginatedMembers = members.slice(skip, skip + perPage);
 
     res
       .status(200)
-      .send({ results: paginatedMembers, selectedCount: selectedMembersCount });
+      .send({ results: paginatedMembers, selectedCount: selectedMemberCount });
   } catch (err) {
     console.log("Error getting all members for table - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);

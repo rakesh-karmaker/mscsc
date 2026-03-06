@@ -7,9 +7,10 @@ const MessageSchema = new mongoose.Schema<MessageSchemaType>(
     email: { type: String, required: true },
     subject: { type: String, required: true },
     message: { type: String, required: true },
+    source: { type: String, default: "Main Website" },
     new: { type: Boolean, default: true },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("Message", MessageSchema);

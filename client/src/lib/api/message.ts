@@ -1,17 +1,10 @@
 import { api } from "@/config/axios";
 import type { ContactSchemaType } from "../validation/contact-schema";
+import type { MessagesSearchParams } from "@/types/message-types";
 
-export async function getAllMessages(
-  page: number,
-  limit: number,
-  search: string
-) {
+export async function getMessages(params?: MessagesSearchParams) {
   return api.get(`/message/get-message`, {
-    params: {
-      page: page,
-      limit: limit,
-      name: search,
-    },
+    params,
   });
 }
 

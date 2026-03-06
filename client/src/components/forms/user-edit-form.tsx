@@ -45,7 +45,7 @@ export default function UserEditForm({
       branch: user?.branch,
       reason: user?.reason,
       socialLink: user?.socialLink,
-      batch: user?.batch,
+      batch: user?.batch.toString(),
       hideImage: user?.isImageHidden ? true : false,
     },
     mode: "onChange",

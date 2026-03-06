@@ -1,4 +1,4 @@
-import type { MessageType } from "@/types/message-types";
+import type { MessageTableData } from "@/types/message-types";
 import { Modal } from "@mui/material";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 import { FaReply } from "react-icons/fa";
@@ -9,8 +9,8 @@ export default function MessageBox({
   data,
   setData,
 }: {
-  data: MessageType | null;
-  setData: Dispatch<SetStateAction<MessageType | null>>;
+  data: MessageTableData | null;
+  setData: Dispatch<SetStateAction<MessageTableData | null>>;
 }): ReactNode {
   return (
     <Modal
@@ -18,10 +18,10 @@ export default function MessageBox({
       onClose={() => setData(null)}
       aria-labelledby="Message Box"
       aria-describedby="Display Message Details"
-      className="flex items-center justify-center h-fit min-h-screen max-sm:overflow-y-auto absolute max-sm:bg-primary-bg !border-none !outline-none focus-visible:outline-none"
+      className="flex items-center justify-center h-fit min-h-screen max-sm:overflow-y-auto absolute max-sm:bg-primary-bg border-none! outline-none! focus-visible:outline-none"
     >
-      <div className="w-full max-w-[34.75em] max-sm:max-w-full max-sm:min-h-screen bg-primary-bg max-h-screen overflow-y-auto !border-none !outline-none focus-visible:outline-none rounded-lg">
-        <div className="min-h-fit max-sm:max-h-full !p-7 rounded-lg max-sm:rounded-none bg-primary-bg flex flex-col max-sm:justify-center gap-5">
+      <div className="w-full max-w-[34.75em] max-sm:max-w-full max-sm:min-h-screen bg-primary-bg max-h-screen overflow-y-auto border-none! outline-none! focus-visible:outline-none rounded-lg">
+        <div className="min-h-fit max-sm:max-h-full p-7! rounded-lg max-sm:rounded-none bg-primary-bg flex flex-col max-sm:justify-center gap-5">
           <div className="w-full flex flex-col">
             <div className="w-full flex justify-between items-center gap-2">
               <h2 className="text-3xl font-medium max-xs:text-2xl">
@@ -56,7 +56,7 @@ export default function MessageBox({
           </div>
           <Link
             to={`mailto:${data?.email}`}
-            className="primary-button w-fit gap-2 min-h-fit !py-2.5"
+            className="primary-button flex gap-2 w-fit! min-w-fit! px-4! py-2! text-base! font-normal! h-fit!"
           >
             <FaReply />
             Reply

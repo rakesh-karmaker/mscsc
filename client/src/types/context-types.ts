@@ -3,7 +3,6 @@ import type { User } from "./user-types";
 import type { MemberPreview } from "./member-types";
 import type { TaskPreview } from "./task-types";
 import type { Dispatch, SetStateAction } from "react";
-import type { MessageType } from "./message-types";
 
 export type UserContextType = {
   user: User | null;
@@ -60,19 +59,4 @@ export type TasksContextType = {
     totalLength: number;
   } | null;
   refetch: () => void;
-};
-
-export type MessagesContextType = {
-  messages: MessageType[] | null;
-  isLoading: boolean;
-  search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
-  page: number;
-  setPage: Dispatch<SetStateAction<number>>;
-  length: number;
-  response: {
-    results: MessageType[];
-    selectedLength: number;
-    totalLength: number;
-  } | null;
 };

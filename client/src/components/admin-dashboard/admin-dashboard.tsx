@@ -3,7 +3,6 @@ import { FaTasks, FaUsers } from "react-icons/fa";
 import { IoMailSharp } from "react-icons/io5";
 import { FiActivity } from "react-icons/fi";
 import { useMembers } from "@/contexts/members-context";
-import { useMessages } from "@/contexts/messages-context";
 import { getAdminData } from "@/lib/api/admin-dashboard";
 import AdminDashboardHeader from "@/components/ui/admin-dashboard-header";
 import QuickStat from "./quick-stat";
@@ -13,17 +12,19 @@ import BatchDistributionChart from "@/components/charts/batch-distribution";
 import BranchDistributionChart from "@/components/charts/branch-distribution";
 import MemberList from "../lists/member-list";
 import MessageList from "../lists/message-list";
+import { Helmet } from "react-helmet-async";
+import { useQuery } from "@tanstack/react-query";
+import { getMessages } from "@/lib/api/message";
 
 import "./admin-dashboard.css";
-import { Helmet } from "react-helmet-async";
 
 const AdminDashboard = () => {
   const { members, setSearch, setPage, setRole } = useMembers();
-  const {
-    messages,
-    setSearch: messagesSearch,
-    setPage: messagesPage,
-  } = useMessages();
+  const { data: messages } = useQuery({
+    queryKey: ["messages"],
+    queryFn: () => getMessages().then((res) => res.data.results),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
   const [dashboardData, setDashboardData] =
     useState<AdminDashboardDataType | null>(null);
 
@@ -31,8 +32,6 @@ const AdminDashboard = () => {
     setRole("");
     setSearch("");
     setPage(1);
-    messagesSearch("");
-    messagesPage(1);
   }, []);
 
   const fetchDashboardData = async () => {

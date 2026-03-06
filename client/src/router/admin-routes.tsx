@@ -19,16 +19,13 @@ const TaskDashboard = lazy(
   () => import("@/pages/task-dashboard/task-dashboard"),
 );
 const TaskForm = lazy(() => import("@/components/forms/task-form/task-form"));
-const MessagesDashboard = lazy(
-  () => import("@/pages/messages-dashboard/messages-dashboard"),
-);
+const MessagesDashboard = lazy(() => import("@/pages/messages-dashboard"));
 const AddEvent = lazy(() => import("@/pages/add-event"));
 
 // Lazy load error pages
 const NotFound = lazy(() => import("@/pages/error-pages/not-found"));
 
 // Contexts
-import MessagesProvider from "@/contexts/messages-context";
 import { MembersProvider } from "@/contexts/members-context";
 import { ActivitiesProvider } from "@/contexts/activities-context";
 import { TasksProvider } from "@/contexts/tasks-context";
@@ -41,9 +38,7 @@ export const adminRoutes = {
   element: (
     <ProtectedRoute>
       <MembersProvider>
-        <MessagesProvider>
-          <AdminLayout />
-        </MessagesProvider>
+        <AdminLayout />
       </MembersProvider>
     </ProtectedRoute>
   ),

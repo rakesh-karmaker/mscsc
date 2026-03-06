@@ -1,25 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useState, type ReactNode } from "react";
-import { messageTableHeader } from "@/services/data/data";
-import { useMessages } from "@/contexts/messages-context";
 import { deleteMessage, markMessageAsRead } from "@/lib/api/message";
-import type { MessageType } from "@/types/message-types";
+import type { MessageTableData } from "@/types/message-types";
 import AdminDashboardHeader from "@/components/ui/admin-dashboard-header";
-import SearchInput from "@/components/ui/search-input/search-input";
-import Loader from "@/components/ui/loader/loader";
 import MessageBox from "@/components/message-box";
-import MessageTable from "@/components/tables/message-table/message-table";
 import { Helmet } from "react-helmet-async";
-
-import "./messages-dashboard.css";
+import MessagesTable from "@/components/tables/messages-table/messages-table";
 
 export default function MessagesDashboard(): ReactNode {
   const queryClient = useQueryClient();
-  const { length, messages, search, setSearch, isLoading, page, setPage } =
-    useMessages();
-  const [currentMessage, setCurrentMessage] = useState<MessageType | null>(
-    null
+  const [currentMessage, setCurrentMessage] = useState<MessageTableData | null>(
+    null,
   );
 
   const messagesMutation = useMutation({
@@ -41,12 +33,11 @@ export default function MessagesDashboard(): ReactNode {
     },
   });
 
-  const onViewClick = (id: string, isNew: boolean) => {
-    if (isNew === true) {
-      messagesMutation.mutate({ _id: id, isDelete: false });
+  const onViewClick = (message: MessageTableData) => {
+    if (message.new === true) {
+      messagesMutation.mutate({ _id: message._id, isDelete: false });
     }
-    const message = messages?.find((message) => message._id === id);
-    setCurrentMessage(message || null);
+    setCurrentMessage(message);
   };
 
   const onDelete = (id: string) => {
@@ -57,9 +48,9 @@ export default function MessagesDashboard(): ReactNode {
     <>
       {/* page metadata */}
       <Helmet>
-        <title>MSCSC - Messages</title>
-        <meta property="og:title" content={`MSCSC - Messages`} />
-        <meta name="twitter:title" content={`MSCSC - Messages`} />
+        <title>MSCSC - Messages Dashboard</title>
+        <meta property="og:title" content={`MSCSC - Messages Dashboard`} />
+        <meta name="twitter:title" content={`MSCSC - Messages Dashboard`} />
         <meta
           name="og:url"
           content={`https://mscsc.netlify.app/admin/messages`}
@@ -71,30 +62,12 @@ export default function MessagesDashboard(): ReactNode {
       </Helmet>
 
       {/* page content */}
-      <div className="admin-messages">
+      <div className="w-full h-full min-h-[calc(100svh-60px)] flex flex-col gap-13">
         <AdminDashboardHeader title={"Messages"}>
           View all the messages sent by members
         </AdminDashboardHeader>
-        <SearchInput search={search} setSearch={setSearch}>
-          Search Messages
-        </SearchInput>
 
-        <div className="messages-container">
-          {isLoading ? (
-            <Loader />
-          ) : (
-            <MessageTable
-              headers={messageTableHeader}
-              data={messages || []}
-              length={length}
-              page={page}
-              setPage={setPage}
-              onViewClick={onViewClick}
-              onDelete={onDelete}
-            />
-          )}
-        </div>
-
+        <MessagesTable onViewClick={onViewClick} onDelete={onDelete} />
         <MessageBox data={currentMessage} setData={setCurrentMessage} />
       </div>
     </>
