@@ -5,24 +5,22 @@ import Loader from "@/components/ui/loader/loader";
 
 // Lazy load admin pages
 const AdminDashboard = lazy(
-  () => import("@/components/admin-dashboard/admin-dashboard")
+  () => import("@/components/admin-dashboard/admin-dashboard"),
 );
-const MembersDashboard = lazy(
-  () => import("@/pages/members-dashboard/members-dashboard")
-);
+const MembersDashboard = lazy(() => import("@/pages/members-dashboard"));
 const ActivitiesDashboard = lazy(
-  () => import("@/pages/activities-dashboard/activities-dashboard")
+  () => import("@/pages/activities-dashboard/activities-dashboard"),
 );
 const ActivityForm = lazy(
-  () => import("@/components/forms/activity-form/activity-form")
+  () => import("@/components/forms/activity-form/activity-form"),
 );
 const TasksDashBoard = lazy(() => import("@/pages/tasks-dashboard"));
 const TaskDashboard = lazy(
-  () => import("@/pages/task-dashboard/task-dashboard")
+  () => import("@/pages/task-dashboard/task-dashboard"),
 );
 const TaskForm = lazy(() => import("@/components/forms/task-form/task-form"));
 const MessagesDashboard = lazy(
-  () => import("@/pages/messages-dashboard/messages-dashboard")
+  () => import("@/pages/messages-dashboard/messages-dashboard"),
 );
 const AddEvent = lazy(() => import("@/pages/add-event"));
 
@@ -69,30 +67,6 @@ export const adminRoutes = {
       element: (
         <Suspense fallback={<Loader />}>
           <MembersDashboard />
-        </Suspense>
-      ),
-    },
-    {
-      path: "/admin/executives",
-      element: (
-        <Suspense fallback={<Loader />}>
-          <MembersDashboard
-            type="executive"
-            title="Executives"
-            des="View all the executives of the club"
-          />
-        </Suspense>
-      ),
-    },
-    {
-      path: "/admin/admins",
-      element: (
-        <Suspense fallback={<Loader />}>
-          <MembersDashboard
-            type="admin"
-            title="Admins"
-            des="View all the admins of the club"
-          />
         </Suspense>
       ),
     },

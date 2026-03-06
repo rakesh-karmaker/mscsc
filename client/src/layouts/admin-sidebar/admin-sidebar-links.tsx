@@ -21,21 +21,18 @@ export default function AdminSidebarLinks({
       <li>
         <p className="sub-text">Members</p>
         <ul>
-          {adminSidebarLinkData.slice(1, 4).map((link) => (
-            <AdminSidebarLink
-              key={link.name}
-              data={link}
-              isSidebarOpen={isSidebarOpen}
-              setIsSidebarOpen={setIsSidebarOpen}
-            />
-          ))}
+          <AdminSidebarLink
+            data={adminSidebarLinkData[1]}
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+          />
         </ul>
       </li>
 
       <li>
         <p className="sub-text">Activities</p>
         <ul>
-          {adminSidebarLinkData.slice(4, 6).map((link) => (
+          {adminSidebarLinkData.slice(2, 4).map((link) => (
             <AdminSidebarLink
               key={link.name}
               data={link}
@@ -49,7 +46,7 @@ export default function AdminSidebarLinks({
       <li>
         <p className="sub-text">Tasks</p>
         <ul>
-          {adminSidebarLinkData.slice(6, 8).map((link) => (
+          {adminSidebarLinkData.slice(4, 6).map((link) => (
             <AdminSidebarLink
               key={link.name}
               data={link}
@@ -64,7 +61,7 @@ export default function AdminSidebarLinks({
         <p className="sub-text">Club Inbox</p>
         <ul>
           <AdminSidebarLink
-            data={adminSidebarLinkData[8]}
+            data={adminSidebarLinkData[6]}
             isSidebarOpen={isSidebarOpen}
             setIsSidebarOpen={setIsSidebarOpen}
           />
@@ -74,7 +71,7 @@ export default function AdminSidebarLinks({
       <li>
         <p className="sub-text">Events</p>
         <ul>
-          {adminSidebarLinkData.slice(9).map((link) => (
+          {adminSidebarLinkData.slice(7).map((link) => (
             <AdminSidebarLink
               key={link.name}
               data={link}

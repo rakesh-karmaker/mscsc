@@ -1,12 +1,6 @@
 import type { ReactNode } from "react";
 import { FaCalendarAlt, FaEnvelopeSquare, FaTasks } from "react-icons/fa";
-import {
-  FaHouse,
-  FaPlus,
-  FaUser,
-  FaUserSecret,
-  FaUserTie,
-} from "react-icons/fa6";
+import { FaHouse, FaPlus, FaUser } from "react-icons/fa6";
 
 export type AdminSidebarLinkDataType = {
   name: string;
@@ -19,16 +13,6 @@ export const adminSidebarLinkData: AdminSidebarLinkDataType[] = [
     name: "Dashboard",
     icon: <FaHouse />,
     to: "/admin/dashboard",
-  },
-  {
-    name: "Admins",
-    icon: <FaUserSecret />,
-    to: "/admin/admins",
-  },
-  {
-    name: "Executives",
-    icon: <FaUserTie />,
-    to: "/admin/executives",
   },
   {
     name: "Members",

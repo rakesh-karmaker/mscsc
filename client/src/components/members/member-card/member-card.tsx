@@ -8,14 +8,7 @@ import { FaUser } from "react-icons/fa6";
 
 import "./member-card.css";
 
-export default function MemberCard({
-  member,
-  ...props
-}: {
-  member: MemberPreview;
-  showExecutives?: boolean;
-  isAdmin?: boolean;
-}) {
+export default function MemberCard({ member }: { member: MemberPreview }) {
   const navigate = useNavigate();
   const { slug, name, branch, batch, image, isImageHidden, isImageVerified } =
     member;
@@ -49,14 +42,8 @@ export default function MemberCard({
       </div>
       <div className="member-info">
         <h3>{name}</h3>
-        {props?.showExecutives ? (
-          <p>{props?.showExecutives && member.position}</p>
-        ) : (
-          <>
-            <p>{branch}</p>
-            <p>{batch}</p>
-          </>
-        )}
+        <p>{branch}</p>
+        <p>{batch}</p>
       </div>
     </div>
   );

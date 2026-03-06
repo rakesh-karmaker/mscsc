@@ -9,7 +9,6 @@ export default function MembersContainer({
   length,
   page,
   setPage,
-  ...props
 }: {
   members: MemberPreview[];
   length: number;
@@ -21,13 +20,7 @@ export default function MembersContainer({
     <>
       <div className="members-container">
         {members?.map((member) => {
-          return (
-            <MemberCard
-              key={member._id + member.slug}
-              member={member}
-              {...props}
-            />
-          );
+          return <MemberCard key={member._id + member.slug} member={member} />;
         })}
       </div>
       <PaginationContainer

@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { useMembers } from "@/contexts/members-context";
 import Loader from "@/components/ui/loader/loader";
 import SearchInput from "@/components/ui/search-input/search-input";
@@ -8,11 +8,7 @@ import { Helmet } from "react-helmet-async";
 
 import "./members.css";
 
-export default function MemberPage(props: {
-  showExecutives?: boolean;
-  showAdmins?: boolean;
-  isAdmin?: boolean;
-}): ReactNode {
+export default function MemberPage(): ReactNode {
   const {
     members,
     search,
@@ -23,32 +19,7 @@ export default function MemberPage(props: {
     setBranch,
     length,
     isLoading,
-    position,
-    setPosition,
-    role,
-    setRole,
   } = useMembers();
-
-  //reset search and branch when page reloads
-  useEffect(() => {
-    if (props?.showExecutives) {
-      if (position !== "executive") {
-        setPosition("executive");
-        setRole("");
-      }
-    } else if (props?.showAdmins) {
-      if (role !== "admin") {
-        setRole("admin");
-        setPosition("");
-      }
-    } else {
-      setPosition("");
-      setRole("");
-    }
-
-    setSearch("");
-    setBranch("");
-  }, [, props]);
 
   return (
     <>
@@ -87,7 +58,6 @@ export default function MemberPage(props: {
               length={length}
               page={page}
               setPage={setPage}
-              {...props}
             />
           )}
         </section>
