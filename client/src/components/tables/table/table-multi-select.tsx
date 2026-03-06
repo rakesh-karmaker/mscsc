@@ -160,14 +160,17 @@ export default function TableMultiSelect<TData, TValue>({
               <EmptyResults />
             )}
           </ColumnLists>
-          <div className="p-2! border-t border-gray-300">
-            <button
-              className="text-sm text-blue-500 hover:text-blue-700 text-center w-full"
-              onClick={onReset}
-            >
-              Clear filters
-            </button>
-          </div>
+
+          {selectedValues.size > 0 && (
+            <div className="p-2! border-t border-gray-300">
+              <button
+                className="text-sm text-blue-500 hover:text-blue-700 text-center w-full"
+                onClick={onReset}
+              >
+                Clear filters
+              </button>
+            </div>
+          )}
         </div>
       </Popover>
     </div>

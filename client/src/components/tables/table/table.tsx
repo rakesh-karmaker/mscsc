@@ -12,17 +12,21 @@ import {
   TableHeader,
   TableRow,
 } from "./table-ui";
+import Loader from "@/components/ui/loader/loader";
+import { TablePagination } from "./table-pagination";
 
 interface TableProps<TData> extends React.ComponentProps<"div"> {
   table: TanstackTable<TData>;
-  actionBar?: React.ReactNode;
+  isLoading?: boolean;
+  selectedLength: number;
 }
 
 export function Table<TData>({
   table,
-  actionBar,
   children,
   className,
+  isLoading,
+  selectedLength,
   ...props
 }: TableProps<TData>) {
   return (
@@ -31,71 +35,76 @@ export function Table<TData>({
       {...props}
     >
       {children}
-      <div className="overflow-hidden rounded-md border">
-        <TableWrapper>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    colSpan={header.colSpan}
-                    style={{
-                      ...getColumnPinningStyle({ column: header.column }),
-                    }}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
+      {isLoading ? (
+        <div className="flex h-24 w-full items-center justify-center">
+          <Loader />
+        </div>
+      ) : (
+        <>
+          <div className="overflow-hidden rounded-md border">
+            <TableWrapper>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <TableHead
+                        key={header.id}
+                        colSpan={header.colSpan}
+                        style={{
+                          ...getColumnPinningStyle({ column: header.column }),
+                        }}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    ))}
+                  </TableRow>
                 ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      style={{
-                        ...getColumnPinningStyle({ column: cell.column }),
-                      }}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
                     >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell
+                          key={cell.id}
+                          style={{
+                            ...getColumnPinningStyle({ column: cell.column }),
+                          }}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={table.getAllColumns().length}
+                      className="h-24 text-center"
+                    >
+                      No results.
                     </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={table.getAllColumns().length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </TableWrapper>
-      </div>
-      <div className="flex flex-col gap-2.5">
-        {/* <DataTablePagination table={table} /> */}
-        {actionBar &&
-          table.getFilteredSelectedRowModel().rows.length > 0 &&
-          actionBar}
-      </div>
+                  </TableRow>
+                )}
+              </TableBody>
+            </TableWrapper>
+          </div>
+          <div className="flex flex-col gap-2.5">
+            <TablePagination table={table} selectedLength={selectedLength} />
+          </div>
+        </>
+      )}
     </div>
   );
 }

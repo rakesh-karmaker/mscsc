@@ -44,7 +44,7 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       ),
       meta: {
         label: "Batch",
-        placeholder: "Search batches...",
+        placeholder: "Batches...",
         variant: "number",
       },
       enableColumnFilter: true,
@@ -94,7 +94,7 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       ),
       meta: {
         label: "Position",
-        variant: "multiSelect",
+        variant: "select",
         options: ["member", "executive", "admin"].map((position) => ({
           label: capitalize(position),
           value: position,

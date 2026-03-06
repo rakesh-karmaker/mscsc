@@ -2,8 +2,8 @@ import { cn } from "@/utils/cn";
 import type { Column, Table } from "@tanstack/react-table";
 import { useCallback, type ReactNode } from "react";
 import TableViewOptions from "./table/table-view-options";
-import { LuX } from "react-icons/lu";
-import { TextField } from "@mui/material";
+import { LuSearch, LuX } from "react-icons/lu";
+import { InputAdornment, TextField } from "@mui/material";
 import TableMultiSelect from "./table/table-multi-select";
 
 interface TableToolbarProps<TData> extends React.ComponentProps<"div"> {
@@ -74,24 +74,54 @@ function DataTableToolbarFilter<TData>({
       switch (columnMeta.variant) {
         case "text":
           return (
-            <input
+            <TextField
               type="text"
               placeholder={columnMeta.placeholder ?? `Search...`}
               value={(column.getFilterValue() as string) ?? ""}
               onChange={(e) => column.setFilterValue(e.target.value)}
-              className="border rounded px-2! py-1!"
+              // className="border rounded px-2! py-1!"
+              size="small"
+              sx={{
+                minWidth: "20rem",
+              }}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LuSearch className="text-muted-foreground" />
+                    </InputAdornment>
+                  ),
+                },
+              }}
             />
           );
         case "number":
           return (
             <div className="relative">
               <TextField
-                type="number"
                 inputMode="numeric"
                 placeholder={columnMeta.placeholder ?? columnMeta.label}
                 value={(column.getFilterValue() as string) ?? ""}
-                onChange={(event) => column.setFilterValue(event.target.value)}
-                className={cn("h-8 w-30", columnMeta.unit && "pr-8")}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  // Allow only numeric input
+                  if (/^\d*$/.test(value)) {
+                    column.setFilterValue(value);
+                  }
+                }}
+                size="small"
+                sx={{
+                  maxWidth: "9rem",
+                }}
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LuSearch className="text-muted-foreground" />
+                      </InputAdornment>
+                    ),
+                  },
+                }}
               />
               {columnMeta.unit && (
                 <span className="absolute top-0 right-0 bottom-0 flex items-center rounded-r-md bg-accent px-2 text-muted-foreground text-sm">
@@ -100,13 +130,14 @@ function DataTableToolbarFilter<TData>({
               )}
             </div>
           );
+        case "select":
         case "multiSelect":
           return (
             <TableMultiSelect
               column={column}
               options={columnMeta.options || []}
               title={columnMeta.label ?? column.id}
-              multiple={true}
+              multiple={columnMeta.variant === "multiSelect"}
             />
           );
         default:

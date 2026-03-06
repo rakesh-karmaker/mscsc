@@ -3,6 +3,7 @@ import {
   deleteMember,
   editMember,
   getAllMembers,
+  getAllMembersForTable,
   getMember,
   getTopSubmitters,
 } from "../controllers/member-controller.js";
@@ -13,6 +14,7 @@ const memberRouter = express.Router();
 
 // Member Routes
 memberRouter.get("/all", getAllMembers);
+memberRouter.get("/all-table", getAllMembersForTable);
 memberRouter.get("/top-submitters", getTopSubmitters);
 memberRouter.get("/:slug", getMember);
 
@@ -20,7 +22,7 @@ memberRouter.patch(
   "/edit-member",
   isAuthorized,
   upload.single("image"),
-  editMember
+  editMember,
 );
 
 memberRouter.delete("/:slug", isAuthorized, isAdmin, deleteMember);

@@ -33,7 +33,7 @@ export type MembersSearchParams = {
   perPage: number;
   sort: ExtendedColumnSort<MemberTableData>[];
   name: string;
-  batch: string[];
+  batch: number;
   branch: string[];
   position: string[];
 };

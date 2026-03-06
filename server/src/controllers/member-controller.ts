@@ -36,7 +36,7 @@ export async function getAllMembers(
     const sorted = {
       sort: { _id: -1 as 1 | -1 },
       select:
-        "_id name slug batch branch image role position new isImageVerified isImageHidden", // Select only necessary fields
+        "_id name slug batch branch image role position new isImageVerified isImageHidden createdAt", // Select only necessary fields
     };
 
     // Get paginated results
@@ -45,6 +45,70 @@ export async function getAllMembers(
     res.status(200).send(members);
   } catch (err) {
     console.log("Error getting all members - ", err);
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    res
+      .status(500)
+      .send({ subject: "root", message: "Server error", error: errorMessage });
+  }
+}
+
+export async function getAllMembersForTable(
+  req: Request,
+  res: Response,
+): Promise<void> {
+  try {
+    const params = req.query;
+
+    // Parse and validate query parameters
+    const pageNumber = parseInt(params.page as string) || 1;
+    const perPage = parseInt(params.perPage as string) || 12;
+    const skip = (pageNumber - 1) * perPage;
+    const batch =
+      typeof params.batch === "string" ? parseInt(params.batch) : -1;
+    const branch = Array.isArray(params.branch) ? params.branch : [];
+    const positions = Array.isArray(params.position) ? params.position : [];
+    const sort: { id: string; desc: boolean } | {} =
+      Array.isArray(params.sort) && params.sort.length > 0
+        ? params.sort[0]
+        : {};
+
+    // Create regex for filtering
+    const regex: Pick<GetAllMembersRegexType, "name"> = {
+      name: new RegExp(typeof params.name === "string" ? params.name : "", "i"),
+    };
+
+    // fetch members based on filters
+    const members = await Member.find({
+      ...regex,
+      ...(batch !== -1 && { batch }),
+      ...(branch.length > 0 && { branch: { $in: branch } }),
+      ...(positions.length > 0 &&
+        positions.includes("executive") && {
+          position: new RegExp(`^(?!.*member).*$`, "i"),
+        }),
+      ...(positions.length > 0 &&
+        (positions.includes("member") || positions.includes("admin")) && {
+          role: { $in: positions },
+        }),
+    })
+      .sort(
+        sort && Object.keys(sort).length > 0 && "id" in sort && "desc" in sort
+          ? { [String(sort.id)]: sort.desc === "true" ? -1 : 1 }
+          : { createdAt: -1 },
+      )
+      .select(
+        "_id name slug batch branch image role position new isImageVerified isImageHidden createdAt",
+      );
+
+    const selectedMembersCount = members.length;
+    const paginatedMembers = members.slice(skip, skip + perPage);
+
+    console.log("Received params for getAllMembersForTable - ", params);
+    res
+      .status(200)
+      .send({ results: paginatedMembers, selectedCount: selectedMembersCount });
+  } catch (err) {
+    console.log("Error getting all members for table - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
