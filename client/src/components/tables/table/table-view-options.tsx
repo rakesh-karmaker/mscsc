@@ -53,7 +53,7 @@ export default function TableViewOptions<TData>({
       <button
         type="button"
         id={id}
-        className="flex gap-1.5 items-center px-3! py-1.5! hover:bg-secondary-bg/70 transition-all cursor-pointer"
+        className="flex gap-1.5 items-center px-3! py-1! h-10 rounded-sm border border-black/20 hover:bg-lightest-black/20! transition-colors cursor-pointer"
         aria-describedby={id}
         onClick={() => setOpen(!open)}
         {...rest}
@@ -74,12 +74,19 @@ export default function TableViewOptions<TData>({
           vertical: "top",
           horizontal: "right",
         }}
+        PaperProps={{
+          style: {
+            boxShadow: "rgba(149, 157, 165, 0.1) 0px 8px 24px",
+            marginTop: "4px",
+          },
+        }}
       >
-        <div className="w-full h-full flex flex-col bg-secondary-bg/70 backdrop-blur-2xl rounded-md border border-gray-300">
+        <div className="w-full h-full flex flex-col bg-primary-bg rounded-md border border-gray-300">
           <ColumnInput
             placeholder="Search columns..."
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
+            className="max-w-45"
           />
           <ColumnLists>
             {filteredColumns.length > 0 ? (
@@ -115,7 +122,7 @@ function TableViewItem({
 }) {
   return (
     <button
-      className="w-full h-full flex gap-4 justify-between rounded-sm items-center px-2! py-1! hover:bg-secondary-bg/70 transition-all cursor-pointer"
+      className="w-full h-full flex justify-between rounded-sm items-center px-2.5! py-1.75! hover:bg-[#f5f5f5] transition-all cursor-pointer"
       type="button"
       onClick={onClick}
     >

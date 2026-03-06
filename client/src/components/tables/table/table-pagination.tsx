@@ -24,20 +24,20 @@ export function TablePagination<TData>({
   return (
     <div
       className={cn(
-        "flex w-full flex-col-reverse items-center justify-between gap-4 p-1! sm:flex-row sm:gap-8",
+        "flex w-full items-center justify-between gap-4 p-1! max-lg:mt-3!",
         className,
       )}
       {...props}
     >
-      <div className="flex-1 whitespace-nowrap text-muted-foreground text-sm">
+      {/* <div className="flex-1 whitespace-nowrap text-muted-foreground text-sm">
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
         {table.getFilteredRowModel().rows.length} row(s) selected.
-      </div>
+      </div> */}
 
-      <div className="flex flex-col-reverse items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">
-        <div className="flex items-center space-x-2!">
-          <p className="whitespace-nowrap font-medium text-sm">Rows per page</p>
-          <FormControl fullWidth size="small">
+      <div className="w-full flex justify-between items-center max-lg:flex-col-reverse">
+        <div className="flex items-center gap-1">
+          <p className="whitespace-nowrap">Rows per page</p>
+          <FormControl sx={{ minWidth: 80 }} size="small">
             <InputLabel id="pagination-rows">Rows</InputLabel>
             <Select
               labelId="pagination-rows"
@@ -47,6 +47,7 @@ export function TablePagination<TData>({
               onChange={(e) => {
                 table.setPageSize(Number(e.target.value));
               }}
+              size="small"
             >
               {pageSizeOptions.map((pageSize) => (
                 <MenuItem key={pageSize} value={pageSize}>
@@ -56,17 +57,19 @@ export function TablePagination<TData>({
             </Select>
           </FormControl>
         </div>
-        <Pagination
-          page={table.getState().pagination.pageIndex + 1}
-          count={Math.ceil(
-            selectedLength / table.getState().pagination.pageSize,
-          )}
-          variant="outlined"
-          shape="rounded"
-          onChange={(_, value) => {
-            table.setPageIndex(value - 1);
-          }}
-        />
+        <div className="max-sm:mb-2!">
+          <Pagination
+            page={table.getState().pagination.pageIndex + 1}
+            count={Math.ceil(
+              selectedLength / table.getState().pagination.pageSize,
+            )}
+            variant="outlined"
+            shape="rounded"
+            onChange={(_, value) => {
+              table.setPageIndex(value - 1);
+            }}
+          />
+        </div>
       </div>
     </div>
   );

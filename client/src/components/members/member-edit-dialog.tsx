@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Modal } from "@mui/material";
 import { editMember } from "@/lib/api/member";
 import { FaXmark } from "react-icons/fa6";
@@ -11,27 +11,24 @@ export default function MemberEditDialog({
 }: {
   member: MemberTableData;
 }) {
-  const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
 
   const memberNewMutation = useMutation({
-    mutationFn: () => editMember({ slug: member?.slug || "", new: false }),
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["members"] });
-    },
+    mutationFn: () => editMember({ slug: member.slug || "", new: false }),
   });
 
   return (
-    <>
+    <div className="p-2! border-t border-gray-300">
       <button
         type="button"
         className={
-          "w-full h-full flex gap-4 justify-between items-center px-2! py-1! hover:bg-secondary-bg/70 transition-all cursor-pointer"
+          "w-full h-full flex text-center justify-center rounded-sm items-center px-1! py-1! hover:bg-[#f5f5f5] transition-all cursor-pointer"
         }
         onClick={(e) => {
           e.stopPropagation();
           setIsOpen(true);
           if (member?.new) {
+            console.log("Marking member as old - ", member.slug);
             memberNewMutation.mutate();
           }
         }}
@@ -69,6 +66,6 @@ export default function MemberEditDialog({
           </div>
         </div>
       </Modal>
-    </>
+    </div>
   );
 }

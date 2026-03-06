@@ -3,6 +3,7 @@ import type { Column } from "@tanstack/react-table";
 import { useState, type ReactNode } from "react";
 import {
   LuCheck,
+  LuChevronDown,
   LuChevronsUpDown,
   LuChevronUp,
   LuEyeOff,
@@ -41,7 +42,7 @@ export default function TableColumnHeader<TData, TValue>({
   return (
     <div>
       <button
-        className="flex gap-1.5 items-center px-3! py-1.5! hover:bg-secondary-bg/70 transition-all cursor-pointer"
+        className="flex gap-1.5 items-center px-3! py-1.5! hover:bg-[#f5f5f5] rounded-sm transition-all cursor-pointer"
         aria-describedby={id}
         id={id}
         onClick={() => setOpen(!open)}
@@ -50,7 +51,7 @@ export default function TableColumnHeader<TData, TValue>({
         {label}
         {column.getCanSort() &&
           (column.getIsSorted() === "desc" ? (
-            <LuChevronsUpDown />
+            <LuChevronDown />
           ) : column.getIsSorted() === "asc" ? (
             <LuChevronUp />
           ) : (
@@ -70,44 +71,52 @@ export default function TableColumnHeader<TData, TValue>({
           vertical: "top",
           horizontal: "left",
         }}
+        PaperProps={{
+          style: {
+            boxShadow: "rgba(149, 157, 165, 0.1) 0px 8px 24px",
+            marginTop: "4px",
+          },
+        }}
       >
-        <div className="w-full h-full p-1! bg-secondary-bg/70 backdrop-blur-2xl rounded-md border border-gray-300">
-          {column.getCanSort() && (
-            <>
-              <HeaderPopoverItem
-                checked={column.getIsSorted() === "asc"}
-                onClick={() => handleToggleSorting("asc")}
-              >
-                <LuChevronUp />
-                Asc
-              </HeaderPopoverItem>
-              <HeaderPopoverItem
-                checked={column.getIsSorted() === "desc"}
-                onClick={() => handleToggleSorting("desc")}
-              >
-                <LuChevronUp className="rotate-180" />
-                Desc
-              </HeaderPopoverItem>
-              {column.getIsSorted() && (
+        <div className="w-full h-full flex flex-col bg-primary-bg rounded-md border border-gray-300">
+          <div className="max-h-65 scroll-py-1 overflow-y-auto overflow-x-hidden flex flex-col p-1!">
+            {column.getCanSort() && (
+              <>
                 <HeaderPopoverItem
-                  checked={false}
-                  onClick={() => handleToggleSorting("clear")}
+                  checked={column.getIsSorted() === "asc"}
+                  onClick={() => handleToggleSorting("asc")}
                 >
-                  <LuX />
-                  Reset
+                  <LuChevronUp />
+                  Asc
                 </HeaderPopoverItem>
-              )}
-            </>
-          )}
-          {column.getCanHide() && (
-            <HeaderPopoverItem
-              checked={!column.getIsVisible()}
-              onClick={() => column.toggleVisibility()}
-            >
-              <LuEyeOff />
-              Hide
-            </HeaderPopoverItem>
-          )}
+                <HeaderPopoverItem
+                  checked={column.getIsSorted() === "desc"}
+                  onClick={() => handleToggleSorting("desc")}
+                >
+                  <LuChevronUp className="rotate-180" />
+                  Desc
+                </HeaderPopoverItem>
+                {column.getIsSorted() && (
+                  <HeaderPopoverItem
+                    checked={false}
+                    onClick={() => handleToggleSorting("clear")}
+                  >
+                    <LuX />
+                    Reset
+                  </HeaderPopoverItem>
+                )}
+              </>
+            )}
+            {column.getCanHide() && (
+              <HeaderPopoverItem
+                checked={!column.getIsVisible()}
+                onClick={() => column.toggleVisibility()}
+              >
+                <LuEyeOff />
+                Hide
+              </HeaderPopoverItem>
+            )}
+          </div>
         </div>
       </Popover>
     </div>
@@ -125,7 +134,7 @@ function HeaderPopoverItem({
 }) {
   return (
     <button
-      className="w-full h-full flex gap-4 justify-between rounded-sm items-center px-2! py-1! hover:bg-secondary-bg/70 transition-all cursor-pointer"
+      className="w-full h-full flex gap-7 justify-between rounded-sm items-center px-1.5! py-1! hover:bg-[#f5f5f5] transition-all cursor-pointer"
       type="button"
       onClick={onClick}
     >

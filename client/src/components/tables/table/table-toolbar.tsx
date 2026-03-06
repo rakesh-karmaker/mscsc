@@ -1,10 +1,10 @@
 import { cn } from "@/utils/cn";
 import type { Column, Table } from "@tanstack/react-table";
 import { useCallback, type ReactNode } from "react";
-import TableViewOptions from "./table/table-view-options";
+import TableViewOptions from "./table-view-options";
 import { LuSearch, LuX } from "react-icons/lu";
 import { InputAdornment, TextField } from "@mui/material";
-import TableMultiSelect from "./table/table-multi-select";
+import TableMultiSelect from "./table-multi-select";
 
 interface TableToolbarProps<TData> extends React.ComponentProps<"div"> {
   table: Table<TData>;
@@ -30,7 +30,7 @@ export default function TableToolbar<TData>({
       role="toolbar"
       aria-orientation="horizontal"
       className={cn(
-        "flex w-full items-start justify-between gap-2 p-1!",
+        "flex w-full items-start max-xs:items-end justify-between gap-2 p-1! flex-wrap-reverse max-xs:flex-col-reverse",
         className,
       )}
       {...rest}
@@ -42,7 +42,7 @@ export default function TableToolbar<TData>({
         {isFiltered && (
           <button
             aria-label="Reset filters"
-            className="border-dashed"
+            className="flex gap-1.5 items-center px-3! py-1! h-10 rounded-sm border border-dashed border-black/20 hover:bg-lightest-black/20! transition-colors cursor-pointer"
             onClick={onReset}
           >
             <LuX />
@@ -79,10 +79,9 @@ function DataTableToolbarFilter<TData>({
               placeholder={columnMeta.placeholder ?? `Search...`}
               value={(column.getFilterValue() as string) ?? ""}
               onChange={(e) => column.setFilterValue(e.target.value)}
-              // className="border rounded px-2! py-1!"
               size="small"
               sx={{
-                minWidth: "20rem",
+                minWidth: window.innerWidth < 640 ? "100%" : "200px",
               }}
               slotProps={{
                 input: {
@@ -97,7 +96,7 @@ function DataTableToolbarFilter<TData>({
           );
         case "number":
           return (
-            <div className="relative">
+            <div className="relative max-sm:w-full">
               <TextField
                 inputMode="numeric"
                 placeholder={columnMeta.placeholder ?? columnMeta.label}
@@ -111,7 +110,8 @@ function DataTableToolbarFilter<TData>({
                 }}
                 size="small"
                 sx={{
-                  maxWidth: "9rem",
+                  maxWidth: window.innerWidth < 640 ? "100%" : "9rem",
+                  minWidth: window.innerWidth < 640 ? "100%" : "9rem",
                 }}
                 slotProps={{
                   input: {

@@ -3,7 +3,7 @@ import type { Column } from "@tanstack/react-table";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { LuPlus, LuX } from "react-icons/lu";
 import FilterBadge from "./filter-badge";
-import { Checkbox, Popover } from "@mui/material";
+import { Checkbox, Popover, Tooltip } from "@mui/material";
 import ColumnInput, { EmptyResults, ColumnLists } from "./column-input";
 
 interface TableMultiSelectProps<TData, TValue> {
@@ -79,18 +79,24 @@ export default function TableMultiSelect<TData, TValue>({
       <button
         type="button"
         id={id}
-        className="flex gap-1.5 items-center px-3! py-1.5! hover:bg-secondary-bg/70 transition-all cursor-pointer"
+        className="flex gap-1.5 items-center px-3! py-1! h-10 rounded-sm border border-dashed border-black/20 hover:bg-lightest-black/20! transition-colors cursor-pointer"
         aria-describedby={id}
         onClick={() => setOpen(!open)}
       >
         {selectedValues?.size > 0 ? (
-          <div
-            aria-label={`Clear ${title} filter`}
-            onClick={onReset}
-            className="rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          <Tooltip
+            title={"Clear " + title + " filter"}
+            placement="bottom"
+            arrow
           >
-            <LuX />
-          </div>
+            <div
+              aria-label={`Clear ${title} filter`}
+              onClick={onReset}
+              className="rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            >
+              <LuX />
+            </div>
+          </Tooltip>
         ) : (
           <LuPlus />
         )}
@@ -100,9 +106,9 @@ export default function TableMultiSelect<TData, TValue>({
             <FilterBadge className="lg:hidden">
               {selectedValues.size}
             </FilterBadge>
-            <div className="hidden items-center gap-1 lg:flex">
+            <div className="hidden items-center gap-1.5 lg:flex">
               {selectedValues.size > 2 ? (
-                <FilterBadge className="rounded-sm px-1 font-normal">
+                <FilterBadge className="px-1.5! py-1! h-full font-normal text-xs rounded-sx border border-black/20">
                   {selectedValues.size} selected
                 </FilterBadge>
               ) : (
@@ -111,7 +117,7 @@ export default function TableMultiSelect<TData, TValue>({
                   .map((option) => (
                     <FilterBadge
                       key={option.value}
-                      className="rounded-sm px-1 font-normal"
+                      className="px-1.5! py-1! h-full font-normal text-xs rounded-sx border border-black/20"
                     >
                       {option.label}
                     </FilterBadge>
@@ -134,12 +140,19 @@ export default function TableMultiSelect<TData, TValue>({
           vertical: "top",
           horizontal: "left",
         }}
+        PaperProps={{
+          style: {
+            boxShadow: "rgba(149, 157, 165, 0.1) 0px 8px 24px",
+            marginTop: "4px",
+          },
+        }}
       >
-        <div className="w-full h-full flex flex-col bg-secondary-bg/70 backdrop-blur-2xl rounded-md border border-gray-300">
+        <div className="w-full h-full flex flex-col bg-primary-bg rounded-md border border-gray-300">
           <ColumnInput
             placeholder={`Search ${title}...`}
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
+            className="max-w-45"
           />
           <ColumnLists>
             {filteredOptions.length > 0 ? (
@@ -164,7 +177,7 @@ export default function TableMultiSelect<TData, TValue>({
           {selectedValues.size > 0 && (
             <div className="p-2! border-t border-gray-300">
               <button
-                className="text-sm text-blue-500 hover:text-blue-700 text-center w-full"
+                className="w-full h-full flex text-center justify-center rounded-sm items-center px-1! py-1! hover:bg-[#f5f5f5] transition-all cursor-pointer"
                 onClick={onReset}
               >
                 Clear filters
@@ -188,11 +201,11 @@ function OptionItem({
 }): ReactNode {
   return (
     <button
-      className="w-full h-full flex gap-4 justify-between rounded-sm items-center px-2! py-1! hover:bg-secondary-bg/70 transition-all cursor-pointer"
+      className="w-full h-full flex justify-between rounded-sm items-center px-1! py-0.5! hover:bg-[#f5f5f5] transition-all cursor-pointer"
       type="button"
       onClick={() => onSelect(option, isSelected)}
     >
-      <div className="w-full h-full flex gap-1 items-center">
+      <div className="w-full h-full flex gap-px items-center">
         <Checkbox
           checked={isSelected}
           onChange={() => onSelect(option, isSelected)}

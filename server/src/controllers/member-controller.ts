@@ -97,13 +97,12 @@ export async function getAllMembersForTable(
           : { createdAt: -1 },
       )
       .select(
-        "_id name slug batch branch image role position new isImageVerified isImageHidden createdAt",
+        "_id name slug email batch branch image role position contactNumber socialLink new isImageVerified isImageHidden createdAt",
       );
 
     const selectedMembersCount = members.length;
     const paginatedMembers = members.slice(skip, skip + perPage);
 
-    console.log("Received params for getAllMembersForTable - ", params);
     res
       .status(200)
       .send({ results: paginatedMembers, selectedCount: selectedMembersCount });
@@ -258,9 +257,9 @@ export async function editMember(req: Request, res: Response): Promise<void> {
     }
 
     // Trim certain fields
-    updates.batch = parseInt(updates.batch?.trim());
-    updates.name = updates.name?.trim();
-    updates.branch = updates.branch?.trim();
+    updates.batch = parseInt(updates.batch?.trim() || "") || previousUser.batch;
+    updates.name = updates.name?.trim() || previousUser.name;
+    updates.branch = updates.branch?.trim() || previousUser.branch;
 
     const user = await Member.findOneAndUpdate({ slug }, updates, {
       isImageVerified: false, // Reset image verification on edit

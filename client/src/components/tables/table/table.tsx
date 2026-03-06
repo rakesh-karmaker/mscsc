@@ -41,7 +41,7 @@ export function Table<TData>({
         </div>
       ) : (
         <>
-          <div className="overflow-hidden rounded-md border">
+          <div className="overflow-hidden rounded-md border border-black/20">
             <TableWrapper>
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (

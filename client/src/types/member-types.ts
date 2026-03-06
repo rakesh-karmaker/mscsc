@@ -25,7 +25,7 @@ export type MemberEditTypes = {
 
 export type MemberTableData = Omit<
   User,
-  "contactNumber" | "reason" | "timeline" | "submissions"
+  "reason" | "timeline" | "submissions"
 > & { new: boolean };
 
 export type MembersSearchParams = {

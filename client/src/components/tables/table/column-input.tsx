@@ -7,11 +7,11 @@ export default function ColumnInput({
   ...props
 }: React.ComponentProps<"input">): ReactNode {
   return (
-    <div className="flex h-9 items-center gap-2 border-b px-3!">
+    <div className="flex w-fit h-10 items-center gap-2 border-b border-black/20 px-3!">
       <LuSearch className="size-4 shrink-0 opacity-50" />
       <input
         className={cn(
-          "flex h-10 w-full rounded-md bg-transparent py-3! text-sm outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+          "flex h-15 rounded-md bg-transparent py-3! text-sm outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
           className,
         )}
         {...props}

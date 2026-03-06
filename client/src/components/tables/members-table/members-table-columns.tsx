@@ -1,11 +1,11 @@
 import type { MemberTableData } from "@/types/member-types";
 import type { ColumnDef } from "@tanstack/react-table";
-import TableColumnHeader from "../table-column-header";
+import TableColumnHeader from "../table/table-column-header";
 import capitalize from "@/utils/capitalize";
 import { useState } from "react";
 import { Popover } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
-import { LuEllipsisVertical } from "react-icons/lu";
+import { LuEllipsisVertical, LuFacebook, LuGlobe } from "react-icons/lu";
 import MemberEditDialog from "@/components/members/member-edit-dialog";
 
 export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
@@ -21,10 +21,12 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
           <img
             src={row.original.image}
             alt={row.original.name}
-            className="w-8 h-8 rounded-full object-cover"
+            className="w-11 h-11 rounded-full object-cover"
           />
           <div className="flex flex-col">
-            <p className="text-sm font-medium">{row.getValue("name")}</p>
+            <p className="font-medium truncate max-sm:text-sm">
+              {row.original.name}
+            </p>
             <p className="text-xs text-gray-500">{row.original.email}</p>
           </div>
         </div>
@@ -37,6 +39,17 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       enableColumnFilter: true,
     },
     {
+      id: "contactNumber",
+      accessorKey: "contactNumber",
+      header: ({ column }) => (
+        <TableColumnHeader column={column} label="Contact Number" />
+      ),
+      meta: {
+        label: "Contact Number",
+      },
+      enableColumnFilter: false,
+    },
+    {
       id: "batch",
       accessorKey: "batch",
       header: ({ column }) => (
@@ -44,7 +57,7 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       ),
       meta: {
         label: "Batch",
-        placeholder: "Batches...",
+        placeholder: "Batch...",
         variant: "number",
       },
       enableColumnFilter: true,
@@ -75,9 +88,9 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
         <TableColumnHeader column={column} label="Position" />
       ),
       cell: ({ row }) => (
-        <>
+        <div className="flex gap-1">
           <span
-            className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+            className={`px-2! py-1! rounded-xs text-xs font-medium ${
               row.original.position === "admin"
                 ? "bg-red-100 text-red-800"
                 : "bg-green-100 text-green-800"
@@ -86,11 +99,11 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
             {capitalize(row.original.position)}{" "}
           </span>
           {row.original.role !== "member" && (
-            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+            <span className="px-2! py-1! rounded-xs text-xs font-medium bg-blue-100 text-blue-800">
               {capitalize(row.original.role)}
             </span>
           )}
-        </>
+        </div>
       ),
       meta: {
         label: "Position",
@@ -120,6 +133,9 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
           </span>
         );
       },
+      meta: {
+        label: "Created At",
+      },
       enableColumnFilter: true,
     },
     {
@@ -131,12 +147,13 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
         return (
           <div>
             <button
+              id={id}
               className={
-                "flex gap-1.5 items-center px-3! py-1.5! hover:bg-secondary-bg/70 transition-all cursor-pointer" +
-                row.original.new
-                  ? " bg-green"
-                  : ""
+                "flex gap-1.5 shadow-xs items-center w-8 h-8 rounded-sm justify-center hover:bg-[#f5f5f5]! transition-all cursor-pointer border border-black/10"
               }
+              style={{
+                background: row.original.new === true ? "#dcfce7" : "white",
+              }}
               aria-describedby={id}
               onClick={() => setOpen(!open)}
             >
@@ -149,29 +166,37 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
               onClose={() => setOpen(false)}
               anchorOrigin={{
                 vertical: "bottom",
-                horizontal: "left",
+                horizontal: "right",
               }}
               transformOrigin={{
                 vertical: "top",
-                horizontal: "left",
+                horizontal: "right",
+              }}
+              PaperProps={{
+                style: {
+                  boxShadow: "rgba(149, 157, 165, 0.1) 0px 8px 24px",
+                  marginTop: "4px",
+                },
               }}
             >
-              <div className="w-full h-full bg-secondary-bg/70 backdrop-blur-2xl border rounded-sm border-gray-300">
-                <div className="flex flex-col p-1! border-b border-gray-300">
+              <div className="w-full h-full flex flex-col bg-primary-bg rounded-md border border-gray-300">
+                <div className="max-h-65 scroll-py-1 overflow-y-auto overflow-x-hidden flex flex-col p-1!">
                   <NavLink
                     to={`/member/${row.original.slug}`}
-                    className="px-2! py-1! hover:bg-secondary-bg/70 transition-all rounded-sm"
+                    className="w-full h-full flex gap-2 justify-between rounded-sm items-center px-2.5! py-1.5! hover:bg-[#f5f5f5] transition-all cursor-pointer"
                     onClick={() => setOpen(false)}
                   >
-                    View Profile
+                    <LuGlobe className="opacity-70" />
+                    <p>View Profile</p>
                   </NavLink>
 
                   <Link
                     to={row.original.socialLink || "#"}
-                    className="px-2! py-1! hover:bg-secondary-bg/70 transition-all rounded-sm"
+                    className="w-full h-full flex gap-2 rounded-sm items-center px-2.5! py-1.5! hover:bg-[#f5f5f5] transition-all cursor-pointer"
                     onClick={() => setOpen(false)}
                   >
-                    Facebook
+                    <LuFacebook className="opacity-70" />
+                    <p>Facebook</p>
                   </Link>
                 </div>
                 <MemberEditDialog member={row.original} />
