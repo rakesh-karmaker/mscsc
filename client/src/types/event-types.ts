@@ -100,6 +100,7 @@ export type EventFormDataType = {
   // for file uploads
   eventLogo: File;
   eventFavicon: File;
+  eventBanner: File;
   bkashQrCode?: File;
   nagadQrCode?: File;
   rocketQrCode?: File;

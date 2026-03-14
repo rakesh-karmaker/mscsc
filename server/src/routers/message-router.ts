@@ -10,13 +10,13 @@ import {
 const messageRouter = express.Router();
 
 // Message Routes
-messageRouter.get("/get-message", isAuthorized, isAdmin, getAllMessages);
+messageRouter.get("/messages", isAuthorized, isAdmin, getAllMessages);
 messageRouter.post("/send-message", sendMessage);
 messageRouter.patch(
   "/mark-message-as-read",
   isAuthorized,
   isAdmin,
-  markMessageAsRead
+  markMessageAsRead,
 );
 messageRouter.delete("/delete-message", isAuthorized, isAdmin, deleteMessage);
 

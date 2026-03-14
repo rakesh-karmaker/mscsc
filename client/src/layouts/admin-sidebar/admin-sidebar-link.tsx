@@ -13,7 +13,6 @@ export default function AdminSidebarLink({
   isSidebarOpen,
   setIsSidebarOpen,
 }: AdminSidebarLinkProps): ReactNode {
-  console.log(data);
   return (
     <li>
       <NavLink

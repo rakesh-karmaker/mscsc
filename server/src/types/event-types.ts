@@ -11,6 +11,9 @@ export type EventSchemaType = {
   eventFaviconUrl: string;
   eventFaviconPublicId: string;
 
+  eventBannerUrl: string;
+  eventBannerPublicId: string;
+
   eventDescription: string;
   eventLocation: string;
   eventDate: string;

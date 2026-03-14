@@ -17,7 +17,7 @@ export default function AdminDashboardHeader({
         <p className="text-[#000000c9]">{children}</p>
       </div>
       {window.innerWidth > 1530 && (
-        <NavLink to="/" className="primary-button">
+        <NavLink to="/" className="primary-button px-5! py-1.5! text-[1.1rem]!">
           Home Page
         </NavLink>
       )}

@@ -14,6 +14,7 @@ interface Config {
   serverUrl: string;
   serverIp: string;
   clientUrl: string;
+  event_website_url: string;
 
   // ImageKit
   imagekitPublicKey: string;
@@ -35,6 +36,7 @@ const config: Config = {
   serverUrl: process.env.SERVER_URL || "",
   serverIp: process.env.SERVER_IP || "",
   clientUrl: process.env.CLIENT_URL || "",
+  event_website_url: process.env.EVENT_WEBSITE_URL || "",
 
   mongoUrl: process.env.MONGO_URL || "",
 

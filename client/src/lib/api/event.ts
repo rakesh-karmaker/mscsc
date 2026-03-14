@@ -15,6 +15,7 @@ export async function addEvent(data: EventFormDataType) {
     if (
       key === "eventLogo" ||
       key === "eventFavicon" ||
+      key === "eventBanner" ||
       key === "bkashQrCode" ||
       key === "nagadQrCode" ||
       key === "rocketQrCode" ||
@@ -44,6 +45,6 @@ export async function addEvent(data: EventFormDataType) {
   });
 }
 
-async function deleteEvent(eventSlug: string) {
+export async function deleteEvent(eventSlug: string) {
   return api.delete(`/event/delete/${eventSlug}`);
 }

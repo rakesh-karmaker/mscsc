@@ -19,6 +19,10 @@ const fileFields: { name: string; maxCount: number }[] = [
     maxCount: 1,
   },
   {
+    name: "eventBanner",
+    maxCount: 1,
+  },
+  {
     name: "bkashQrCode",
     maxCount: 1,
   },

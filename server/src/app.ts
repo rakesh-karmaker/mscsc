@@ -15,7 +15,7 @@ const app = express();
 
 // Configure CORS to allow only requests from the specified origin
 const corsOptions = {
-  origin: config.clientUrl || config.serverUrl,
+  origin: [config.clientUrl, config.serverUrl, config.event_website_url], //TODO: FIX this
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,

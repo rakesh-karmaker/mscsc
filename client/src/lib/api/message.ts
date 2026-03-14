@@ -3,7 +3,7 @@ import type { ContactSchemaType } from "../validation/contact-schema";
 import type { MessagesSearchParams } from "@/types/message-types";
 
 export async function getMessages(params?: MessagesSearchParams) {
-  return api.get(`/message/get-message`, {
+  return api.get(`/message/messages`, {
     params,
   });
 }

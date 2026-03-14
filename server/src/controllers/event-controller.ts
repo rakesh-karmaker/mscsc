@@ -23,7 +23,7 @@ import EventCA from "../models/EventCA.js";
 export async function getAllEvents(_: Request, res: Response): Promise<void> {
   try {
     const events = await Event.find().select(
-      "eventName eventSlug eventLogoUrl eventDescription eventLocation eventDate participantCount segmentCount isUpcoming",
+      "eventName eventSlug eventLogoUrl eventBannerUrl eventDescription eventLocation eventDate participantCount segmentCount isUpcoming",
     );
     res.status(200).send(events);
   } catch (err) {
@@ -42,6 +42,7 @@ export async function getEventBySlug(
 ): Promise<void> {
   try {
     const { eventSlug } = req.params;
+    const shorten = req.headers.shorten === "true";
 
     // if requestDetails includes includeRegistrations flag, fetch event + registrations + CAs in ONE DB call
     if (req.user && req.requestDetails?.includeRegistrations) {
@@ -103,7 +104,9 @@ export async function getEventBySlug(
     }
 
     // simple/fast path (no registrations requested)
-    const event = await Event.findOne({ eventSlug: eventSlug }).lean();
+    const event = await Event.findOne({ eventSlug: eventSlug })
+      .select(shorten ? "dataUrl" : "-__v")
+      .lean();
     if (!event) {
       res.status(404).send({ subject: "slug", message: "Event not found" });
       return;
