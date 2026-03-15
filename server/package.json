@@ -25,6 +25,7 @@
     "typescript": "5.8.3"
   },
   "dependencies": {
+    "@getbrevo/brevo": "^5.0.1",
     "@types/axios": "^0.14.4",
     "axios": "^1.12.2",
     "bcryptjs": "^3.0.2",

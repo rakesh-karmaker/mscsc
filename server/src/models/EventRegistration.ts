@@ -10,7 +10,7 @@ const EventRegistrationSchema =
         required: true,
       },
       name: { type: String, required: true },
-      email: { type: String, required: true },
+      email: { type: String, required: true, unique: true },
       phoneNumber: { type: String, required: true },
       facebookUrl: { type: String, required: true },
       photoUrl: { type: String, required: true },

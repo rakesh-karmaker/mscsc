@@ -14,6 +14,9 @@ export type EventSchemaType = {
   eventBannerUrl: string;
   eventBannerPublicId: string;
 
+  hideRegistrationForm: boolean;
+  hideCAForm: boolean;
+
   eventDescription: string;
   eventLocation: string;
   eventDate: string;
@@ -83,6 +86,7 @@ export type EventCASchemaType = {
 
   isValidated: boolean;
   caCode: string;
+  score: number;
 
   createdAt: string;
   updatedAt: string;

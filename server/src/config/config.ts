@@ -26,6 +26,8 @@ interface Config {
 
   // Mail Service
   mailServerUrl: string;
+  brevoApiKey: string;
+  email: string;
 }
 
 const config: Config = {
@@ -47,6 +49,8 @@ const config: Config = {
   jwtSecret: process.env.JWT_SECRET || "",
 
   mailServerUrl: process.env.MAIL_SERVER_URL || "",
+  brevoApiKey: process.env.BREVO_API_KEY || "",
+  email: process.env.EMAIL || "",
 };
 
 export default config;

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 import { eventFormSchema } from "../lib/validation/event-form-schema.js";
 import {
   AboutDataType,
@@ -105,7 +105,7 @@ export async function getEventBySlug(
 
     // simple/fast path (no registrations requested)
     const event = await Event.findOne({ eventSlug: eventSlug })
-      .select(shorten ? "dataUrl" : "-__v")
+      .select(shorten ? "dataUrl hideRegistrationForm hideCAForm" : "-__v")
       .lean();
     if (!event) {
       res.status(404).send({ subject: "slug", message: "Event not found" });
@@ -240,6 +240,8 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
       });
       formData.transactionMethods = transactionMethods;
     }
+
+    eventData.formData = formData;
 
     // handle section-specific data and file uploads
     const sections: string[] = eventData.sections;

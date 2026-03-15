@@ -26,10 +26,11 @@ const EventCASchema = new mongoose.Schema<EventCASchemaType>(
 
     isValidated: { type: Boolean, required: true, default: false },
     caCode: { type: String, required: true, unique: true, default: null },
+    score: { type: Number, required: true, default: 0 },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export default mongoose.model("EventCA", EventCASchema);
