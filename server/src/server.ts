@@ -1,5 +1,5 @@
 import app from "./app.js";
-import config from "./config/config.js";
+import config from "./shared/config/config.js";
 import mongoose from "mongoose";
 import https from "https";
 import dns from "node:dns/promises";

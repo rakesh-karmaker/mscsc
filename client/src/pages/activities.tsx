@@ -1,4 +1,4 @@
->import { useEffect, type Dispatch, type SetStateAction } from "react";
+import { useEffect, type Dispatch, type SetStateAction } from "react";
 import { useActivities } from "@/contexts/activities-context";
 import { useLocation } from "react-router-dom";
 import Loader from "@/components/ui/loader/loader";
@@ -117,5 +117,5 @@ const observeExecutiveMember = new IntersectionObserver(
   },
   {
     threshold: 0,
-  }
+  },
 );

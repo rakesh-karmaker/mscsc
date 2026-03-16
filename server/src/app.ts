@@ -1,15 +1,16 @@
 import express from "express";
-import { errorHandler } from "./middlewares/error-handler.js";
+import { errorHandler } from "./shared/middlewares/error-handler.js";
 import cors from "cors";
-import config from "./config/config.js";
-import authRouter from "./routers/auth-router.js";
-import forgotPasswordRouter from "./routers/forgot-password-router.js";
-import taskRouter from "./routers/task-router.js";
-import memberRouter from "./routers/member-router.js";
-import activityRouter from "./routers/activity-router.js";
-import messageRouter from "./routers/message-router.js";
-import dashboardRouter from "./routers/dashboard-router.js";
-import eventRouter from "./routers/event-router.js";
+import config from "./shared/config/config.js";
+import authRouter from "./modules/auth/auth.router.js";
+import forgotPasswordRouter from "./modules/forgot-password/forgot-password.router.js";
+import memberRouter from "./modules/members/members.router.js";
+import activityRouter from "./modules/activities/activities.router.js";
+import messageRouter from "./modules/messages/messages.router.js";
+import taskRouter from "./modules/tasks/tasks.router.js";
+import dashboardRouter from "./modules/admin/dashboard.router.js";
+import eventRouter from "./modules/events/routers/events.router.js";
+import eventRegistrationRouter from "./modules/events/routers/event-registrations.router.js";
 
 const app = express();
 
@@ -38,5 +39,6 @@ app.use("/api/task", taskRouter);
 
 app.use("/api/admin", dashboardRouter);
 app.use("/api/event", eventRouter);
+app.use("/api/event-registrations", eventRegistrationRouter);
 
 export default app;
