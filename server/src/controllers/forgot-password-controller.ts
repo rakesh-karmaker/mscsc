@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import Member from "../models/Member.js";
 import generateOTP from "../utils/generate-otp.js";
-import sendEmail from "../lib/send-email.js";
 import { compareHash, generateHash } from "../utils/hash.js";
 import ForgotPasswordOTP from "../models/ForgotPasswordOTP.js";
 import generateId from "../utils/generate-id.js";
+import { sendEmail } from "../lib/mail-sender.js";
+import { forgotPasswordOtpDraft } from "../utils/otp-draft.js";
 
 // Send OTP to the user's email
 export async function sendOTP(req: Request, res: Response): Promise<void> {
@@ -29,7 +30,11 @@ export async function sendOTP(req: Request, res: Response): Promise<void> {
     const generatedOTP = generateOTP();
 
     //send email
-    await sendEmail(email, generatedOTP);
+    await sendEmail(
+      email,
+      "Your OTP for password reset",
+      forgotPasswordOtpDraft(generatedOTP),
+    );
 
     //save otp to db
     const hashedOTP = await generateHash(generatedOTP);

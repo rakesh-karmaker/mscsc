@@ -1,13 +1,10 @@
 import config from "../config/config.js";
-import {
-  eventConfirmationDraft,
-  EventConfirmationDraftProps,
-} from "../utils/otp-draft.js";
 import { BrevoClient } from "@getbrevo/brevo";
 
 export async function sendEmail(
   email: string,
-  data: EventConfirmationDraftProps,
+  subject: string,
+  content: string,
 ) {
   try {
     // Initialize Brevo client
@@ -16,8 +13,8 @@ export async function sendEmail(
     });
 
     const result = await brevo.transactionalEmails.sendTransacEmail({
-      subject: `You are all set for the ${data.eventName}, ${data.name}!`,
-      htmlContent: eventConfirmationDraft(data),
+      subject: subject,
+      htmlContent: content,
       sender: { name: "MSCSC", email: config.email },
       to: [{ email: email }],
     });
