@@ -3,7 +3,7 @@ import Task from "../task.model.js";
 import Member from "../../../shared/models/member.model.js";
 import { deleteFile, uploadImage } from "../../../shared/lib/file-uploader.js";
 import { SubmissionType, SubmissionUpdateType } from "../task.types.js";
-import getPosition from "../../../shared/utils/get-position.js";
+import getPosition from "../utils/get-position.js";
 
 // submit a task
 export async function submitTask(req: Request, res: Response): Promise<void> {

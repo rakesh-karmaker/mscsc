@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import Member from "../../shared/models/member.model.js";
-import generateOTP from "../../shared/utils/generate-otp.js";
+import generateOTP from "./utils/generate-otp.js";
 import { compareHash, generateHash } from "../../shared/utils/hash.js";
 import ForgotPasswordOTP from "./forgot-password.model.js";
-import generateId from "../../shared/utils/generate-id.js";
+import generateId from "./utils/generate-id.js";
 import { sendEmail } from "../../shared/lib/mail-sender.js";
 import { forgotPasswordOtpDraft } from "../../shared/utils/otp-draft.js";
 
