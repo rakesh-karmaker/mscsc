@@ -3,8 +3,10 @@ import Event from "../models/event.model.js";
 import EventRegistration from "../models/event-registration.model.js";
 import EventCA from "../models/event-ca.model.js";
 import { eventRegistrationSchema } from "../schemas/event-registration.schema.js";
-import { uploadImage } from "../../../shared/lib/file-uploader.js";
+import { deleteFile, uploadImage } from "../../../shared/lib/file-uploader.js";
 import { generateCode } from "../../../shared/utils/generate-code.js";
+import { sendEmail } from "../../../shared/lib/mail-sender.js";
+import { eventConfirmationDraft } from "../../../shared/utils/otp-draft.js";
 
 // get all event registrations
 export async function getAllEventRegistrations(req: Request, res: Response) {
@@ -32,28 +34,23 @@ export async function getAllEventRegistrations(req: Request, res: Response) {
   }
 }
 
-// get all ca applications for an event
-export async function getAllCAApplications(req: Request, res: Response) {
+// get a specific registration by ID
+export async function getRegistrationById(req: Request, res: Response) {
   try {
-    const eventSlug = req.params.eventSlug;
-    if (!eventSlug) {
-      return res.status(400).json({ message: "Event slug is required" });
+    const registrationId = req.params.registrationId;
+    if (!registrationId) {
+      return res.status(400).json({ message: "Registration ID is required" });
     }
 
-    // find the event by slug
-    const event = await Event.findOne({ eventSlug }).lean();
-    if (!event) {
-      return res.status(404).json({ message: "Event not found" });
+    const registration =
+      await EventRegistration.findById(registrationId).lean();
+    if (!registration) {
+      return res.status(404).json({ message: "Registration not found" });
     }
 
-    // find the CA applications for the event
-    const caApplications = await EventCA.find({
-      event: event._id,
-    }).lean();
-
-    res.status(200).json({ caApplications });
+    res.status(200).json({ registration });
   } catch (error) {
-    console.error("Error fetching CA applications:", error);
+    console.error("Error fetching registration by ID:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -133,12 +130,136 @@ export async function registerForEvent(req: Request, res: Response) {
       code,
     });
 
+    event.participantCount = (event.participantCount || 0) + 1;
+    await event.save();
+
     console.log(
       `New registration for event ${event.eventName}: ${registration.name} (${registration.email})`,
     );
     res.status(201).json({ message: "Registration successful" });
   } catch (error) {
     console.error("Error registering for event:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+// validate a registration (admin action)
+export async function validateRegistration(req: Request, res: Response) {
+  try {
+    const registrationId = req.params.registrationId;
+    const eventSlug = req.params.eventSlug;
+    if (!registrationId || !eventSlug) {
+      return res
+        .status(400)
+        .json({ message: "Registration ID and event slug are required" });
+    }
+
+    const event = await Event.findOne({ eventSlug });
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    const registration = await EventRegistration.findById(registrationId);
+    if (!registration) {
+      return res.status(404).json({ message: "Registration not found" });
+    }
+
+    // send the registration mail
+    await sendEmail(
+      registration.email,
+      `Registration Confirmed for ${registration.name}`,
+      eventConfirmationDraft({
+        eventName: event.eventName,
+        name: registration.name,
+        code: registration.code,
+        logoUrl: event.eventLogoUrl,
+      }),
+    );
+
+    registration.isVerified = true;
+    await registration.save();
+
+    console.log(
+      `${req.user?._id} - Registration validated for event ${event.eventName}: ${registration.name} (${registration.email})`,
+    );
+    res.status(200).json({ message: "Registration validated and email sent" });
+  } catch (error) {
+    console.error("Error validating registration:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+// edit a registration (admin action)
+export async function editRegistration(req: Request, res: Response) {
+  try {
+    const registrationId = req.params.registrationId;
+    if (!registrationId) {
+      return res.status(400).json({ message: "Registration ID is required" });
+    }
+
+    const registration = await EventRegistration.findById(registrationId);
+    if (!registration) {
+      return res.status(404).json({ message: "Registration not found" });
+    }
+
+    const body = req.body;
+    const newRegistration = await EventRegistration.findByIdAndUpdate(
+      registrationId,
+      {
+        $set: {
+          isVerified:
+            body.isVerified !== undefined
+              ? body.isVerified
+              : registration.isVerified,
+          hasAttended:
+            body.hasAttended !== undefined
+              ? body.hasAttended
+              : registration.hasAttended,
+        },
+      },
+      { new: true },
+    ); // added { new: true } to return the updated document
+
+    res
+      .status(200)
+      .json({ message: "Registration updated", registration: newRegistration });
+  } catch (error) {
+    console.error("Error editing registration:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+// delete a registration (admin action)
+export async function deleteRegistration(req: Request, res: Response) {
+  try {
+    const registrationId = req.params.registrationId;
+    if (!registrationId) {
+      return res.status(400).json({ message: "Registration ID is required" });
+    }
+
+    const registration = await EventRegistration.findById(registrationId);
+    if (!registration) {
+      return res.status(404).json({ message: "Registration not found" });
+    }
+
+    const event = await Event.findById(registration.eventId);
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    deleteFile(registration.photoPublicId);
+
+    await registration.deleteOne();
+
+    event.participantCount = Math.max((event.participantCount || 1) - 1, 0);
+    await event.save();
+
+    console.log(
+      `${req.user?._id} - Registration deleted for event ${event.eventName}: ${registration.name} (${registration.email})`,
+    );
+    res.status(200).json({ message: "Registration deleted" });
+  } catch (error) {
+    console.error("Error deleting registration:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 }

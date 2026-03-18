@@ -84,6 +84,7 @@ export type EventCASchemaType = {
 
   description: string;
 
+  applicationDate: string;
   isValidated: boolean;
   caCode: string;
   score: number;

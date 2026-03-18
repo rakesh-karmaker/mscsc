@@ -24,6 +24,7 @@ const EventCASchema = new mongoose.Schema<EventCASchemaType>(
 
     description: { type: String, required: true },
 
+    applicationDate: { type: String, required: true },
     isValidated: { type: Boolean, required: true, default: false },
     caCode: { type: String, required: true, unique: true, default: null },
     score: { type: Number, required: true, default: 0 },
