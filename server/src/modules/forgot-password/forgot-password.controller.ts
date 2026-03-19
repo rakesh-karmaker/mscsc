@@ -5,7 +5,7 @@ import { compareHash, generateHash } from "../../shared/utils/hash.js";
 import ForgotPasswordOTP from "./forgot-password.model.js";
 import generateId from "./utils/generate-id.js";
 import { sendEmail } from "../../shared/lib/mail-sender.js";
-import { forgotPasswordOtpDraft } from "../../shared/utils/otp-draft.js";
+import { forgotPasswordOtpDraft } from "./utils/otp-draft.js";
 
 // Send OTP to the user's email
 export async function sendOTP(req: Request, res: Response): Promise<void> {

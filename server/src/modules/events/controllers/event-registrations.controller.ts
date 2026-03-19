@@ -6,7 +6,10 @@ import { eventRegistrationSchema } from "../schemas/event-registration.schema.js
 import { deleteFile, uploadImage } from "../../../shared/lib/file-uploader.js";
 import { generateCode } from "../../../shared/utils/generate-code.js";
 import { sendEmail } from "../../../shared/lib/mail-sender.js";
-import { eventConfirmationDraft } from "../../../shared/utils/otp-draft.js";
+import {
+  eventConfirmationDraft,
+  eventRejectionDraft,
+} from "../utils/registration-drafts.js";
 
 // get all event registrations
 export async function getAllEventRegistrations(req: Request, res: Response) {
@@ -100,7 +103,7 @@ export async function registerForEvent(req: Request, res: Response) {
     // update the CA score if CA code is provided and valid
     if (body.caCode) {
       const caApplication = await EventCA.findOneAndUpdate(
-        { caCode: body.caCode, event: event._id },
+        { caCode: body.caCode, event: event._id, status: "approved" },
         { $inc: { score: 1 } }, // Increment score by 1 for each valid registration
         { new: true },
       );
@@ -110,7 +113,20 @@ export async function registerForEvent(req: Request, res: Response) {
     }
 
     // generate a unique registration code and create the registration record
-    const code = generateCode(6);
+    let code = generateCode(6);
+    // Ensure the generated code is unique by checking existing registrations
+    let isUnique = false;
+    while (!isUnique) {
+      const existingRegistration = await EventRegistration.findOne({
+        $and: [{ event: event._id }, { code }],
+      });
+      if (!existingRegistration) {
+        isUnique = true;
+      } else {
+        code = generateCode(6);
+      }
+    }
+
     const registration = await EventRegistration.create({
       event: event._id,
       name: body.name,
@@ -143,15 +159,21 @@ export async function registerForEvent(req: Request, res: Response) {
   }
 }
 
-// validate a registration (admin action)
-export async function validateRegistration(req: Request, res: Response) {
+// change the status of a registration (admin action)
+export async function changeRegistrationStatus(req: Request, res: Response) {
   try {
     const registrationId = req.params.registrationId;
     const eventSlug = req.params.eventSlug;
-    if (!registrationId || !eventSlug) {
-      return res
-        .status(400)
-        .json({ message: "Registration ID and event slug are required" });
+    const body = req.body;
+    if (
+      !registrationId ||
+      !eventSlug ||
+      !body.status ||
+      !["pending", "validated", "rejected"].includes(body.status)
+    ) {
+      return res.status(400).json({
+        message: "Registration ID, event slug, and status are required",
+      });
     }
 
     const event = await Event.findOne({ eventSlug });
@@ -165,26 +187,43 @@ export async function validateRegistration(req: Request, res: Response) {
     }
 
     // send the registration mail
-    await sendEmail(
-      registration.email,
-      `Registration Confirmed for ${registration.name}`,
-      eventConfirmationDraft({
-        eventName: event.eventName,
-        name: registration.name,
-        code: registration.code,
-        logoUrl: event.eventLogoUrl,
-      }),
-    );
+    if (body.status === "validated") {
+      await sendEmail(
+        registration.email,
+        `Registration Confirmed for ${registration.name}`,
+        eventConfirmationDraft({
+          eventName: event.eventName,
+          name: registration.name,
+          code: registration.code,
+          logoUrl: event.eventLogoUrl,
+        }),
+      );
+    } else if (body.status === "rejected") {
+      await sendEmail(
+        registration.email,
+        `Registration Rejected for ${registration.name}`,
+        eventRejectionDraft({
+          eventName: event.eventName,
+          logoUrl: event.eventLogoUrl,
+          reason: registration.rejectionReason || "N/A",
+        }),
+      );
+    }
 
-    registration.isVerified = true;
+    registration.status = body.status;
+    if (body.status === "rejected") {
+      registration.rejectionReason = body.rejectionReason || "N/A";
+    }
     await registration.save();
 
     console.log(
-      `${req.user?._id} - Registration validated for event ${event.eventName}: ${registration.name} (${registration.email})`,
+      `${req.user?._id} - Registration status changed to ${registration.status} for event ${event.eventName}: ${registration.name} (${registration.email})`,
     );
-    res.status(200).json({ message: "Registration validated and email sent" });
+    res
+      .status(200)
+      .json({ message: "Registration status changed and email sent" });
   } catch (error) {
-    console.error("Error validating registration:", error);
+    console.error("Error changing registration status:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -207,10 +246,7 @@ export async function editRegistration(req: Request, res: Response) {
       registrationId,
       {
         $set: {
-          isVerified:
-            body.isVerified !== undefined
-              ? body.isVerified
-              : registration.isVerified,
+          status: body.status !== undefined ? body.status : registration.status,
           hasAttended:
             body.hasAttended !== undefined
               ? body.hasAttended

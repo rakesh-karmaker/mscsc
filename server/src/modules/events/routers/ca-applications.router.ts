@@ -6,7 +6,7 @@ import {
 import upload from "../../../shared/middlewares/multer.js";
 import {
   applyForCA,
-  approveCAApplication,
+  editCAApplicationStatus,
   deleteCAApplication,
   editCAApplication,
   getAllCAApplications,
@@ -40,10 +40,10 @@ caApplicationsRouter.post(
 
 // PATCH routes for validating and editing a ca application
 caApplicationsRouter.patch(
-  "/:eventSlug/ca-applications/:applicationId/approve",
+  "/:eventSlug/ca-applications/:applicationId/status",
   isAuthorized,
   isAdmin,
-  approveCAApplication,
+  editCAApplicationStatus,
 );
 caApplicationsRouter.patch(
   "/:eventSlug/ca-applications/:applicationId/edit",

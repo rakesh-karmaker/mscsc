@@ -5,7 +5,7 @@ import {
   getAllEventRegistrations,
   getRegistrationById,
   registerForEvent,
-  validateRegistration,
+  changeRegistrationStatus,
 } from "../controllers/event-registrations.controller.js";
 import {
   isAdmin,
@@ -38,10 +38,10 @@ eventRegistrationRouter.post(
 
 // PATCH routes for validating and editing a registration
 eventRegistrationRouter.patch(
-  "/:eventSlug/registrations/:registrationId/validate",
+  "/:eventSlug/registrations/:registrationId/status",
   isAuthorized,
   isAdmin,
-  validateRegistration,
+  changeRegistrationStatus,
 );
 eventRegistrationRouter.patch(
   "/:eventSlug/registrations/:registrationId/edit",

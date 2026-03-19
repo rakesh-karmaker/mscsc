@@ -4,7 +4,10 @@ import EventCA from "../models/event-ca.model.js";
 import { caApplicationSchema } from "../schemas/ca-application.schema.js";
 import { deleteFile, uploadImage } from "../../../shared/lib/file-uploader.js";
 import { sendEmail } from "../../../shared/lib/mail-sender.js";
-import { caApplicationConfirmationDraft } from "../../../shared/utils/otp-draft.js";
+import {
+  caApplicationConfirmationDraft,
+  caApplicationRejectionDraft,
+} from "../utils/ca-application-drafts.js";
 
 // get all ca applications for an event
 export async function getAllCAApplications(req: Request, res: Response) {
@@ -124,15 +127,23 @@ export async function applyForCA(req: Request, res: Response) {
   }
 }
 
-// approve a CA application for an event
-export async function approveCAApplication(req: Request, res: Response) {
+// edit a CA application status for an event
+export async function editCAApplicationStatus(req: Request, res: Response) {
   try {
     const eventSlug = req.params.eventSlug;
     const applicationId = req.params.applicationId;
-    if (!eventSlug || !applicationId) {
-      return res
-        .status(400)
-        .json({ message: "Event slug and application ID are required" });
+    const status = req.body.status;
+    const caCode = req.body.caCode;
+    if (
+      !eventSlug ||
+      !applicationId ||
+      !status ||
+      !["pending", "approved", "rejected"].includes(status) ||
+      (status === "approved" && !caCode)
+    ) {
+      return res.status(400).json({
+        message: "Event slug, application ID, status, and CA code are required",
+      });
     }
 
     // find the event by slug
@@ -150,28 +161,57 @@ export async function approveCAApplication(req: Request, res: Response) {
       return res.status(404).json({ message: "CA application not found" });
     }
 
-    // send the CA application approval mail
-    await sendEmail(
-      caApplication.email,
-      `CA Application Approved for ${event.eventName}`,
-      caApplicationConfirmationDraft({
-        eventName: event.eventName,
-        logoUrl: event.eventLogoUrl,
-        name: caApplication.name,
-        code: caApplication.caCode,
-      }),
-    );
+    if (status === "approved") {
+      // check if the CA code is unique for the event
+      const existingCAWithCode = await EventCA.findOne({
+        event: event._id,
+        caCode,
+        status: "approved",
+      });
+      if (existingCAWithCode) {
+        return res.status(400).json({
+          message: "CA code already exists for another approved application",
+        });
+      }
+    }
 
-    caApplication.isValidated = true;
+    // send the CA application approval mail
+    if (status === "approved") {
+      await sendEmail(
+        caApplication.email,
+        `CA Application Approved for ${event.eventName}`,
+        caApplicationConfirmationDraft({
+          eventName: event.eventName,
+          logoUrl: event.eventLogoUrl,
+          name: caApplication.name,
+          code: caApplication.caCode,
+        }),
+      );
+    } else if (status === "rejected") {
+      await sendEmail(
+        caApplication.email,
+        `CA Application Rejected for ${event.eventName}`,
+        caApplicationRejectionDraft({
+          eventName: event.eventName,
+          logoUrl: event.eventLogoUrl,
+          reason: caApplication.rejectionReason || "N/A",
+        }),
+      );
+    }
+
+    caApplication.status = status;
+    if (status === "rejected") {
+      caApplication.rejectionReason = req.body.rejectionReason || "N/A";
+    } else if (status === "approved") {
+      caApplication.caCode = caCode;
+    }
     await caApplication.save();
 
     console.log(
-      `${req.user?._id} - CA application validated for event ${event.eventName}: ${caApplication.name} (${caApplication.email})`,
+      `${req.user?._id} - CA application ${status} for event ${event.eventName}: ${caApplication.name} (${caApplication.email})`,
     );
 
-    res
-      .status(200)
-      .json({ message: "CA application validated and email sent" });
+    res.status(200).json({ message: "CA application updated and email sent" });
   } catch (error) {
     console.error("Error validating CA application:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -196,10 +236,8 @@ export async function editCAApplication(req: Request, res: Response) {
       applicationId,
       {
         $set: {
-          isValidated:
-            body.isValidated !== undefined
-              ? body.isValidated
-              : caApplication.isValidated,
+          status:
+            body.status !== undefined ? body.status : caApplication.status,
         },
       },
       { new: true },

@@ -10,7 +10,7 @@ const EventRegistrationSchema =
         required: true,
       },
       name: { type: String, required: true },
-      email: { type: String, required: true, unique: true },
+      email: { type: String, required: true },
       phoneNumber: { type: String, required: true },
       facebookUrl: { type: String, required: true },
       photoUrl: { type: String, required: true },
@@ -27,8 +27,14 @@ const EventRegistrationSchema =
       reference: { type: String, required: true },
 
       registrationDate: { type: String, required: true },
-      isVerified: { type: Boolean, required: true, default: false },
-      code: { type: String, required: true, unique: true },
+      status: {
+        type: String,
+        enum: ["pending", "validated", "rejected"],
+        required: true,
+        default: "pending",
+      },
+      rejectionReason: { type: String, default: "" },
+      code: { type: String, required: true },
       hasAttended: { type: Boolean, required: true, default: false },
     },
     {

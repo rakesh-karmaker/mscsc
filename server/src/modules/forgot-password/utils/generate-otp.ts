@@ -1,4 +1,4 @@
-import getDate from "./get-date.js";
+import getDate from "../../../shared/utils/get-date.js";
 
 export default function generateOTP(): string {
   try {

@@ -56,7 +56,8 @@ export type EventRegistrationSchemaType = {
   reference: string;
 
   registrationDate: string;
-  isVerified: boolean;
+  status: "pending" | "validated" | "rejected";
+  rejectionReason: string;
   code: string;
   hasAttended: boolean;
 
@@ -85,7 +86,8 @@ export type EventCASchemaType = {
   description: string;
 
   applicationDate: string;
-  isValidated: boolean;
+  status: "pending" | "approved" | "rejected";
+  rejectionReason: string;
   caCode: string;
   score: number;
 

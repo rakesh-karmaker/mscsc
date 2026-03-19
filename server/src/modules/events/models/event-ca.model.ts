@@ -25,8 +25,14 @@ const EventCASchema = new mongoose.Schema<EventCASchemaType>(
     description: { type: String, required: true },
 
     applicationDate: { type: String, required: true },
-    isValidated: { type: Boolean, required: true, default: false },
-    caCode: { type: String, required: true, unique: true, default: null },
+    status: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      required: true,
+      default: "pending",
+    },
+    rejectionReason: { type: String, default: "" },
+    caCode: { type: String, required: true, default: null },
     score: { type: Number, required: true, default: 0 },
   },
   {
