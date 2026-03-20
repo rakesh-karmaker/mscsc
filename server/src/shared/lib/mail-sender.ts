@@ -1,5 +1,5 @@
 import config from "../config/config.js";
-import { BrevoClient } from "@getbrevo/brevo";
+import axios from "axios";
 
 export async function sendEmail(
   email: string,
@@ -7,20 +7,21 @@ export async function sendEmail(
   content: string,
 ) {
   try {
-    // Initialize Brevo client
-    const brevo = new BrevoClient({
-      apiKey: config.brevoApiKey,
-    });
-
-    const result = await brevo.transactionalEmails.sendTransacEmail({
+    const res = await axios.post(`${config.mailServerUrl}/send-mail`, {
+      to: email,
       subject: subject,
-      htmlContent: content,
-      sender: { name: "MSCSC", email: config.email },
-      to: [{ email: email }],
+      isHtml: true,
+      body: content,
     });
 
-    console.log("Email sent to:", email, "Response:", result);
+    if (res.status === 200) {
+      console.log("Email sent successfully:", res.data);
+    } else {
+      console.log("Error sending email:", res.data);
+    }
+
+    return;
   } catch (err) {
-    console.error("Error sending email:", err);
+    console.log("Error sending email - ", new Date(), "\n---\n", err);
   }
 }

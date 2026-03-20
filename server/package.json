@@ -11,13 +11,13 @@
     "dev": "concurrently \"tsc -w\" \"nodemon dist/server.js\""
   },
   "devDependencies": {
+    "@types/axios": "^0.14.4",
     "@types/bun": "latest",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^1.4.13",
     "@types/node": "^24.0.7",
-    "@types/nodemailer": "^6.4.17",
     "eslint": "^9.30.0",
     "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
@@ -25,8 +25,6 @@
     "typescript": "5.8.3"
   },
   "dependencies": {
-    "@getbrevo/brevo": "^5.0.1",
-    "@types/axios": "^0.14.4",
     "axios": "^1.12.2",
     "bcryptjs": "^3.0.2",
     "concurrently": "^9.2.0",
@@ -39,7 +37,6 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.0",
     "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.10.0",
     "path": "^0.12.7",
     "rimraf": "^6.0.1",
     "sharp": "^0.33.5",
