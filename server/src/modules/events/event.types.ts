@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export type EventSchemaType = {
+export interface EventSchemaType extends mongoose.Document {
   _id: mongoose.Types.ObjectId;
   eventSlug: string;
   eventName: string;
@@ -31,9 +31,9 @@ export type EventSchemaType = {
 
   createdAt: string;
   updatedAt: string;
-};
+}
 
-export type EventRegistrationSchemaType = {
+export interface EventRegistrationSchemaType extends mongoose.Document {
   _id: mongoose.Types.ObjectId;
 
   eventId: mongoose.Types.ObjectId;
@@ -54,6 +54,7 @@ export type EventRegistrationSchemaType = {
   transactionId: string;
 
   reference: string;
+  clubReference: string;
 
   registrationDate: string;
   status: "pending" | "validated" | "rejected";
@@ -63,9 +64,9 @@ export type EventRegistrationSchemaType = {
 
   createdAt: string;
   updatedAt: string;
-};
+}
 
-export type EventCASchemaType = {
+export interface EventCASchemaType extends mongoose.Document {
   _id: mongoose.Types.ObjectId;
 
   eventId: mongoose.Types.ObjectId;
@@ -82,7 +83,6 @@ export type EventCASchemaType = {
   grade: string;
 
   havePreviousExperience: boolean;
-
   description: string;
 
   applicationDate: string;
@@ -93,7 +93,21 @@ export type EventCASchemaType = {
 
   createdAt: string;
   updatedAt: string;
-};
+}
+
+export interface EventTeamSchemaType extends mongoose.Document {
+  _id: mongoose.Types.ObjectId;
+
+  eventId: mongoose.Types.ObjectId;
+  segmentSlug: string;
+
+  teamName: string;
+  leaderEmail: string;
+  memberEmails: string[];
+
+  createdAt: string;
+  updatedAt: string;
+}
 
 // event data type
 

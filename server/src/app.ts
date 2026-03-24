@@ -38,6 +38,7 @@ app.use("/api/message", messageRouter);
 app.use("/api/task", taskRouter);
 
 app.use("/api/admin", dashboardRouter);
+
 app.use("/api/event", eventRouter);
 app.use("/api/event-registrations", eventRegistrationRouter);
 

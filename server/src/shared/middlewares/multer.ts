@@ -22,7 +22,7 @@ const storage = multer.memoryStorage();
 
 const upload = multer({
   storage,
-  fileFilter: (req, file, cb) => {
+  fileFilter: (_, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
     if (!allowedExtensions.includes(ext)) {
       return cb(

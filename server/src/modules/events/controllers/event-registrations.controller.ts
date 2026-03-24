@@ -60,21 +60,17 @@ export async function getRegistrationById(req: Request, res: Response) {
 
 // register a new participant for an event
 export async function registerForEvent(req: Request, res: Response) {
+  let publicId = ""; // This variable will hold the public ID of the uploaded image, so that we can delete it if any error occurs after the upload
+
   try {
     const eventSlug = req.params.eventSlug;
     if (!eventSlug) {
       return res.status(400).json({ message: "Event slug is required" });
     }
 
-    // find the event by slug
-    const event = await Event.findOne({ eventSlug });
-    if (!event) {
-      return res.status(404).json({ message: "Event not found" });
-    }
-
-    // create a new event registration
+    // validate the form data using the Zod schema
     const body = req.body;
-    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    const file = req.file;
 
     const { error: validationError } = eventRegistrationSchema.validate(body);
     if (validationError) {
@@ -85,7 +81,7 @@ export async function registerForEvent(req: Request, res: Response) {
       return;
     }
 
-    if (!files || !files.photo || files.photo.length === 0) {
+    if (!file || !file.fieldname || file.size === 0) {
       res.status(400).send({
         subject: "photo",
         message: "Photo is required",
@@ -93,22 +89,51 @@ export async function registerForEvent(req: Request, res: Response) {
       return;
     }
 
+    // find the event by slug
+    const event = await Event.findOne({ eventSlug });
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    // find any previous registration with the same email for this event
+    const existingRegistration = await EventRegistration.findOne({
+      $and: [
+        {
+          eventId: event._id,
+          email: req.body.email,
+          status: { $in: ["pending", "validated"] },
+        },
+      ],
+    });
+
+    if (existingRegistration) {
+      return res.status(400).json({
+        message: "You have already registered for this event with this email",
+      });
+    }
+
     // upload the photo and get the URL
     const { url, imgId } = await uploadImage(
-      files.photo[0],
+      file,
       true,
       `events/${eventSlug}/registrations`,
     );
 
+    if (imgId) {
+      publicId = imgId;
+    }
+
     // update the CA score if CA code is provided and valid
-    if (body.caCode) {
+    if (body.reference) {
       const caApplication = await EventCA.findOneAndUpdate(
-        { caCode: body.caCode, event: event._id, status: "approved" },
+        { caCode: body.reference, eventId: event._id, status: "approved" },
         { $inc: { score: 1 } }, // Increment score by 1 for each valid registration
         { new: true },
       );
       if (!caApplication) {
-        console.warn(`Invalid CA code provided: ${body.name} - ${body.caCode}`);
+        console.warn(
+          `Invalid CA code provided: ${body.name} - ${body.reference}`,
+        );
       }
     }
 
@@ -118,7 +143,7 @@ export async function registerForEvent(req: Request, res: Response) {
     let isUnique = false;
     while (!isUnique) {
       const existingRegistration = await EventRegistration.findOne({
-        $and: [{ event: event._id }, { code }],
+        $and: [{ eventId: event._id }, { code }],
       });
       if (!existingRegistration) {
         isUnique = true;
@@ -128,7 +153,7 @@ export async function registerForEvent(req: Request, res: Response) {
     }
 
     const registration = await EventRegistration.create({
-      event: event._id,
+      eventId: event._id,
       name: body.name,
       email: body.email,
       phoneNumber: body.phoneNumber,
@@ -137,11 +162,13 @@ export async function registerForEvent(req: Request, res: Response) {
       photoPublicId: imgId,
       institution: body.institution,
       grade: body.grade,
+      category: body.category,
       segments: body.segments,
       transactionMethod: body.transactionMethod,
       transactionPhoneNumber: body.transactionPhoneNumber,
       transactionId: body.transactionId,
-      reference: body.reference,
+      reference: body.reference?.toString().toUpperCase() || "N/A",
+      clubReference: body.clubReference?.toString().toUpperCase() || "N/A",
       registrationDate: new Date().toISOString(),
       code,
     });
@@ -154,6 +181,10 @@ export async function registerForEvent(req: Request, res: Response) {
     );
     res.status(201).json({ message: "Registration successful" });
   } catch (error) {
+    // If an error occurs after the image has been uploaded, delete the uploaded image to prevent orphaned files
+    if (publicId) {
+      deleteFile(publicId);
+    }
     console.error("Error registering for event:", error);
     res.status(500).json({ message: "Internal server error" });
   }

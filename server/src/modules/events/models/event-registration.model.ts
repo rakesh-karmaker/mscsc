@@ -24,7 +24,8 @@ const EventRegistrationSchema =
       transactionPhoneNumber: { type: String, required: true },
       transactionId: { type: String, required: true },
 
-      reference: { type: String, required: true },
+      reference: { type: String, default: "N/A" },
+      clubReference: { type: String, default: "N/A" },
 
       registrationDate: { type: String, required: true },
       status: {

@@ -7,10 +7,13 @@ export const eventRegistrationSchema = Joi.object({
   facebookUrl: Joi.string().uri().required(),
   institution: Joi.string().required(),
   grade: Joi.string().required(),
+  category: Joi.string().required(),
   segments: Joi.array().items(Joi.string()).required(),
 
   transactionMethod: Joi.string().required(),
   transactionPhoneNumber: Joi.string().required(),
   transactionId: Joi.string().required(),
-  reference: Joi.string().required(),
+  reference: Joi.string().optional(),
+  clubReference: Joi.string().optional(),
+  teams: Joi.any().optional(),
 });
