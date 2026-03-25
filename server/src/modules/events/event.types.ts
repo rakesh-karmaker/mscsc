@@ -104,6 +104,7 @@ export interface EventTeamSchemaType extends mongoose.Document {
   teamName: string;
   leaderEmail: string;
   memberEmails: string[];
+  status: "registering" | "pending" | "approved";
 
   createdAt: string;
   updatedAt: string;

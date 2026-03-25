@@ -16,6 +16,19 @@ const EventTeamSchema = new mongoose.Schema<EventTeamSchemaType>(
       required: true,
     },
     memberEmails: { type: [String] },
+
+    /*
+     * status: registering, pending, approved
+     * registering: team members are still registering
+     * pending: team registration is complete and pending review
+     * approved: team registration is approved
+     */
+    status: {
+      type: String,
+      enum: ["registering", "pending", "approved"],
+      required: true,
+      default: "registering",
+    },
   },
   {
     timestamps: true,

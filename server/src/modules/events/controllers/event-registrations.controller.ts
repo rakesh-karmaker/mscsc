@@ -10,6 +10,7 @@ import {
   eventConfirmationDraft,
   eventRejectionDraft,
 } from "../utils/registration-drafts.js";
+import EventTeam from "../models/event-team.model.js";
 
 // get all event registrations
 export async function getAllEventRegistrations(req: Request, res: Response) {
@@ -112,6 +113,87 @@ export async function registerForEvent(req: Request, res: Response) {
       });
     }
 
+    // check for team segment data if the user has selected any team segments
+    if (body.teamSegmentsData) {
+      // if team data is provided, validate it
+      for (const segmentSlug in body.teamSegmentsData) {
+        const teamData = body.teamSegmentsData[segmentSlug];
+        const isLeader = teamData.leaderEmail === body.email;
+
+        if (!teamData.teamName || !teamData.leaderEmail) {
+          return res.status(400).json({
+            message: "Invalid team data provided",
+          });
+        }
+
+        // if the user is the team leader, check if a team with the same name already exists for the same segment in the same event
+        if (isLeader) {
+          const existingTeam = await EventTeam.findOne({
+            $and: [
+              { eventId: event._id },
+              { segmentSlug: segmentSlug },
+              { teamName: teamData.teamName },
+              { leaderEmail: { $ne: teamData.leaderEmail } },
+            ],
+          });
+
+          if (existingTeam) {
+            return res.status(400).json({
+              message: `The team name "${teamData.teamName}" is already taken for the ${segmentSlug} segment. Please choose a different name.`,
+            });
+          }
+
+          // check if the members emails are in any other team for the same segment in the same event
+          if (teamData.memberEmails && teamData.memberEmails.length > 0) {
+            const conflictingTeams = await EventTeam.find({
+              $and: [
+                { eventId: event._id },
+                { segmentSlug: segmentSlug },
+                {
+                  $or: [
+                    { leaderEmail: { $in: teamData.memberEmails } },
+                    {
+                      memberEmails: {
+                        $elemMatch: { $in: teamData.memberEmails },
+                      },
+                    },
+                  ],
+                },
+              ],
+            });
+            if (conflictingTeams.length > 0) {
+              return res.status(400).json({
+                message: `One or more member emails are already associated with a team in the ${segmentSlug} segment. Please check your team information.`,
+              });
+            }
+          }
+        } else {
+          const existingTeam = await EventTeam.findOne({
+            $and: [
+              { eventId: event._id },
+              { segmentSlug: segmentSlug },
+              { teamName: teamData.teamName },
+              { leaderEmail: teamData.leaderEmail },
+            ],
+          });
+
+          if (!existingTeam) {
+            return res.status(400).json({
+              message: `No team found for the ${segmentSlug} segment with the provided leader email ${teamData.leaderEmail} and team name ${teamData.teamName}. Please check your team information.`,
+            });
+          }
+
+          // check if the user is a member of the team
+          const isMember = existingTeam.memberEmails.includes(body.email);
+          if (!isMember) {
+            return res.status(400).json({
+              message: `You are not listed as a member of the team for the ${segmentSlug} segment. Please check your team information and your email.`,
+            });
+          }
+        }
+      }
+    }
+
     // upload the photo and get the URL
     const { url, imgId } = await uploadImage(
       file,
@@ -175,6 +257,67 @@ export async function registerForEvent(req: Request, res: Response) {
 
     event.participantCount = (event.participantCount || 0) + 1;
     await event.save();
+
+    // create or update the team data if teamSegmentsData is provided
+    if (body.teamSegmentsData) {
+      // if validation passes, create or update the teams
+      for (const segmentSlug in body.teamSegmentsData) {
+        const teamData = body.teamSegmentsData[segmentSlug];
+        const isLeader = teamData.leaderEmail === body.email;
+
+        if (isLeader) {
+          let status: "registering" | "pending" | "approved" = "registering";
+
+          if (teamData.memberEmails && teamData.memberEmails.length > 0) {
+            const members = await EventRegistration.find({
+              $and: [
+                { eventId: event._id },
+                { email: { $in: teamData.memberEmails } },
+              ],
+            });
+
+            if (members.length == teamData.memberEmails.length) {
+              status = "pending"; // All members have already registered, move to pending for admin approval
+            }
+          }
+
+          await EventTeam.create({
+            eventId: event._id,
+            segmentSlug,
+            teamName: teamData.teamName,
+            leaderEmail: teamData.leaderEmail,
+            memberEmails: teamData.memberEmails || [],
+            status: status,
+          });
+        } else {
+          // check if all members and leader have registered
+          const members = await EventRegistration.find({
+            $and: [
+              { eventId: event._id },
+              {
+                $or: [
+                  { email: teamData.leaderEmail },
+                  { email: { $in: teamData.memberEmails } },
+                ],
+              },
+            ],
+          });
+
+          if (members.length == teamData.memberEmails.length + 1) {
+            // update the team status to pending if all members have registered
+            await EventTeam.findOneAndUpdate(
+              {
+                eventId: event._id,
+                segmentSlug,
+                teamName: teamData.teamName,
+                leaderEmail: teamData.leaderEmail,
+              },
+              { status: "pending" },
+            );
+          }
+        }
+      }
+    }
 
     console.log(
       `New registration for event ${event.eventName}: ${registration.name} (${registration.email})`,
