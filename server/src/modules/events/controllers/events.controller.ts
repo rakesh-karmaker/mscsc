@@ -104,7 +104,11 @@ export async function getEventBySlug(
 
     // simple/fast path (no registrations requested)
     const event = await Event.findOne({ eventSlug: eventSlug })
-      .select(shorten ? "dataUrl hideRegistrationForm hideCAForm" : "-__v")
+      .select(
+        shorten
+          ? "dataUrl hideRegistrationForm hideCAForm participantCount"
+          : "-__v",
+      )
       .lean();
     if (!event) {
       res.status(404).send({ subject: "slug", message: "Event not found" });
@@ -174,7 +178,16 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
       ...(body.basicInfo.hasCAForm ? { caFormData: body.caFormData } : {}),
     } as EventDataType;
 
-    const eventSlug = generateSlugFromTitle(eventData.eventName);
+    const eventSlug = generateSlugFromTitle(eventData.eventName, false);
+
+    // check if an event with the same slug already exists
+    const existingEvent = await Event.findOne({ eventSlug });
+    if (existingEvent) {
+      res
+        .status(400)
+        .json({ message: "An event with the same name already exists" });
+      return;
+    }
 
     // upload event logo and favicon first to get their URLs and public IDs
     const { url: eventLogoUrl, imgId: eventLogoPublicId } = await uploadImage(
@@ -331,6 +344,9 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
 
       eventFaviconUrl: eventData.eventFaviconUrl,
       eventFaviconPublicId: eventData.eventFaviconPublicId,
+
+      registrationDeadline: eventData.formData.registrationDeadline || "N/A",
+      caApplicationDeadline: eventData.caFormData?.applicationDeadline || "N/A",
 
       eventDescription: eventData.eventDescription,
       eventLocation: eventData.eventLocation,

@@ -19,13 +19,13 @@ const caApplicationsRouter = Router();
 
 // All GET routes
 caApplicationsRouter.get(
-  "/:eventSlug/ca-applications",
+  "/:eventSlug",
   isAuthorized,
   isAdmin,
   getAllCAApplications,
 );
 caApplicationsRouter.get(
-  "/:eventSlug/ca-applications/:applicationId",
+  "/:eventSlug/:applicationId",
   isAuthorized,
   isAdmin,
   getCAApplicationById,
@@ -33,20 +33,20 @@ caApplicationsRouter.get(
 
 // POST route for applying for a ca application
 caApplicationsRouter.post(
-  "/:eventSlug/ca-applications/apply",
+  "/:eventSlug/apply",
   upload.single("photo"),
   applyForCA,
 );
 
 // PATCH routes for validating and editing a ca application
 caApplicationsRouter.patch(
-  "/:eventSlug/ca-applications/:applicationId/status",
+  "/:eventSlug/:applicationId/status",
   isAuthorized,
   isAdmin,
   editCAApplicationStatus,
 );
 caApplicationsRouter.patch(
-  "/:eventSlug/ca-applications/:applicationId/edit",
+  "/:eventSlug/:applicationId/edit",
   isAuthorized,
   isAdmin,
   editCAApplication,
@@ -54,7 +54,7 @@ caApplicationsRouter.patch(
 
 // DELETE route for deleting a ca application
 caApplicationsRouter.delete(
-  "/:eventSlug/ca-applications/:applicationId",
+  "/:eventSlug/:applicationId",
   isAuthorized,
   isAdmin,
   deleteCAApplication,

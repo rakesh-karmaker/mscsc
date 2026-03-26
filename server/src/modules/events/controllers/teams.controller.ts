@@ -3,13 +3,12 @@ import EventTeam from "../models/event-team.model.js";
 import mongoose from "mongoose";
 
 // get all teams
-export async function getAllTeams(req: Request, res: Response) {
+export async function getAllTeams(req: Request, res: Response): Promise<void> {
   try {
     const { eventId, segmentSlug } = req.query;
     if (!eventId || !segmentSlug) {
-      return res
-        .status(400)
-        .json({ message: "Missing eventId or segmentSlug" });
+      res.status(400).json({ message: "Missing eventId or segmentSlug" });
+      return;
     }
 
     const teams = await EventTeam.find({
@@ -25,11 +24,12 @@ export async function getAllTeams(req: Request, res: Response) {
 }
 
 // get team by ID
-export async function getTeamById(req: Request, res: Response) {
+export async function getTeamById(req: Request, res: Response): Promise<void> {
   try {
     const { teamId } = req.params;
     if (!teamId) {
-      return res.status(400).json({ message: "Missing team ID" });
+      res.status(400).json({ message: "Missing team ID" });
+      return;
     }
 
     // get the team along with the event name form the events collection and the leader and members' details from the event registrations collection
@@ -108,7 +108,8 @@ export async function getTeamById(req: Request, res: Response) {
       },
     ]);
     if (!team || team.length === 0) {
-      return res.status(404).json({ message: "Team not found" });
+      res.status(404).json({ message: "Team not found" });
+      return;
     }
 
     res.json({ team: team[0] });
@@ -119,13 +120,17 @@ export async function getTeamById(req: Request, res: Response) {
 }
 
 // create a new team for a team segment
-export async function createSegmentTeam(req: Request, res: Response) {
+export async function createSegmentTeam(
+  req: Request,
+  res: Response,
+): Promise<void> {
   try {
     const { eventId, segmentSlug, teamName, leaderEmail, memberEmails } =
       req.body;
 
     if (!eventId || !segmentSlug || !teamName || !leaderEmail) {
-      return res.status(400).json({ message: "Missing required fields" });
+      res.status(400).json({ message: "Missing required fields" });
+      return;
     }
 
     // check if a team already exists for the event and segment
@@ -135,9 +140,8 @@ export async function createSegmentTeam(req: Request, res: Response) {
       teamName,
     });
     if (existingTeam) {
-      return res
-        .status(400)
-        .json({ message: "Team already exists for this segment" });
+      res.status(400).json({ message: "Team already exists for this segment" });
+      return;
     }
 
     // check if the leader email is already used in another team for the same event and segment
@@ -147,10 +151,11 @@ export async function createSegmentTeam(req: Request, res: Response) {
       leaderEmail,
     });
     if (existingLeader) {
-      return res.status(400).json({
+      res.status(400).json({
         message:
           "Leader email is already used in another team for this segment",
       });
+      return;
     }
 
     // check if any member emails or the leader email are already used in another team for the same event and segment
@@ -161,10 +166,11 @@ export async function createSegmentTeam(req: Request, res: Response) {
         memberEmails: { $in: [...memberEmails, leaderEmail] },
       });
       if (existingMembers.length > 0) {
-        return res.status(400).json({
+        res.status(400).json({
           message:
             "One or more member emails are already used in another team for this segment",
         });
+        return;
       }
     }
 
@@ -189,18 +195,23 @@ export async function createSegmentTeam(req: Request, res: Response) {
 }
 
 // change the team details for a team segment
-export async function updateSegmentTeam(req: Request, res: Response) {
+export async function updateSegmentTeam(
+  req: Request,
+  res: Response,
+): Promise<void> {
   try {
     const { teamId } = req.params;
     const { teamName, leaderEmail, memberEmails, status } = req.body;
     if (!teamId) {
-      return res.status(400).json({ message: "Missing team ID" });
+      res.status(400).json({ message: "Missing team ID" });
+      return;
     }
 
     // check if the team exists
     const team = await EventTeam.findById(teamId);
     if (!team) {
-      return res.status(404).json({ message: "Team not found" });
+      res.status(404).json({ message: "Team not found" });
+      return;
     }
 
     // check if new team name is already used by another team for the same event and segment
@@ -211,9 +222,10 @@ export async function updateSegmentTeam(req: Request, res: Response) {
         teamName,
       });
       if (existingTeam) {
-        return res
+        res
           .status(400)
           .json({ message: "Team name is already used for this segment" });
+        return;
       }
     }
 
@@ -225,10 +237,11 @@ export async function updateSegmentTeam(req: Request, res: Response) {
         leaderEmail,
       });
       if (existingLeader) {
-        return res.status(400).json({
+        res.status(400).json({
           message:
             "Leader email is already used in another team for this segment",
         });
+        return;
       }
     }
 
@@ -242,10 +255,11 @@ export async function updateSegmentTeam(req: Request, res: Response) {
         },
       });
       if (existingMembers.length > 0) {
-        return res.status(400).json({
+        res.status(400).json({
           message:
             "One or more member emails are already used in another team for this segment",
         });
+        return;
       }
     }
 
@@ -265,17 +279,22 @@ export async function updateSegmentTeam(req: Request, res: Response) {
 }
 
 // delete a team for a team segment
-export async function deleteSegmentTeam(req: Request, res: Response) {
+export async function deleteSegmentTeam(
+  req: Request,
+  res: Response,
+): Promise<void> {
   try {
     const { teamId } = req.params;
     if (!teamId) {
-      return res.status(400).json({ message: "Missing team ID" });
+      res.status(400).json({ message: "Missing team ID" });
+      return;
     }
 
     // check if the team exists
     const team = await EventTeam.findById(teamId);
     if (!team) {
-      return res.status(404).json({ message: "Team not found" });
+      res.status(404).json({ message: "Team not found" });
+      return;
     }
 
     await EventTeam.findByIdAndDelete(teamId);

@@ -20,9 +20,9 @@ const EventCASchema = new mongoose.Schema<EventCASchemaType>(
     institution: { type: String, required: true },
     grade: { type: String, required: true },
 
-    havePreviousExperience: { type: Boolean, required: true },
-
     description: { type: String, required: true },
+    hasPreviousExperience: { type: Boolean, required: true },
+    previousExperienceDetails: { type: String, default: "" },
 
     applicationDate: { type: String, required: true },
     status: {

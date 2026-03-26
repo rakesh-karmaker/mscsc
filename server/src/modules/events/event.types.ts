@@ -14,6 +14,9 @@ export interface EventSchemaType extends mongoose.Document {
   eventBannerUrl: string;
   eventBannerPublicId: string;
 
+  registrationDeadline: string;
+  caApplicationDeadline: string;
+
   hideRegistrationForm: boolean;
   hideCAForm: boolean;
 
@@ -82,8 +85,10 @@ export interface EventCASchemaType extends mongoose.Document {
   institution: string;
   grade: string;
 
-  havePreviousExperience: boolean;
   description: string;
+
+  hasPreviousExperience: boolean;
+  previousExperienceDetails: string;
 
   applicationDate: string;
   status: "pending" | "approved" | "rejected";

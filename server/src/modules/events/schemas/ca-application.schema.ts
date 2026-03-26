@@ -9,6 +9,11 @@ export const caApplicationSchema = Joi.object({
   gender: Joi.string().valid("male", "female").required(),
   institution: Joi.string().required(),
   grade: Joi.string().required(),
-  havePreviousExperience: Joi.boolean().required(),
   description: Joi.string().required(),
+  hasPreviousExperience: Joi.string().valid("yes", "no").required(),
+  previousExperienceDetails: Joi.string().when("hasPreviousExperience", {
+    is: "yes",
+    then: Joi.string().required(),
+    otherwise: Joi.string().optional(),
+  }),
 });

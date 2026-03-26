@@ -146,7 +146,7 @@ export default function useFilterEventForm({
     filteredData.segmentsData = data.segmentsData.map(
       (segment: Omit<SegmentType, "segmentSlug">) => ({
         ...segment,
-        segmentSlug: generateSlug(segment.title),
+        segmentSlug: generateSlug(segment.title, false),
       }),
     );
   }
@@ -155,7 +155,7 @@ export default function useFilterEventForm({
     filteredData.experiencesData = data.experienceData.map(
       (experience: Omit<ExperienceType, "experienceSlug">) => ({
         ...experience,
-        experienceSlug: generateSlug(experience.title),
+        experienceSlug: generateSlug(experience.title, false),
       }),
     );
   }

@@ -15,6 +15,9 @@ const EventSchema = new mongoose.Schema<EventSchemaType>(
     eventBannerUrl: { type: String, required: true },
     eventBannerPublicId: { type: String, required: true },
 
+    registrationDeadline: { type: String, required: true },
+    caApplicationDeadline: { type: String, required: true },
+
     hideRegistrationForm: { type: Boolean, required: true, default: true },
     hideCAForm: { type: Boolean, required: true, default: true },
 

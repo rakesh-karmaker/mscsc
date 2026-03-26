@@ -10,17 +10,22 @@ import {
 } from "../utils/ca-application-drafts.js";
 
 // get all ca applications for an event
-export async function getAllCAApplications(req: Request, res: Response) {
+export async function getAllCAApplications(
+  req: Request,
+  res: Response,
+): Promise<void> {
   try {
     const eventSlug = req.params.eventSlug;
     if (!eventSlug) {
-      return res.status(400).json({ message: "Event slug is required" });
+      res.status(400).json({ message: "Event slug is required" });
+      return;
     }
 
     // find the event by slug
     const event = await Event.findOne({ eventSlug }).lean();
     if (!event) {
-      return res.status(404).json({ message: "Event not found" });
+      res.status(404).json({ message: "Event not found" });
+      return;
     }
 
     // find the CA applications for the event
@@ -36,16 +41,21 @@ export async function getAllCAApplications(req: Request, res: Response) {
 }
 
 // get a specific CA application by ID
-export async function getCAApplicationById(req: Request, res: Response) {
+export async function getCAApplicationById(
+  req: Request,
+  res: Response,
+): Promise<void> {
   try {
     const applicationId = req.params.applicationId;
     if (!applicationId) {
-      return res.status(400).json({ message: "Application ID is required" });
+      res.status(400).json({ message: "Application ID is required" });
+      return;
     }
 
     const caApplication = await EventCA.findById(applicationId).lean();
     if (!caApplication) {
-      return res.status(404).json({ message: "CA application not found" });
+      res.status(404).json({ message: "CA application not found" });
+      return;
     }
 
     res.status(200).json({ caApplication });
@@ -56,22 +66,19 @@ export async function getCAApplicationById(req: Request, res: Response) {
 }
 
 // register a new CA application for an event
-export async function applyForCA(req: Request, res: Response) {
+export async function applyForCA(req: Request, res: Response): Promise<void> {
+  let publicId = ""; // This variable will hold the public ID of the uploaded image, so that we can delete it if any error occurs after the upload
+
   try {
     const eventSlug = req.params.eventSlug;
     if (!eventSlug) {
-      return res.status(400).json({ message: "Event slug is required" });
+      res.status(400).json({ message: "Event slug is required" });
+      return;
     }
 
-    // find the event by slug
-    const event = await Event.findOne({ eventSlug });
-    if (!event) {
-      return res.status(404).json({ message: "Event not found" });
-    }
-
-    // create a new CA application
+    // validate the form data using the schema
     const body = req.body;
-    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    const file = req.file;
 
     const { error: validationError } = caApplicationSchema.validate(body);
     if (validationError) {
@@ -82,23 +89,55 @@ export async function applyForCA(req: Request, res: Response) {
       return;
     }
 
-    if (!files || !files.photo || files.photo.length === 0) {
+    if (!file || !file.fieldname || file.size === 0) {
       res.status(400).send({
         subject: "photo",
         message: "Photo is required",
+      });
+
+      return;
+    }
+    // find the event by slug
+    const event = await Event.findOne({ eventSlug });
+    if (!event) {
+      res.status(404).json({ message: "Event not found" });
+      return;
+    }
+
+    // check if CA application is hidden or the CA application deadline has passed
+    const hasDeadlinePassed =
+      new Date() > new Date(event.caApplicationDeadline);
+    if (event.hideCAForm || hasDeadlinePassed) {
+      res.status(403).json({
+        message: "CA application is closed for this event",
+      });
+      return;
+    }
+
+    // check if the applicant has already applied for CA for the event
+    const existingApplication = await EventCA.findOne({
+      event: event._id,
+      email: body.email,
+      status: { $in: ["pending", "approved"] },
+    });
+    if (existingApplication) {
+      res.status(400).json({
+        message: "This email has already applied for CA for this event",
       });
       return;
     }
 
     // upload the photo and get the URL
     const { url, imgId } = await uploadImage(
-      files.photo[0],
+      file,
       true,
       `events/${eventSlug}/ca-applications`,
     );
 
+    publicId = imgId; // store the public ID of the uploaded image
+
     const caApplication = await EventCA.create({
-      event: event._id,
+      eventId: event._id,
       name: body.name,
       email: body.email,
       phoneNumber: body.phoneNumber,
@@ -109,7 +148,7 @@ export async function applyForCA(req: Request, res: Response) {
       gender: body.gender,
       institution: body.institution,
       grade: body.grade,
-      havePreviousExperience: body.havePreviousExperience,
+      hasPreviousExperience: body.hasPreviousExperience === "yes",
       description: body.description,
       applicationDate: new Date().toISOString(),
     });
@@ -122,13 +161,20 @@ export async function applyForCA(req: Request, res: Response) {
       message: "CA application submitted successfully",
     });
   } catch (error) {
+    if (publicId) {
+      // if an error occurs after the image has been uploaded, delete the uploaded image to prevent orphaned files
+      deleteFile(publicId);
+    }
     console.error("Error applying for CA:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 }
 
 // edit a CA application status for an event
-export async function editCAApplicationStatus(req: Request, res: Response) {
+export async function editCAApplicationStatus(
+  req: Request,
+  res: Response,
+): Promise<void> {
   try {
     const eventSlug = req.params.eventSlug;
     const applicationId = req.params.applicationId;
@@ -141,15 +187,17 @@ export async function editCAApplicationStatus(req: Request, res: Response) {
       !["pending", "approved", "rejected"].includes(status) ||
       (status === "approved" && !caCode)
     ) {
-      return res.status(400).json({
+      res.status(400).json({
         message: "Event slug, application ID, status, and CA code are required",
       });
+      return;
     }
 
     // find the event by slug
     const event = await Event.findOne({ eventSlug });
     if (!event) {
-      return res.status(404).json({ message: "Event not found" });
+      res.status(404).json({ message: "Event not found" });
+      return;
     }
 
     // find the CA application by ID and event
@@ -158,7 +206,8 @@ export async function editCAApplicationStatus(req: Request, res: Response) {
       event: event._id,
     });
     if (!caApplication) {
-      return res.status(404).json({ message: "CA application not found" });
+      res.status(404).json({ message: "CA application not found" });
+      return;
     }
 
     if (status === "approved") {
@@ -169,9 +218,10 @@ export async function editCAApplicationStatus(req: Request, res: Response) {
         status: "approved",
       });
       if (existingCAWithCode) {
-        return res.status(400).json({
+        res.status(400).json({
           message: "CA code already exists for another approved application",
         });
+        return;
       }
     }
 
@@ -219,16 +269,21 @@ export async function editCAApplicationStatus(req: Request, res: Response) {
 }
 
 // edit a CA application for an event
-export async function editCAApplication(req: Request, res: Response) {
+export async function editCAApplication(
+  req: Request,
+  res: Response,
+): Promise<void> {
   try {
     const applicationId = req.params.applicationId;
     if (!applicationId) {
-      return res.status(400).json({ message: "Application ID is required" });
+      res.status(400).json({ message: "Application ID is required" });
+      return;
     }
 
     const caApplication = await EventCA.findById(applicationId);
     if (!caApplication) {
-      return res.status(404).json({ message: "CA application not found" });
+      res.status(404).json({ message: "CA application not found" });
+      return;
     }
 
     const body = req.body;
@@ -254,16 +309,21 @@ export async function editCAApplication(req: Request, res: Response) {
 }
 
 // delete a CA application for an event
-export async function deleteCAApplication(req: Request, res: Response) {
+export async function deleteCAApplication(
+  req: Request,
+  res: Response,
+): Promise<void> {
   try {
     const applicationId = req.params.applicationId;
     if (!applicationId) {
-      return res.status(400).json({ message: "Application ID is required" });
+      res.status(400).json({ message: "Application ID is required" });
+      return;
     }
 
     const caApplication = await EventCA.findById(applicationId);
     if (!caApplication) {
-      return res.status(404).json({ message: "CA application not found" });
+      res.status(404).json({ message: "CA application not found" });
+      return;
     }
 
     deleteFile(caApplication.photoPublicId);

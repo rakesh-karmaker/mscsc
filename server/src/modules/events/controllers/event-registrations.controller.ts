@@ -13,17 +13,22 @@ import {
 import EventTeam from "../models/event-team.model.js";
 
 // get all event registrations
-export async function getAllEventRegistrations(req: Request, res: Response) {
+export async function getAllEventRegistrations(
+  req: Request,
+  res: Response,
+): Promise<void> {
   try {
     const eventSlug = req.params.eventSlug;
     if (!eventSlug) {
-      return res.status(400).json({ message: "Event slug is required" });
+      res.status(400).json({ message: "Event slug is required" });
+      return;
     }
 
     // find the event by slug
     const event = await Event.findOne({ eventSlug }).lean();
     if (!event) {
-      return res.status(404).json({ message: "Event not found" });
+      res.status(404).json({ message: "Event not found" });
+      return;
     }
 
     // find the registrations for the event
@@ -39,17 +44,22 @@ export async function getAllEventRegistrations(req: Request, res: Response) {
 }
 
 // get a specific registration by ID
-export async function getRegistrationById(req: Request, res: Response) {
+export async function getRegistrationById(
+  req: Request,
+  res: Response,
+): Promise<void> {
   try {
     const registrationId = req.params.registrationId;
     if (!registrationId) {
-      return res.status(400).json({ message: "Registration ID is required" });
+      res.status(400).json({ message: "Registration ID is required" });
+      return;
     }
 
     const registration =
       await EventRegistration.findById(registrationId).lean();
     if (!registration) {
-      return res.status(404).json({ message: "Registration not found" });
+      res.status(404).json({ message: "Registration not found" });
+      return;
     }
 
     res.status(200).json({ registration });
@@ -60,13 +70,17 @@ export async function getRegistrationById(req: Request, res: Response) {
 }
 
 // register a new participant for an event
-export async function registerForEvent(req: Request, res: Response) {
+export async function registerForEvent(
+  req: Request,
+  res: Response,
+): Promise<void> {
   let publicId = ""; // This variable will hold the public ID of the uploaded image, so that we can delete it if any error occurs after the upload
 
   try {
     const eventSlug = req.params.eventSlug;
     if (!eventSlug) {
-      return res.status(400).json({ message: "Event slug is required" });
+      res.status(400).json({ message: "Event slug is required" });
+      return;
     }
 
     // validate the form data using the Zod schema
@@ -79,6 +93,7 @@ export async function registerForEvent(req: Request, res: Response) {
         subject: validationError.details[0].context?.key,
         message: validationError.details[0].message,
       });
+
       return;
     }
 
@@ -87,13 +102,24 @@ export async function registerForEvent(req: Request, res: Response) {
         subject: "photo",
         message: "Photo is required",
       });
+
       return;
     }
 
     // find the event by slug
     const event = await Event.findOne({ eventSlug });
     if (!event) {
-      return res.status(404).json({ message: "Event not found" });
+      res.status(404).json({ message: "Event not found" });
+      return;
+    }
+
+    // check if registration is hidden or the registration deadline has passed
+    const hasDeadlinePassed = new Date() > new Date(event.registrationDeadline);
+    if (event.hideRegistrationForm || hasDeadlinePassed) {
+      res.status(403).json({
+        message: "Registration is closed for this event",
+      });
+      return;
     }
 
     // find any previous registration with the same email for this event
@@ -108,9 +134,10 @@ export async function registerForEvent(req: Request, res: Response) {
     });
 
     if (existingRegistration) {
-      return res.status(400).json({
+      res.status(400).json({
         message: "You have already registered for this event with this email",
       });
+      return;
     }
 
     // check for team segment data if the user has selected any team segments
@@ -121,9 +148,10 @@ export async function registerForEvent(req: Request, res: Response) {
         const isLeader = teamData.leaderEmail === body.email;
 
         if (!teamData.teamName || !teamData.leaderEmail) {
-          return res.status(400).json({
+          res.status(400).json({
             message: "Invalid team data provided",
           });
+          return;
         }
 
         // if the user is the team leader, check if a team with the same name already exists for the same segment in the same event
@@ -138,9 +166,10 @@ export async function registerForEvent(req: Request, res: Response) {
           });
 
           if (existingTeam) {
-            return res.status(400).json({
+            res.status(400).json({
               message: `The team name "${teamData.teamName}" is already taken for the ${segmentSlug} segment. Please choose a different name.`,
             });
+            return;
           }
 
           // check if the members emails are in any other team for the same segment in the same event
@@ -162,9 +191,10 @@ export async function registerForEvent(req: Request, res: Response) {
               ],
             });
             if (conflictingTeams.length > 0) {
-              return res.status(400).json({
+              res.status(400).json({
                 message: `One or more member emails are already associated with a team in the ${segmentSlug} segment. Please check your team information.`,
               });
+              return;
             }
           }
         } else {
@@ -178,17 +208,19 @@ export async function registerForEvent(req: Request, res: Response) {
           });
 
           if (!existingTeam) {
-            return res.status(400).json({
+            res.status(400).json({
               message: `No team found for the ${segmentSlug} segment with the provided leader email ${teamData.leaderEmail} and team name ${teamData.teamName}. Please check your team information.`,
             });
+            return;
           }
 
           // check if the user is a member of the team
           const isMember = existingTeam.memberEmails.includes(body.email);
           if (!isMember) {
-            return res.status(400).json({
+            res.status(400).json({
               message: `You are not listed as a member of the team for the ${segmentSlug} segment. Please check your team information and your email.`,
             });
+            return;
           }
         }
       }
@@ -334,7 +366,10 @@ export async function registerForEvent(req: Request, res: Response) {
 }
 
 // change the status of a registration (admin action)
-export async function changeRegistrationStatus(req: Request, res: Response) {
+export async function changeRegistrationStatus(
+  req: Request,
+  res: Response,
+): Promise<void> {
   try {
     const registrationId = req.params.registrationId;
     const eventSlug = req.params.eventSlug;
@@ -345,19 +380,22 @@ export async function changeRegistrationStatus(req: Request, res: Response) {
       !body.status ||
       !["pending", "validated", "rejected"].includes(body.status)
     ) {
-      return res.status(400).json({
+      res.status(400).json({
         message: "Registration ID, event slug, and status are required",
       });
+      return;
     }
 
     const event = await Event.findOne({ eventSlug });
     if (!event) {
-      return res.status(404).json({ message: "Event not found" });
+      res.status(404).json({ message: "Event not found" });
+      return;
     }
 
     const registration = await EventRegistration.findById(registrationId);
     if (!registration) {
-      return res.status(404).json({ message: "Registration not found" });
+      res.status(404).json({ message: "Registration not found" });
+      return;
     }
 
     // send the registration mail
@@ -403,16 +441,21 @@ export async function changeRegistrationStatus(req: Request, res: Response) {
 }
 
 // edit a registration (admin action)
-export async function editRegistration(req: Request, res: Response) {
+export async function editRegistration(
+  req: Request,
+  res: Response,
+): Promise<void> {
   try {
     const registrationId = req.params.registrationId;
     if (!registrationId) {
-      return res.status(400).json({ message: "Registration ID is required" });
+      res.status(400).json({ message: "Registration ID is required" });
+      return;
     }
 
     const registration = await EventRegistration.findById(registrationId);
     if (!registration) {
-      return res.status(404).json({ message: "Registration not found" });
+      res.status(404).json({ message: "Registration not found" });
+      return;
     }
 
     const body = req.body;
@@ -428,7 +471,8 @@ export async function editRegistration(req: Request, res: Response) {
         },
       },
       { new: true },
-    ); // added { new: true } to return the updated document
+    ); // added { new: true } to the updated document
+    return;
 
     res
       .status(200)
@@ -440,21 +484,27 @@ export async function editRegistration(req: Request, res: Response) {
 }
 
 // delete a registration (admin action)
-export async function deleteRegistration(req: Request, res: Response) {
+export async function deleteRegistration(
+  req: Request,
+  res: Response,
+): Promise<void> {
   try {
     const registrationId = req.params.registrationId;
     if (!registrationId) {
-      return res.status(400).json({ message: "Registration ID is required" });
+      res.status(400).json({ message: "Registration ID is required" });
+      return;
     }
 
     const registration = await EventRegistration.findById(registrationId);
     if (!registration) {
-      return res.status(404).json({ message: "Registration not found" });
+      res.status(404).json({ message: "Registration not found" });
+      return;
     }
 
     const event = await Event.findById(registration.eventId);
     if (!event) {
-      return res.status(404).json({ message: "Event not found" });
+      res.status(404).json({ message: "Event not found" });
+      return;
     }
 
     deleteFile(registration.photoPublicId);

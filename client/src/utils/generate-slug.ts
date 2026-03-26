@@ -1,7 +1,9 @@
-export default function generateSlug(title: string): string {
+export default function generateSlug(
+  title: string,
+  addAdditionalText: boolean = true,
+): string {
   return (
     title.toLowerCase().replace(/\s+/g, "-") +
-    "-" +
-    Math.random().toString(36).substring(2, 8)
+    (addAdditionalText ? "-" + Math.floor(Math.random() * 1000) : "")
   );
 }
