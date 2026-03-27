@@ -50,7 +50,14 @@ export async function getDashboardData(
     }
 
     // get the branch distribution info
+    const currentYear = new Date().getFullYear();
+
     const branchDistribution = await Member.aggregate([
+      {
+        $match: {
+          batch: { $lte: currentYear + 10, $gte: currentYear },
+        },
+      },
       {
         $group: {
           _id: "$branch",
@@ -68,6 +75,11 @@ export async function getDashboardData(
 
     // get the batch distribution info
     const batchDistribution = await Member.aggregate([
+      {
+        $match: {
+          batch: { $lte: currentYear + 7, $gte: currentYear - 2 },
+        },
+      },
       {
         $group: {
           _id: "$batch",

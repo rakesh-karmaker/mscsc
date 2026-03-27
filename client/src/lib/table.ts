@@ -28,6 +28,7 @@ export function getColumnPinningStyle<TData>({
     position: isPinned ? "sticky" : "relative",
     background: isPinned ? "var(--background)" : "var(--background)",
     width: column.getSize(),
+    minWidth: column.getSize(),
     zIndex: isPinned ? 1 : undefined,
   };
 }

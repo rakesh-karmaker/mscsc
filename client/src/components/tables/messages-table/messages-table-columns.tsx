@@ -104,7 +104,7 @@ export default function getMessagesTableColumns({
                 }}
               >
                 <LuEye className="opacity-70" />
-                <p>View Profile</p>
+                <p>View Message</p>
               </button>
 
               <button

@@ -29,12 +29,13 @@ export function TablePagination<TData>({
       )}
       {...props}
     >
+      {/*TODO: Implement row selection info */}
       {/* <div className="flex-1 whitespace-nowrap text-muted-foreground text-sm">
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
         {table.getFilteredRowModel().rows.length} row(s) selected.
       </div> */}
 
-      <div className="w-full flex justify-between items-center max-lg:flex-col-reverse">
+      <div className="w-full flex justify-between items-center max-md:flex-col-reverse">
         <div className="flex items-center gap-1">
           <p className="whitespace-nowrap">Rows per page</p>
           <FormControl sx={{ minWidth: 80 }} size="small">

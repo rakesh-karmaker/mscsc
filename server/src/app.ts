@@ -16,8 +16,16 @@ import caApplicationsRouter from "./modules/events/routers/ca-applications.route
 const app = express();
 
 // Configure CORS to allow only requests from the specified origin
+const allowed = [config.clientUrl, config.serverUrl, config.event_website_url];
+
 const corsOptions = {
-  origin: [config.clientUrl, config.serverUrl, config.event_website_url], //TODO: FIX this
+  origin: (origin: string | undefined, callback: Function) => {
+    if (!origin || allowed.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,

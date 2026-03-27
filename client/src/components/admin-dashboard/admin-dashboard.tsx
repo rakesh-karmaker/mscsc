@@ -68,7 +68,7 @@ const AdminDashboard = () => {
       <AdminDashboardHeader title={"Dashboard"}>
         Welcome to the admin dashboard
       </AdminDashboardHeader>
-      <div className="dashboard-container w-full flex gap-5">
+      <div className="w-full flex gap-5 max-[1360px]:flex-col">
         <div className="w-full flex flex-col gap-5">
           <div className="w-full grid grid-cols-4 max-[830px]:grid-cols-2 max-[500px]:grid-cols-1 gap-3 items-center">
             <QuickStat

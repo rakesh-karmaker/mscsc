@@ -24,10 +24,12 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
             className="w-11 h-11 rounded-full object-cover"
           />
           <div className="flex flex-col">
-            <p className="font-medium truncate max-sm:text-sm">
+            <p className="font-medium truncate max-sm:text-sm max-w-62.5">
               {row.original.name}
             </p>
-            <p className="text-xs text-gray-500">{row.original.email}</p>
+            <p className="text-xs text-gray-500 max-w-62.5">
+              {row.original.email}
+            </p>
           </div>
         </div>
       ),
@@ -37,6 +39,7 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
         variant: "text",
       },
       enableColumnFilter: true,
+      size: 270,
     },
     {
       id: "contactNumber",

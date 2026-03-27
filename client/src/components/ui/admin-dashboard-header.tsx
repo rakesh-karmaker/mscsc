@@ -11,7 +11,7 @@ export default function AdminDashboardHeader({
   return (
     <div className="w-full flex justify-between gap-3.75 flex-wrap">
       <div className="flex flex-col">
-        <h1 className="text-[2.25em] uppercase text-text-primary font-semibold">
+        <h1 className="text-[2.25em]/[1.1] uppercase text-text-primary font-semibold">
           {title}
         </h1>
         <p className="text-[#000000c9]">{children}</p>
