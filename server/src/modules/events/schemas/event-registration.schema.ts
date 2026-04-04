@@ -15,9 +15,14 @@ export const eventRegistrationSchema = Joi.object({
   transactionId: Joi.string().required(),
   reference: Joi.string().optional(),
   clubReference: Joi.string().optional(),
-  teamSegmentsData: Joi.object({
-    teamName: Joi.string().required(),
-    leaderEmail: Joi.string().email().required(),
-    memberEmails: Joi.array().items(Joi.string().email()).optional(),
-  }).optional(),
+  teamSegmentsData: Joi.object()
+    .pattern(
+      Joi.string(),
+      Joi.object({
+        teamName: Joi.string().required(),
+        leaderEmail: Joi.string().email().required(),
+        memberEmails: Joi.array().items(Joi.string().email()).optional(),
+      }),
+    )
+    .optional(),
 });

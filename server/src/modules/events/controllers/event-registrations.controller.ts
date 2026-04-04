@@ -10,7 +10,13 @@ import {
   eventConfirmationDraft,
   eventRejectionDraft,
 } from "../utils/registration-drafts.js";
-import EventTeam from "../models/event-team.model.js";
+import {
+  createOrUpdateEventTeams,
+  normalizeEmail,
+  normalizeTeamSegmentsData,
+  validateTeamSegmentsData,
+} from "../utils/event-registration.helpers.js";
+import { TeamSegmentData } from "../event.types.js";
 
 // get all event registrations
 export async function getAllEventRegistrations(
@@ -33,7 +39,7 @@ export async function getAllEventRegistrations(
 
     // find the registrations for the event
     const registrations = await EventRegistration.find({
-      event: event._id,
+      eventId: event._id,
     }).lean();
 
     res.status(200).json({ registrations });
@@ -74,7 +80,10 @@ export async function registerForEvent(
   req: Request,
   res: Response,
 ): Promise<void> {
-  let publicId = ""; // This variable will hold the public ID of the uploaded image, so that we can delete it if any error occurs after the upload
+  let publicId = "";
+  let registrationId = "";
+  let eventId = "";
+  let normalizedReference: string | undefined;
 
   try {
     const eventSlug = req.params.eventSlug;
@@ -83,8 +92,7 @@ export async function registerForEvent(
       return;
     }
 
-    // validate the form data using the Zod schema
-    const body = req.body;
+    const body = req.body as Record<string, unknown>;
     const file = req.file;
 
     const { error: validationError } = eventRegistrationSchema.validate(body);
@@ -93,7 +101,6 @@ export async function registerForEvent(
         subject: validationError.details[0].context?.key,
         message: validationError.details[0].message,
       });
-
       return;
     }
 
@@ -102,37 +109,58 @@ export async function registerForEvent(
         subject: "photo",
         message: "Photo is required",
       });
-
       return;
     }
 
-    // find the event by slug
     const event = await Event.findOne({ eventSlug });
     if (!event) {
       res.status(404).json({ message: "Event not found" });
       return;
     }
 
-    // check if registration is hidden or the registration deadline has passed
+    eventId = event._id.toString();
     const hasDeadlinePassed = new Date() > new Date(event.registrationDeadline);
     if (event.hideRegistrationForm || hasDeadlinePassed) {
-      res.status(403).json({
-        message: "Registration is closed for this event",
-      });
+      res
+        .status(403)
+        .json({ message: "Registration is closed for this event" });
       return;
     }
 
-    // find any previous registration with the same email for this event
-    const existingRegistration = await EventRegistration.findOne({
-      $and: [
-        {
-          eventId: event._id,
-          email: req.body.email,
-          status: { $in: ["pending", "validated"] },
-        },
-      ],
-    });
+    const cleanedBody = {
+      ...body,
+      email: normalizeEmail(body.email),
+      reference: body.reference
+        ? String(body.reference).toUpperCase().trim()
+        : undefined,
+      clubReference: body.clubReference
+        ? String(body.clubReference).toUpperCase().trim()
+        : undefined,
+      teamSegmentsData: normalizeTeamSegmentsData(body.teamSegmentsData),
+    } as {
+      email: string;
+      name: string;
+      phoneNumber: string;
+      facebookUrl: string;
+      institution: string;
+      grade: string;
+      category: string;
+      segments: string[];
+      transactionMethod: string;
+      transactionPhoneNumber: string;
+      transactionId: string;
+      reference?: string;
+      clubReference?: string;
+      teamSegmentsData?: Record<string, TeamSegmentData>;
+    };
 
+    normalizedReference = cleanedBody.reference;
+
+    const existingRegistration = await EventRegistration.findOne({
+      eventId: event._id,
+      email: cleanedBody.email,
+      status: { $in: ["pending", "validated"] },
+    });
     if (existingRegistration) {
       res.status(400).json({
         message: "You have already registered for this event with this email",
@@ -140,215 +168,83 @@ export async function registerForEvent(
       return;
     }
 
-    // check for team segment data if the user has selected any team segments
-    if (body.teamSegmentsData) {
-      // if team data is provided, validate it
-      for (const segmentSlug in body.teamSegmentsData) {
-        const teamData = body.teamSegmentsData[segmentSlug];
-        const isLeader = teamData.leaderEmail === body.email;
-
-        if (!teamData.teamName || !teamData.leaderEmail) {
-          res.status(400).json({
-            message: "Invalid team data provided",
-          });
-          return;
-        }
-
-        // if the user is the team leader, check if a team with the same name already exists for the same segment in the same event
-        if (isLeader) {
-          const existingTeam = await EventTeam.findOne({
-            $and: [
-              { eventId: event._id },
-              { segmentSlug: segmentSlug },
-              { teamName: teamData.teamName },
-              { leaderEmail: { $ne: teamData.leaderEmail } },
-            ],
-          });
-
-          if (existingTeam) {
-            res.status(400).json({
-              message: `The team name "${teamData.teamName}" is already taken for the ${segmentSlug} segment. Please choose a different name.`,
-            });
-            return;
-          }
-
-          // check if the members emails are in any other team for the same segment in the same event
-          if (teamData.memberEmails && teamData.memberEmails.length > 0) {
-            const conflictingTeams = await EventTeam.find({
-              $and: [
-                { eventId: event._id },
-                { segmentSlug: segmentSlug },
-                {
-                  $or: [
-                    { leaderEmail: { $in: teamData.memberEmails } },
-                    {
-                      memberEmails: {
-                        $elemMatch: { $in: teamData.memberEmails },
-                      },
-                    },
-                  ],
-                },
-              ],
-            });
-            if (conflictingTeams.length > 0) {
-              res.status(400).json({
-                message: `One or more member emails are already associated with a team in the ${segmentSlug} segment. Please check your team information.`,
-              });
-              return;
-            }
-          }
-        } else {
-          const existingTeam = await EventTeam.findOne({
-            $and: [
-              { eventId: event._id },
-              { segmentSlug: segmentSlug },
-              { teamName: teamData.teamName },
-              { leaderEmail: teamData.leaderEmail },
-            ],
-          });
-
-          if (!existingTeam) {
-            res.status(400).json({
-              message: `No team found for the ${segmentSlug} segment with the provided leader email ${teamData.leaderEmail} and team name ${teamData.teamName}. Please check your team information.`,
-            });
-            return;
-          }
-
-          // check if the user is a member of the team
-          const isMember = existingTeam.memberEmails.includes(body.email);
-          if (!isMember) {
-            res.status(400).json({
-              message: `You are not listed as a member of the team for the ${segmentSlug} segment. Please check your team information and your email.`,
-            });
-            return;
-          }
-        }
+    if (cleanedBody.teamSegmentsData) {
+      const teamValidationError = await validateTeamSegmentsData(
+        event._id,
+        cleanedBody.email,
+        cleanedBody.teamSegmentsData,
+      );
+      if (teamValidationError) {
+        res.status(400).json({ message: teamValidationError });
+        return;
       }
     }
 
-    // upload the photo and get the URL
     const { url, imgId } = await uploadImage(
       file,
       true,
       `events/${eventSlug}/registrations`,
     );
-
     if (imgId) {
       publicId = imgId;
     }
 
-    // update the CA score if CA code is provided and valid
-    if (body.reference) {
+    if (cleanedBody.reference) {
       const caApplication = await EventCA.findOneAndUpdate(
-        { caCode: body.reference, eventId: event._id, status: "approved" },
-        { $inc: { score: 1 } }, // Increment score by 1 for each valid registration
+        {
+          caCode: cleanedBody.reference,
+          eventId: event._id,
+          status: "approved",
+        },
+        { $inc: { score: 1 } },
         { new: true },
       );
       if (!caApplication) {
         console.warn(
-          `Invalid CA code provided: ${body.name} - ${body.reference}`,
+          `Invalid CA code provided: ${cleanedBody.name} - ${cleanedBody.reference}`,
         );
       }
     }
 
-    // generate a unique registration code and create the registration record
     let code = generateCode(6);
-    // Ensure the generated code is unique by checking existing registrations
-    let isUnique = false;
-    while (!isUnique) {
-      const existingRegistration = await EventRegistration.findOne({
-        $and: [{ eventId: event._id }, { code }],
-      });
-      if (!existingRegistration) {
-        isUnique = true;
-      } else {
-        code = generateCode(6);
-      }
+    while (await EventRegistration.exists({ eventId: event._id, code })) {
+      code = generateCode(6);
     }
 
     const registration = await EventRegistration.create({
       eventId: event._id,
-      name: body.name,
-      email: body.email,
-      phoneNumber: body.phoneNumber,
-      facebookUrl: body.facebookUrl,
+      name: cleanedBody.name,
+      email: cleanedBody.email,
+      phoneNumber: cleanedBody.phoneNumber,
+      facebookUrl: cleanedBody.facebookUrl,
       photoUrl: url,
       photoPublicId: imgId,
-      institution: body.institution,
-      grade: body.grade,
-      category: body.category,
-      segments: body.segments,
-      transactionMethod: body.transactionMethod,
-      transactionPhoneNumber: body.transactionPhoneNumber,
-      transactionId: body.transactionId,
-      reference: body.reference?.toString().toUpperCase() || "N/A",
-      clubReference: body.clubReference?.toString().toUpperCase() || "N/A",
+      institution: cleanedBody.institution,
+      grade: cleanedBody.grade,
+      category: cleanedBody.category,
+      segments: cleanedBody.segments,
+      transactionMethod: cleanedBody.transactionMethod,
+      transactionPhoneNumber: cleanedBody.transactionPhoneNumber,
+      transactionId: cleanedBody.transactionId,
+      reference: cleanedBody.reference || "N/A",
+      clubReference: cleanedBody.clubReference || "N/A",
       registrationDate: new Date().toISOString(),
       code,
     });
 
+    if (registration._id) {
+      registrationId = registration._id.toString();
+    }
+
     event.participantCount = (event.participantCount || 0) + 1;
     await event.save();
 
-    // create or update the team data if teamSegmentsData is provided
-    if (body.teamSegmentsData) {
-      // if validation passes, create or update the teams
-      for (const segmentSlug in body.teamSegmentsData) {
-        const teamData = body.teamSegmentsData[segmentSlug];
-        const isLeader = teamData.leaderEmail === body.email;
-
-        if (isLeader) {
-          let status: "registering" | "pending" | "approved" = "registering";
-
-          if (teamData.memberEmails && teamData.memberEmails.length > 0) {
-            const members = await EventRegistration.find({
-              $and: [
-                { eventId: event._id },
-                { email: { $in: teamData.memberEmails } },
-              ],
-            });
-
-            if (members.length == teamData.memberEmails.length) {
-              status = "pending"; // All members have already registered, move to pending for admin approval
-            }
-          }
-
-          await EventTeam.create({
-            eventId: event._id,
-            segmentSlug,
-            teamName: teamData.teamName,
-            leaderEmail: teamData.leaderEmail,
-            memberEmails: teamData.memberEmails || [],
-            status: status,
-          });
-        } else {
-          // check if all members and leader have registered
-          const members = await EventRegistration.find({
-            $and: [
-              { eventId: event._id },
-              {
-                $or: [
-                  { email: teamData.leaderEmail },
-                  { email: { $in: teamData.memberEmails } },
-                ],
-              },
-            ],
-          });
-
-          if (members.length == teamData.memberEmails.length + 1) {
-            // update the team status to pending if all members have registered
-            await EventTeam.findOneAndUpdate(
-              {
-                eventId: event._id,
-                segmentSlug,
-                teamName: teamData.teamName,
-                leaderEmail: teamData.leaderEmail,
-              },
-              { status: "pending" },
-            );
-          }
-        }
-      }
+    if (cleanedBody.teamSegmentsData) {
+      await createOrUpdateEventTeams(
+        event._id,
+        cleanedBody.email,
+        cleanedBody.teamSegmentsData,
+      );
     }
 
     console.log(
@@ -356,12 +252,31 @@ export async function registerForEvent(
     );
     res.status(201).json({ message: "Registration successful" });
   } catch (error) {
-    // If an error occurs after the image has been uploaded, delete the uploaded image to prevent orphaned files
     if (publicId) {
       deleteFile(publicId);
     }
+    if (registrationId) {
+      await EventRegistration.findByIdAndDelete(registrationId);
+      await Event.findByIdAndUpdate(eventId, {
+        $inc: { participantCount: -1 },
+      });
+    }
+
+    if (normalizedReference) {
+      await EventCA.findOneAndUpdate(
+        {
+          eventId,
+          caCode: normalizedReference,
+        },
+        { $inc: { score: -1 } },
+      );
+    }
+
     console.error("Error registering for event:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({
+      message:
+        "There was an error processing your request. Please try again later.",
+    });
   }
 }
 
@@ -417,7 +332,7 @@ export async function changeRegistrationStatus(
         eventRejectionDraft({
           eventName: event.eventName,
           logoUrl: event.eventLogoUrl,
-          reason: registration.rejectionReason || "N/A",
+          reason: body.rejectionReason || "N/A",
         }),
       );
     }
@@ -472,7 +387,6 @@ export async function editRegistration(
       },
       { new: true },
     ); // added { new: true } to the updated document
-    return;
 
     res
       .status(200)

@@ -115,8 +115,13 @@ export interface EventTeamSchemaType extends mongoose.Document {
   updatedAt: string;
 }
 
-// event data type
+export type TeamSegmentData = {
+  teamName: string;
+  leaderEmail: string;
+  memberEmails: string[];
+};
 
+// event data type
 type BasicInfoType = {
   template: string;
   eventName: string;
