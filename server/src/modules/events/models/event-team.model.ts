@@ -35,4 +35,7 @@ const EventTeamSchema = new mongoose.Schema<EventTeamSchemaType>(
   },
 );
 
-export default mongoose.model("EventTeam", EventTeamSchema);
+export default mongoose.model<EventTeamSchemaType>(
+  "EventTeam",
+  EventTeamSchema,
+);

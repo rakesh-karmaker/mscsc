@@ -1,12 +1,12 @@
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 import paginateResults from "../../../shared/lib/paginate-results.js";
 import Task from "../task.model.js";
 import { getTaskQuery } from "../task.queries.js";
 import Member from "../../../shared/models/member.model.js";
 import generateSlug from "../../../shared/utils/generate-slug.js";
-import getDate from "../../../shared/utils/get-date.js";
 import { taskSchema } from "../task.schema.js";
 import { deleteFile } from "../../../shared/lib/file-uploader.js";
+import { logEvent } from "../../../shared/utils/log-event.js";
 
 // get all tasks
 export async function getAllTasks(req: Request, res: Response): Promise<void> {
@@ -53,11 +53,13 @@ export async function getAllTasks(req: Request, res: Response): Promise<void> {
 
     res.status(200).send(tasks);
   } catch (err) {
-    console.log("Error fetching tasks - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error fetching tasks", {
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
 }
 
@@ -95,11 +97,13 @@ export async function getTask(req: Request, res: Response): Promise<void> {
 
     res.status(200).send(task);
   } catch (err) {
-    console.log("Error fetching task - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error fetching task", {
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
 }
 
@@ -127,14 +131,21 @@ export async function createTask(req: Request, res: Response): Promise<void> {
     const newTask = new Task({ ...req.body });
     await newTask.save();
 
-    console.log("New task created successfully -", getDate(), "\n---\n");
     res.status(200).send({ message: "Task created successfully", slug });
+    await logEvent("info", "Task created", {
+      taskId: newTask._id,
+      taskName: newTask.name,
+      creator: req.user?._id,
+    });
   } catch (err) {
-    console.log("Error creating task - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error creating task", {
+      taskId: req.user?._id,
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
 }
 
@@ -182,12 +193,21 @@ export async function editTask(req: Request, res: Response): Promise<void> {
     res
       .status(200)
       .send({ message: "Task edited successfully", slug: task.slug });
+    await logEvent("info", "Task edited", {
+      taskId: task._id,
+      taskName: task.name,
+      editor: req.user?._id,
+    });
   } catch (err) {
-    console.log("Error editing task - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error editing task", {
+      taskId: req.user?._id,
+      error: err instanceof Error ? err.message : String(err),
+      editor: req.user?._id,
+    });
   }
 }
 
@@ -258,11 +278,21 @@ export async function deleteTask(req: Request, res: Response): Promise<void> {
     res
       .status(200)
       .send({ message: "Task deleted successfully", method: "DELETE" });
+
+    await logEvent("info", "Task deleted", {
+      taskId: task._id,
+      taskName: task.name,
+      deletedBy: req.user?._id,
+    });
   } catch (err) {
-    console.log("Error deleting task - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error deleting task", {
+      taskId: req.user?._id,
+      error: err instanceof Error ? err.message : String(err),
+      deletedBy: req.user?._id,
+    });
   }
 }

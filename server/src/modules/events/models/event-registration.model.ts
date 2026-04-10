@@ -43,4 +43,7 @@ const EventRegistrationSchema =
     },
   );
 
-export default mongoose.model("EventRegistration", EventRegistrationSchema);
+export default mongoose.model<EventRegistrationSchemaType>(
+  "EventRegistration",
+  EventRegistrationSchema,
+);

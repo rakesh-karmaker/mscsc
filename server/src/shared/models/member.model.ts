@@ -68,4 +68,4 @@ MemberSchema.pre(
   },
 );
 
-export default mongoose.model("Member", MemberSchema);
+export default mongoose.model<MemberSchemaType>("Member", MemberSchema);

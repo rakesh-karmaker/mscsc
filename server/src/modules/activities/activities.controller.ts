@@ -8,6 +8,7 @@ import {
   uploadMultipleImages,
 } from "../../shared/lib/file-uploader.js";
 import { activitySchema } from "./activity.schema.js";
+import { logEvent } from "../../shared/utils/log-event.js";
 
 // Get all activities
 export async function getAllActivities(
@@ -35,11 +36,14 @@ export async function getAllActivities(
     const activities = await paginateResults(req, Activity, regex, sorted);
     res.status(200).send(activities);
   } catch (err) {
-    console.log("Error getting all activities - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error fetching activities", {
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
+    });
   }
 }
 
@@ -90,11 +94,15 @@ export async function getActivity(req: Request, res: Response): Promise<void> {
 
     res.status(200).send({ activity, sameTags });
   } catch (err) {
-    console.log("Error getting activity - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error fetching activity", {
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
+      slug,
+    });
   }
 }
 
@@ -134,11 +142,14 @@ export async function getHomeActivities(
 
     res.status(200).send({ events, articles });
   } catch (err) {
-    console.log("Error getting home activities - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error fetching home activities", {
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
+    });
   }
 }
 
@@ -195,12 +206,21 @@ export async function createActivity(
     console.log("Activity added successfully -", "\n---\n");
 
     res.status(200).send({ message: "Activity added" });
+    await logEvent("info", "Activity created", {
+      activityTitle: body.title,
+      activitySlug: slug,
+      creator: req.user?._id,
+    });
   } catch (err) {
-    console.log("Error creating activity - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error creating activity", {
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
+      creator: req.user?._id,
+    });
   }
 }
 
@@ -271,12 +291,21 @@ export async function editActivity(req: Request, res: Response): Promise<void> {
     });
 
     res.status(200).send({ message: "Activity updated" });
+    await logEvent("info", "Activity edited", {
+      activitySlug: slug,
+      editor: req.user?._id,
+    });
   } catch (err) {
-    console.log("Error editing activity - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error editing activity", {
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
+      activitySlug: req.body.slug,
+      editor: req.user?._id,
+    });
   }
 }
 
@@ -304,11 +333,20 @@ export async function deleteActivity(
     activity.gallery.forEach((image) => deleteFile(image.imgId));
 
     res.status(200).send({ message: "Activity deleted" });
+    await logEvent("info", "Activity deleted", {
+      activitySlug: slug,
+      deletedBy: req.user?._id,
+    });
   } catch (err) {
-    console.log("Error deleting activity - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error deleting activity", {
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
+      activitySlug: req.body.slug,
+      deletedBy: req.user?._id,
+    });
   }
 }

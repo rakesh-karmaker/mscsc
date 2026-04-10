@@ -17,6 +17,7 @@ import {
   validateTeamSegmentsData,
 } from "../utils/event-registration.helpers.js";
 import { TeamSegmentData } from "../event.types.js";
+import { logEvent } from "../../../shared/utils/log-event.js";
 
 // get all event registrations
 export async function getAllEventRegistrations(
@@ -44,8 +45,12 @@ export async function getAllEventRegistrations(
 
     res.status(200).json({ registrations });
   } catch (error) {
-    console.error("Error fetching event registrations:", error);
     res.status(500).json({ message: "Internal server error" });
+    await logEvent("error", "Error fetching event registrations", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      eventSlug: req.params.eventSlug,
+    });
   }
 }
 
@@ -70,8 +75,12 @@ export async function getRegistrationById(
 
     res.status(200).json({ registration });
   } catch (error) {
-    console.error("Error fetching registration by ID:", error);
     res.status(500).json({ message: "Internal server error" });
+    await logEvent("error", "Error fetching registration by ID", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      registrationId: req.params.registrationId,
+    });
   }
 }
 
@@ -137,6 +146,12 @@ export async function registerForEvent(
       res
         .status(403)
         .json({ message: "Registration is closed for this event" });
+
+      await logEvent("info", "New registration attempt after deadline", {
+        eventSlug,
+        email: body.email ? String(body.email).toLowerCase() : "N/A",
+        name: body.name ? String(body.name) : "N/A",
+      });
       return;
     }
 
@@ -205,7 +220,7 @@ export async function registerForEvent(
       publicId = imgId;
     }
 
-    if (cleanedBody.reference) {
+    if (cleanedBody.reference && cleanedBody.reference !== "N/A") {
       const caApplication = await EventCA.findOneAndUpdate(
         {
           caCode: cleanedBody.reference,
@@ -216,8 +231,15 @@ export async function registerForEvent(
         { new: true },
       );
       if (!caApplication) {
-        console.warn(
-          `Invalid CA code provided: ${cleanedBody.name} - ${cleanedBody.reference}`,
+        await logEvent(
+          "warning",
+          "Invalid CA code provided during registration",
+          {
+            eventSlug,
+            email: cleanedBody.email,
+            name: cleanedBody.name,
+            reference: cleanedBody.reference,
+          },
         );
       }
     }
@@ -263,10 +285,16 @@ export async function registerForEvent(
       );
     }
 
-    console.log(
-      `New registration for event ${event.eventName}: ${registration.name} (${registration.email})`,
-    );
     res.status(201).json({ message: "Registration successful" });
+    await logEvent(
+      "info",
+      `New registration for event ${event.eventName}: ${registration.name} (${registration.email})`,
+      {
+        eventSlug,
+        email: cleanedBody.email,
+        name: cleanedBody.name,
+      },
+    );
   } catch (error) {
     if (publicId) {
       deleteFile(publicId);
@@ -278,7 +306,7 @@ export async function registerForEvent(
       });
     }
 
-    if (normalizedReference) {
+    if (normalizedReference && normalizedReference !== "N/A") {
       await EventCA.findOneAndUpdate(
         {
           eventId,
@@ -288,10 +316,14 @@ export async function registerForEvent(
       );
     }
 
-    console.error("Error registering for event:", error);
     res.status(500).json({
       message:
         "There was an error processing your request. Please try again later.",
+    });
+    await logEvent("error", "Error processing event registration", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      eventSlug: req.params.eventSlug,
     });
   }
 }
@@ -359,15 +391,27 @@ export async function changeRegistrationStatus(
     }
     await registration.save();
 
-    console.log(
-      `${req.user?._id} - Registration status changed to ${registration.status} for event ${event.eventName}: ${registration.name} (${registration.email})`,
-    );
     res
       .status(200)
       .json({ message: "Registration status changed and email sent" });
+    await logEvent(
+      "info",
+      `Registration status changed to ${registration.status} for ${registration.name} (${registration.email})`,
+      {
+        eventSlug,
+        registrationId,
+        editor: req.user?._id,
+      },
+    );
   } catch (error) {
-    console.error("Error changing registration status:", error);
     res.status(500).json({ message: "Internal server error" });
+    await logEvent("error", "Error changing registration status", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      eventSlug: req.params.eventSlug,
+      registrationId: req.params.registrationId,
+      editor: req.user?._id,
+    });
   }
 }
 
@@ -407,9 +451,24 @@ export async function editRegistration(
     res
       .status(200)
       .json({ message: "Registration updated", registration: newRegistration });
+    await logEvent(
+      "info",
+      `Registration edited for ${newRegistration?.name} (${newRegistration?.email})`,
+      {
+        eventSlug: req.params.eventSlug,
+        registrationId,
+        editor: req.user?._id,
+      },
+    );
   } catch (error) {
-    console.error("Error editing registration:", error);
     res.status(500).json({ message: "Internal server error" });
+    await logEvent("error", "Error editing registration", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      eventSlug: req.params.eventSlug,
+      registrationId: req.params.registrationId,
+      editor: req.user?._id,
+    });
   }
 }
 
@@ -444,12 +503,24 @@ export async function deleteRegistration(
     event.participantCount = Math.max((event.participantCount || 1) - 1, 0);
     await event.save();
 
-    console.log(
-      `${req.user?._id} - Registration deleted for event ${event.eventName}: ${registration.name} (${registration.email})`,
-    );
     res.status(200).json({ message: "Registration deleted" });
+    await logEvent(
+      "info",
+      `Registration deleted for event ${event.eventName}: ${registration.name} (${registration.email})`,
+      {
+        eventSlug: req.params.eventSlug,
+        registrationId: req.params.registrationId,
+        deletedBy: req.user?._id,
+      },
+    );
   } catch (error) {
-    console.error("Error deleting registration:", error);
     res.status(500).json({ message: "Internal server error" });
+    await logEvent("error", "Error deleting registration", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      eventSlug: req.params.eventSlug,
+      registrationId: req.params.registrationId,
+      deletedBy: req.user?._id,
+    });
   }
 }

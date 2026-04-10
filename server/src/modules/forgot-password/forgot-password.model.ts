@@ -10,4 +10,7 @@ const ForgotPasswordOTPSchema =
     expiresAt: { type: Date },
   });
 
-export default mongoose.model("ForgotPasswordOTP", ForgotPasswordOTPSchema);
+export default mongoose.model<ForgotPasswordOTPSchemaType>(
+  "ForgotPasswordOTP",
+  ForgotPasswordOTPSchema,
+);

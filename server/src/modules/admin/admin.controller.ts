@@ -3,6 +3,7 @@ import Member from "../../shared/models/member.model.js";
 import Message from "../messages/message.model.js";
 import Activity from "../activities/activity.model.js";
 import Task from "../tasks/task.model.js";
+import { logEvent } from "../../shared/utils/log-event.js";
 
 export async function getDashboardData(
   req: Request,
@@ -105,10 +106,13 @@ export async function getDashboardData(
       batchDistribution: filteredBatchDistribution.slice(0, 12), // limit to top 10 batches
     });
   } catch (err) {
-    console.log("Error getting dashboard data - ", "\n---\n", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error fetching dashboard data", {
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
+    });
   }
 }

@@ -6,6 +6,7 @@ import ForgotPasswordOTP from "./forgot-password.model.js";
 import generateId from "./utils/generate-id.js";
 import { sendEmail } from "../../shared/lib/mail-sender.js";
 import { forgotPasswordOtpDraft } from "./utils/otp-draft.js";
+import { logEvent } from "../../shared/utils/log-event.js";
 
 // Send OTP to the user's email
 export async function sendOTP(req: Request, res: Response): Promise<void> {
@@ -46,12 +47,19 @@ export async function sendOTP(req: Request, res: Response): Promise<void> {
     });
 
     res.status(200).send({ message: "OTP sent", email });
+    //log the event
+    await logEvent("info", "OTP sent for password reset", {
+      email,
+    });
   } catch (err) {
-    console.log("Error sending OTP - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error sending OTP", {
+      email: req.body.email,
+      error: errorMessage,
+    });
   }
 }
 
@@ -91,11 +99,14 @@ export async function verifyOTP(req: Request, res: Response): Promise<void> {
 
     res.status(200).send({ message: "OTP verified", token });
   } catch (err) {
-    console.log("Error verifying OTP - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error verifying OTP", {
+      email: req.body.email,
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
 }
 
@@ -141,10 +152,13 @@ export async function resetPassword(
 
     res.status(200).send({ message: "Password reset successful" });
   } catch (err) {
-    console.log("Error resetting password - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error resetting password", {
+      email: req.body.email,
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
 }

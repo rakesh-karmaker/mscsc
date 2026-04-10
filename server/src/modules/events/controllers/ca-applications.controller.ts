@@ -8,6 +8,7 @@ import {
   caApplicationConfirmationDraft,
   caApplicationRejectionDraft,
 } from "../utils/ca-application-drafts.js";
+import { logEvent } from "../../../shared/utils/log-event.js";
 
 // get all ca applications for an event
 export async function getAllCAApplications(
@@ -35,8 +36,12 @@ export async function getAllCAApplications(
 
     res.status(200).json({ caApplications });
   } catch (error) {
-    console.error("Error fetching CA applications:", error);
     res.status(500).json({ message: "Internal server error" });
+    await logEvent("error", "Error fetching CA applications", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      eventSlug: req.params.eventSlug,
+    });
   }
 }
 
@@ -60,8 +65,12 @@ export async function getCAApplicationById(
 
     res.status(200).json({ caApplication });
   } catch (error) {
-    console.error("Error fetching CA application by ID:", error);
     res.status(500).json({ message: "Internal server error" });
+    await logEvent("error", "Error fetching CA application by ID", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      applicationId: req.params.applicationId,
+    });
   }
 }
 
@@ -116,7 +125,7 @@ export async function applyForCA(req: Request, res: Response): Promise<void> {
 
     // check if the applicant has already applied for CA for the event
     const existingApplication = await EventCA.findOne({
-      event: event._id,
+      eventId: event._id,
       email: body.email,
       status: { $in: ["pending", "approved"] },
     });
@@ -149,24 +158,30 @@ export async function applyForCA(req: Request, res: Response): Promise<void> {
       institution: body.institution,
       grade: body.grade,
       hasPreviousExperience: body.hasPreviousExperience === "yes",
+      previousExperienceDetails: body.previousExperienceDetails || "",
       description: body.description,
       applicationDate: new Date().toISOString(),
     });
 
-    console.log(
-      `New CA application submitted: ${caApplication._id} - ${caApplication.name} for event ${event.eventName}`,
-    );
-
     res.status(201).json({
       message: "CA application submitted successfully",
+    });
+    // Log the event
+    await logEvent("info", "New CA application submitted", {
+      eventSlug,
+      applicationId: caApplication._id,
     });
   } catch (error) {
     if (publicId) {
       // if an error occurs after the image has been uploaded, delete the uploaded image to prevent orphaned files
       deleteFile(publicId);
     }
-    console.error("Error applying for CA:", error);
     res.status(500).json({ message: "Internal server error" });
+    await logEvent("error", "Error applying for CA", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      eventSlug: req.params.eventSlug,
+    });
   }
 }
 
@@ -203,7 +218,7 @@ export async function editCAApplicationStatus(
     // find the CA application by ID and event
     const caApplication = await EventCA.findOne({
       _id: applicationId,
-      event: event._id,
+      eventId: event._id,
     });
     if (!caApplication) {
       res.status(404).json({ message: "CA application not found" });
@@ -213,7 +228,7 @@ export async function editCAApplicationStatus(
     if (status === "approved") {
       // check if the CA code is unique for the event
       const existingCAWithCode = await EventCA.findOne({
-        event: event._id,
+        eventId: event._id,
         caCode,
         status: "approved",
       });
@@ -257,14 +272,20 @@ export async function editCAApplicationStatus(
     }
     await caApplication.save();
 
-    console.log(
-      `${req.user?._id} - CA application ${status} for event ${event.eventName}: ${caApplication.name} (${caApplication.email})`,
-    );
-
     res.status(200).json({ message: "CA application updated and email sent" });
+    await logEvent("info", `CA application changed to ${status}`, {
+      eventSlug,
+      applicationId,
+      editor: req.user?._id,
+    });
   } catch (error) {
-    console.error("Error validating CA application:", error);
     res.status(500).json({ message: "Internal server error" });
+    await logEvent("error", "Error validating CA application", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      eventSlug: req.params.eventSlug,
+      editor: req.user?._id,
+    });
   }
 }
 
@@ -302,9 +323,18 @@ export async function editCAApplication(
       message: "CA application updated successfully",
       caApplication: newCaApplication,
     });
+    await logEvent("info", "CA application edited", {
+      applicationId,
+      editor: req.user?._id,
+    });
   } catch (error) {
-    console.error("Error editing CA application:", error);
     res.status(500).json({ message: "Internal server error" });
+    await logEvent("error", "Error editing CA application", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      eventSlug: req.params.eventSlug,
+      editor: req.user?._id,
+    });
   }
 }
 
@@ -327,12 +357,20 @@ export async function deleteCAApplication(
     }
 
     deleteFile(caApplication.photoPublicId);
-
     await EventCA.findByIdAndDelete(applicationId);
 
     res.status(200).json({ message: "CA application deleted successfully" });
+    await logEvent("info", "CA application deleted", {
+      applicationId,
+      deletedBy: req.user?._id,
+    });
   } catch (error) {
-    console.error("Error deleting CA application:", error);
     res.status(500).json({ message: "Internal server error" });
+    await logEvent("error", "Error deleting CA application", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      eventSlug: req.params.eventSlug,
+      deletedBy: req.user?._id,
+    });
   }
 }

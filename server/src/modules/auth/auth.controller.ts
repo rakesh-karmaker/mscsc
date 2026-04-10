@@ -8,6 +8,7 @@ import { registerSchema } from "./auth.schema.js";
 import { uploadImage } from "../../shared/lib/file-uploader.js";
 import { compareHash, generateHash } from "../../shared/utils/hash.js";
 import { NewMemberDataType } from "./auth.types.js";
+import { logEvent } from "../../shared/utils/log-event.js";
 
 const JWT_EXPIRATION = "30d"; // Token valid for 30 days
 
@@ -88,8 +89,15 @@ export async function register(req: Request, res: Response): Promise<void> {
       token,
       member: newMember,
     });
+
+    await logEvent("info", "New member registered", {
+      memberId: newMember._id,
+      memberName: newMember.name,
+    });
   } catch (err) {
-    console.log("Error registering member - ", "\n---\n", err);
+    await logEvent("error", "Error registering member", {
+      error: err instanceof Error ? err.message : String(err),
+    });
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
@@ -138,8 +146,14 @@ export async function login(req: Request, res: Response): Promise<void> {
       token,
       member,
     });
+    await logEvent("info", "Member logged in", {
+      memberId: member._id,
+      memberName: member.name,
+    });
   } catch (err) {
-    console.log("Error logging in member - ", "\n---\n", err);
+    await logEvent("error", "Error logging in member", {
+      error: err instanceof Error ? err.message : String(err),
+    });
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
@@ -163,10 +177,12 @@ export async function verifyUser(req: Request, res: Response): Promise<void> {
       user,
     });
   } catch (err) {
-    console.log("Error verifying member - ", "\n---\n", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error verifying user", {
+      error: errorMessage,
+    });
   }
 }

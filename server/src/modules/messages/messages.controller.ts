@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Message from "./message.model.js";
 import { messageSchema } from "./message.schema.js";
+import { logEvent } from "../../shared/utils/log-event.js";
 
 // Get all messages with pagination, sorting, and filtering
 export async function getAllMessages(
@@ -48,11 +49,13 @@ export async function getAllMessages(
       selectedCount: selectedMessageCount,
     });
   } catch (err) {
-    console.log("Error getting messages - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error fetching messages", {
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
 }
 
@@ -72,12 +75,19 @@ export async function sendMessage(req: Request, res: Response): Promise<void> {
     // Create and save the message
     await Message.create(req.body);
     res.status(200).send({ message: "Message sent" });
+    await logEvent("info", "Message sent from contact form", {
+      name: req.body.name,
+      email: req.body.email,
+      source: req.body.source,
+    });
   } catch (err) {
-    console.log("Error sending message - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error sending message from contact form", {
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
 }
 
@@ -100,11 +110,13 @@ export async function markMessageAsRead(
 
     res.status(200).send({ message: "Message marked as read" });
   } catch (err) {
-    console.log("Error marking message as read - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error marking message as read", {
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
 }
 
@@ -130,11 +142,17 @@ export async function deleteMessage(
     }
 
     res.status(200).send({ message: "Message deleted" });
+    await logEvent("info", "Message deleted", {
+      email: message.email,
+      deletedBy: req.user?._id,
+    });
   } catch (err) {
-    console.log("Error deleting message - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error deleting message", {
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
 }

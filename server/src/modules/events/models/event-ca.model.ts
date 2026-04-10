@@ -32,7 +32,7 @@ const EventCASchema = new mongoose.Schema<EventCASchemaType>(
       default: "pending",
     },
     rejectionReason: { type: String, default: "" },
-    caCode: { type: String, required: true, default: null },
+    caCode: { type: String, required: false, default: null },
     score: { type: Number, required: true, default: 0 },
   },
   {
@@ -40,4 +40,4 @@ const EventCASchema = new mongoose.Schema<EventCASchemaType>(
   },
 );
 
-export default mongoose.model("EventCA", EventCASchema);
+export default mongoose.model<EventCASchemaType>("EventCA", EventCASchema);

@@ -4,6 +4,7 @@ import { GetAllMembersRegexType } from "./member.types.js";
 import paginateResults from "../../shared/lib/paginate-results.js";
 import { deleteFile, uploadImage } from "../../shared/lib/file-uploader.js";
 import { generateHash } from "../../shared/utils/hash.js";
+import { logEvent } from "../../shared/utils/log-event.js";
 
 // Get all members
 export async function getAllMembers(
@@ -44,7 +45,9 @@ export async function getAllMembers(
     members.adminLength = await Member.countDocuments({ role: "admin" });
     res.status(200).send(members);
   } catch (err) {
-    console.log("Error getting all members - ", err);
+    await logEvent("error", "Error fetching members", {
+      error: err instanceof Error ? err.message : String(err),
+    });
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
@@ -107,11 +110,13 @@ export async function getAllMembersForTable(
       .status(200)
       .send({ results: paginatedMembers, selectedCount: selectedMemberCount });
   } catch (err) {
-    console.log("Error getting all members for table - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error fetching members for table", {
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
 }
 
@@ -132,11 +137,13 @@ export async function getMember(req: Request, res: Response): Promise<void> {
 
     res.send(member);
   } catch (err) {
-    console.log("Error getting member - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error fetching member", {
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
 }
 
@@ -179,11 +186,13 @@ export async function getTopSubmitters(
       })),
     );
   } catch (err) {
-    console.log("Error getting top submitters - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error fetching top submitters", {
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
 }
 
@@ -267,12 +276,21 @@ export async function editMember(req: Request, res: Response): Promise<void> {
     }).select("-password");
 
     res.status(200).send({ message: "Edit successful", user });
+    await logEvent("info", "Member details edited", {
+      memberId: user?._id,
+      memberName: user?.name,
+      editor: req.user?._id,
+    });
   } catch (err) {
-    console.log("Error editing member - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error editing member", {
+      memberId: req.user?._id,
+      error: err instanceof Error ? err.message : String(err),
+      editor: req.user?._id,
+    });
   }
 }
 
@@ -297,13 +315,21 @@ export async function deleteMember(req: Request, res: Response): Promise<void> {
       deleteFile(member.imgId);
     }
 
-    console.log(`Member deleted - ${member.name} - ${member._id}`);
     res.status(200).send({ message: "Member deleted successfully" });
+    await logEvent("info", "Member deleted", {
+      memberId: member._id,
+      memberName: member.name,
+      deletedBy: req.user?._id,
+    });
   } catch (err) {
-    console.log("Error deleting member - ", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    await logEvent("error", "Error deleting member", {
+      memberId: req.user?._id,
+      error: err instanceof Error ? err.message : String(err),
+      deletedBy: req.user?._id,
+    });
   }
 }
