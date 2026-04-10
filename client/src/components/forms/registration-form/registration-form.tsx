@@ -184,7 +184,7 @@ export default function RegistrationForm() {
           fullWidth
           error={!!errors.socialLink}
           helperText={errors.socialLink?.message}
-          placeholder="Enter your facebook profile link"
+          placeholder="eg. https://www.facebook.com/yourprofile"
         />
 
         <TextField

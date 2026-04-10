@@ -4,6 +4,7 @@ import TableColumnHeader from "../table/table-column-header";
 import { useState } from "react";
 import TableActionColumn from "../table/table-action-column";
 import { LuEye, LuTrash } from "react-icons/lu";
+import dayjs from "dayjs";
 
 export default function getMessagesTableColumns({
   onViewClick,
@@ -85,6 +86,8 @@ export default function getMessagesTableColumns({
       id: "actions",
       cell: ({ row }) => {
         const [open, setOpen] = useState<boolean>(false);
+        const hasSent14DaysAgo =
+          dayjs().diff(dayjs(row.original.createdAt), "day") <= 14;
 
         return (
           <TableActionColumn
@@ -92,7 +95,10 @@ export default function getMessagesTableColumns({
             open={open}
             setOpen={setOpen}
             style={{
-              background: row.original.new === true ? "#dcfce7" : "white",
+              background:
+                row.original.new === true && hasSent14DaysAgo
+                  ? "#dcfce7"
+                  : "white",
             }}
           >
             <div className="max-h-65 scroll-py-1 overflow-y-auto overflow-x-hidden flex flex-col p-1!">

@@ -86,7 +86,9 @@ export default function Profile(): ReactNode {
               src={
                 (profileData.isImageHidden || !profileData.isImageVerified) &&
                 !isExecutive
-                  ? "/executive-members/placeholderpfp.webp"
+                  ? isOwner
+                    ? profileData.image
+                    : "/executive-members/placeholderpfp.webp"
                   : profileData.image
               }
               alt={profileData.name}

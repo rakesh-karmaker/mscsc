@@ -13,6 +13,7 @@ export type MemberPreview = Pick<
   | "position"
   | "isImageHidden"
   | "isImageVerified"
+  | "createdAt"
 > & { new: boolean };
 
 export type MemberEditTypes = {

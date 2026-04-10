@@ -6,6 +6,7 @@ import { useState } from "react";
 import type { MemberPreview } from "@/types/member-types";
 import DeleteWarning from "../ui/delete-warning";
 import ListLayout from "./list-layout";
+import dayjs from "dayjs";
 
 export default function MemberList({ members }: { members: MemberPreview[] }) {
   const queryClient = useQueryClient();
@@ -63,11 +64,13 @@ function MemberListItem({
   onNewClick: (slug: string) => void;
 }) {
   const [open, setOpen] = useState(false);
+  const hasRegistered7DaysAgo =
+    dayjs().diff(dayjs(member.createdAt), "day") <= 7;
 
   return (
     <>
       <NavLink
-        className={member.new ? "new" : ""}
+        className={member.new && hasRegistered7DaysAgo ? "new" : ""}
         onClick={() => {
           if (member.new) {
             onNewClick(member.slug);

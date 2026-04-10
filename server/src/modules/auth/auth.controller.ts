@@ -78,11 +78,6 @@ export async function register(req: Request, res: Response): Promise<void> {
       expiresIn: JWT_EXPIRATION,
     });
 
-    console.log(
-      `${newMember.name} registered successfully -`,
-      getDate(),
-      "\n---\n",
-    );
     res.status(201).send({
       subject: "register",
       message: "Registered successfully.",
@@ -90,7 +85,7 @@ export async function register(req: Request, res: Response): Promise<void> {
       member: newMember,
     });
 
-    await logEvent("info", "New member registered", {
+    await logEvent("info", `New member registered - ${newMember.name}`, {
       memberId: newMember._id,
       memberName: newMember.name,
     });
@@ -135,18 +130,13 @@ export async function login(req: Request, res: Response): Promise<void> {
       expiresIn: JWT_EXPIRATION,
     });
 
-    console.log(
-      `${member.name} logged in successfully -`,
-      getDate(),
-      "\n---\n",
-    );
     res.status(200).send({
       subject: "login",
       message: "Logged in successfully.",
       token,
       member,
     });
-    await logEvent("info", "Member logged in", {
+    await logEvent("info", `Member logged in - ${member.name}`, {
       memberId: member._id,
       memberName: member.name,
     });

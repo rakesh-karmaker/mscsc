@@ -7,6 +7,7 @@ import { Link, NavLink } from "react-router-dom";
 import { LuFacebook, LuGlobe } from "react-icons/lu";
 import MemberEditDialog from "@/components/members/member-edit-dialog";
 import TableActionColumn from "../table/table-action-column";
+import dayjs from "dayjs";
 
 export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
   return [
@@ -145,6 +146,8 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       id: "actions",
       cell: ({ row }) => {
         const [open, setOpen] = useState<boolean>(false);
+        const hasRegistered14DaysAgo =
+          dayjs().diff(dayjs(row.original.createdAt), "day") <= 14;
 
         return (
           <TableActionColumn
@@ -152,7 +155,10 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
             open={open}
             setOpen={setOpen}
             style={{
-              background: row.original.new === true ? "#dcfce7" : "white",
+              background:
+                row.original.new === true && hasRegistered14DaysAgo
+                  ? "#dcfce7"
+                  : "white",
             }}
           >
             <div className="max-h-65 scroll-py-1 overflow-y-auto overflow-x-hidden flex flex-col p-1!">
