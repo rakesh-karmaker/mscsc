@@ -95,6 +95,19 @@ export async function registerForEvent(
     const body = req.body as Record<string, unknown>;
     const file = req.file;
 
+    if (
+      body &&
+      body.teamSegmentsData &&
+      typeof body.teamSegmentsData === "string"
+    ) {
+      try {
+        body.teamSegmentsData = JSON.parse(body.teamSegmentsData);
+      } catch (error) {
+        res.status(400).json({ message: "Invalid teamSegmentsData format" });
+        return;
+      }
+    }
+
     const { error: validationError } = eventRegistrationSchema.validate(body);
     if (validationError) {
       res.status(400).send({
@@ -175,7 +188,10 @@ export async function registerForEvent(
         cleanedBody.teamSegmentsData,
       );
       if (teamValidationError) {
-        res.status(400).json({ message: teamValidationError });
+        res.status(400).json({
+          subject: `teamSegmentsData.${teamValidationError.segmentSlug}`,
+          message: teamValidationError.message,
+        });
         return;
       }
     }

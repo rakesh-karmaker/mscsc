@@ -41,13 +41,26 @@ export async function validateTeamSegmentsData(
   eventId: unknown,
   userEmail: string,
   teamSegmentsData: Record<string, TeamSegmentData>,
-): Promise<string | null> {
+): Promise<{ message: string; segmentSlug: string } | null> {
   for (const [segmentSlug, teamData] of Object.entries(teamSegmentsData)) {
     if (!teamData.teamName || !teamData.leaderEmail) {
-      return `Invalid team data provided for segment - ${deSlugify(
+      return {
         segmentSlug,
-        false,
-      )}`;
+        message: `Invalid team data provided for segment - ${deSlugify(
+          segmentSlug,
+          false,
+        )}`,
+      };
+    }
+
+    if (teamData.memberEmails.includes(teamData.leaderEmail)) {
+      return {
+        segmentSlug,
+        message: `Leader email cannot be listed as a member email for the ${deSlugify(
+          segmentSlug,
+          false,
+        )} segment. Please check your team information.`,
+      };
     }
 
     const isLeader = teamData.leaderEmail === userEmail;
@@ -63,25 +76,33 @@ export async function validateTeamSegmentsData(
         leaderEmail: { $ne: teamData.leaderEmail },
       });
       if (existingTeam) {
-        return `The team name "${teamData.teamName}" is already taken for the ${deSlugify(
+        return {
+          message: `The team name "${teamData.teamName}" is already taken for the ${deSlugify(
+            segmentSlug,
+            false,
+          )} segment. Please choose a different name.`,
           segmentSlug,
-          false,
-        )} segment. Please choose a different name.`;
+        };
       }
 
       if (teamData.memberEmails.length > 0) {
         const conflictingTeams = await EventTeam.find({
-          ...sharedQuery,
+          eventId,
+          segmentSlug,
           $or: [
             { leaderEmail: { $in: teamData.memberEmails } },
-            { memberEmails: { $elemMatch: { $in: teamData.memberEmails } } },
+            { memberEmails: { $in: teamData.memberEmails } },
           ],
         });
+
         if (conflictingTeams.length > 0) {
-          return `One or more member emails are already associated with a team in the ${deSlugify(
+          return {
             segmentSlug,
-            false,
-          )} segment. Please check your team information.`;
+            message: `One or more member emails are already associated with a team in the ${deSlugify(
+              segmentSlug,
+              false,
+            )} segment. Please check your team information.`,
+          };
         }
       }
     } else {
@@ -90,17 +111,23 @@ export async function validateTeamSegmentsData(
         leaderEmail: teamData.leaderEmail,
       });
       if (!existingTeam) {
-        return `No team found for the ${deSlugify(
+        return {
           segmentSlug,
-          false,
-        )} segment with the provided leader email ${teamData.leaderEmail} and team name ${teamData.teamName}. Please check your team information.`;
+          message: `No team found for the ${deSlugify(
+            segmentSlug,
+            false,
+          )} segment with the provided leader email ${teamData.leaderEmail} and team name ${teamData.teamName}. Please check your team information.`,
+        };
       }
 
       if (!existingTeam.memberEmails?.includes(userEmail)) {
-        return `You are not listed as a member of the team for the ${deSlugify(
+        return {
           segmentSlug,
-          false,
-        )} segment. Please check your team information and your email.`;
+          message: `You are not listed as a member of the team for the ${deSlugify(
+            segmentSlug,
+            false,
+          )} segment. Please check your team information and your email.`,
+        };
       }
     }
   }
