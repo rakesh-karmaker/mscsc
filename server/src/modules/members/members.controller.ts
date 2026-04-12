@@ -198,6 +198,8 @@ export async function getTopSubmitters(
 
 // Edit member details
 export async function editMember(req: Request, res: Response): Promise<void> {
+  const isAdminEdit = req.path.includes("/admin/");
+
   try {
     const { slug, ...updates } = req.body;
 
@@ -214,61 +216,92 @@ export async function editMember(req: Request, res: Response): Promise<void> {
       return;
     }
 
-    // check if the user is trying to change email address
-    if (updates && updates.email && updates.email !== previousUser.email) {
-      const emailExists = await Member.findOne({ email: updates.email });
-      if (emailExists) {
-        res.status(409).send({ message: "Email already in use" });
+    if (!isAdminEdit) {
+      // check if the user is trying to change email address
+      if (updates && updates.email && updates.email !== previousUser.email) {
+        const emailExists = await Member.findOne({ email: updates.email });
+        if (emailExists) {
+          res.status(409).send({ message: "Email already in use" });
+          return;
+        }
+      }
+
+      // Authorization: only the user themselves or an admin can edit
+      if (previousUser._id.toString() !== req.user?._id) {
+        const adminData = await Member.findById(req.user?._id);
+        console.log(`Mismatched id - ${adminData?.name} - ${req.user?._id}`);
+        if (!adminData || adminData?.role !== "admin") {
+          res.status(401).send({ message: "Access Denied" });
+          return;
+        }
+      }
+
+      // Update User Timeline
+      if (updates && updates.timeline) {
+        const timeline = JSON.parse(updates.timeline);
+        const updatedMember = await Member.findOneAndUpdate(
+          { slug },
+          { timeline: timeline },
+          { new: true },
+        ).select("-password");
+
+        // return updated member
+        res
+          .status(200)
+          .send({ message: "Edit successful", member: updatedMember });
         return;
       }
+
+      // Update image if new image is uploaded
+      if (req?.file) {
+        deleteFile(previousUser.imgId);
+        const { url, imgId } = await uploadImage(req.file, true, "members");
+        updates.image = url;
+        updates.imgId = imgId;
+        updates.new = true; // Once edited, set new to true
+      }
+
+      // If password is empty string, retain previous password
+      if (updates?.password === "") {
+        updates.password = previousUser.password;
+      } else if (updates && updates.password) {
+        updates.password = await generateHash(updates.password);
+      }
+
+      // Trim certain fields
+      updates.batch =
+        parseInt(updates.batch?.trim() || "") || previousUser.batch;
+      updates.name = updates.name?.trim() || previousUser.name;
+      updates.branch = updates.branch?.trim() || previousUser.branch;
     }
 
-    // Authorization: only the user themselves or an admin can edit
-    if (previousUser._id.toString() !== req.user?._id) {
-      const adminData = await Member.findById(req.user?._id);
-      console.log(`Mismatched id - ${adminData?.name} - ${req.user?._id}`);
-      if (!adminData || adminData?.role !== "admin") {
+    if (
+      updates.position ||
+      updates.role ||
+      updates.isImageHidden ||
+      updates.isImageVerified
+    ) {
+      const editor = await Member.findById(req.user?._id);
+      if (!editor || editor.role !== "admin" || !isAdminEdit) {
         res.status(401).send({ message: "Access Denied" });
+        await logEvent(
+          "warning",
+          "Unauthorized member role or position edit attempt",
+          {
+            attemptedBy: req.user?._id,
+            memberEdited: previousUser._id,
+          },
+        );
         return;
       }
+
+      updates.position = updates.position?.trim() || previousUser.position;
+      await logEvent("info", "Member role or position edited", {
+        memberId: previousUser?._id,
+        memberName: previousUser?.name,
+        editor: req.user?._id,
+      });
     }
-
-    // Update User Timeline
-    if (updates && updates.timeline) {
-      const timeline = JSON.parse(updates.timeline);
-      const updatedMember = await Member.findOneAndUpdate(
-        { slug },
-        { timeline: timeline },
-        { new: true },
-      ).select("-password");
-
-      // return updated member
-      res
-        .status(200)
-        .send({ message: "Edit successful", member: updatedMember });
-      return;
-    }
-
-    // Update image if new image is uploaded
-    if (req?.file) {
-      deleteFile(previousUser.imgId);
-      const { url, imgId } = await uploadImage(req.file, true, "members");
-      updates.image = url;
-      updates.imgId = imgId;
-      updates.new = true; // Once edited, set new to true
-    }
-
-    // If password is empty string, retain previous password
-    if (updates?.password === "") {
-      updates.password = previousUser.password;
-    } else if (updates && updates.password) {
-      updates.password = await generateHash(updates.password);
-    }
-
-    // Trim certain fields
-    updates.batch = parseInt(updates.batch?.trim() || "") || previousUser.batch;
-    updates.name = updates.name?.trim() || previousUser.name;
-    updates.branch = updates.branch?.trim() || previousUser.branch;
 
     const user = await Member.findOneAndUpdate({ slug }, updates, {
       isImageVerified: false, // Reset image verification on edit
@@ -276,11 +309,6 @@ export async function editMember(req: Request, res: Response): Promise<void> {
     }).select("-password");
 
     res.status(200).send({ message: "Edit successful", user });
-    await logEvent("info", "Member details edited", {
-      memberId: user?._id,
-      memberName: user?.name,
-      editor: req.user?._id,
-    });
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : String(err);
     res

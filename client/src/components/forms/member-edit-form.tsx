@@ -59,8 +59,7 @@ export default function MemberEditForm({
     mutationFn: (props: MemberMutationProps) => {
       const { method, ...data } = props;
       if (method == "edit") {
-        console.log("Editing member with data:", data);
-        return editMember(data);
+        return editMember(data, true);
       } else {
         return deleteMember({ slug: data.slug });
       }
@@ -72,7 +71,7 @@ export default function MemberEditForm({
       toast.error("Failed to edit member");
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["members"] });
+      queryClient.invalidateQueries({ queryKey: ["all-members"] });
       if (user && member._id === user._id) {
         queryClient.invalidateQueries({ queryKey: ["user"] });
       }

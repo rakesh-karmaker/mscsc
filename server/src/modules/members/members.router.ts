@@ -27,6 +27,7 @@ memberRouter.patch(
   upload.single("image"),
   editMember,
 );
+memberRouter.patch("/admin/edit-member", isAuthorized, isAdmin, editMember);
 
 memberRouter.delete("/:slug", isAuthorized, isAdmin, deleteMember);
 

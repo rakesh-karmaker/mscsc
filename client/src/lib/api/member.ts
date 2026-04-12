@@ -85,17 +85,23 @@ export async function editTimeline(data: {
 
 export async function editMember(
   data: MemberEditTypes | { slug: string; new: boolean },
+  isRoleOrPositionChange = false,
 ) {
   const formData = new FormData();
   for (const key in data) {
     formData.append(key, String(data[key as keyof typeof data]));
   }
-
-  return api.patch("/member/edit-member", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
+  return api.patch(
+    `/member${isRoleOrPositionChange ? "/admin" : ""}/edit-member`,
+    formData,
+    {
+      headers: isRoleOrPositionChange
+        ? {}
+        : {
+            "Content-Type": "multipart/form-data",
+          },
     },
-  });
+  );
 }
 
 export async function deleteMember(data: { slug: string }) {

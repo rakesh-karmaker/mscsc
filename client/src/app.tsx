@@ -1,17 +1,12 @@
-import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
-import { Outlet, useLocation } from "react-router-dom";
+import { ScrollRestoration, Outlet } from "react-router";
 
 export default function App() {
-  const location = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location]);
-
   return (
-    <>
+    <div>
       <Outlet />
       <Toaster position="top-right" reverseOrder={false} />
-    </>
+      <ScrollRestoration />
+    </div>
   );
 }
