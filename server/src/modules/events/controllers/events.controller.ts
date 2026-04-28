@@ -1,4 +1,4 @@
-import e, { Request, Response } from "express";
+import { Request, Response } from "express";
 import { eventFormSchema } from "../schemas/event.schema.js";
 import {
   AboutDataType,
@@ -21,10 +21,12 @@ import eventTeam from "../models/event-team.model.js";
 import { logEvent } from "../../../shared/utils/log-event.js";
 
 // get all events
-export async function getAllEvents(_: Request, res: Response): Promise<void> {
+export async function getAllEvents(req: Request, res: Response): Promise<void> {
   try {
     const events = await Event.find().select(
-      "eventName eventSlug eventLogoUrl eventBannerUrl eventDescription eventLocation eventDate participantCount segmentCount isUpcoming",
+      req.headers.shorten === "true"
+        ? "eventName eventSlug"
+        : "eventName eventSlug eventLogoUrl eventBannerUrl eventDescription eventLocation eventDate participantCount segmentCount isUpcoming",
     );
     res.status(200).send(events);
   } catch (err) {

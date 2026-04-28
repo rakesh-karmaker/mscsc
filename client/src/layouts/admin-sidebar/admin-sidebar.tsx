@@ -9,56 +9,79 @@ import "./admin-sidebar.css";
 export default function AdminSidebar({
   name,
   image,
+  events,
+  isEventsFetching,
 }: {
   name: string;
   image: string;
+  events: {
+    eventName: string;
+    eventSlug: string;
+  }[];
+  isEventsFetching: boolean;
 }): ReactNode {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <aside className="sidebar-container">
-      <div>
-        {window.innerWidth <= 1530 && (
-          <div className="sidebar-header">
-            <button
-              className="sidebar-toggle mobile"
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            >
-              <FaBars />
-            </button>
-            <NavLink to="/" className="primary-button">
-              Home Page
-            </NavLink>
-          </div>
-        )}
-        <div id="sidebar" className={isSidebarOpen ? "sidebar-active" : ""}>
-          <nav>
-            <div className="mscsc-name">
-              <div className="mscsc-name-container">
-                <h2>MSCSC</h2>
-                {window.innerWidth <= 1530 && (
-                  <button
-                    className="sidebar-toggle"
-                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                  >
-                    <FaTimes />
-                  </button>
-                )}
-              </div>
-              <p className="sub-text">Admin Panel</p>
-            </div>
-
-            <Welcome name={name} image={image} />
-
-            <AdminSidebarLinks
-              isSidebarOpen={isSidebarOpen}
-              setIsSidebarOpen={setIsSidebarOpen}
-            />
-          </nav>
-
-          <p className="copyright">© {new Date().getFullYear()} MSCSC</p>
+    <>
+      {window.innerWidth <= 1530 && (
+        <div className="sidebar-header">
+          <button
+            className="sidebar-toggle mobile"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            <FaBars />
+          </button>
+          <NavLink to="/" className="primary-button">
+            Home Page
+          </NavLink>
         </div>
-      </div>
-    </aside>
+      )}
+      <aside
+        className={`${isSidebarOpen ? "sidebar-active" : ""} sidebar-container h-full`}
+      >
+        <div className="w-full h-screen overflow-y-auto p-7.5! flex flex-col gap-7.5">
+          <div className={`h-full flex flex-col justify-between gap-10`}>
+            <nav>
+              <div className="mscsc-name">
+                <div className="mscsc-name-container">
+                  <h2>MSCSC</h2>
+                  {window.innerWidth <= 1530 && (
+                    <button
+                      className="sidebar-toggle"
+                      onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                    >
+                      <FaTimes />
+                    </button>
+                  )}
+                </div>
+                <p className="sub-text">Admin Panel</p>
+              </div>
+
+              <Welcome name={name} image={image} />
+
+              <AdminSidebarLinks
+                isSidebarOpen={isSidebarOpen}
+                setIsSidebarOpen={setIsSidebarOpen}
+                events={events}
+                isEventsFetching={isEventsFetching}
+              />
+            </nav>
+
+            <p>
+              © {new Date().getFullYear()} MSCSC ||{" "}
+              <a
+                href="https://rakesh-karmaker.netlify.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="opacity-70 hover:opacity-100 transition-opacity duration-300"
+              >
+                Rakesh
+              </a>
+            </p>
+          </div>
+        </div>
+      </aside>
+    </>
   );
 }

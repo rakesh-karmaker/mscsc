@@ -2,7 +2,11 @@ import { api } from "@/config/axios";
 import type { EventFormDataType } from "@/types/event-types";
 
 export async function getAllEvents() {
-  return api.get("/event/all");
+  return api.get("/event/all", {
+    headers: {
+      shorten: "true",
+    },
+  });
 }
 
 export async function getEventBySlug(eventSlug: string) {

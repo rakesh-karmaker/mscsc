@@ -1,8 +1,7 @@
-#sidebar {
+.sidebar-container {
   background-color: var(--black);
   min-width: 275px;
   height: 100vh;
-  padding: 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -30,7 +29,7 @@
   width: fit-content;
 }
 
-#sidebar > nav {
+.sidebar-container nav {
   display: flex;
   flex-direction: column;
   gap: 35px;
@@ -164,7 +163,7 @@
 }
 
 @media screen and (max-width: 1530px) {
-  #sidebar {
+  .sidebar-container {
     transform: translateX(-100%);
     transition: transform 0.25s;
   }
@@ -172,7 +171,7 @@
     transform: translateX(0) !important;
   }
   .sidebar-container {
-    width: 100%;
+    width: fit-content;
   }
 }
 
