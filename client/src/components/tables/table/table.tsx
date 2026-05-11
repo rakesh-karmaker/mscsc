@@ -19,6 +19,7 @@ interface TableProps<TData> extends React.ComponentProps<"div"> {
   table: TanstackTable<TData>;
   isLoading?: boolean;
   selectedLength: number;
+  border?: boolean;
 }
 
 export function Table<TData>({
@@ -27,6 +28,7 @@ export function Table<TData>({
   className,
   isLoading,
   selectedLength,
+  border = true,
   ...props
 }: TableProps<TData>) {
   return (
@@ -41,7 +43,9 @@ export function Table<TData>({
         </div>
       ) : (
         <>
-          <div className="overflow-hidden rounded-md border border-black/20">
+          <div
+            className={`overflow-hidden rounded-md ${border ? "border border-black/20" : ""}`}
+          >
             <TableWrapper>
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (

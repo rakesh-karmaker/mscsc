@@ -1,11 +1,11 @@
 import { type ReactNode } from "react";
-import { useTable } from "@/hooks/use-table";
+import { useTable } from "@/hooks/table-hooks/use-table";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Table } from "../table/table";
 import TableToolbar from "../table/table-toolbar";
 import getMessagesTableColumns from "./messages-table-columns";
 import { getMessages } from "@/lib/api/message";
-import useGetMessagesSearchParams from "@/hooks/use-get-messages-search-params";
+import useGetMessagesSearchParams from "@/hooks/table-hooks/header-hooks/use-get-messages-search-params";
 import type { MessageTableData } from "@/types/message-types";
 
 export default function MessagesTable({

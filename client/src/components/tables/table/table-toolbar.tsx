@@ -30,7 +30,7 @@ export default function TableToolbar<TData>({
       role="toolbar"
       aria-orientation="horizontal"
       className={cn(
-        "flex w-full items-start max-xs:items-end justify-between gap-2 p-1! flex-wrap-reverse max-xs:flex-col-reverse",
+        "flex w-full items-start max-xs:items-end justify-between gap-2  flex-wrap-reverse max-xs:flex-col-reverse",
         className,
       )}
       {...rest}

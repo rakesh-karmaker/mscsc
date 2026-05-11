@@ -1,6 +1,7 @@
 import { Tooltip } from "@mui/material";
 import { RxCross2 } from "react-icons/rx";
 import { FaPlus } from "react-icons/fa6";
+import { cn } from "@/utils/cn";
 
 export function AddSocialLinkButton({ append }: { append: () => void }) {
   return (
@@ -35,5 +36,24 @@ export function RemoveSocialLinkButton({
         <RxCross2 />
       </button>
     </Tooltip>
+  );
+}
+
+export function TableBtn({
+  children,
+  className,
+  ...rest
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button
+      className={cn(
+        "w-full h-full flex gap-2 rounded-sm items-center px-2.5! py-1.5! hover:bg-[#f5f5f5] transition-all cursor-pointer",
+        className,
+      )}
+      type="button"
+      {...rest}
+    >
+      {children}
+    </button>
   );
 }

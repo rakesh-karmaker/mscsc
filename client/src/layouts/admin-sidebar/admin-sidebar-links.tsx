@@ -102,7 +102,7 @@ export default function AdminSidebarLinks({
                 key={event.eventSlug}
                 data={{
                   name: event.eventName,
-                  to: event.eventSlug,
+                  to: `/admin/event/${event.eventSlug}`,
                   icon: <BiSolidCalendarEvent />,
                 }}
                 isSidebarOpen={isSidebarOpen}

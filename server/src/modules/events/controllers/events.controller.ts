@@ -17,8 +17,10 @@ import {
 import Event from "../models/event.model.js";
 import EventRegistration from "../models/event-registration.model.js";
 import EventCA from "../models/event-ca.model.js";
+import EventTeam from "../models/event-team.model.js";
 import eventTeam from "../models/event-team.model.js";
 import { logEvent } from "../../../shared/utils/log-event.js";
+import getCategory from "../utils/get-category.js";
 
 // get all events
 export async function getAllEvents(req: Request, res: Response): Promise<void> {
@@ -26,8 +28,9 @@ export async function getAllEvents(req: Request, res: Response): Promise<void> {
     const events = await Event.find().select(
       req.headers.shorten === "true"
         ? "eventName eventSlug"
-        : "eventName eventSlug eventLogoUrl eventBannerUrl eventDescription eventLocation eventDate participantCount segmentCount isUpcoming",
+        : "eventName eventSlug eventLogoUrl eventBannerUrl eventDescription eventLocation eventDate participantCount segments isUpcoming",
     );
+
     res.status(200).send(events);
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : String(err);
@@ -50,66 +53,6 @@ export async function getEventBySlug(
     const { eventSlug } = req.params;
     const shorten = req.headers.shorten === "true";
 
-    // if requestDetails includes includeRegistrations flag, fetch event + registrations + CAs in ONE DB call
-    if (req.user && req.requestDetails?.includeRegistrations) {
-      const [joined] = await Event.aggregate([
-        { $match: { eventSlug } },
-        { $limit: 1 },
-        {
-          $lookup: {
-            from: EventRegistration.collection.name,
-            let: { eventId: "$_id" },
-            pipeline: [
-              { $match: { $expr: { $eq: ["$eventId", "$$eventId"] } } },
-              {
-                $project: {
-                  _id: 1,
-                  name: 1,
-                  photoUrl: 1,
-                  institution: 1,
-                  grade: 1,
-                  isVerified: 1,
-                  hasAttended: 1,
-                },
-              },
-            ],
-            as: "registrations",
-          },
-        },
-        {
-          $lookup: {
-            from: EventCA.collection.name,
-            let: { eventId: "$_id" },
-            pipeline: [
-              { $match: { $expr: { $eq: ["$eventId", "$$eventId"] } } },
-              {
-                $project: {
-                  _id: 1,
-                  name: 1,
-                  institution: 1,
-                  grade: 1,
-                  isValidated: 1,
-                  caCode: 1,
-                },
-              },
-            ],
-            as: "eventCAs",
-          },
-        },
-      ]);
-
-      if (!joined) {
-        res.status(404).send({ subject: "slug", message: "Event not found" });
-        return;
-      }
-
-      // preserve original response shape: { event, registrations, eventCAs }
-      const { registrations, eventCAs, ...eventOnly } = joined as any;
-      res.status(200).send({ event: eventOnly, registrations, eventCAs });
-      return;
-    }
-
-    // simple/fast path (no registrations requested)
     const event = await Event.findOne({ eventSlug: eventSlug })
       .select(
         shorten
@@ -119,6 +62,54 @@ export async function getEventBySlug(
       .lean();
     if (!event) {
       res.status(404).send({ subject: "slug", message: "Event not found" });
+      return;
+    }
+
+    if (req.user && req.headers.details === "true") {
+      const registrations = await EventRegistration.find({
+        eventId: event._id,
+        // status: "validated",
+      }).lean();
+
+      const eventCAs = await EventCA.find({
+        eventId: event._id,
+        status: "approved",
+      }).lean();
+
+      const teams = await EventTeam.find({
+        eventId: event._id,
+        status: "approved",
+      })
+        .lean()
+        .countDocuments();
+
+      const income =
+        event.fees !== "N/A"
+          ? registrations.length * parseFloat(event.fees)
+          : "N/A";
+
+      const categoryCounts: { [category: string]: number } = {
+        Primary: 0,
+        Junior: 0,
+        Secondary: 0,
+        "Higher Secondary": 0,
+      };
+      registrations.forEach((registration) => {
+        const grade = registration.grade;
+        const category = getCategory(grade);
+        if (categoryCounts[category] !== undefined) {
+          categoryCounts[category]++;
+        }
+      });
+
+      res.status(200).send({
+        registrations: registrations.length,
+        income,
+        eventCAs: eventCAs.length,
+        teams: teams,
+        categoryCounts,
+        segments: event.segments,
+      });
       return;
     }
 
@@ -226,6 +217,7 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
       formData.title = body.formData.title;
       formData.details = body.formData.details;
       formData.fees = body.formData.fees;
+      eventData.fees = body.formData.fees; // store fees in the main event data for easy access
 
       // handle QR code files for inner registration
       const transactionMethods: {
@@ -363,7 +355,10 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
       eventLocation: eventData.eventLocation,
       eventDate: eventData.eventDate,
       participantCount: 0,
-      segmentCount: eventData.segmentsData ? eventData.segmentsData.length : 0,
+      segments: eventData.segmentsData
+        ? eventData.segmentsData.map((segment) => segment.title)
+        : [],
+      fees: eventData.fees || "N/A",
 
       isUpcoming: new Date(eventData.eventDate) > new Date(),
       isHidden: true,

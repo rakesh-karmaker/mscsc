@@ -10,7 +10,11 @@ export async function getAllEvents() {
 }
 
 export async function getEventBySlug(eventSlug: string) {
-  return api.get(`/event/${eventSlug}`);
+  return api.get(`/event/${eventSlug}/details`, {
+    headers: {
+      details: "true",
+    },
+  });
 }
 
 export async function addEvent(data: EventFormDataType) {

@@ -18,19 +18,32 @@ import {
 } from "../utils/event-registration.helpers.js";
 import { TeamSegmentData } from "../event.types.js";
 import { logEvent } from "../../../shared/utils/log-event.js";
+import getGradeRange from "../utils/get-grade-range.js";
 
 // get all event registrations
 export async function getAllEventRegistrations(
   req: Request,
   res: Response,
 ): Promise<void> {
-  try {
-    const eventSlug = req.params.eventSlug;
-    if (!eventSlug) {
-      res.status(400).json({ message: "Event slug is required" });
-      return;
-    }
+  const eventSlug = req.params.eventSlug;
+  if (!eventSlug) {
+    res.status(400).json({ message: "Event slug is required" });
+    return;
+  }
 
+  const params = req.query as {
+    page?: string;
+    perPage?: string;
+    name?: string;
+    status?: string[];
+    category?: string[];
+    segments?: string[];
+    code?: string;
+    transactionMethod?: string[];
+    sort?: string[];
+  };
+
+  try {
     // find the event by slug
     const event = await Event.findOne({ eventSlug }).lean();
     if (!event) {
@@ -38,12 +51,60 @@ export async function getAllEventRegistrations(
       return;
     }
 
+    // parse and validate query parameters
+    const page = params.page ? parseInt(params.page) : 1;
+    const perPage = params.perPage ? parseInt(params.perPage) : 10;
+    const skip = (page - 1) * perPage;
+    const statusFilter =
+      params.status && params.status.length > 0
+        ? { status: { $in: params.status } }
+        : {};
+    const segmentsFilter =
+      params.segments && params.segments.length > 0
+        ? { segments: { $in: params.segments } }
+        : {};
+    const transactionMethodFilter =
+      params.transactionMethod && params.transactionMethod.length > 0
+        ? { transactionMethod: { $in: params.transactionMethod } }
+        : {};
+    const categoryFilter =
+      params.category && params.category.length > 0
+        ? getGradeRange(params.category)
+        : {};
+    const sort: { id: string; desc: boolean } | {} =
+      Array.isArray(params.sort) && params.sort.length > 0
+        ? params.sort[0]
+        : {};
+
+    const regex: { [key: string]: RegExp | undefined } = {
+      name: new RegExp(typeof params.name === "string" ? params.name : "", "i"),
+      code: new RegExp(typeof params.code === "string" ? params.code : "", "i"),
+    };
+
     // find the registrations for the event
     const registrations = await EventRegistration.find({
       eventId: event._id,
-    }).lean();
+      ...regex,
+      ...statusFilter,
+      ...segmentsFilter,
+      ...transactionMethodFilter,
+      ...categoryFilter,
+    })
+      .sort(
+        sort && Object.keys(sort).length > 0 && "id" in sort && "desc" in sort
+          ? { [String(sort.id)]: sort.desc === "true" ? -1 : 1 }
+          : { createdAt: -1 },
+      )
+      .select(
+        "_id name photoUrl email contactNumber status hasAttended grade code transactionMethod registrationDate segments",
+      );
 
-    res.status(200).json({ registrations });
+    const totalCount = registrations.length;
+    const paginatedRegistrations = registrations.slice(skip, skip + perPage);
+
+    res
+      .status(200)
+      .json({ results: paginatedRegistrations, selectedCount: totalCount });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
     await logEvent("error", "Error fetching event registrations", {

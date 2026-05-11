@@ -24,7 +24,8 @@ export interface EventSchemaType extends mongoose.Document {
   eventLocation: string;
   eventDate: string;
   participantCount: number;
-  segmentCount: number;
+  segments: string[];
+  fees: string;
 
   isUpcoming: boolean;
   isHidden: boolean;
@@ -131,6 +132,7 @@ type BasicInfoType = {
   registrationUrl: string;
   isInnerRegistration: boolean;
   hasCAForm: boolean;
+  fees: string;
 
   eventLogoUrl: string;
   eventLogoPublicId: string;

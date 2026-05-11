@@ -1,0 +1,356 @@
+import type { ColumnDef } from "@tanstack/react-table";
+import TableColumnHeader from "../../table/table-column-header";
+import capitalize from "@/utils/capitalize";
+import { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import {
+  LuCircleCheck,
+  LuCircleDashed,
+  LuCircleX,
+  LuFacebook,
+  LuGlobe,
+  LuLoaderPinwheel,
+} from "react-icons/lu";
+import MemberEditDialog from "@/components/members/member-edit-dialog";
+import dayjs from "dayjs";
+import TableActionColumn from "../../table/table-action-column";
+import type { EventRegistrationTableData } from "@/types/event-types";
+import getCategory from "@/utils/get-category";
+import { Popover } from "@mui/material";
+import { TableBtn } from "@/components/ui/btns";
+import ChangeStatus from "./change-status";
+import RegistrationDetailsModel from "./registration-details-model";
+
+export default function getRegistrationsTableColumns(
+  segments: string[],
+  registrationMutation: any,
+): ColumnDef<EventRegistrationTableData>[] {
+  return [
+    {
+      id: "name",
+      accessorKey: "name",
+      header: ({ column }) => (
+        <TableColumnHeader column={column} label="Full Name" />
+      ),
+      cell: ({ row }) => (
+        <div className="w-full h-full flex gap-2 items-center">
+          <img
+            src={row.original.photoUrl}
+            alt={row.original.name}
+            className="w-11 h-11 rounded-full object-cover"
+          />
+          <div className="flex flex-col">
+            <p className="font-medium  max-sm:text-sm flex flex-wrap">
+              {row.original.name && row.original.name.split(" ").length > 1
+                ? row.original.name.split(" ").map((part, index) => (
+                    <span key={index} className="mr-1! leading-5.5">
+                      {part}
+                    </span>
+                  ))
+                : null}
+            </p>
+            <p className="text-xs text-gray-500 max-w-52.5 truncate">
+              {row.original.email}
+            </p>
+          </div>
+        </div>
+      ),
+      meta: {
+        label: "Full Name",
+        placeholder: "Search names...",
+        variant: "text",
+      },
+      enableColumnFilter: true,
+      size: 270,
+    },
+    {
+      id: "code",
+      accessorKey: "code",
+      header: ({ column }) => (
+        <TableColumnHeader column={column} label="Code" />
+      ),
+      cell: ({ row }) => (
+        <span className="font-mono">
+          {row.original.status == "pending" ? "N/A" : row.original.code}
+        </span>
+      ),
+      meta: {
+        label: "Code",
+        placeholder: "Code...",
+        variant: "text",
+      },
+      enableColumnFilter: true,
+      size: 100,
+    },
+    {
+      id: "status",
+      accessorKey: "status",
+      header: ({ column }) => (
+        <TableColumnHeader column={column} label="Status" />
+      ),
+      cell: ({ row }) => {
+        let colorClasses = "";
+        switch (row.original.status) {
+          case "pending":
+            colorClasses = "bg-yellow-100 text-yellow-800";
+            break;
+          case "validated":
+            colorClasses = "bg-green-100 text-green-800";
+            break;
+          case "rejected":
+            colorClasses = "bg-red-100 text-red-800";
+            break;
+          default:
+            colorClasses = "bg-gray-100 text-gray-800";
+        }
+        return (
+          <span
+            className={`px-2! py-1! rounded-xs text-xs font-medium ${colorClasses}`}
+          >
+            {capitalize(row.original.status)}
+          </span>
+        );
+      },
+      meta: {
+        label: "Status",
+        variant: "multiSelect",
+        options: ["pending", "validated", "rejected"].map((status) => ({
+          label: status,
+          value: status,
+        })),
+      },
+      enableColumnFilter: true,
+      size: 130,
+    },
+    {
+      id: "hasAttended",
+      accessorKey: "hasAttended",
+      header: ({ column }) => (
+        <TableColumnHeader column={column} label="Attended" />
+      ),
+      cell: ({ row }) => (
+        <span
+          className={`px-2! py-1! rounded-xs text-xs font-medium ${
+            row.original.hasAttended
+              ? "bg-green-100 text-green-800"
+              : "bg-red-100 text-red-800"
+          }`}
+        >
+          {row.original.hasAttended ? "Attended" : "Not Attended"}
+        </span>
+      ),
+      meta: {
+        label: "Attended",
+      },
+      enableColumnFilter: true,
+      size: 130,
+    },
+    {
+      id: "segments",
+      accessorKey: "segments",
+      header: ({ column }) => (
+        <TableColumnHeader column={column} label="Segments" />
+      ),
+      cell: ({ row }) => (
+        <p>
+          {row.original.segments && row.original.segments.length > 0
+            ? row.original.segments.length
+            : "N/A"}
+        </p>
+      ),
+      meta: {
+        label: "Segments",
+        variant: "multiSelect",
+        options: segments.map((segment) => ({
+          label: segment,
+          value: segment,
+        })),
+      },
+      enableColumnFilter: true,
+    },
+    {
+      id: "contactNumber",
+      accessorKey: "contactNumber",
+      header: ({ column }) => (
+        <TableColumnHeader column={column} label="Contact Number" />
+      ),
+      meta: {
+        label: "Contact Number",
+      },
+      enableColumnFilter: false,
+    },
+    {
+      id: "category",
+      accessorKey: "category",
+      header: ({ column }) => (
+        <TableColumnHeader column={column} label="Category" />
+      ),
+      cell: ({ row }) => {
+        let colorClasses = "";
+        let category = getCategory(row.original.grade);
+        switch (category) {
+          case "primary":
+            colorClasses = "bg-blue-100 text-blue-800";
+            break;
+          case "junior":
+            colorClasses = "bg-green-100 text-green-800";
+            break;
+          case "secondary":
+            colorClasses = "bg-yellow-100 text-yellow-800";
+            break;
+          case "higher secondary":
+            colorClasses = "bg-purple-100 text-purple-800";
+            break;
+          default:
+            colorClasses = "bg-gray-100 text-gray-800";
+        }
+
+        return (
+          <span
+            className={`px-2! py-1! rounded-xs text-xs font-medium ${colorClasses}`}
+          >
+            {capitalize(category)}
+          </span>
+        );
+      },
+      meta: {
+        label: "Category",
+        placeholder: "Category...",
+        variant: "multiSelect",
+        options: ["primary", "junior", "secondary", "higher secondary"].map(
+          (category) => ({
+            label: capitalize(category),
+            value: category,
+          }),
+        ),
+      },
+      enableColumnFilter: false,
+    },
+    {
+      id: "transactionMethod",
+      accessorKey: "transactionMethod",
+      header: ({ column }) => (
+        <TableColumnHeader column={column} label="Method" />
+      ),
+      cell: ({ row }) => {
+        let colorClasses = "";
+        switch (row.original.transactionMethod) {
+          case "bkash":
+            colorClasses = "bg-green-100 text-green-800";
+            break;
+          case "nagad":
+            colorClasses = "bg-blue-100 text-blue-800";
+            break;
+          case "rocket":
+            colorClasses = "bg-purple-100 text-purple-800";
+            break;
+          default:
+            colorClasses = "bg-gray-100 text-gray-800";
+        }
+        return (
+          <span
+            className={`px-2! py-1! rounded-xs text-xs font-medium ${colorClasses}`}
+          >
+            {capitalize(row.original.transactionMethod)}
+          </span>
+        );
+      },
+      meta: {
+        label: "Method",
+        variant: "multiSelect",
+        options: ["bkash", "nagad", "rocket"].map((method) => ({
+          label: capitalize(method),
+          value: method,
+        })),
+      },
+      enableColumnFilter: true,
+      size: 130,
+    },
+    {
+      id: "registrationDate",
+      accessorKey: "registrationDate",
+      header: ({ column }) => (
+        <TableColumnHeader column={column} label="Registered" />
+      ),
+      cell: ({ row }) => {
+        const date = new Date(row.original.registrationDate);
+        return (
+          <span>
+            {date.toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })}
+          </span>
+        );
+      },
+      meta: {
+        label: "Registered Date",
+      },
+      enableColumnFilter: true,
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const [open, setOpen] = useState<boolean>(false);
+
+        return (
+          <TableActionColumn
+            rowId={row.id}
+            open={open}
+            setOpen={setOpen}
+            style={{
+              background: "white",
+            }}
+          >
+            <div className="max-h-65 scroll-py-1 overflow-y-auto overflow-x-hidden flex flex-col p-1!">
+              <ChangeStatus
+                registrationId={row.original._id}
+                id={`status-popover-${row.id}`}
+                registrationMutation={registrationMutation}
+                setOpen={setOpen}
+              />
+
+              <TableBtn
+                onClick={() => {
+                  registrationMutation.mutate({
+                    method: "toggleAttendance",
+                    registrationId: row.original._id,
+                    data: { hasAttended: !row.original.hasAttended },
+                  });
+                  setOpen(false);
+                }}
+              >
+                {" "}
+                {row.original.hasAttended ? (
+                  <LuCircleCheck className="opacity-70" />
+                ) : (
+                  <LuCircleX className="opacity-70" />
+                )}
+                <p>
+                  Mark as{" "}
+                  {row.original.hasAttended ? "Not Attended" : "Attended"}
+                </p>
+              </TableBtn>
+              <RegistrationDetailsModel
+                registrationId={row.original._id}
+                setOpen={setOpen}
+              />
+
+              {/* <Link
+                to={row.original.socialLink || "#"}
+                className="w-full h-full flex gap-2 rounded-sm items-center px-2.5! py-1.5! hover:bg-[#f5f5f5] transition-all cursor-pointer"
+                onClick={() => setOpen(false)}
+              >
+                <LuFacebook className="opacity-70" />
+                <p>Facebook</p>
+              </Link> */}
+            </div>
+            {/* <MemberEditDialog member={row.original} /> */}
+          </TableActionColumn>
+        );
+      },
+      size: 40,
+    },
+  ];
+}

@@ -1,3 +1,5 @@
+import type { ExtendedColumnSort } from "./table-types";
+
 export type SegmentType = {
   segmentSlug: string;
   locationType: "onsite" | "online";
@@ -107,4 +109,33 @@ export type EventFormDataType = {
   videoData?: File;
   aboutImage?: File;
   spLogos?: File[];
+};
+
+//* For Event Registrations Table
+
+export type EventRegistrationTableData = {
+  _id: string;
+  name: string;
+  photoUrl: string;
+  email: string;
+  contactNumber: string;
+  status: "pending" | "validated" | "rejected";
+  hasAttended: boolean;
+  grade: string;
+  code: string;
+  transactionMethod: string;
+  registrationDate: string;
+  segments: string[];
+};
+
+export type EventRegistrationsSearchParams = {
+  page: number;
+  perPage: number;
+  sort: ExtendedColumnSort<EventRegistrationTableData>[];
+  name: string;
+  status: string[];
+  category: string[];
+  segments: string[];
+  code: string;
+  transactionMethod: string[];
 };

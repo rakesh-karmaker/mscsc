@@ -54,6 +54,7 @@ const fileFields: { name: string; maxCount: number }[] = [
 // event routes
 eventRouter.get("/all", getAllEvents);
 eventRouter.get("/:eventSlug", getEventBySlug);
+eventRouter.get("/:eventSlug/details", isAuthorized, isAdmin, getEventBySlug);
 eventRouter.get(
   "/with-registrations/:eventSlug",
   isAuthorized,

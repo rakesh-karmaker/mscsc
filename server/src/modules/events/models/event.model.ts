@@ -25,7 +25,8 @@ const EventSchema = new mongoose.Schema<EventSchemaType>(
     eventLocation: { type: String, required: true },
     eventDate: { type: String, required: true },
     participantCount: { type: Number, required: true },
-    segmentCount: { type: Number, required: true },
+    segments: { type: [String], required: true },
+    fees: { type: String, required: true, default: "N/A" },
 
     isUpcoming: { type: Boolean, required: true },
     isHidden: { type: Boolean, required: true, default: false },

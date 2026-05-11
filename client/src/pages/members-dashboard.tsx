@@ -21,7 +21,7 @@ export default function MembersDashboard({}) {
       </Helmet>
 
       {/* page content */}
-      <div className="w-full h-full min-h-[calc(100svh-60px)] flex flex-col gap-13">
+      <div className="w-full h-full min-h-[calc(100svh-60px)] flex flex-col gap-6">
         <AdminDashboardHeader title={"Members"}>
           View all the members of the club
         </AdminDashboardHeader>

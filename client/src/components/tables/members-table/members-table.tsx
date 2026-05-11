@@ -1,11 +1,11 @@
 import { type ReactNode } from "react";
 import getMembersTableColumns from "./members-table-columns";
-import { useTable } from "@/hooks/use-table";
+import { useTable } from "@/hooks/table-hooks/use-table";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getMembers } from "@/lib/api/member";
 import { Table } from "../table/table";
 import TableToolbar from "../table/table-toolbar";
-import useGetMembersSearchParams from "@/hooks/use-get-members-search-params";
+import useGetMembersSearchParams from "@/hooks/table-hooks/header-hooks/use-get-members-search-params";
 
 export default function MembersTable(): ReactNode {
   const columns = getMembersTableColumns();

@@ -8,6 +8,7 @@ import { LuFacebook, LuGlobe } from "react-icons/lu";
 import MemberEditDialog from "@/components/members/member-edit-dialog";
 import TableActionColumn from "../table/table-action-column";
 import dayjs from "dayjs";
+import { Tooltip } from "@mui/material";
 
 export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
   return [
@@ -25,8 +26,14 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
             className="w-11 h-11 rounded-full object-cover"
           />
           <div className="flex flex-col">
-            <p className="font-medium truncate max-sm:text-sm max-w-62.5">
-              {row.original.name}
+            <p className="font-medium  max-sm:text-sm flex flex-wrap">
+              {row.original.name && row.original.name.split(" ").length > 1
+                ? row.original.name.split(" ").map((part, index) => (
+                    <span key={index} className="mr-1! leading-5.5">
+                      {part}
+                    </span>
+                  ))
+                : null}
             </p>
             <p className="text-xs text-gray-500 max-w-62.5">
               {row.original.email}
@@ -65,6 +72,7 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
         variant: "number",
       },
       enableColumnFilter: true,
+      size: 100,
     },
     {
       id: "branch",
@@ -84,6 +92,7 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
         ].map((branch) => ({ label: branch, value: branch })),
       },
       enableColumnFilter: true,
+      size: 130,
     },
     {
       id: "position",
@@ -93,15 +102,17 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       ),
       cell: ({ row }) => (
         <div className="flex gap-1">
-          <span
-            className={`px-2! py-1! rounded-xs text-xs font-medium ${
-              row.original.position === "admin"
-                ? "bg-red-100 text-red-800"
-                : "bg-green-100 text-green-800"
-            }`}
-          >
-            {capitalize(row.original.position)}{" "}
-          </span>
+          <Tooltip title={row.original.position}>
+            <span
+              className={`px-2! py-1! rounded-xs text-xs font-medium max-w-[20ch] truncate ${
+                row.original.position === "admin"
+                  ? "bg-red-100 text-red-800"
+                  : "bg-green-100 text-green-800"
+              }`}
+            >
+              {capitalize(row.original.position)}{" "}
+            </span>
+          </Tooltip>
           {row.original.role !== "member" && (
             <span className="px-2! py-1! rounded-xs text-xs font-medium bg-blue-100 text-blue-800">
               {capitalize(row.original.role)}
