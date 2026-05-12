@@ -19,7 +19,7 @@ import FormSectionLayout from "./form-section-layout/form-section-layout";
 import useEventFormValidator from "@/hooks/use-event-form-validator";
 import { useMutation } from "@tanstack/react-query";
 import type { EventFormDataType } from "@/types/event-types";
-import { addEvent } from "@/lib/api/event";
+import { addEvent } from "@/lib/api/event/event";
 import toast from "react-hot-toast";
 
 export default function EventForm({

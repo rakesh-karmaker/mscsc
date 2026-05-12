@@ -2,24 +2,14 @@ import type { ColumnDef } from "@tanstack/react-table";
 import TableColumnHeader from "../../table/table-column-header";
 import capitalize from "@/utils/capitalize";
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import {
-  LuCircleCheck,
-  LuCircleDashed,
-  LuCircleX,
-  LuFacebook,
-  LuGlobe,
-  LuLoaderPinwheel,
-} from "react-icons/lu";
-import MemberEditDialog from "@/components/members/member-edit-dialog";
-import dayjs from "dayjs";
+import { LuCircleCheck, LuCircleX, LuTrash2 } from "react-icons/lu";
 import TableActionColumn from "../../table/table-action-column";
 import type { EventRegistrationTableData } from "@/types/event-types";
 import getCategory from "@/utils/get-category";
-import { Popover } from "@mui/material";
 import { TableBtn } from "@/components/ui/btns";
 import ChangeStatus from "./change-status";
 import RegistrationDetailsModel from "./registration-details-model";
+import DeleteWarning from "@/components/ui/delete-warning";
 
 export default function getRegistrationsTableColumns(
   segments: string[],
@@ -169,13 +159,13 @@ export default function getRegistrationsTableColumns(
       enableColumnFilter: true,
     },
     {
-      id: "contactNumber",
-      accessorKey: "contactNumber",
+      id: "phoneNumber",
+      accessorKey: "phoneNumber",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Contact Number" />
+        <TableColumnHeader column={column} label="Phone Number" />
       ),
       meta: {
-        label: "Contact Number",
+        label: "Phone Number",
       },
       enableColumnFilter: false,
     },
@@ -293,6 +283,7 @@ export default function getRegistrationsTableColumns(
       id: "actions",
       cell: ({ row }) => {
         const [open, setOpen] = useState<boolean>(false);
+        const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
 
         return (
           <TableActionColumn
@@ -323,9 +314,9 @@ export default function getRegistrationsTableColumns(
               >
                 {" "}
                 {row.original.hasAttended ? (
-                  <LuCircleCheck className="opacity-70" />
-                ) : (
                   <LuCircleX className="opacity-70" />
+                ) : (
+                  <LuCircleCheck className="opacity-70" />
                 )}
                 <p>
                   Mark as{" "}
@@ -335,18 +326,38 @@ export default function getRegistrationsTableColumns(
               <RegistrationDetailsModel
                 registrationId={row.original._id}
                 setOpen={setOpen}
+                previousModels={{
+                  registrations: [row.original._id],
+                  teams: [],
+                }}
+                registrationMutation={registrationMutation}
               />
 
-              {/* <Link
-                to={row.original.socialLink || "#"}
-                className="w-full h-full flex gap-2 rounded-sm items-center px-2.5! py-1.5! hover:bg-[#f5f5f5] transition-all cursor-pointer"
-                onClick={() => setOpen(false)}
-              >
-                <LuFacebook className="opacity-70" />
-                <p>Facebook</p>
-              </Link> */}
+              <div className="border-t border-gray-300">
+                <TableBtn onClick={() => setDeleteOpen(true)}>
+                  <LuTrash2 className="opacity-70" />
+                  <p>Delete </p>
+                </TableBtn>
+                <DeleteWarning
+                  slug={row.original._id}
+                  deleteFunc={() => {
+                    registrationMutation.mutate({
+                      method: "delete",
+                      registrationId: row.original._id,
+                    });
+                  }}
+                  open={deleteOpen}
+                  setOpen={setDeleteOpen}
+                  title="Delete Registration"
+                >
+                  This will permanently delete this registration{" "}
+                  <span className="font-semibold">{row.original.name}</span>{" "}
+                  from the registration's list and remove all of their data from
+                  the server. All of their images, links, and other data will be
+                  permanently lost.
+                </DeleteWarning>
+              </div>
             </div>
-            {/* <MemberEditDialog member={row.original} /> */}
           </TableActionColumn>
         );
       },

@@ -1,11 +1,16 @@
 import type { EditUserSchemaType } from "@/lib/validation/edit-user-schema";
 import type { MemberEditSchema } from "@/lib/validation/member-edit-schema";
 import type { RegisterSchemaType } from "@/lib/validation/register-schema";
+import type { TeamEditSchema } from "@/lib/validation/team-edit-schema";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { Controller, type Control, type FieldErrors } from "react-hook-form";
 
 type SelectInputProps<
-  T extends RegisterSchemaType | EditUserSchemaType | MemberEditSchema
+  T extends
+    | RegisterSchemaType
+    | EditUserSchemaType
+    | MemberEditSchema
+    | TeamEditSchema,
 > = {
   control: Control<T>;
   name: keyof T;
@@ -15,7 +20,11 @@ type SelectInputProps<
 };
 
 export default function SelectInput<
-  T extends RegisterSchemaType | EditUserSchemaType | MemberEditSchema
+  T extends
+    | RegisterSchemaType
+    | EditUserSchemaType
+    | MemberEditSchema
+    | TeamEditSchema,
 >({ control, name, errors, dataList, children }: SelectInputProps<T>) {
   return (
     <FormControl fullWidth error={!!errors[name as keyof T]?.message}>

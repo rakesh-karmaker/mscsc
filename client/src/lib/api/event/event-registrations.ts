@@ -44,3 +44,12 @@ export async function editRegistration(
     data,
   );
 }
+
+export async function deleteRegistration(
+  eventSlug: string,
+  registrationId: string,
+) {
+  return api.delete(
+    `/event-registrations/${eventSlug}/registrations/${registrationId}`,
+  );
+}

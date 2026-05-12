@@ -2,13 +2,12 @@ import { TableBtn } from "@/components/ui/btns";
 import Modal from "@mui/material/Modal";
 import { useState, type ReactNode } from "react";
 import { FaXmark } from "react-icons/fa6";
-import { LuCircleUserRound } from "react-icons/lu";
-import RegistrationDetails from "./registration-details";
+import { LuUsersRound } from "react-icons/lu";
+import TeamDetails from "./team-details";
 
-interface RegistrationDetailsModelProps {
-  registrationId: string;
+interface TeamDetailsModelProps {
+  teamId: string;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  children?: ReactNode;
   className?: string;
   previousModels: {
     registrations: string[];
@@ -17,14 +16,13 @@ interface RegistrationDetailsModelProps {
   registrationMutation: any;
 }
 
-export default function RegistrationDetailsModel({
-  registrationId,
+export default function TeamDetailsModel({
+  teamId,
   setOpen,
-  children = false,
-  className = "",
+  className,
   previousModels,
   registrationMutation,
-}: RegistrationDetailsModelProps): ReactNode {
+}: TeamDetailsModelProps): ReactNode {
   const [detailsModelOpen, setDetailsModelOpen] = useState<boolean>(false);
 
   function handleClose() {
@@ -34,28 +32,16 @@ export default function RegistrationDetailsModel({
 
   return (
     <div>
-      {children ? (
-        <TableBtn
-          onClick={(e) => {
-            e.stopPropagation();
-            setDetailsModelOpen(true);
-          }}
-          className={className}
-        >
-          {children}
-        </TableBtn>
-      ) : (
-        <TableBtn
-          onClick={(e) => {
-            e.stopPropagation();
-            setDetailsModelOpen(true);
-          }}
-          className={className}
-        >
-          <LuCircleUserRound className="opacity-70" />
-          <p>View Details</p>
-        </TableBtn>
-      )}
+      <TableBtn
+        onClick={(e) => {
+          e.stopPropagation();
+          setDetailsModelOpen(true);
+        }}
+        className={className}
+      >
+        <LuUsersRound className="opacity-70" />
+        <p>View Details</p>
+      </TableBtn>
 
       <Modal
         open={detailsModelOpen}
@@ -72,7 +58,7 @@ export default function RegistrationDetailsModel({
             <div className="w-full flex flex-col">
               <div className="w-full flex justify-between items-start gap-4">
                 <h2 className="text-2xl font-medium max-xs:text-2xl">
-                  Registration Details
+                  Team Details
                 </h2>
                 <button
                   onClick={() => handleClose()}
@@ -82,11 +68,11 @@ export default function RegistrationDetailsModel({
                 </button>
               </div>
               <div className="w-full h-px bg-light-black/10 mt-2! mb-7!"></div>
-              <RegistrationDetails
-                registrationId={registrationId}
+              <TeamDetails
+                teamId={teamId}
                 previousModels={previousModels}
+                setDetailsModelOpen={setDetailsModelOpen}
                 registrationMutation={registrationMutation}
-                setModelOpen={setOpen}
               />
             </div>
           </div>

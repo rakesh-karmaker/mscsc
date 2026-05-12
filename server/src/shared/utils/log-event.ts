@@ -7,11 +7,20 @@ export async function logEvent(
 ) {
   try {
     if (level === "error") {
-      console.error(`[${level.toUpperCase()}] ${message}`);
+      console.error(
+        `[${level.toUpperCase()}] ${message} \nContext:`,
+        context.stack || context,
+      );
     } else if (level === "warning") {
-      console.warn(`[${level.toUpperCase()}] ${message}`);
+      console.warn(
+        `[${level.toUpperCase()}] ${message} \nContext:`,
+        context.stack || context,
+      );
     } else {
-      console.log(`[${level.toUpperCase()}] ${message}`);
+      console.log(
+        `[${level.toUpperCase()}] ${message} \nContext:`,
+        context.stack || context,
+      );
     }
 
     await Log.create({ level, message, context });

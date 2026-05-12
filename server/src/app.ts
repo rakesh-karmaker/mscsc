@@ -12,6 +12,7 @@ import dashboardRouter from "./modules/admin/dashboard.router.js";
 import eventRouter from "./modules/events/routers/events.router.js";
 import eventRegistrationRouter from "./modules/events/routers/event-registrations.router.js";
 import caApplicationsRouter from "./modules/events/routers/ca-applications.router.js";
+import teamsRouter from "./modules/events/routers/teams.router.js";
 
 const app = express();
 
@@ -51,5 +52,6 @@ app.use("/api/admin", dashboardRouter);
 app.use("/api/event", eventRouter);
 app.use("/api/event-registrations", eventRegistrationRouter);
 app.use("/api/ca-applications", caApplicationsRouter);
+app.use("/api/teams", teamsRouter);
 
 export default app;

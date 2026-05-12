@@ -1,6 +1,6 @@
 import AdminDashboardHeader from "@/components/ui/admin-dashboard-header";
 import QuickStat from "@/components/ui/quick-stat";
-import { getEventBySlug } from "@/lib/api/event";
+import { getEventBySlug } from "@/lib/api/event/event";
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 import { FaUsers } from "react-icons/fa";

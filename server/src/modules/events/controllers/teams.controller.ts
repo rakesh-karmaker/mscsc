@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import EventTeam from "../models/event-team.model.js";
 import mongoose from "mongoose";
+import EventTeam from "../models/event-team.model.js";
+import Event from "../models/event.model.js";
 import { logEvent } from "../../../shared/utils/log-event.js";
 
 // get all teams
@@ -32,32 +33,35 @@ export async function getAllTeams(req: Request, res: Response): Promise<void> {
 // get team by ID
 export async function getTeamById(req: Request, res: Response): Promise<void> {
   try {
-    const { teamId } = req.params;
-    if (!teamId) {
-      res.status(400).json({ message: "Missing team ID" });
+    const { teamId, eventSlug } = req.params;
+    if (!teamId || !eventSlug) {
+      res.status(400).json({ message: "Missing team ID or event ID" });
       return;
     }
 
-    // get the team along with the event name form the events collection and the leader and members' details from the event registrations collection
-    const team = await EventTeam.aggregate([
+    const event = await Event.findOne({
+      eventSlug: eventSlug,
+    })
+      .lean()
+      .select("_id");
+    if (!event) {
+      res.status(404).json({ message: "Event not found" });
+      return;
+    }
+
+    const teamData = await EventTeam.aggregate([
       {
-        $match: { _id: new mongoose.Types.ObjectId(teamId) },
-      },
-      {
-        $lookup: {
-          from: "events",
-          localField: "eventId",
-          foreignField: "_id",
-          as: "event",
+        $match: {
+          _id: new mongoose.Types.ObjectId(teamId),
+          eventId: new mongoose.Types.ObjectId(event._id.toString()),
         },
       },
-      { $unwind: "$event" },
       {
         $lookup: {
           from: "eventregistrations",
           let: {
-            leaderEmail: "$leaderEmail",
             memberEmails: "$memberEmails",
+            leaderEmail: "$leaderEmail",
             eventId: "$eventId",
           },
           pipeline: [
@@ -65,60 +69,65 @@ export async function getTeamById(req: Request, res: Response): Promise<void> {
               $match: {
                 $expr: {
                   $and: [
-                    { $eq: ["$eventId", "$$eventId"] },
                     {
                       $or: [
                         { $eq: ["$email", "$$leaderEmail"] },
                         { $in: ["$email", "$$memberEmails"] },
                       ],
                     },
+                    { $eq: ["$eventId", "$$eventId"] },
                   ],
                 },
               },
             },
-            {
-              $addFields: {
-                isLeader: { $eq: ["$email", "$$leaderEmail"] },
-              },
-            },
-            {
-              $project: {
-                _id: 1,
-                name: 1,
-                email: 1,
-                photoUrl: 1,
-                phoneNumber: 1,
-                facebookUrl: 1,
-                institution: 1,
-                grade: 1,
-                registrationDate: 1,
-                code: 1,
-                isLeader: 1,
-              },
-            },
+            { $project: { name: 1, status: 1, _id: 1, email: 1, photoUrl: 1 } },
           ],
-          as: "members",
+          as: "allRegistrations",
         },
-
+      },
+      {
+        $addFields: {
+          leaderRegistration: {
+            $first: {
+              $filter: {
+                input: "$allRegistrations",
+                as: "reg",
+                cond: { $eq: ["$$reg.email", "$leaderEmail"] },
+              },
+            },
+          },
+          memberRegistrations: {
+            $map: {
+              input: "$memberEmails",
+              as: "email",
+              in: {
+                $first: {
+                  $filter: {
+                    input: "$allRegistrations",
+                    as: "reg",
+                    cond: { $eq: ["$$reg.email", "$$email"] },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      {
         $project: {
-          _id: 1,
-          eventId: 1,
-          segmentSlug: 1,
-          teamName: 1,
-          leaderEmail: 1,
-          memberEmails: 1,
-          status: 1,
-          eventName: "$event.name",
-          members: 1,
+          allRegistrations: 0,
+          __v: 0,
+          eventId: 0,
         },
       },
     ]);
-    if (!team || team.length === 0) {
+
+    if (!teamData || teamData.length === 0) {
       res.status(404).json({ message: "Team not found" });
       return;
     }
 
-    res.json({ team: team[0] });
+    res.json({ teamData: teamData[0] });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
     await logEvent("error", "Error fetching team", {
@@ -272,6 +281,7 @@ export async function updateSegmentTeam(
     // check if any new member emails or the new leader email are already used in another team for the same event and segment
     if (memberEmails && memberEmails.length > 0) {
       const existingMembers = await EventTeam.find({
+        _id: { $ne: teamId },
         eventId: team.eventId,
         segmentSlug: team.segmentSlug,
         memberEmails: {
@@ -279,9 +289,16 @@ export async function updateSegmentTeam(
         },
       });
       if (existingMembers.length > 0) {
+        console.log("Existing members found:", existingMembers);
         res.status(400).json({
           message:
             "One or more member emails are already used in another team for this segment",
+        });
+        return;
+      }
+      if (leaderEmail && memberEmails.includes(leaderEmail)) {
+        res.status(400).json({
+          message: "Leader email cannot be included in member emails",
         });
         return;
       }
@@ -332,7 +349,6 @@ export async function deleteSegmentTeam(
       res.status(404).json({ message: "Team not found" });
       return;
     }
-
     await EventTeam.findByIdAndDelete(teamId);
 
     res.json({ message: "Team deleted successfully" });

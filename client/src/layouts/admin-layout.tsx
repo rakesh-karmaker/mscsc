@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import type { ReactNode } from "react";
 import AdminSidebar from "./admin-sidebar/admin-sidebar";
 import { useQuery } from "@tanstack/react-query";
-import { getAllEvents } from "@/lib/api/event";
+import { getAllEvents } from "@/lib/api/event/event";
 
 export default function AdminLayout(): ReactNode {
   const { user } = useUser();

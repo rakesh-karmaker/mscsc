@@ -1,11 +1,12 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import getRegistrationsTableColumns from "./registrations-table-header";
 import useGetRegistrationsSearchParams from "@/hooks/table-hooks/header-hooks/use-get-registrations-search-params";
 import {
   changeRegistrationStatus,
+  deleteRegistration,
   editRegistration,
   getRegistrations,
-} from "@/lib/api/event-registrations";
+} from "@/lib/api/event/event-registrations";
 import { useParams } from "react-router-dom";
 import {
   keepPreviousData,
@@ -25,6 +26,9 @@ export default function RegistrationsTable({
 }): ReactNode {
   const eventSlug = useParams().eventSlug!;
   const queryClient = useQueryClient();
+  const [currentMethod, setCurrentMethod] = useState<
+    "changeStatus" | "toggleAttendance" | "delete" | null
+  >(null);
 
   const registrationMutation = useMutation({
     mutationFn: ({
@@ -32,7 +36,7 @@ export default function RegistrationsTable({
       registrationId,
       data,
     }: {
-      method: "changeStatus" | "toggleAttendance";
+      method: "changeStatus" | "toggleAttendance" | "delete";
       registrationId: string;
       data:
         | {
@@ -41,8 +45,12 @@ export default function RegistrationsTable({
           }
         | {
             hasAttended: boolean;
+          }
+        | {
+            registrationId: string;
           };
     }) => {
+      setCurrentMethod(method);
       if (method === "changeStatus" && "status" in data) {
         return changeRegistrationStatus(
           eventSlug,
@@ -54,14 +62,22 @@ export default function RegistrationsTable({
         return editRegistration(eventSlug, registrationId, {
           hasAttended: data.hasAttended,
         });
+      } else if (method === "delete") {
+        return deleteRegistration(eventSlug, registrationId);
       }
       return Promise.reject(new Error("Invalid method or data"));
     },
     onSuccess: () => {
+      if (currentMethod == "delete") {
+        queryClient.invalidateQueries({
+          queryKey: ["event", eventSlug],
+        });
+      }
       queryClient.invalidateQueries({
         queryKey: ["event-registrations", eventSlug],
       });
       toast.success("Registration updated successfully");
+      setCurrentMethod(null);
     },
   });
 

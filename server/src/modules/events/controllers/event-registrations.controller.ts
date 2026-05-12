@@ -19,6 +19,7 @@ import {
 import { TeamSegmentData } from "../event.types.js";
 import { logEvent } from "../../../shared/utils/log-event.js";
 import getGradeRange from "../utils/get-grade-range.js";
+import EventTeam from "../models/event-team.model.js";
 
 // get all event registrations
 export async function getAllEventRegistrations(
@@ -96,7 +97,7 @@ export async function getAllEventRegistrations(
           : { createdAt: -1 },
       )
       .select(
-        "_id name photoUrl email contactNumber status hasAttended grade code transactionMethod registrationDate segments",
+        "_id name photoUrl email phoneNumber status hasAttended grade code transactionMethod registrationDate segments",
       );
 
     const totalCount = registrations.length;
@@ -127,14 +128,26 @@ export async function getRegistrationById(
       return;
     }
 
-    const registration =
-      await EventRegistration.findById(registrationId).lean();
+    const registration = await EventRegistration.findById(registrationId)
+      .lean()
+      .select(
+        "_id eventId name email phoneNumber facebookUrl photoUrl institution grade segments transactionMethod transactionPhoneNumber transactionId registrationDate status rejectionReason code reference clubReference",
+      );
     if (!registration) {
       res.status(404).json({ message: "Registration not found" });
       return;
     }
 
-    res.status(200).json({ registration });
+    // get the team data with the memberEmails name and registration details (eg: name, registrationId, status) for each member email
+    const teamData = await EventTeam.find({
+      eventId: registration.eventId,
+      $or: [
+        { leaderEmail: registration.email },
+        { memberEmails: { $in: [registration.email] } },
+      ],
+    }).select("_id segmentSlug teamName leaderEmail memberEmails status");
+
+    res.status(200).json({ registrationDetails: registration, teamData });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
     await logEvent("error", "Error fetching registration by ID", {
@@ -409,6 +422,8 @@ export async function changeRegistrationStatus(
       });
       return;
     }
+
+    console.log(body);
 
     const event = await Event.findOne({ eventSlug });
     if (!event) {

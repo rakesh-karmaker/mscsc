@@ -113,20 +113,44 @@ export type EventFormDataType = {
 
 //* For Event Registrations Table
 
-export type EventRegistrationTableData = {
+export interface EventRegistrationDetails {
   _id: string;
+  eventId: string;
   name: string;
-  photoUrl: string;
   email: string;
-  contactNumber: string;
-  status: "pending" | "validated" | "rejected";
-  hasAttended: boolean;
+  phoneNumber: string;
+  facebookUrl: string;
+  photoUrl: string;
+  institution: string;
   grade: string;
-  code: string;
-  transactionMethod: string;
-  registrationDate: string;
   segments: string[];
-};
+  transactionMethod: "bkash" | "nagad" | "rocket" | "Other";
+  transactionPhoneNumber: string;
+  transactionId: string;
+  registrationDate: string;
+  status: "pending" | "validated" | "rejected";
+  rejectionReason?: string;
+  hasAttended: boolean;
+  code: string;
+  reference: string;
+  clubReference?: string;
+}
+
+export type EventRegistrationTableData = Pick<
+  EventRegistrationDetails,
+  | "_id"
+  | "name"
+  | "email"
+  | "photoUrl"
+  | "phoneNumber"
+  | "status"
+  | "segments"
+  | "grade"
+  | "hasAttended"
+  | "code"
+  | "transactionMethod"
+  | "registrationDate"
+>;
 
 export type EventRegistrationsSearchParams = {
   page: number;
@@ -139,3 +163,25 @@ export type EventRegistrationsSearchParams = {
   code: string;
   transactionMethod: string[];
 };
+
+export interface EventTeamData {
+  _id: string;
+  segmentSlug: string;
+  teamName: string;
+  leaderEmail: string;
+  memberEmails: string[];
+  status: "registering" | "pending" | "approved";
+  memberRegistrations: Pick<
+    EventRegistrationDetails,
+    "_id" | "name" | "email" | "status" | "photoUrl"
+  >[];
+  leaderRegistration: Pick<
+    EventRegistrationDetails,
+    "_id" | "name" | "email" | "status" | "photoUrl"
+  >;
+}
+
+export type EventTeamPreviewData = Pick<
+  EventTeamData,
+  "_id" | "segmentSlug" | "teamName" | "leaderEmail" | "memberEmails" | "status"
+>;

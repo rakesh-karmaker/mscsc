@@ -17,6 +17,8 @@ interface ChangeStatusProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   registrationMutation: any;
   registrationId: string;
+  className?: string;
+  insideModel?: boolean;
 }
 
 export default function ChangeStatus({
@@ -24,6 +26,8 @@ export default function ChangeStatus({
   setOpen,
   registrationMutation,
   registrationId,
+  className,
+  insideModel,
 }: ChangeStatusProps): ReactNode {
   const [statusPopoverOpen, setStatusPopoverOpen] = useState<boolean>(false);
   const statusIcons = {
@@ -41,6 +45,7 @@ export default function ChangeStatus({
       <TableBtn
         id={id}
         onClick={() => setStatusPopoverOpen(!statusPopoverOpen)}
+        className={className}
       >
         <LuCircleDashed className="opacity-70" />
         <p>Change Status</p>
@@ -55,13 +60,13 @@ export default function ChangeStatus({
           horizontal: "left",
         }}
         transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
+          vertical: insideModel ? "bottom" : "top",
+          horizontal: insideModel ? "left" : "right",
         }}
         PaperProps={{
           style: {
             boxShadow: "rgba(149, 157, 165, 0.1) 0px 8px 24px",
-            translate: "-4px -4px",
+            translate: insideModel ? "" : "-4px -4px",
           },
         }}
       >
@@ -115,7 +120,7 @@ function RejectStatus({
     registrationMutation.mutate({
       method: "changeStatus",
       registrationId: registrationId,
-      data: { status: "rejected", reason: data.reason },
+      data: { status: "rejected", rejectionReason: data.reason },
     });
     setRejectModelOpen(false);
     setOpen(false);
