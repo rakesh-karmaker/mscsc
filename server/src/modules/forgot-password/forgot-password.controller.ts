@@ -6,7 +6,6 @@ import ForgotPasswordOTP from "./forgot-password.model.js";
 import generateId from "./utils/generate-id.js";
 import { sendEmail } from "../../shared/lib/mail-sender.js";
 import { forgotPasswordOtpDraft } from "./utils/otp-draft.js";
-import { logEvent } from "../../shared/utils/log-event.js";
 import logger from "../../shared/config/winston.js";
 
 // Send OTP to the user's email

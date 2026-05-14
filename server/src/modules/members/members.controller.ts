@@ -4,7 +4,6 @@ import { GetAllMembersRegexType } from "./member.types.js";
 import paginateResults from "../../shared/lib/paginate-results.js";
 import { deleteFile, uploadImage } from "../../shared/lib/file-uploader.js";
 import { generateHash } from "../../shared/utils/hash.js";
-import { logEvent } from "../../shared/utils/log-event.js";
 import logger from "../../shared/config/winston.js";
 
 // Get all members

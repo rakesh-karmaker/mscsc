@@ -4,7 +4,7 @@ import Member from "../../../shared/models/member.model.js";
 import { deleteFile, uploadImage } from "../../../shared/lib/file-uploader.js";
 import { SubmissionType, SubmissionUpdateType } from "../task.types.js";
 import getPosition from "../utils/get-position.js";
-import { logEvent } from "../../../shared/utils/log-event.js";
+
 import logger from "../../../shared/config/winston.js";
 
 // submit a task

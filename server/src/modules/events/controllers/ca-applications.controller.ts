@@ -8,7 +8,6 @@ import {
   caApplicationConfirmationDraft,
   caApplicationRejectionDraft,
 } from "../utils/ca-application-drafts.js";
-import { logEvent } from "../../../shared/utils/log-event.js";
 import logger from "../../../shared/config/winston.js";
 
 // get all ca applications for an event

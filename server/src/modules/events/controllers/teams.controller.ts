@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import EventTeam from "../models/event-team.model.js";
 import Event from "../models/event.model.js";
 import EventRegistration from "../models/event-registration.model.js";
-import { logEvent } from "../../../shared/utils/log-event.js";
+
 import { sendEmail } from "../../../shared/lib/mail-sender.js";
 import { teamRegistrationConfirmationDraft } from "../utils/team-registration-drafts.js";
 import { deSlugify } from "../utils/de-slugify.js";

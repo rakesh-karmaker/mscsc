@@ -6,7 +6,7 @@ import Member from "../../../shared/models/member.model.js";
 import generateSlug from "../../../shared/utils/generate-slug.js";
 import { taskSchema } from "../task.schema.js";
 import { deleteFile } from "../../../shared/lib/file-uploader.js";
-import { logEvent } from "../../../shared/utils/log-event.js";
+
 import logger from "../../../shared/config/winston.js";
 
 // get all tasks

@@ -3,8 +3,6 @@ import Member from "../../shared/models/member.model.js";
 import Message from "../messages/message.model.js";
 import Activity from "../activities/activity.model.js";
 import Task from "../tasks/task.model.js";
-import { logEvent } from "../../shared/utils/log-event.js";
-
 export async function getDashboardData(
   req: Request,
   res: Response,

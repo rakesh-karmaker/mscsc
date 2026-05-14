@@ -18,7 +18,6 @@ import Event from "../models/event.model.js";
 import EventRegistration from "../models/event-registration.model.js";
 import EventCA from "../models/event-ca.model.js";
 import EventTeam from "../models/event-team.model.js";
-import { logEvent } from "../../../shared/utils/log-event.js";
 import getCategory from "../utils/get-category.js";
 import logger from "../../../shared/config/winston.js";
 

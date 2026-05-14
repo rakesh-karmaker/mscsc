@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import Message from "./message.model.js";
 import { messageSchema } from "./message.schema.js";
-import { logEvent } from "../../shared/utils/log-event.js";
 import logger from "../../shared/config/winston.js";
 
 // Get all messages with pagination, sorting, and filtering

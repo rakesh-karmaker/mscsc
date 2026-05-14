@@ -8,8 +8,6 @@ import {
   uploadMultipleImages,
 } from "../../shared/lib/file-uploader.js";
 import { activitySchema } from "./activity.schema.js";
-import { logEvent } from "../../shared/utils/log-event.js";
-
 // Get all activities
 export async function getAllActivities(
   req: Request,

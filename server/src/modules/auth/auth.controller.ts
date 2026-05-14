@@ -8,7 +8,7 @@ import { registerSchema } from "./auth.schema.js";
 import { uploadImage } from "../../shared/lib/file-uploader.js";
 import { compareHash, generateHash } from "../../shared/utils/hash.js";
 import { NewMemberDataType } from "./auth.types.js";
-import { logEvent } from "../../shared/utils/log-event.js";
+import logger from "../../shared/config/winston.js";
 
 const JWT_EXPIRATION = "30d"; // Token valid for 30 days
 

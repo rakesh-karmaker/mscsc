@@ -17,7 +17,6 @@ import {
   validateTeamSegmentsData,
 } from "../utils/event-registration.helpers.js";
 import { TeamSegmentData } from "../event.types.js";
-import { logEvent } from "../../../shared/utils/log-event.js";
 import getGradeRange from "../utils/get-grade-range.js";
 import EventTeam from "../models/event-team.model.js";
 import logger from "../../../shared/config/winston.js";
