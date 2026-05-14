@@ -7,6 +7,7 @@ import { logEvent } from "../../../shared/utils/log-event.js";
 import { sendEmail } from "../../../shared/lib/mail-sender.js";
 import { teamRegistrationConfirmationDraft } from "../utils/team-registration-drafts.js";
 import { deSlugify } from "../utils/de-slugify.js";
+import logger from "../../../shared/config/winston.js";
 
 // get all teams
 export async function getAllTeams(req: Request, res: Response): Promise<void> {
@@ -25,7 +26,7 @@ export async function getAllTeams(req: Request, res: Response): Promise<void> {
     res.json({ teams });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
-    await logEvent("error", "Error fetching teams", {
+    logger.error("Error fetching teams", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       eventId: req.query.eventId,
@@ -134,7 +135,7 @@ export async function getTeamById(req: Request, res: Response): Promise<void> {
     res.json({ teamData: teamData[0] });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
-    await logEvent("error", "Error fetching team", {
+    logger.error("Error fetching team", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       teamId: req.params.teamId,
@@ -211,7 +212,7 @@ export async function createSegmentTeam(
     res
       .status(201)
       .json({ message: "Team created successfully", team: newTeam });
-    await logEvent("info", "New team created manually for event segment", {
+    logger.log("New team created manually for event segment", {
       teamId: newTeam._id,
       eventId,
       segmentSlug,
@@ -221,7 +222,7 @@ export async function createSegmentTeam(
     });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
-    await logEvent("error", "Error creating segment team", {
+    logger.error("Error creating segment team", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       eventId: req.body.eventId,
@@ -350,7 +351,7 @@ export async function updateSegmentTeam(
     await team.save();
 
     res.json({ message: "Team updated successfully", team });
-    await logEvent("info", "Team details updated for event segment", {
+    logger.log("Team details updated for event segment", {
       teamId: team._id,
       eventId: team.eventId,
       segmentSlug: team.segmentSlug,
@@ -359,7 +360,7 @@ export async function updateSegmentTeam(
     });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
-    await logEvent("error", "Error updating segment team", {
+    logger.error("Error updating segment team", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       teamId: req.params.teamId,
@@ -389,7 +390,7 @@ export async function deleteSegmentTeam(
     await EventTeam.findByIdAndDelete(teamId);
 
     res.json({ message: "Team deleted successfully" });
-    await logEvent("info", "Team deleted for event segment", {
+    logger.log("Team deleted for event segment", {
       eventId: team.eventId,
       segmentSlug: team.segmentSlug,
       teamName: team.teamName,
@@ -398,7 +399,7 @@ export async function deleteSegmentTeam(
     });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
-    await logEvent("error", "Error deleting segment team", {
+    logger.error("Error deleting segment team", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       teamId: req.params.teamId,

@@ -116,6 +116,7 @@ export default function RegistrationsTable({
       table={table}
       isLoading={isLoading}
       selectedLength={data?.selectedCount || 0}
+      border={false}
     >
       <TableToolbar table={table} />
     </Table>

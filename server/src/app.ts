@@ -13,6 +13,8 @@ import eventRouter from "./modules/events/routers/events.router.js";
 import eventRegistrationRouter from "./modules/events/routers/event-registrations.router.js";
 import caApplicationsRouter from "./modules/events/routers/ca-applications.router.js";
 import teamsRouter from "./modules/events/routers/teams.router.js";
+import logger from "./shared/config/winston.js";
+import morgan from "morgan";
 
 const app = express();
 
@@ -31,6 +33,15 @@ const corsOptions = {
   credentials: true,
   optionsSuccessStatus: 204,
 };
+
+const stream = {
+  write: (message: string) => logger.http(message.trim()),
+};
+app.use(
+  morgan(":method :url :status :res[content-length] - :response-time ms", {
+    stream: stream,
+  }),
+);
 
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));

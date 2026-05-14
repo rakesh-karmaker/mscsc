@@ -9,6 +9,7 @@ import {
   caApplicationRejectionDraft,
 } from "../utils/ca-application-drafts.js";
 import { logEvent } from "../../../shared/utils/log-event.js";
+import logger from "../../../shared/config/winston.js";
 
 // get all ca applications for an event
 export async function getAllCAApplications(
@@ -37,7 +38,7 @@ export async function getAllCAApplications(
     res.status(200).json({ caApplications });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
-    await logEvent("error", "Error fetching CA applications", {
+    logger.error("Error fetching CA applications", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       eventSlug: req.params.eventSlug,
@@ -66,7 +67,7 @@ export async function getCAApplicationById(
     res.status(200).json({ caApplication });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
-    await logEvent("error", "Error fetching CA application by ID", {
+    logger.error("Error fetching CA application by ID", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       applicationId: req.params.applicationId,
@@ -167,7 +168,7 @@ export async function applyForCA(req: Request, res: Response): Promise<void> {
       message: "CA application submitted successfully",
     });
     // Log the event
-    await logEvent("info", "New CA application submitted", {
+    logger.log("New CA application submitted", {
       eventSlug,
       applicationId: caApplication._id,
     });
@@ -177,7 +178,7 @@ export async function applyForCA(req: Request, res: Response): Promise<void> {
       deleteFile(publicId);
     }
     res.status(500).json({ message: "Internal server error" });
-    await logEvent("error", "Error applying for CA", {
+    logger.error("Error applying for CA", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       eventSlug: req.params.eventSlug,
@@ -273,14 +274,14 @@ export async function editCAApplicationStatus(
     await caApplication.save();
 
     res.status(200).json({ message: "CA application updated and email sent" });
-    await logEvent("info", `CA application changed to ${status}`, {
+    logger.log(`CA application changed to ${status}`, {
       eventSlug,
       applicationId,
       editor: req.user?._id,
     });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
-    await logEvent("error", "Error validating CA application", {
+    logger.error("Error validating CA application", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       eventSlug: req.params.eventSlug,
@@ -323,13 +324,13 @@ export async function editCAApplication(
       message: "CA application updated successfully",
       caApplication: newCaApplication,
     });
-    await logEvent("info", "CA application edited", {
+    logger.log("CA application edited", {
       applicationId,
       editor: req.user?._id,
     });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
-    await logEvent("error", "Error editing CA application", {
+    logger.error("Error editing CA application", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       eventSlug: req.params.eventSlug,
@@ -360,13 +361,13 @@ export async function deleteCAApplication(
     await EventCA.findByIdAndDelete(applicationId);
 
     res.status(200).json({ message: "CA application deleted successfully" });
-    await logEvent("info", "CA application deleted", {
+    logger.log("CA application deleted", {
       applicationId,
       deletedBy: req.user?._id,
     });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
-    await logEvent("error", "Error deleting CA application", {
+    logger.error("Error deleting CA application", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       eventSlug: req.params.eventSlug,

@@ -60,8 +60,10 @@ export default function getRegistrationsTableColumns(
         <TableColumnHeader column={column} label="Code" />
       ),
       cell: ({ row }) => (
-        <span className="font-mono">
-          {row.original.status == "pending" ? "N/A" : row.original.code}
+        <span
+          className={`font-mono ${row.original.status === "validated" ? "text-black" : "text-gray-400"}`}
+        >
+          {row.original.code ? row.original.code.toUpperCase() : "N/A"}
         </span>
       ),
       meta: {

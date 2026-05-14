@@ -5,6 +5,7 @@ import { deleteFile, uploadImage } from "../../../shared/lib/file-uploader.js";
 import { SubmissionType, SubmissionUpdateType } from "../task.types.js";
 import getPosition from "../utils/get-position.js";
 import { logEvent } from "../../../shared/utils/log-event.js";
+import logger from "../../../shared/config/winston.js";
 
 // submit a task
 export async function submitTask(req: Request, res: Response): Promise<void> {
@@ -89,7 +90,7 @@ export async function submitTask(req: Request, res: Response): Promise<void> {
     );
 
     res.status(200).send({ message: "Task submitted successfully" });
-    await logEvent("info", "Task submitted", {
+    logger.log("Task submitted", {
       taskId: task._id,
       taskName: task.name,
       submitterId: member._id,
@@ -99,7 +100,7 @@ export async function submitTask(req: Request, res: Response): Promise<void> {
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error submitting task", {
+    logger.error("Error submitting task", {
       taskId: req.body.slug,
       submitterId: req.body.username,
       error: err instanceof Error ? err.message : String(err),
@@ -183,7 +184,7 @@ export async function editSubmission(
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error editing submission", {
+    logger.error("Error editing submission", {
       taskId: req.body.slug,
       submitterId: req.body.username,
       error: err instanceof Error ? err.message : String(err),
@@ -274,7 +275,7 @@ export async function deleteSubmission(
     }
 
     res.status(200).send({ message: "Submission deleted successfully" });
-    await logEvent("info", "Task submission deleted", {
+    logger.log("Task submission deleted", {
       taskId: task._id,
       taskName: task.name,
       submitterName: member?.name,
@@ -285,7 +286,7 @@ export async function deleteSubmission(
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error deleting submission", {
+    logger.error("Error deleting submission", {
       taskId: req.body.slug,
       submitterId: req.body.username,
       error: err instanceof Error ? err.message : String(err),
@@ -407,7 +408,7 @@ export async function makeWinner(req: Request, res: Response): Promise<void> {
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error making winner", {
+    logger.error("Error making winner", {
       taskId: req.body.slug,
       submitterId: req.body.username,
       error: err instanceof Error ? err.message : String(err),
@@ -474,7 +475,7 @@ export async function removeWinner(req: Request, res: Response): Promise<void> {
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error removing winner", {
+    logger.error("Error removing winner", {
       taskId: req.body.slug,
       submitterId: req.body.username,
       error: err instanceof Error ? err.message : String(err),

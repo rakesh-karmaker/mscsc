@@ -85,12 +85,12 @@ export async function register(req: Request, res: Response): Promise<void> {
       member: newMember,
     });
 
-    await logEvent("info", `New member registered - ${newMember.name}`, {
+    logger.log(`New member registered - ${newMember.name}`, {
       memberId: newMember._id,
       memberName: newMember.name,
     });
   } catch (err) {
-    await logEvent("error", "Error registering member", {
+    logger.error("Error registering member", {
       error: err instanceof Error ? err.message : String(err),
     });
     const errorMessage = err instanceof Error ? err.message : String(err);
@@ -136,12 +136,12 @@ export async function login(req: Request, res: Response): Promise<void> {
       token,
       member,
     });
-    await logEvent("info", `Member logged in - ${member.name}`, {
+    logger.log(`Member logged in - ${member.name}`, {
       memberId: member._id,
       memberName: member.name,
     });
   } catch (err) {
-    await logEvent("error", "Error logging in member", {
+    logger.error("Error logging in member", {
       error: err instanceof Error ? err.message : String(err),
     });
     const errorMessage = err instanceof Error ? err.message : String(err);
@@ -171,7 +171,7 @@ export async function verifyUser(req: Request, res: Response): Promise<void> {
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error verifying user", {
+    logger.error("Error verifying user", {
       error: errorMessage,
     });
   }

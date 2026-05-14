@@ -110,7 +110,7 @@ export async function getDashboardData(
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error fetching dashboard data", {
+    logger.error("Error fetching dashboard data", {
       error: errorMessage,
       stack: err instanceof Error ? err.stack : undefined,
     });

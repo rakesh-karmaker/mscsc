@@ -5,6 +5,7 @@ import paginateResults from "../../shared/lib/paginate-results.js";
 import { deleteFile, uploadImage } from "../../shared/lib/file-uploader.js";
 import { generateHash } from "../../shared/utils/hash.js";
 import { logEvent } from "../../shared/utils/log-event.js";
+import logger from "../../shared/config/winston.js";
 
 // Get all members
 export async function getAllMembers(
@@ -45,7 +46,7 @@ export async function getAllMembers(
     members.adminLength = await Member.countDocuments({ role: "admin" });
     res.status(200).send(members);
   } catch (err) {
-    await logEvent("error", "Error fetching members", {
+    logger.error("Error fetching members", {
       error: err instanceof Error ? err.message : String(err),
     });
     const errorMessage = err instanceof Error ? err.message : String(err);
@@ -114,7 +115,7 @@ export async function getAllMembersForTable(
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error fetching members for table", {
+    logger.error("Error fetching members for table", {
       error: err instanceof Error ? err.message : String(err),
     });
   }
@@ -141,7 +142,7 @@ export async function getMember(req: Request, res: Response): Promise<void> {
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error fetching member", {
+    logger.error("Error fetching member", {
       error: err instanceof Error ? err.message : String(err),
     });
   }
@@ -190,7 +191,7 @@ export async function getTopSubmitters(
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error fetching top submitters", {
+    logger.error("Error fetching top submitters", {
       error: err instanceof Error ? err.message : String(err),
     });
   }
@@ -284,19 +285,15 @@ export async function editMember(req: Request, res: Response): Promise<void> {
       const editor = await Member.findById(req.user?._id);
       if (!editor || editor.role !== "admin" || !isAdminEdit) {
         res.status(401).send({ message: "Access Denied" });
-        await logEvent(
-          "warning",
-          "Unauthorized member role or position edit attempt",
-          {
-            attemptedBy: req.user?._id,
-            memberEdited: previousUser._id,
-          },
-        );
+        logger.warn("Unauthorized member role or position edit attempt", {
+          attemptedBy: req.user?._id,
+          memberEdited: previousUser._id,
+        });
         return;
       }
 
       updates.position = updates.position?.trim() || previousUser.position;
-      await logEvent("info", "Member role or position edited", {
+      logger.log("Member role or position edited", {
         memberId: previousUser?._id,
         memberName: previousUser?.name,
         editor: req.user?._id,
@@ -314,7 +311,7 @@ export async function editMember(req: Request, res: Response): Promise<void> {
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error editing member", {
+    logger.error("Error editing member", {
       memberId: req.user?._id,
       error: err instanceof Error ? err.message : String(err),
       editor: req.user?._id,
@@ -344,7 +341,7 @@ export async function deleteMember(req: Request, res: Response): Promise<void> {
     }
 
     res.status(200).send({ message: "Member deleted successfully" });
-    await logEvent("info", "Member deleted", {
+    logger.log("Member deleted", {
       memberId: member._id,
       memberName: member.name,
       deletedBy: req.user?._id,
@@ -354,7 +351,7 @@ export async function deleteMember(req: Request, res: Response): Promise<void> {
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error deleting member", {
+    logger.error("Error deleting member", {
       memberId: req.user?._id,
       error: err instanceof Error ? err.message : String(err),
       deletedBy: req.user?._id,

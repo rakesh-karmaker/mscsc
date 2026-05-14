@@ -40,7 +40,7 @@ export async function getAllActivities(
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error fetching activities", {
+    logger.error("Error fetching activities", {
       error: errorMessage,
       stack: err instanceof Error ? err.stack : undefined,
     });
@@ -98,7 +98,7 @@ export async function getActivity(req: Request, res: Response): Promise<void> {
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error fetching activity", {
+    logger.error("Error fetching activity", {
       error: errorMessage,
       stack: err instanceof Error ? err.stack : undefined,
       slug,
@@ -146,7 +146,7 @@ export async function getHomeActivities(
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error fetching home activities", {
+    logger.error("Error fetching home activities", {
       error: errorMessage,
       stack: err instanceof Error ? err.stack : undefined,
     });
@@ -206,7 +206,7 @@ export async function createActivity(
     console.log("Activity added successfully -", "\n---\n");
 
     res.status(200).send({ message: "Activity added" });
-    await logEvent("info", "Activity created", {
+    logger.log("Activity created", {
       activityTitle: body.title,
       activitySlug: slug,
       creator: req.user?._id,
@@ -216,7 +216,7 @@ export async function createActivity(
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error creating activity", {
+    logger.error("Error creating activity", {
       error: errorMessage,
       stack: err instanceof Error ? err.stack : undefined,
       creator: req.user?._id,
@@ -291,7 +291,7 @@ export async function editActivity(req: Request, res: Response): Promise<void> {
     });
 
     res.status(200).send({ message: "Activity updated" });
-    await logEvent("info", "Activity edited", {
+    logger.log("Activity edited", {
       activitySlug: slug,
       editor: req.user?._id,
     });
@@ -300,7 +300,7 @@ export async function editActivity(req: Request, res: Response): Promise<void> {
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error editing activity", {
+    logger.error("Error editing activity", {
       error: errorMessage,
       stack: err instanceof Error ? err.stack : undefined,
       activitySlug: req.body.slug,
@@ -333,7 +333,7 @@ export async function deleteActivity(
     activity.gallery.forEach((image) => deleteFile(image.imgId));
 
     res.status(200).send({ message: "Activity deleted" });
-    await logEvent("info", "Activity deleted", {
+    logger.log("Activity deleted", {
       activitySlug: slug,
       deletedBy: req.user?._id,
     });
@@ -342,7 +342,7 @@ export async function deleteActivity(
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error deleting activity", {
+    logger.error("Error deleting activity", {
       error: errorMessage,
       stack: err instanceof Error ? err.stack : undefined,
       activitySlug: req.body.slug,

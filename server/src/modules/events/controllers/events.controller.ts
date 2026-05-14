@@ -20,6 +20,7 @@ import EventCA from "../models/event-ca.model.js";
 import EventTeam from "../models/event-team.model.js";
 import { logEvent } from "../../../shared/utils/log-event.js";
 import getCategory from "../utils/get-category.js";
+import logger from "../../../shared/config/winston.js";
 
 // get all events
 export async function getAllEvents(req: Request, res: Response): Promise<void> {
@@ -36,7 +37,7 @@ export async function getAllEvents(req: Request, res: Response): Promise<void> {
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error fetching all events", {
+    logger.error("Error fetching all events", {
       error: errorMessage,
       stack: err instanceof Error ? err.stack : undefined,
     });
@@ -118,7 +119,7 @@ export async function getEventBySlug(
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error fetching event by slug", {
+    logger.error("Error fetching event by slug", {
       error: err instanceof Error ? err.message : String(err),
       stack: err instanceof Error ? err.stack : undefined,
       eventSlug: req.params.eventSlug,
@@ -369,21 +370,17 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
     res
       .status(201)
       .send({ message: "Event created successfully", event: newEvent });
-    await logEvent(
-      "info",
-      `Event created: ${newEvent.eventName} (${newEvent._id})`,
-      {
-        eventId: newEvent._id,
-        eventSlug: newEvent.eventSlug,
-        creator: req.user?._id,
-      },
-    );
+    logger.log(`Event created: ${newEvent.eventName} (${newEvent._id})`, {
+      eventId: newEvent._id,
+      eventSlug: newEvent.eventSlug,
+      creator: req.user?._id,
+    });
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error creating event", {
+    logger.error("Error creating event", {
       error: err instanceof Error ? err.message : String(err),
       stack: err instanceof Error ? err.stack : undefined,
       creator: req.user?._id,
@@ -408,7 +405,7 @@ export async function deleteEvent(req: Request, res: Response): Promise<void> {
     await EventTeam.deleteMany({ eventId: event._id });
 
     res.status(200).send({ message: "Event deleted successfully" });
-    await logEvent("info", `Event deleted: ${event.eventName} (${event._id})`, {
+    logger.log(`Event deleted: ${event.eventName} (${event._id})`, {
       eventId: event._id,
       eventSlug: event.eventSlug,
       deletedBy: req.user?._id,
@@ -418,7 +415,7 @@ export async function deleteEvent(req: Request, res: Response): Promise<void> {
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error deleting event", {
+    logger.error("Error deleting event", {
       error: err instanceof Error ? err.message : String(err),
       stack: err instanceof Error ? err.stack : undefined,
       eventSlug: req.params.eventSlug,

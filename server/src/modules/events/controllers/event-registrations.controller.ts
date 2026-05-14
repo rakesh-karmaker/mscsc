@@ -20,6 +20,7 @@ import { TeamSegmentData } from "../event.types.js";
 import { logEvent } from "../../../shared/utils/log-event.js";
 import getGradeRange from "../utils/get-grade-range.js";
 import EventTeam from "../models/event-team.model.js";
+import logger from "../../../shared/config/winston.js";
 
 // get all event registrations
 export async function getAllEventRegistrations(
@@ -108,10 +109,10 @@ export async function getAllEventRegistrations(
       .json({ results: paginatedRegistrations, selectedCount: totalCount });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
-    await logEvent("error", "Error fetching event registrations", {
+    logger.error("Error fetching event registrations", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
-      eventSlug: req.params.eventSlug,
+      eventSlug,
     });
   }
 }
@@ -150,7 +151,7 @@ export async function getRegistrationById(
     res.status(200).json({ registrationDetails: registration, teamData });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
-    await logEvent("error", "Error fetching registration by ID", {
+    logger.error("Error fetching registration by ID", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       registrationId: req.params.registrationId,
@@ -221,7 +222,7 @@ export async function registerForEvent(
         .status(403)
         .json({ message: "Registration is closed for this event" });
 
-      await logEvent("info", "New registration attempt after deadline", {
+      logger.log("New registration attempt after deadline", {
         eventSlug,
         email: body.email ? String(body.email).toLowerCase() : "N/A",
         name: body.name ? String(body.name) : "N/A",
@@ -305,16 +306,12 @@ export async function registerForEvent(
         { new: true },
       );
       if (!caApplication) {
-        await logEvent(
-          "warning",
-          "Invalid CA code provided during registration",
-          {
-            eventSlug,
-            email: cleanedBody.email,
-            name: cleanedBody.name,
-            reference: cleanedBody.reference,
-          },
-        );
+        logger.warn("Invalid CA code provided during registration", {
+          eventSlug,
+          email: cleanedBody.email,
+          name: cleanedBody.name,
+          reference: cleanedBody.reference,
+        });
       }
     }
 
@@ -360,8 +357,7 @@ export async function registerForEvent(
     }
 
     res.status(201).json({ message: "Registration successful" });
-    await logEvent(
-      "info",
+    logger.warn(
       `New registration for event ${event.eventName}: ${registration.name} (${registration.email})`,
       {
         eventSlug,
@@ -394,7 +390,7 @@ export async function registerForEvent(
       message:
         "There was an error processing your request. Please try again later.",
     });
-    await logEvent("error", "Error processing event registration", {
+    logger.error("Error processing event registration", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       eventSlug: req.params.eventSlug,
@@ -470,8 +466,7 @@ export async function changeRegistrationStatus(
     res
       .status(200)
       .json({ message: "Registration status changed and email sent" });
-    await logEvent(
-      "info",
+    logger.warn(
       `Registration status changed to ${registration.status} for ${registration.name} (${registration.email})`,
       {
         eventSlug,
@@ -481,7 +476,7 @@ export async function changeRegistrationStatus(
     );
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
-    await logEvent("error", "Error changing registration status", {
+    logger.error("Error changing registration status", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       eventSlug: req.params.eventSlug,
@@ -527,8 +522,7 @@ export async function editRegistration(
     res
       .status(200)
       .json({ message: "Registration updated", registration: newRegistration });
-    await logEvent(
-      "info",
+    logger.warn(
       `Registration edited for ${newRegistration?.name} (${newRegistration?.email})`,
       {
         eventSlug: req.params.eventSlug,
@@ -538,7 +532,7 @@ export async function editRegistration(
     );
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
-    await logEvent("error", "Error editing registration", {
+    logger.error("Error editing registration", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       eventSlug: req.params.eventSlug,
@@ -580,8 +574,7 @@ export async function deleteRegistration(
     await event.save();
 
     res.status(200).json({ message: "Registration deleted" });
-    await logEvent(
-      "info",
+    logger.warn(
       `Registration deleted for event ${event.eventName}: ${registration.name} (${registration.email})`,
       {
         eventSlug: req.params.eventSlug,
@@ -591,7 +584,7 @@ export async function deleteRegistration(
     );
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
-    await logEvent("error", "Error deleting registration", {
+    logger.error("Error deleting registration", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       eventSlug: req.params.eventSlug,

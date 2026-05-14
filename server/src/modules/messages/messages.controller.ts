@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Message from "./message.model.js";
 import { messageSchema } from "./message.schema.js";
 import { logEvent } from "../../shared/utils/log-event.js";
+import logger from "../../shared/config/winston.js";
 
 // Get all messages with pagination, sorting, and filtering
 export async function getAllMessages(
@@ -53,7 +54,7 @@ export async function getAllMessages(
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error fetching messages", {
+    logger.error("Error fetching messages", {
       error: err instanceof Error ? err.message : String(err),
     });
   }
@@ -75,7 +76,7 @@ export async function sendMessage(req: Request, res: Response): Promise<void> {
     // Create and save the message
     await Message.create(req.body);
     res.status(200).send({ message: "Message sent" });
-    await logEvent("info", "Message sent from contact form", {
+    logger.log("Message sent from contact form", {
       name: req.body.name,
       email: req.body.email,
       source: req.body.source,
@@ -85,7 +86,7 @@ export async function sendMessage(req: Request, res: Response): Promise<void> {
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error sending message from contact form", {
+    logger.error("Error sending message from contact form", {
       error: err instanceof Error ? err.message : String(err),
     });
   }
@@ -114,7 +115,7 @@ export async function markMessageAsRead(
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error marking message as read", {
+    logger.error("Error marking message as read", {
       error: err instanceof Error ? err.message : String(err),
     });
   }
@@ -142,7 +143,7 @@ export async function deleteMessage(
     }
 
     res.status(200).send({ message: "Message deleted" });
-    await logEvent("info", "Message deleted", {
+    logger.log("Message deleted", {
       email: message.email,
       deletedBy: req.user?._id,
     });
@@ -151,7 +152,7 @@ export async function deleteMessage(
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
-    await logEvent("error", "Error deleting message", {
+    logger.error("Error deleting message", {
       error: err instanceof Error ? err.message : String(err),
     });
   }

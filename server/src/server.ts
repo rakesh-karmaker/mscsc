@@ -3,6 +3,7 @@ import config from "./shared/config/config.js";
 import mongoose from "mongoose";
 import https from "https";
 import dns from "node:dns/promises";
+import logger from "./shared/config/winston.js";
 
 // Force DNS change if specified in config
 if (config.forceDNSChange) {
@@ -13,7 +14,9 @@ if (config.forceDNSChange) {
 // Connect to MongoDB
 mongoose
   .connect(config.mongoUrl)
-  .then(() => console.log("MongoDB connected"))
+  .then(() => {
+    console.log("MongoDB connected");
+  })
   .catch((err) => console.error(err));
 
 // TODO: remove this when in a paid hosting
@@ -38,4 +41,7 @@ setInterval(
 
 app.listen(config.port, () => {
   console.log(`Server running on port ${config.port}`);
+  if (config.nodeEnv === "production") {
+    logger.info(`Server started on port ${config.port}`);
+  }
 });
