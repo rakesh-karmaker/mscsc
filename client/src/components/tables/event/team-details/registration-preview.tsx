@@ -43,7 +43,7 @@ export default function RegistrationPreview({
     ),
   };
   return (
-    <div className="w-full h-full flex justify-between items-center gap-5">
+    <div className="w-full h-full flex max-xs:flex-col justify-between xs:items-center gap-5 max-xs:gap-1">
       <div className="w-full flex gap-2 items-center">
         <img
           src={details.photoUrl}
@@ -80,7 +80,10 @@ export default function RegistrationPreview({
           registrationMutation={registrationMutation}
         >
           <Tooltip title="View Registration Details" placement="top" arrow>
-            <LuEye className="w-5 h-5" />
+            <div className="max-xs:flex gap-2 items-center">
+              <LuEye className="w-5 h-5" />
+              <p className="xs:hidden">View Details</p>
+            </div>
           </Tooltip>
         </RegistrationDetailsModel>
       </div>

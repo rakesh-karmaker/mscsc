@@ -84,7 +84,7 @@ export function teamRegistrationConfirmationDraft({
                             <td>
                                 <h2
                                     style="margin: 0; padding: 0 20px; font-size: 28px; font-weight: 500; line-height: 36px; letter-spacing: 0.01em; text-align: center; margin-top: 18px; color: #1d4b52;">
-                                    Team Details for ${teamName}
+                                    Team Details for <span style="font-weight: 600;">${teamName}</span>
                                 </h2>
                             </td>
                         </tr>

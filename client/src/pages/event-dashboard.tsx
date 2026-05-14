@@ -10,8 +10,8 @@ import { PiMedalMilitaryFill } from "react-icons/pi";
 import { RiTeamFill } from "react-icons/ri";
 import { useMembers } from "@/contexts/members-context";
 import MemberList from "@/components/lists/member-list";
-import CategoryDistributionChart from "@/components/charts/category-distribution";
-import MembersTable from "@/components/tables/members-table/members-table";
+// import CategoryDistributionChart from "@/components/charts/category-distribution";
+// import MembersTable from "@/components/tables/members-table/members-table";
 import { LuSettings } from "react-icons/lu";
 import { useState } from "react";
 import { Popover } from "@mui/material";
@@ -27,8 +27,8 @@ export default function EventDashboard() {
 
   const {
     data: eventData,
-    isLoading,
-    error,
+    // isLoading,
+    // error,
   } = useQuery({
     queryKey: ["event", eventSlug],
     queryFn: () => getEventBySlug(eventSlug).then((res) => res.data),

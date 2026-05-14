@@ -16,7 +16,7 @@ export default function useGetRegistrationsSearchParams(): EventRegistrationsSea
     page: parseAsInteger.withDefault(1),
     perPage: parseAsInteger.withDefault(10),
     sort: getSortingStateParser<EventRegistrationTableData>().withDefault([
-      { id: "createdAt", desc: true },
+      { id: "registrationDate", desc: true },
     ]),
     name: parseAsString.withDefault(""),
     status: parseAsArrayOf(

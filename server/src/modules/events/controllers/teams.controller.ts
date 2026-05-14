@@ -2,7 +2,11 @@ import { Request, Response } from "express";
 import mongoose from "mongoose";
 import EventTeam from "../models/event-team.model.js";
 import Event from "../models/event.model.js";
+import EventRegistration from "../models/event-registration.model.js";
 import { logEvent } from "../../../shared/utils/log-event.js";
+import { sendEmail } from "../../../shared/lib/mail-sender.js";
+import { teamRegistrationConfirmationDraft } from "../utils/team-registration-drafts.js";
+import { deSlugify } from "../utils/de-slugify.js";
 
 // get all teams
 export async function getAllTeams(req: Request, res: Response): Promise<void> {
@@ -233,10 +237,18 @@ export async function updateSegmentTeam(
   res: Response,
 ): Promise<void> {
   try {
-    const { teamId } = req.params;
+    const { teamId, eventSlug } = req.params;
     const { teamName, leaderEmail, memberEmails, status } = req.body;
-    if (!teamId) {
-      res.status(400).json({ message: "Missing team ID" });
+    if (!teamId || !eventSlug) {
+      res.status(400).json({ message: "Missing team ID or event slug" });
+      return;
+    }
+
+    const event = await Event.findOne({
+      eventSlug: eventSlug,
+    }).lean();
+    if (!event) {
+      res.status(404).json({ message: "Event not found" });
       return;
     }
 
@@ -309,6 +321,31 @@ export async function updateSegmentTeam(
     if (leaderEmail) team.leaderEmail = leaderEmail;
     if (memberEmails) team.memberEmails = memberEmails;
     if (status) team.status = status;
+
+    if (status === "approved") {
+      // if team is approved, update the corresponding event registrations to validated
+      const allTeamEmails = [team.leaderEmail, ...(team.memberEmails || [])];
+      for (const email of allTeamEmails) {
+        const registration = await EventRegistration.findOne({
+          eventId: team.eventId,
+          email: email,
+        }).lean();
+
+        await sendEmail(
+          email,
+          "Team Approved for Event Segment",
+          teamRegistrationConfirmationDraft({
+            eventName: event.eventName,
+            logoUrl: event.eventLogoUrl,
+            name: registration?.name || "Participant",
+            segmentName: deSlugify(team.segmentSlug, false),
+            teamName: team.teamName,
+            leaderEmail: team.leaderEmail,
+            memberEmails: team.memberEmails || [],
+          }),
+        );
+      }
+    }
 
     await team.save();
 
