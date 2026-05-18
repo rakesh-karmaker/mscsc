@@ -8,7 +8,7 @@ import type {
   ScheduleDataType,
   SegmentType,
   SpType,
-} from "@/types/event-types";
+} from "@/types/event/event-types";
 import generateSlug from "@/utils/generate-slug";
 import dayjs from "dayjs";
 

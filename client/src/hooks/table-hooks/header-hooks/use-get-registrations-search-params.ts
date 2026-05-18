@@ -2,7 +2,7 @@ import { getSortingStateParser } from "@/lib/parser";
 import type {
   EventRegistrationsSearchParams,
   EventRegistrationTableData,
-} from "@/types/event-types";
+} from "@/types/event/event-registration-types";
 import {
   parseAsArrayOf,
   parseAsInteger,

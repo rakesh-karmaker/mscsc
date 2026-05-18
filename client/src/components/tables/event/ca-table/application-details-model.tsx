@@ -3,10 +3,10 @@ import Modal from "@mui/material/Modal";
 import { useState, type ReactNode } from "react";
 import { FaXmark } from "react-icons/fa6";
 import { LuCircleUserRound } from "react-icons/lu";
-import RegistrationDetails from "./registration-details";
+import ApplicationDetails from "./application-details";
 
-interface RegistrationDetailsModelProps {
-  registrationId: string;
+interface ApplicationDetailsModelProps {
+  applicationId: string;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   children?: ReactNode;
   className?: string;
@@ -17,15 +17,14 @@ interface RegistrationDetailsModelProps {
   };
 }
 
-export default function RegistrationDetailsModel({
-  registrationId,
+export default function ApplicationDetailsModel({
+  applicationId,
   setOpen,
   children = false,
   className = "",
   previousModels,
-}: RegistrationDetailsModelProps): ReactNode {
+}: ApplicationDetailsModelProps): ReactNode {
   const [detailsModelOpen, setDetailsModelOpen] = useState<boolean>(false);
-
   function handleClose() {
     setDetailsModelOpen(false);
     setOpen(false);
@@ -71,7 +70,7 @@ export default function RegistrationDetailsModel({
             <div className="w-full flex flex-col">
               <div className="w-full flex justify-between items-start gap-4">
                 <h2 className="text-2xl font-medium max-xs:text-2xl">
-                  Registration Details
+                  Application Details
                 </h2>
                 <button
                   onClick={() => handleClose()}
@@ -81,10 +80,10 @@ export default function RegistrationDetailsModel({
                 </button>
               </div>
               <div className="w-full h-px bg-light-black/10 mt-2! mb-7!"></div>
-              <RegistrationDetails
-                registrationId={registrationId}
+              <ApplicationDetails
+                applicationId={applicationId}
+                setModelOpen={setDetailsModelOpen}
                 previousModels={previousModels}
-                setModelOpen={setOpen}
               />
             </div>
           </div>

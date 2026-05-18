@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TextField } from "@mui/material";
 import DeleteWarning from "@/components/ui/delete-warning";
-import type { EventTeamData } from "@/types/event-types";
+import type { EventTeamData } from "@/types/event/event-team-types";
 import { teamEditSchema } from "@/lib/validation/team-edit-schema";
 import { deleteTeamById, editTeam } from "@/lib/api/event/event-teams";
 import { useParams } from "react-router-dom";

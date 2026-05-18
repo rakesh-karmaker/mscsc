@@ -4,23 +4,27 @@ import capitalize from "@/utils/capitalize";
 import { useState } from "react";
 import { LuCircleCheck, LuCircleX, LuTrash2 } from "react-icons/lu";
 import TableActionColumn from "../../table/table-action-column";
-import type { EventRegistrationTableData } from "@/types/event-types";
+import type { EventRegistrationTableData } from "@/types/event/event-registration-types";
 import getCategory from "@/utils/get-category";
 import { TableBtn } from "@/components/ui/btns";
-import ChangeStatus from "./change-status";
+import ChangeStatus from "../change-status";
 import RegistrationDetailsModel from "./registration-details-model";
 import DeleteWarning from "@/components/ui/delete-warning";
+import useRegistrationMutation from "@/hooks/event-hooks/use-registration-mutation";
 
 export default function getRegistrationsTableColumns(
   segments: string[],
-  registrationMutation: any,
 ): ColumnDef<EventRegistrationTableData>[] {
   return [
     {
       id: "name",
       accessorKey: "name",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Full Name" />
+        <TableColumnHeader
+          tId="registrations"
+          column={column}
+          label="Full Name"
+        />
       ),
       cell: ({ row }) => (
         <div className="w-full h-full flex gap-2 items-center">
@@ -31,13 +35,15 @@ export default function getRegistrationsTableColumns(
           />
           <div className="flex flex-col">
             <p className="font-medium  max-sm:text-sm flex flex-wrap">
-              {row.original.name && row.original.name.split(" ").length > 1
-                ? row.original.name.split(" ").map((part, index) => (
-                    <span key={index} className="mr-1! leading-5.5">
-                      {part}
-                    </span>
-                  ))
-                : null}
+              {row.original.name && row.original.name.split(" ").length > 1 ? (
+                row.original.name.split(" ").map((part, index) => (
+                  <span key={index} className="mr-1! leading-5.5">
+                    {part}
+                  </span>
+                ))
+              ) : (
+                <span className="leading-5.5">{row.original.name}</span>
+              )}
             </p>
             <p className="text-xs text-gray-500 max-w-52.5 truncate">
               {row.original.email}
@@ -51,13 +57,13 @@ export default function getRegistrationsTableColumns(
         variant: "text",
       },
       enableColumnFilter: true,
-      size: 270,
+      size: 280,
     },
     {
       id: "code",
       accessorKey: "code",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Code" />
+        <TableColumnHeader tId="registrations" column={column} label="Code" />
       ),
       cell: ({ row }) => (
         <span
@@ -78,7 +84,7 @@ export default function getRegistrationsTableColumns(
       id: "status",
       accessorKey: "status",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Status" />
+        <TableColumnHeader tId="registrations" column={column} label="Status" />
       ),
       cell: ({ row }) => {
         let colorClasses = "";
@@ -118,7 +124,11 @@ export default function getRegistrationsTableColumns(
       id: "hasAttended",
       accessorKey: "hasAttended",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Attended" />
+        <TableColumnHeader
+          tId="registrations"
+          column={column}
+          label="Attended"
+        />
       ),
       cell: ({ row }) => (
         <span
@@ -141,7 +151,11 @@ export default function getRegistrationsTableColumns(
       id: "segments",
       accessorKey: "segments",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Segments" />
+        <TableColumnHeader
+          tId="registrations"
+          column={column}
+          label="Segments"
+        />
       ),
       cell: ({ row }) => (
         <p>
@@ -164,7 +178,11 @@ export default function getRegistrationsTableColumns(
       id: "phoneNumber",
       accessorKey: "phoneNumber",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Phone Number" />
+        <TableColumnHeader
+          tId="registrations"
+          column={column}
+          label="Phone Number"
+        />
       ),
       meta: {
         label: "Phone Number",
@@ -175,7 +193,11 @@ export default function getRegistrationsTableColumns(
       id: "category",
       accessorKey: "category",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Category" />
+        <TableColumnHeader
+          tId="registrations"
+          column={column}
+          label="Category"
+        />
       ),
       cell: ({ row }) => {
         let colorClasses = "";
@@ -222,7 +244,7 @@ export default function getRegistrationsTableColumns(
       id: "transactionMethod",
       accessorKey: "transactionMethod",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Method" />
+        <TableColumnHeader tId="registrations" column={column} label="Method" />
       ),
       cell: ({ row }) => {
         let colorClasses = "";
@@ -262,7 +284,11 @@ export default function getRegistrationsTableColumns(
       id: "registrationDate",
       accessorKey: "registrationDate",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Registered" />
+        <TableColumnHeader
+          tId="registrations"
+          column={column}
+          label="Registered"
+        />
       ),
       cell: ({ row }) => {
         const date = new Date(row.original.registrationDate);
@@ -286,9 +312,11 @@ export default function getRegistrationsTableColumns(
       cell: ({ row }) => {
         const [open, setOpen] = useState<boolean>(false);
         const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
+        const registrationMutation = useRegistrationMutation();
 
         return (
           <TableActionColumn
+            tId="registration"
             rowId={row.id}
             open={open}
             setOpen={setOpen}
@@ -298,9 +326,9 @@ export default function getRegistrationsTableColumns(
           >
             <div className="max-h-65 scroll-py-1 overflow-y-auto overflow-x-hidden flex flex-col p-1!">
               <ChangeStatus
-                registrationId={row.original._id}
+                documentId={row.original._id}
                 id={`status-popover-${row.id}`}
-                registrationMutation={registrationMutation}
+                mutation={registrationMutation}
                 setOpen={setOpen}
               />
 
@@ -329,10 +357,10 @@ export default function getRegistrationsTableColumns(
                 registrationId={row.original._id}
                 setOpen={setOpen}
                 previousModels={{
+                  applications: [],
                   registrations: [row.original._id],
                   teams: [],
                 }}
-                registrationMutation={registrationMutation}
               />
 
               <div className="border-t border-gray-300">

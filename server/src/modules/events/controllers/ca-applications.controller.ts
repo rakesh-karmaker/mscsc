@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Event from "../models/event.model.js";
 import EventCA from "../models/event-ca.model.js";
+import EventRegistration from "../models/event-registration.model.js";
 import { caApplicationSchema } from "../schemas/ca-application.schema.js";
 import { deleteFile, uploadImage } from "../../../shared/lib/file-uploader.js";
 import { sendEmail } from "../../../shared/lib/mail-sender.js";
@@ -9,12 +10,29 @@ import {
   caApplicationRejectionDraft,
 } from "../utils/ca-application-drafts.js";
 import logger from "../../../shared/config/winston.js";
+import mongoose from "mongoose";
 
 // get all ca applications for an event
 export async function getAllCAApplications(
   req: Request,
   res: Response,
 ): Promise<void> {
+  const eventSlug = req.params.eventSlug;
+  if (!eventSlug) {
+    res.status(400).json({ message: "Event slug is required" });
+    return;
+  }
+
+  const params = req.query as {
+    page?: string;
+    perPage?: string;
+    name?: string;
+    status?: string[];
+    hasPreviousExperience?: string | string[];
+    caCode?: string;
+    sort?: string[];
+  };
+
   try {
     const eventSlug = req.params.eventSlug;
     if (!eventSlug) {
@@ -29,12 +47,59 @@ export async function getAllCAApplications(
       return;
     }
 
-    // find the CA applications for the event
-    const caApplications = await EventCA.find({
-      event: event._id,
-    }).lean();
+    // parse and validate query parameters
+    const page = params.page ? parseInt(params.page) : 1;
+    const perPage = params.perPage ? parseInt(params.perPage) : 10;
+    const skip = (page - 1) * perPage;
+    const statusFilter =
+      params.status && params.status.length > 0
+        ? { status: { $in: params.status } }
+        : {};
+    const experienceFilter =
+      params.hasPreviousExperience === "yes" ||
+      params.hasPreviousExperience?.includes("yes")
+        ? { hasPreviousExperience: true }
+        : params.hasPreviousExperience === "no" ||
+            params.hasPreviousExperience?.includes("no")
+          ? { hasPreviousExperience: false }
+          : {};
+    const sort: { id: string; desc: boolean } | {} =
+      Array.isArray(params.sort) && params.sort.length > 0
+        ? params.sort[0]
+        : {};
 
-    res.status(200).json({ caApplications });
+    const regex: { [key: string]: RegExp | undefined } = {
+      name: new RegExp(typeof params.name === "string" ? params.name : "", "i"),
+      caCode: new RegExp(
+        typeof params.caCode === "string" ? params.caCode : "",
+        "i",
+      ),
+    };
+
+    // find the CA applications for the event
+
+    const caApplications = await EventCA.find({
+      eventId: event._id,
+      ...regex,
+      ...statusFilter,
+      ...experienceFilter,
+    })
+      .lean()
+      .sort(
+        sort && Object.keys(sort).length > 0 && "id" in sort && "desc" in sort
+          ? { [String(sort.id)]: sort.desc === "true" ? -1 : 1 }
+          : { createdAt: -1 },
+      )
+      .select(
+        "_id name email phoneNumber facebookUrl photoUrl applicationDate hasPreviousExperience status caCode score",
+      );
+
+    const totalCount = caApplications.length;
+    const paginatedApplications = caApplications.slice(skip, skip + perPage);
+
+    res
+      .status(200)
+      .json({ results: paginatedApplications, selectedCount: totalCount });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
     logger.error("Error fetching CA applications", {
@@ -52,18 +117,49 @@ export async function getCAApplicationById(
 ): Promise<void> {
   try {
     const applicationId = req.params.applicationId;
-    if (!applicationId) {
-      res.status(400).json({ message: "Application ID is required" });
+    const eventSlug = req.params.eventSlug;
+    if (!applicationId || !eventSlug) {
+      res
+        .status(400)
+        .json({ message: "Application ID and Event Slug are required" });
       return;
     }
 
-    const caApplication = await EventCA.findById(applicationId).lean();
+    const event = await Event.findOne({ eventSlug }).lean();
+    if (!event) {
+      res.status(404).json({ message: "Event not found" });
+      return;
+    }
+
+    // get the ca with their registrations that used their ca code
+    const caApplication = await EventCA.findOne({
+      _id: applicationId,
+      eventId: event._id,
+    })
+      .lean()
+      .select(
+        "_id name email phoneNumber facebookUrl photoUrl address gender institution grade hasPreviousExperience previousExperienceDetails description applicationDate status caCode rejectionReason score",
+      );
     if (!caApplication) {
       res.status(404).json({ message: "CA application not found" });
       return;
     }
 
-    res.status(200).json({ caApplication });
+    const registrationsUsingCACode = await EventRegistration.find({
+      $and: [
+        { reference: { $eq: caApplication.caCode } },
+        {
+          reference: { $ne: "N/A" },
+        },
+      ],
+      eventId: event._id,
+    })
+      .lean()
+      .select("_id name email status photoUrl");
+
+    res
+      .status(200)
+      .json({ applicationDetails: caApplication, registrationsUsingCACode });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
     logger.error("Error fetching CA application by ID", {
@@ -195,6 +291,7 @@ export async function editCAApplicationStatus(
     const applicationId = req.params.applicationId;
     const status = req.body.status;
     const caCode = req.body.caCode;
+
     if (
       !eventSlug ||
       !applicationId ||
@@ -249,7 +346,7 @@ export async function editCAApplicationStatus(
           eventName: event.eventName,
           logoUrl: event.eventLogoUrl,
           name: caApplication.name,
-          code: caApplication.caCode,
+          code: caCode.toString().toUpperCase(),
         }),
       );
     } else if (status === "rejected") {
@@ -259,7 +356,7 @@ export async function editCAApplicationStatus(
         caApplicationRejectionDraft({
           eventName: event.eventName,
           logoUrl: event.eventLogoUrl,
-          reason: caApplication.rejectionReason || "N/A",
+          reason: req.body.rejectionReason || "N/A",
         }),
       );
     }
@@ -267,8 +364,9 @@ export async function editCAApplicationStatus(
     caApplication.status = status;
     if (status === "rejected") {
       caApplication.rejectionReason = req.body.rejectionReason || "N/A";
+      caApplication.caCode = "N/A";
     } else if (status === "approved") {
-      caApplication.caCode = caCode;
+      caApplication.caCode = caCode.toString().toUpperCase();
     }
     await caApplication.save();
 
@@ -308,12 +406,21 @@ export async function editCAApplication(
     }
 
     const body = req.body;
+    if (body.caCode && body.caCode !== caApplication.caCode) {
+      await EventRegistration.updateMany(
+        { reference: caApplication.caCode },
+        { $set: { reference: body.caCode } },
+      );
+    }
+
     const newCaApplication = await EventCA.findByIdAndUpdate(
       applicationId,
       {
         $set: {
           status:
             body.status !== undefined ? body.status : caApplication.status,
+          caCode:
+            body.caCode !== undefined ? body.caCode : caApplication.caCode,
         },
       },
       { new: true },

@@ -1,27 +1,23 @@
-import { type ReactNode } from "react";
-import getRegistrationsTableColumns from "./registrations-table-header";
-import useGetRegistrationsSearchParams from "@/hooks/table-hooks/header-hooks/use-get-registrations-search-params";
-import { getRegistrations } from "@/lib/api/event/event-registrations";
-import { useParams } from "react-router-dom";
+import { getCaApplications } from "@/lib/api/event/ca-applications";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { type ReactNode } from "react";
+import { useParams } from "react-router-dom";
+import getCaApplicationTableColumns from "./ca-applications-table-header";
+import useGetCaApplicationSearchParams from "@/hooks/table-hooks/header-hooks/use-get-ca-applications-search-params";
 import { useTable } from "@/hooks/table-hooks/use-table";
 import { Table } from "../../table/table";
 import TableToolbar from "../../table/table-toolbar";
 
-export default function RegistrationsTable({
-  segments,
-}: {
-  segments: string[];
-}): ReactNode {
+export default function CaApplicationsTable(): ReactNode {
   const eventSlug = useParams().eventSlug!;
 
-  const columns = getRegistrationsTableColumns(segments);
-  const params = useGetRegistrationsSearchParams();
+  const columns = getCaApplicationTableColumns();
+  const params = useGetCaApplicationSearchParams();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["event-registrations", eventSlug, params],
-    queryFn: () => getRegistrations(params, eventSlug).then((res) => res.data),
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    queryKey: ["caApplications", eventSlug, params],
+    queryFn: () => getCaApplications(eventSlug, params).then((res) => res.data),
+    staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
     placeholderData: keepPreviousData,
   });
 
@@ -31,10 +27,8 @@ export default function RegistrationsTable({
     initialState: {
       columnPinning: { right: ["actions"] },
       columnVisibility: {
-        contactNumber: false,
-        hasAttended: false,
-        segments: false,
-        transactionMethod: false,
+        phoneNumber: false,
+        hasPreviousExperience: false,
       },
     },
     pageCount: data?.selectedCount
@@ -52,7 +46,7 @@ export default function RegistrationsTable({
       selectedLength={data?.selectedCount || 0}
       border={false}
     >
-      <TableToolbar table={table} tId="registrations" />
+      <TableToolbar table={table} tId="ca-applications" />
     </Table>
   );
 }

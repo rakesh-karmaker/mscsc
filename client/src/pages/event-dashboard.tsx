@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 import { FaUsers } from "react-icons/fa";
 import { TbCurrencyTaka } from "react-icons/tb";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { PiMedalMilitaryFill } from "react-icons/pi";
 import { RiTeamFill } from "react-icons/ri";
 import { useMembers } from "@/contexts/members-context";
@@ -13,15 +13,18 @@ import MemberList from "@/components/lists/member-list";
 // import CategoryDistributionChart from "@/components/charts/category-distribution";
 // import MembersTable from "@/components/tables/members-table/members-table";
 import { LuSettings } from "react-icons/lu";
-import { useState } from "react";
-import { Popover } from "@mui/material";
+import { Activity, useState } from "react";
+import { Box, Popover, Tab, Tabs } from "@mui/material";
 import RegistrationsTable from "@/components/tables/event/registrations-table/registrations-table";
+import CaApplicationsTable from "@/components/tables/event/ca-table/ca-applications-table";
 
 export default function EventDashboard() {
   const eventSlug = useParams().eventSlug || "";
   if (!eventSlug) {
     throw new Error("Event slug is required");
   }
+
+  const [_, setSearchParams] = useSearchParams();
 
   const { members } = useMembers();
 
@@ -35,6 +38,17 @@ export default function EventDashboard() {
   });
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [tabValue, setTabValue] = useState<"registrations" | "caApplications">(
+    "registrations",
+  );
+
+  function handleTabChange(
+    _: React.SyntheticEvent,
+    newValue: "registrations" | "caApplications",
+  ) {
+    setTabValue(newValue);
+    setSearchParams({});
+  }
 
   return (
     <>
@@ -82,12 +96,28 @@ export default function EventDashboard() {
             </div>
             <div className="w-full max-w-265 flex gap-6 flex-wrap p-6! shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] rounded-lg">
               {/* <MemberGrowthChart data={dashboardData} /> */}
-              <div className="w-full flex gap-5 max-[880px]:flex-col">
-                {/* <BatchDistributionChart data={dashboardData} />
-                <BranchDistributionChart data={dashboardData} /> */}
-                {/* <CategoryDistributionChart data={eventData} /> */}
-              </div>
-              <RegistrationsTable segments={eventData?.segments || []} />
+              {/* <div className="w-full flex gap-5 max-[880px]:flex-col">
+                <BatchDistributionChart data={dashboardData} />
+                <BranchDistributionChart data={dashboardData} />
+                <CategoryDistributionChart data={eventData} />
+              </div> */}
+              <Box
+                sx={{ borderBottom: 1, borderColor: "divider", width: "100%" }}
+              >
+                <Tabs
+                  value={tabValue}
+                  onChange={handleTabChange}
+                  aria-label="basic tabs example"
+                >
+                  <Tab label="Registrations" value={"registrations"} />
+                  <Tab label="CA Applications" value={"caApplications"} />
+                </Tabs>
+              </Box>
+              {tabValue === "registrations" ? (
+                <RegistrationsTable segments={eventData?.segments || []} />
+              ) : (
+                <CaApplicationsTable />
+              )}
             </div>
           </div>
           <div className="info-lists w-full min-w-25 max-w-129 flex flex-col gap-5">

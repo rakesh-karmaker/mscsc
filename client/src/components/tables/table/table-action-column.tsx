@@ -12,6 +12,7 @@ interface TableActionColumnProps extends HTMLAttributes<HTMLButtonElement> {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   children: ReactNode;
+  tId: string;
 }
 
 export default function TableActionColumn({
@@ -19,9 +20,10 @@ export default function TableActionColumn({
   children,
   open,
   setOpen,
+  tId,
   ...rest
 }: TableActionColumnProps): ReactNode {
-  const id = `popover-${rowId}`;
+  const id = `popover-${rowId}-${tId}`;
 
   return (
     <div>

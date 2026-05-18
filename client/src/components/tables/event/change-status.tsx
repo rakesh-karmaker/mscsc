@@ -2,36 +2,39 @@ import { TableBtn } from "@/components/ui/btns";
 import capitalize from "@/utils/capitalize";
 import { Modal, TextField } from "@mui/material";
 import Popover from "@mui/material/Popover";
-import { useState, type ReactNode } from "react";
+import { Activity, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { FaXmark } from "react-icons/fa6";
 import {
   LuCircleCheck,
   LuCircleDashed,
   LuCircleX,
-  LuLoaderPinwheel,
+  LuTimer,
 } from "react-icons/lu";
+import ApproveStatus from "./ca-table/approve-status";
 
-interface ChangeStatusProps {
+export interface ChangeStatusProps {
   id: string;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  registrationMutation: any;
-  registrationId: string;
+  mutation: any;
+  documentId: string;
   className?: string;
   insideModel?: boolean;
+  isCa?: boolean;
 }
 
 export default function ChangeStatus({
   id,
   setOpen,
-  registrationMutation,
-  registrationId,
+  mutation,
+  documentId,
   className,
   insideModel,
+  isCa = false,
 }: ChangeStatusProps): ReactNode {
   const [statusPopoverOpen, setStatusPopoverOpen] = useState<boolean>(false);
   const statusIcons = {
-    pending: <LuLoaderPinwheel className="opacity-70" />,
+    pending: <LuTimer className="opacity-70" />,
     validated: <LuCircleCheck className="opacity-70" />,
     rejected: <LuCircleX className="opacity-70" />,
   };
@@ -72,14 +75,14 @@ export default function ChangeStatus({
       >
         <div className="w-full h-full flex flex-col bg-primary-bg rounded-md border border-gray-300">
           {Object.keys(statusIcons)
-            .slice(0, 2)
+            .slice(0, isCa ? 1 : 2)
             .map((status) => (
               <TableBtn
                 key={status}
                 onClick={() => {
-                  registrationMutation.mutate({
+                  mutation.mutate({
                     method: "changeStatus",
-                    registrationId: registrationId,
+                    documentId: documentId,
                     data: { status },
                   });
                   handleStatusClose();
@@ -89,12 +92,24 @@ export default function ChangeStatus({
                 <p>{capitalize(status)}</p>
               </TableBtn>
             ))}
+
+          <Activity mode={isCa ? "visible" : "hidden"}>
+            <ApproveStatus
+              setOpen={setOpen}
+              mutation={mutation}
+              documentId={documentId}
+              icon={statusIcons["validated" as keyof typeof statusIcons]}
+              isCa={isCa}
+            />
+          </Activity>
+
           <RejectStatus
             setOpen={setOpen}
-            registrationMutation={registrationMutation}
-            registrationId={registrationId}
+            mutation={mutation}
+            documentId={documentId}
             icon={statusIcons["rejected" as keyof typeof statusIcons]}
             id={id}
+            isCa={isCa}
           />
         </div>
       </Popover>
@@ -104,10 +119,11 @@ export default function ChangeStatus({
 
 function RejectStatus({
   setOpen,
-  registrationMutation,
-  registrationId,
+  mutation,
+  documentId,
   icon,
-}: ChangeStatusProps & { icon: ReactNode }): ReactNode {
+  isCa = false,
+}: ChangeStatusProps & { icon: ReactNode; isCa: boolean }): ReactNode {
   const [rejectModelOpen, setRejectModelOpen] = useState<boolean>(false);
 
   const { register, handleSubmit } = useForm({
@@ -117,9 +133,9 @@ function RejectStatus({
   });
 
   function onSubmit(data: { reason: string }) {
-    registrationMutation.mutate({
+    mutation.mutate({
       method: "changeStatus",
-      registrationId: registrationId,
+      documentId: documentId,
       data: { status: "rejected", rejectionReason: data.reason },
     });
     setRejectModelOpen(false);
@@ -141,8 +157,8 @@ function RejectStatus({
       <Modal
         open={rejectModelOpen}
         onClose={() => setRejectModelOpen(false)}
-        aria-labelledby="Member Edit Box"
-        aria-describedby="Edit Member Details"
+        aria-labelledby={"Reject Registration"}
+        aria-describedby={"Provide a reason for rejecting this registration"}
         className="flex items-center justify-center h-fit min-h-screen max-sm:overflow-y-auto absolute max-sm:bg-primary-bg border-none! outline-none! focus-visible:outline-none"
         onClick={(e) => {
           e.stopPropagation();
@@ -153,7 +169,7 @@ function RejectStatus({
             <div className="w-full flex flex-col">
               <div className="w-full flex justify-between items-start gap-4">
                 <h2 className="text-2xl font-medium max-xs:text-2xl">
-                  Reject Registration
+                  Reject {isCa ? "Application" : "Registration"}
                 </h2>
                 <button
                   onClick={() => setRejectModelOpen(false)}
@@ -163,9 +179,10 @@ function RejectStatus({
                 </button>
               </div>
               <p className="text-gray-600 text-sm mt-3!">
-                Give a reason for rejecting this registration to let the member
-                know. This will be sent to the member via email and will be
-                visible in the registration details.
+                Give a reason for rejecting this{" "}
+                {isCa ? "application" : "registration"} to let the member know.
+                This will be sent to the member via email and will be visible in
+                the {isCa ? "application" : "registration"} details.
               </p>
               <div className="w-full h-px bg-light-black/10 mt-2! mb-7!"></div>
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -183,7 +200,7 @@ function RejectStatus({
                       e.stopPropagation();
                     }}
                   >
-                    Reject Registration
+                    Reject {isCa ? "Application" : "Registration"}
                   </button>
                 </div>
               </form>

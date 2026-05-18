@@ -1,32 +1,30 @@
 import Loader from "@/components/ui/loader/loader";
-import type {
-  EventRegistrationDetails,
-  EventTeamData,
-} from "@/types/event-types";
+import type { EventRegistrationDetails } from "@/types/event/event-registration-types";
 import capitalize from "@/utils/capitalize";
 import { useQuery } from "@tanstack/react-query";
 import type { ReactNode } from "react";
-import { LuCircleX } from "react-icons/lu";
+import { LuCircleX, LuEye } from "react-icons/lu";
 import { useParams } from "react-router-dom";
 import { getTeamById } from "@/lib/api/event/event-teams";
 import { Tooltip } from "@mui/material";
-import RegistrationPreview from "./registration-preview";
 import { deSlugify } from "@/utils/de-slugify";
 import TeamEditModel from "./team-edit-model";
+import ProfilePreview from "../profile-preview";
+import RegistrationDetailsModel from "../registrations-table/registration-details-model";
+import type { EventTeamData } from "@/types/event/event-team-types";
 
 export default function TeamDetails({
   teamId,
   previousModels,
   setDetailsModelOpen,
-  registrationMutation,
 }: {
   teamId: string;
   previousModels: {
+    applications: string[];
     registrations: string[];
     teams: string[];
   };
   setDetailsModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  registrationMutation: any;
 }): ReactNode {
   const eventSlug = useParams().eventSlug!;
 
@@ -96,11 +94,28 @@ export default function TeamDetails({
         <h3 className="text-xl mb-1!">Team Leader:</h3>
         <div className="flex flex-col gap-1"></div>
         {teamData.leaderRegistration ? (
-          <RegistrationPreview
-            details={teamData.leaderRegistration}
-            previousModels={previousModels}
-            registrationMutation={registrationMutation}
-          />
+          <ProfilePreview details={teamData.leaderRegistration}>
+            <RegistrationDetailsModel
+              registrationId={teamData.leaderRegistration._id}
+              setOpen={() => {}}
+              className={`bg-highlighted-color text-white hover:bg-secondary-bg/20 hover:text-black border border-highlighted-color/20 transition-all duration-200 mt-1! ${previousModels.registrations.includes(teamData.leaderRegistration._id) && "pointer-events-none opacity-50 cursor-not-allowed"}`}
+              previousModels={{
+                applications: previousModels.applications,
+                registrations: [
+                  ...previousModels.registrations,
+                  teamData.leaderRegistration._id,
+                ],
+                teams: previousModels.teams,
+              }}
+            >
+              <Tooltip title="View Registration Details" placement="top" arrow>
+                <div className="max-xs:flex gap-2 items-center">
+                  <LuEye className="w-5 h-5" />
+                  <p className="xs:hidden">View Details</p>
+                </div>
+              </Tooltip>
+            </RegistrationDetailsModel>
+          </ProfilePreview>
         ) : (
           <div className="w-full text-[0.97rem] flex gap-1 text-gray-700">
             <span className="min-w-fit">Email: </span>
@@ -134,12 +149,32 @@ export default function TeamDetails({
               );
 
               return memberData ? (
-                <RegistrationPreview
-                  key={index}
-                  details={memberData}
-                  previousModels={previousModels}
-                  registrationMutation={registrationMutation}
-                />
+                <ProfilePreview details={memberData} key={index}>
+                  <RegistrationDetailsModel
+                    registrationId={memberData._id}
+                    setOpen={() => {}}
+                    className={`bg-highlighted-color text-white hover:bg-secondary-bg/20 hover:text-black border border-highlighted-color/20 transition-all duration-200 mt-1! ${previousModels.registrations.includes(memberData._id) && "pointer-events-none opacity-50 cursor-not-allowed"}`}
+                    previousModels={{
+                      applications: previousModels.applications,
+                      registrations: [
+                        ...previousModels.registrations,
+                        memberData._id,
+                      ],
+                      teams: previousModels.teams,
+                    }}
+                  >
+                    <Tooltip
+                      title="View Registration Details"
+                      placement="top"
+                      arrow
+                    >
+                      <div className="max-xs:flex gap-2 items-center">
+                        <LuEye className="w-5 h-5" />
+                        <p className="xs:hidden">View Details</p>
+                      </div>
+                    </Tooltip>
+                  </RegistrationDetailsModel>
+                </ProfilePreview>
               ) : (
                 <div
                   key={index}

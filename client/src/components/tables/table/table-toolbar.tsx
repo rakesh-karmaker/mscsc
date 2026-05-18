@@ -8,11 +8,13 @@ import TableMultiSelect from "./table-multi-select";
 
 interface TableToolbarProps<TData> extends React.ComponentProps<"div"> {
   table: Table<TData>;
+  tId: string;
 }
 
 export default function TableToolbar<TData>({
   table,
   className,
+  tId,
   ...rest
 }: TableToolbarProps<TData>): ReactNode {
   const isFiltered = table.getState().columnFilters.length > 0;
@@ -37,7 +39,7 @@ export default function TableToolbar<TData>({
     >
       <div className="flex flex-1 flex-wrap items-center gap-2">
         {columns.map((column) => (
-          <DataTableToolbarFilter key={column.id} column={column} />
+          <DataTableToolbarFilter key={column.id} column={column} tId={tId} />
         ))}
         {isFiltered && (
           <button
@@ -51,7 +53,7 @@ export default function TableToolbar<TData>({
         )}
       </div>
       <div className="flex items-center gap-2">
-        <TableViewOptions table={table} />
+        <TableViewOptions table={table} tId={tId} />
       </div>
     </div>
   );
@@ -59,10 +61,12 @@ export default function TableToolbar<TData>({
 
 interface DataTableToolbarFilterProps<TData> {
   column: Column<TData>;
+  tId: string;
 }
 
 function DataTableToolbarFilter<TData>({
   column,
+  tId,
 }: DataTableToolbarFilterProps<TData>) {
   {
     const columnMeta = column.columnDef.meta;
@@ -138,6 +142,7 @@ function DataTableToolbarFilter<TData>({
               options={columnMeta.options || []}
               title={columnMeta.label ?? column.id}
               multiple={columnMeta.variant === "multiSelect"}
+              tId={tId}
             />
           );
         default:

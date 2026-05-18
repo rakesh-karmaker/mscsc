@@ -32,7 +32,7 @@ const EventCASchema = new mongoose.Schema<EventCASchemaType>(
       default: "pending",
     },
     rejectionReason: { type: String, default: "" },
-    caCode: { type: String, required: false, default: null },
+    caCode: { type: String, required: false, default: "N/A" },
     score: { type: Number, required: true, default: 0 },
   },
   {

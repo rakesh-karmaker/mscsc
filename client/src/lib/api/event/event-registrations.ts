@@ -1,5 +1,5 @@
 import { api } from "@/config/axios";
-import type { EventRegistrationsSearchParams } from "@/types/event-types";
+import type { EventRegistrationsSearchParams } from "@/types/event/event-registration-types";
 
 export async function getRegistrations(
   params: EventRegistrationsSearchParams,

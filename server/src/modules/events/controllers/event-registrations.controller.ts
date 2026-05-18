@@ -138,6 +138,16 @@ export async function getRegistrationById(
       return;
     }
 
+    let caData = null;
+    if (registration.reference && registration.reference !== "N/A") {
+      caData = await EventCA.findOne({
+        eventId: registration.eventId,
+        caCode: registration.reference,
+      })
+        .lean()
+        .select("_id name status photoUrl caCode");
+    }
+
     // get the team data with the memberEmails name and registration details (eg: name, registrationId, status) for each member email
     const teamData = await EventTeam.find({
       eventId: registration.eventId,
@@ -147,7 +157,9 @@ export async function getRegistrationById(
       ],
     }).select("_id segmentSlug teamName leaderEmail memberEmails status");
 
-    res.status(200).json({ registrationDetails: registration, teamData });
+    res
+      .status(200)
+      .json({ registrationDetails: registration, teamData, caData });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
     logger.error("Error fetching registration by ID", {
@@ -294,26 +306,6 @@ export async function registerForEvent(
       publicId = imgId;
     }
 
-    if (cleanedBody.reference && cleanedBody.reference !== "N/A") {
-      const caApplication = await EventCA.findOneAndUpdate(
-        {
-          caCode: cleanedBody.reference,
-          eventId: event._id,
-          status: "approved",
-        },
-        { $inc: { score: 1 } },
-        { new: true },
-      );
-      if (!caApplication) {
-        logger.warn("Invalid CA code provided during registration", {
-          eventSlug,
-          email: cleanedBody.email,
-          name: cleanedBody.name,
-          reference: cleanedBody.reference,
-        });
-      }
-    }
-
     let code = generateCode(6);
     while (await EventRegistration.exists({ eventId: event._id, code })) {
       code = generateCode(6);
@@ -418,8 +410,6 @@ export async function changeRegistrationStatus(
       return;
     }
 
-    console.log(body);
-
     const event = await Event.findOne({ eventSlug });
     if (!event) {
       res.status(404).json({ message: "Event not found" });
@@ -434,6 +424,26 @@ export async function changeRegistrationStatus(
 
     // send the registration mail
     if (body.status === "validated") {
+      if (registration.reference && registration.reference !== "N/A") {
+        const caApplication = await EventCA.findOneAndUpdate(
+          {
+            caCode: registration.reference,
+            eventId: event._id,
+            status: "approved",
+          },
+          { $inc: { score: 1 } },
+          { new: true },
+        );
+        if (!caApplication) {
+          logger.warn("Invalid CA code provided during registration", {
+            eventSlug,
+            email: registration.email,
+            name: registration.name,
+            reference: registration.reference,
+          });
+        }
+      }
+
       await sendEmail(
         registration.email,
         `Registration Confirmed for ${registration.name}`,
@@ -445,6 +455,21 @@ export async function changeRegistrationStatus(
         }),
       );
     } else if (body.status === "rejected") {
+      // if the registration was previously validated and had a reference code, decrement the score of the corresponding CA
+      if (
+        registration.status === "validated" &&
+        registration.reference &&
+        registration.reference !== "N/A"
+      ) {
+        await EventCA.findOneAndUpdate(
+          {
+            caCode: registration.reference,
+            eventId: event._id,
+            status: "approved",
+          },
+          { $inc: { score: -1 } },
+        );
+      }
       await sendEmail(
         registration.email,
         `Registration Rejected for ${registration.name}`,

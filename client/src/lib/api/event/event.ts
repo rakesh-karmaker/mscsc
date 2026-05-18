@@ -1,5 +1,5 @@
 import { api } from "@/config/axios";
-import type { EventFormDataType } from "@/types/event-types";
+import type { EventFormDataType } from "@/types/event/event-types";
 
 export async function getAllEvents() {
   return api.get("/event/all", {

@@ -11,6 +11,7 @@ interface TableMultiSelectProps<TData, TValue> {
   title?: string;
   options: Option[];
   multiple?: boolean;
+  tId: string;
 }
 
 export default function TableMultiSelect<TData, TValue>({
@@ -18,6 +19,7 @@ export default function TableMultiSelect<TData, TValue>({
   title,
   options,
   multiple,
+  tId,
 }: TableMultiSelectProps<TData, TValue>): ReactNode {
   const [open, setOpen] = useState(false);
 
@@ -55,7 +57,7 @@ export default function TableMultiSelect<TData, TValue>({
     [column],
   );
 
-  const id = `popover-multi-select-${column?.id}`;
+  const id = `popover-multi-select-${column?.id}-${tId}`;
 
   const [searchValue, setSearchValue] = useState<string>("");
   const [filteredOptions, setFilteredOptions] = useState<Option[]>(options);

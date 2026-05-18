@@ -9,16 +9,18 @@ interface TableViewOptionsProps<
 > extends React.HTMLAttributes<HTMLButtonElement> {
   table: Table<TData>;
   disabled?: boolean;
+  tId: string;
 }
 
 export default function TableViewOptions<TData>({
   table,
   disabled,
+  tId,
   ...rest
 }: TableViewOptionsProps<TData>): ReactNode {
   const [open, setOpen] = useState<boolean>(false);
 
-  const id = `popover-view-options`;
+  const id = `popover-view-options-${tId}`;
   const columns = useMemo(() => {
     return table
       .getAllColumns()

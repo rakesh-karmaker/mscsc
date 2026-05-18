@@ -1,4 +1,4 @@
-import type { EventFormDataType } from "@/types/event-types";
+import type { EventFormDataType } from "@/types/event/event-types";
 import useFilterEventForm from "./use-filter-event-form";
 
 type useEventFormValidatorProps = {

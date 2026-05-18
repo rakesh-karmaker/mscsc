@@ -1,7 +1,7 @@
 import Modal from "@mui/material/Modal";
 import { useState, type ReactNode } from "react";
 import { FaXmark } from "react-icons/fa6";
-import type { EventTeamData } from "@/types/event-types";
+import type { EventTeamData } from "@/types/event/event-team-types";
 import TeamEditForm from "./team-edit-form";
 
 interface TeamEditModelProps {

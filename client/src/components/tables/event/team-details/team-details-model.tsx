@@ -10,10 +10,10 @@ interface TeamDetailsModelProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   className?: string;
   previousModels: {
+    applications: string[];
     registrations: string[];
     teams: string[];
   };
-  registrationMutation: any;
 }
 
 export default function TeamDetailsModel({
@@ -21,7 +21,6 @@ export default function TeamDetailsModel({
   setOpen,
   className,
   previousModels,
-  registrationMutation,
 }: TeamDetailsModelProps): ReactNode {
   const [detailsModelOpen, setDetailsModelOpen] = useState<boolean>(false);
 
@@ -72,7 +71,6 @@ export default function TeamDetailsModel({
                 teamId={teamId}
                 previousModels={previousModels}
                 setDetailsModelOpen={setDetailsModelOpen}
-                registrationMutation={registrationMutation}
               />
             </div>
           </div>

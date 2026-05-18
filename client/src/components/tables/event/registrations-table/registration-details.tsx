@@ -1,9 +1,9 @@
 import Loader from "@/components/ui/loader/loader";
 import { getRegistrationById } from "@/lib/api/event/event-registrations";
 import type {
+  CaPreviewData,
   EventRegistrationDetails,
-  EventTeamPreviewData,
-} from "@/types/event-types";
+} from "@/types/event/event-registration-types";
 import capitalize from "@/utils/capitalize";
 import { deSlugify } from "@/utils/de-slugify";
 import getCategory from "@/utils/get-category";
@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import { Activity, useState, type ReactNode } from "react";
 import {
   LuCalendar,
+  LuEye,
   LuFacebook,
   LuMail,
   LuPhone,
@@ -19,22 +20,26 @@ import {
 } from "react-icons/lu";
 import { useParams } from "react-router-dom";
 import TeamDetailsModel from "../team-details/team-details-model";
-import ChangeStatus from "./change-status";
+import ChangeStatus from "../change-status";
 import DeleteWarning from "@/components/ui/delete-warning";
 import { TableBtn } from "@/components/ui/btns";
+import ProfilePreview from "../profile-preview";
+import useRegistrationMutation from "@/hooks/event-hooks/use-registration-mutation";
+import type { EventTeamPreviewData } from "@/types/event/event-team-types";
+import ApplicationDetailsModel from "../ca-table/application-details-model";
+import { Tooltip } from "@mui/material";
 
 export default function RegistrationDetails({
   registrationId,
   previousModels,
-  registrationMutation,
   setModelOpen,
 }: {
   registrationId: string;
   previousModels: {
+    applications: string[];
     registrations: string[];
     teams: string[];
   };
-  registrationMutation: any;
   setModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }): ReactNode {
   const eventSlug = useParams().eventSlug!;
@@ -64,6 +69,7 @@ export default function RegistrationDetails({
   const details =
     registrationData.registrationDetails as EventRegistrationDetails;
   const teamData = registrationData.teamData as EventTeamPreviewData[];
+  const caData = registrationData.caData as CaPreviewData | null;
 
   return (
     <div className="w-full h-full flex flex-col gap-3 max-md:gap-5">
@@ -79,7 +85,7 @@ export default function RegistrationDetails({
           <StatusTags details={details} />
         </div>
       </Activity>
-      <div className="w-full h-full grid grid-cols-2 gap-10 mt-3! max-md:mt-0! max-md:grid-cols-1 max-md:gap-5">
+      <div className="w-full h-full grid grid-cols-2 gap-x-10 gap-y-6 mt-3! max-md:mt-0! max-md:grid-cols-1 max-md:gap-y-5">
         <div className="w-full h-full flex flex-col">
           <Activity mode={window.innerWidth < 768 ? "visible" : "hidden"}>
             <StatusTags details={details} />
@@ -156,7 +162,6 @@ export default function RegistrationDetails({
           <RegistrationActions
             details={details}
             registrationId={registrationId}
-            registrationMutation={registrationMutation}
             setModelOpen={setModelOpen}
             version="desktop"
           />
@@ -216,10 +221,10 @@ export default function RegistrationDetails({
                       setOpen={() => {}}
                       className={`ml-2! max-w-fit bg-highlighted-color text-white hover:bg-secondary-bg/20 hover:text-black border border-highlighted-color/20 transition-all duration-200 mt-1! ${previousModels.teams.includes(team._id) && "pointer-events-none opacity-50 cursor-not-allowed"}`}
                       previousModels={{
+                        applications: previousModels.applications,
                         registrations: previousModels.registrations,
                         teams: [...previousModels.teams, team._id],
                       }}
-                      registrationMutation={registrationMutation}
                     />
                   </div>
                 );
@@ -228,11 +233,58 @@ export default function RegistrationDetails({
           )}
         </div>
 
+        <div className="col-span-2">
+          <h3 className="text-2xl mb-1!">Additional Info:</h3>
+          <div className="flex flex-col gap-1"></div>
+          {caData ? (
+            <div className="w-full grid grid-cols-2 max-md:grid-cols-1 gap-10 max-md:gap-3">
+              <div className="w-full h-full">
+                <h4 className="text-lg mb-0.5!">Reference</h4>
+                <div className="ml-2!">
+                  <ProfilePreview details={caData}>
+                    <ApplicationDetailsModel
+                      applicationId={caData._id}
+                      setOpen={() => {}}
+                      className={`bg-highlighted-color text-white hover:bg-secondary-bg/20 hover:text-black border border-highlighted-color/20 transition-all duration-200 mt-1! ${previousModels.applications.includes(caData._id) && "pointer-events-none opacity-50 cursor-not-allowed"}`}
+                      previousModels={{
+                        applications: [
+                          ...previousModels.applications,
+                          caData._id,
+                        ],
+                        registrations: previousModels.registrations,
+                        teams: previousModels.teams,
+                      }}
+                    >
+                      <Tooltip
+                        title="View Registration Details"
+                        placement="top"
+                        arrow
+                      >
+                        <LuEye className="w-5 h-5" />
+                      </Tooltip>
+                    </ApplicationDetailsModel>
+                  </ProfilePreview>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
+              <span className="min-w-fit">Reference: </span>
+              <span className="font-medium ml-1!">{details.reference}</span>
+            </div>
+          )}
+          {details.clubReference ? (
+            <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700 mt-2!">
+              <span className="min-w-fit">Club Reference: </span>
+              <span className="font-medium ml-1!">{details.clubReference}</span>
+            </div>
+          ) : null}
+        </div>
+
         <Activity mode={window.innerWidth < 768 ? "visible" : "hidden"}>
           <RegistrationActions
             details={details}
             registrationId={registrationId}
-            registrationMutation={registrationMutation}
             setModelOpen={setModelOpen}
             version="mobile"
           />
@@ -300,17 +352,17 @@ function StatusTags({
 function RegistrationActions({
   details,
   registrationId,
-  registrationMutation,
   setModelOpen,
   version,
 }: {
   details: EventRegistrationDetails;
   registrationId: string;
-  registrationMutation: any;
   setModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
   version: "desktop" | "mobile";
 }): ReactNode {
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const registrationMutation = useRegistrationMutation();
+
   return (
     <div>
       <h3 className="text-2xl mb-1.75!">Registration Actions:</h3>
@@ -318,13 +370,13 @@ function RegistrationActions({
       <div className="w-full flex flex-wrap items-center gap-4">
         <ChangeStatus
           id={`change-status-details-${registrationId}-${version}`}
-          registrationId={registrationId}
+          documentId={registrationId}
           setOpen={() => {}}
-          registrationMutation={registrationMutation}
+          mutation={registrationMutation}
           className="max-w-fit bg-highlighted-color text-white hover:bg-secondary-bg/20 hover:text-black border border-highlighted-color/20 transition-all duration-200"
           insideModel={true}
         />
-        <div className="border-t border-gray-300">
+        <div>
           <TableBtn
             className="max-w-fit bg-red-500 text-white hover:bg-secondary-bg/20 border hover:text-black border-red-500/20 transition-all duration-200"
             aria-label="Delete this data"

@@ -15,6 +15,7 @@ interface TableColumnHeaderProps<
   TValue,
 > extends React.HTMLAttributes<HTMLButtonElement> {
   column: Column<TData, TValue>;
+  tId: string;
   label: string;
 }
 
@@ -22,11 +23,12 @@ export default function TableColumnHeader<TData, TValue>({
   column,
   label,
   className,
+  tId,
   ...rest
 }: TableColumnHeaderProps<TData, TValue>): ReactNode {
   const [open, setOpen] = useState<boolean>(false);
 
-  const id = `popover-${column.id}`;
+  const id = `popover-${column.id}-${tId}`;
 
   function handleToggleSorting(sortDirection: "asc" | "desc" | "clear") {
     if (sortDirection === "asc") {
