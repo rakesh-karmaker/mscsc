@@ -144,7 +144,7 @@ export default function ScheduleSectionFields({
                   render={({ field }) => (
                     <DatePicker
                       {...field}
-                      value={field.value}
+                      value={dayjs(field.value)}
                       onChange={(date: Dayjs | null) => field.onChange(date)}
                       label="Schedule Date"
                       errMessage={
@@ -165,7 +165,7 @@ export default function ScheduleSectionFields({
                     render={({ field }) => (
                       <TimePicker
                         {...field}
-                        value={field.value}
+                        value={dayjs(field.value)}
                         onChange={(date: Dayjs | null) => field.onChange(date)}
                         label="From Time"
                         errMessage={
@@ -182,7 +182,7 @@ export default function ScheduleSectionFields({
                     render={({ field }) => (
                       <TimePicker
                         {...field}
-                        value={field.value}
+                        value={dayjs(field.value)}
                         onChange={(date: Dayjs | null) => field.onChange(date)}
                         label="To Time"
                         errMessage={

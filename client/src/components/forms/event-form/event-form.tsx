@@ -18,22 +18,30 @@ import ContactInfoFields from "./fields/contact-info-fields";
 import FormSectionLayout from "./form-section-layout/form-section-layout";
 import useEventFormValidator from "@/hooks/use-event-form-validator";
 import { useMutation } from "@tanstack/react-query";
-import type { EventFormDataType } from "@/types/event/event-types";
+import type {
+  EventFormDataType,
+  FilteredEventDataType,
+} from "@/types/event/event-types";
 import { addEvent } from "@/lib/api/event/event";
 import toast from "react-hot-toast";
 
 export default function EventForm({
   defaultValues,
 }: {
-  defaultValues?: any;
+  defaultValues?: FilteredEventDataType;
 }): ReactNode {
   const isEditMode = Boolean(defaultValues);
+  console.log("defaultValues", defaultValues);
 
-  const [selectedSections, setSelectedSections] = useState<string[]>([]);
+  const [selectedSections, setSelectedSections] = useState<string[]>(
+    defaultValues?.sections || [],
+  );
   const [filteredSections, setFilteredSections] = useState<string[]>([]);
   const [currentField, setCurrentField] = useState<string>("basic");
   const [currentNumber, setCurrentNumber] = useState<number>(1);
-  const [hiddenSections, setHiddenSections] = useState<string[]>([]);
+  const [hiddenSections, setHiddenSections] = useState<string[]>(
+    defaultValues?.hiddenSections || [],
+  );
 
   useEffect(() => {
     const filtered = sectionsData.sectionOptions.filter((section) =>
@@ -90,7 +98,7 @@ export default function EventForm({
     control,
     clearErrors,
   } = useForm({
-    defaultValues: defaultValues || {},
+    defaultValues: defaultValues || ({} as any),
   });
 
   function onSubmit(data: any) {

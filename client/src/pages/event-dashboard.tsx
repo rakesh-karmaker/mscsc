@@ -12,8 +12,8 @@ import { useMembers } from "@/contexts/members-context";
 import MemberList from "@/components/lists/member-list";
 // import CategoryDistributionChart from "@/components/charts/category-distribution";
 // import MembersTable from "@/components/tables/members-table/members-table";
-import { LuSettings } from "react-icons/lu";
-import { Activity, useState } from "react";
+import { LuSettings, LuSquarePen } from "react-icons/lu";
+import { useState } from "react";
 import { Box, Popover, Tab, Tabs } from "@mui/material";
 import RegistrationsTable from "@/components/tables/event/registrations-table/registrations-table";
 import CaApplicationsTable from "@/components/tables/event/ca-table/ca-applications-table";
@@ -124,6 +124,14 @@ export default function EventDashboard() {
             <div className="w-full flex justify-between items-center gap-10">
               <p>Settings: </p>
               <div>
+                <button
+                  className="p-3! font-lg rounded-md bg-secondary-bg hover:opacity-70 transition-opacity cursor-pointer"
+                  aria-describedby="Edit"
+                  onClick={() => setIsSettingsOpen((prev) => !prev)}
+                  id="Edit-popover"
+                >
+                  <LuSquarePen />
+                </button>
                 <button
                   className="p-3! font-lg rounded-md bg-secondary-bg hover:opacity-70 transition-opacity cursor-pointer"
                   aria-describedby="Settings"

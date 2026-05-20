@@ -21,6 +21,7 @@ const TaskDashboard = lazy(
 const TaskForm = lazy(() => import("@/components/forms/task-form/task-form"));
 const MessagesDashboard = lazy(() => import("@/pages/messages-dashboard"));
 const AddEvent = lazy(() => import("@/pages/add-event"));
+const EditEvent = lazy(() => import("@/pages/edit-event"));
 const EventDashboard = lazy(() => import("@/pages/event-dashboard"));
 
 // Lazy load error pages
@@ -144,6 +145,19 @@ export const adminRoutes = {
       element: (
         <Suspense fallback={<Loader />}>
           <EventDashboard />
+        </Suspense>
+      ),
+      errorElement: (
+        <Suspense fallback={<Loader />}>
+          <NotFound />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/admin/edit-event/:eventSlug",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <EditEvent />
         </Suspense>
       ),
       errorElement: (

@@ -6,6 +6,7 @@ import { DateTimePicker } from "@/components/ui/date-time-picker";
 import type { Dayjs } from "dayjs";
 import { DatePicker } from "@/components/ui/date-picker";
 import FileInput from "@/components/ui/file-input";
+import dayjs from "dayjs";
 
 type BasicInfoFieldsProps = {
   register: any;
@@ -57,7 +58,7 @@ export default function BasicInfoFields({
             render={({ field }) => (
               <DatePicker
                 {...field}
-                value={field.value}
+                value={dayjs(field.value)}
                 onChange={(date: Dayjs | null) => field.onChange(date)}
                 label="Event Date"
                 errMessage={errors.eventDate?.message as string}
@@ -88,7 +89,7 @@ export default function BasicInfoFields({
             render={({ field }) => (
               <DateTimePicker
                 {...field}
-                value={field.value}
+                value={dayjs(field.value)}
                 onChange={(date: Dayjs | null) => field.onChange(date)}
                 label="Registration Deadline"
                 timeField={false}

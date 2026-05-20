@@ -81,7 +81,7 @@ export default function CAApplicationFields({
               render={({ field }) => (
                 <DateTimePicker
                   {...field}
-                  value={field.value || dayjs()}
+                  value={dayjs(field.value)}
                   onChange={(date: Dayjs | null) => field.onChange(date)}
                   label="CA Application Deadline"
                 />

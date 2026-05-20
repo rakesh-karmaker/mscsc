@@ -7,6 +7,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import { icons } from "@/services/data/icons-data";
 import RichTextEditor from "@/lib/rich-text-editor/rich-text-editor";
 import SelectIconField from "@/components/ui/select-icon-field";
+import { LuUserRound, LuUsersRound } from "react-icons/lu";
 
 type SegmentsSectionFieldsProps = {
   register: any;
@@ -128,6 +129,26 @@ export default function SegmentsSectionFields({
                   defaultValue="solo"
                 >
                   Team Type
+                </SelectIconField>
+
+                <SelectIconField
+                  id={`segments-max-team-size-${index}`}
+                  name={`segmentsData.${index}.maxTeamSize`}
+                  icons={{
+                    "1": <LuUserRound />,
+                    "2": <LuUserRound />,
+                    "3": <LuUsersRound />,
+                  }}
+                  control={control}
+                  hasErrors={Boolean(
+                    errors?.segmentsData?.[index]?.maxTeamSize,
+                  )}
+                  errorMessage={
+                    errors.segmentsData?.[index]?.maxTeamSize?.message as string
+                  }
+                  defaultValue="1"
+                >
+                  Max Team Size (If solo, select 1)
                 </SelectIconField>
               </Stack>
 

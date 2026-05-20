@@ -1,5 +1,6 @@
 import { api } from "@/config/axios";
 import type { EventFormDataType } from "@/types/event/event-types";
+import axios from "axios";
 
 export async function getAllEvents() {
   return api.get("/event/all", {
@@ -9,12 +10,20 @@ export async function getAllEvents() {
   });
 }
 
-export async function getEventBySlug(eventSlug: string) {
+export async function getEventBySlug(eventSlug: string, details = false) {
   return api.get(`/event/${eventSlug}/details`, {
     headers: {
-      details: "true",
+      details: details.toString(),
     },
   });
+}
+
+export async function getJSONData(
+  url: string,
+  extraData: { [key: string]: string | boolean | number } = {},
+) {
+  const response = await axios.get(url);
+  return { ...response.data, ...extraData };
 }
 
 export async function addEvent(data: EventFormDataType) {

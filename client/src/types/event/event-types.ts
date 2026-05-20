@@ -7,6 +7,7 @@ export type SegmentType = {
   summary: string;
   details: string;
   rules: string;
+  maxTeamSize: string;
 };
 
 export type ExperienceType = {
@@ -108,3 +109,41 @@ export type EventFormDataType = {
   aboutImage?: File;
   spLogos?: File[];
 };
+
+export interface FilteredEventDataType {
+  eventName: string;
+  eventDate: string;
+  eventLocation: string;
+  eventDescription: string;
+  registrationUrl: string;
+  isInnerRegistration: boolean;
+  hasCAForm: boolean;
+  contactLinks: {
+    platform: string;
+    url: string;
+  }[];
+  caFormData?: {
+    title: string;
+    applicationDeadline: string;
+    details: string;
+  };
+  formData?: {
+    title: string;
+    fees: string;
+    details: string;
+    transactionMethods?: {
+      [method: string]: {
+        number: string;
+      };
+    };
+  };
+  sections: string[];
+  hiddenSections: string[];
+  heroData?: HeroDataType;
+  aboutData?: AboutDataType;
+  segmentsData?: Omit<SegmentType, "segmentSlug">[];
+  experiencesData?: Omit<ExperienceType, "experienceSlug">[];
+  scheduleData?: RawScheduleItemType[];
+  spData?: SpType[];
+  faqData?: FaqType[];
+}

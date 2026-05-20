@@ -62,6 +62,7 @@ export const eventFormSchema = Joi.object({
         summary: Joi.string().required(),
         details: Joi.string().required(),
         rules: Joi.string().required(),
+        maxTeamSize: Joi.string().required(),
       }),
     )
     .optional(),
