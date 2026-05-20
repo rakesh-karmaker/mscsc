@@ -21,6 +21,7 @@
 
 .activity img {
   width: 100%;
+  min-width: 350px;
   height: 100%;
   object-fit: cover;
   object-position: center center;
@@ -112,6 +113,9 @@
     height: fit-content;
     max-width: 290px;
   }
+  .activity img {
+    min-width: 290px;
+  }
   .activity span:has(img) {
     height: 220px;
   }
@@ -126,5 +130,8 @@
 @media screen and (max-width: 330px) {
   .activity {
     max-width: 250px;
+  }
+  .activity img {
+    min-width: 250px;
   }
 }

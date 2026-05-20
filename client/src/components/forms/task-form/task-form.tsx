@@ -134,13 +134,13 @@ export default function TaskForm(props: TaskFormProps) {
 
   return (
     <div className="task-form-container">
-      <FormHeading style={{ fontSize: "42px", lineHeight: "52px" }}>
+      <FormHeading style={{ fontSize: "28px", lineHeight: "36px" }}>
         {props?.method == "add" ? "Add Task" : "Edit Task"}
       </FormHeading>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="task-form max-w-[min(var(--container-4xl),var(--max-elements-width))] mx-auto! mt-10! flex flex-col gap-5"
+        className="max-w-[min(var(--container-4xl),var(--max-elements-width))] mx-auto! mt-14! flex flex-col gap-5"
       >
         <Stack
           direction={{ xs: "column", sm: "row" }}

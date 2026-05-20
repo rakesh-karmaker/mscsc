@@ -63,21 +63,23 @@ export default function ActivityForm(props: ActivityFormProps) {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm({
+  } = useForm<ActivitySchemaType>({
     resolver: zodResolver(activitySchema),
     defaultValues,
   });
 
   const activityMutation = useMutation({
     mutationFn: (
-      data: ActivitySchemaType & {
-        method: "add" | "edit" | "delete";
-        slug?: string;
-      }
+      data:
+        | (ActivitySchemaType & {
+            method: "add" | "edit" | "delete";
+            slug?: string;
+          })
+        | { slug: string; method: "delete" },
     ) => {
       const { method, ...rest } = data;
       if (method == "add") {
-        return addActivity(rest);
+        return addActivity(rest as ActivitySchemaType);
       } else if (method == "delete") {
         return deleteActivity(rest.slug || "");
       } else if (method == "edit") {
@@ -90,12 +92,7 @@ export default function ActivityForm(props: ActivityFormProps) {
     onSuccess: (res) => {
       toast.success(res?.data?.message);
       queryClient.invalidateQueries({ queryKey: ["activities"] });
-    },
-    onError: (err: AxiosError<{ message: string }>) => {
-      console.log(err);
-      toast.error(err?.response?.data?.message || "An error occurred");
-    },
-    onSettled: () => {
+
       if (props?.method == "edit") {
         if (props?.setSelectedActivity) {
           props?.setSelectedActivity(null);
@@ -103,6 +100,10 @@ export default function ActivityForm(props: ActivityFormProps) {
       } else {
         navigate("/admin/activities");
       }
+    },
+    onError: (err: AxiosError<{ message: string }>) => {
+      console.log(err);
+      toast.error(err?.response?.data?.message || "An error occurred");
     },
   });
 
@@ -116,11 +117,6 @@ export default function ActivityForm(props: ActivityFormProps) {
 
   const onDelete = (slug: string) => {
     activityMutation.mutate({
-      title: "",
-      date: dayjs(),
-      tag: "",
-      summary: "",
-      content: "",
       method: "delete",
       slug: slug,
     });
@@ -129,10 +125,13 @@ export default function ActivityForm(props: ActivityFormProps) {
   return (
     <>
       <div>
-        <FormHeading style={{ fontSize: "42px", lineHeight: "52px" }}>
+        <FormHeading style={{ fontSize: "28px", lineHeight: "36px" }}>
           {props?.defaultValues ? "Edit Activity" : "Add Activity"}
         </FormHeading>
-        <form onSubmit={handleSubmit(onSubmit)} className="activity-form">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="max-w-[min(var(--container-4xl),var(--max-elements-width))] mx-auto! mt-14! flex flex-col gap-5"
+        >
           <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
             <TextField
               fullWidth
@@ -168,7 +167,7 @@ export default function ActivityForm(props: ActivityFormProps) {
             rows={3}
           />
 
-          <FileInput register={register} name="date" errors={errors}>
+          <FileInput register={register} name="activityImage" errors={errors}>
             {props?.defaultValues
               ? "Change Activity Cover Image"
               : "Activity Cover Image:"}
@@ -202,15 +201,18 @@ export default function ActivityForm(props: ActivityFormProps) {
           <ImageDropper
             register={register}
             name="gallery"
-            title={"Add Gallery"}
+            title={"Add Gallery (Optional)"}
           />
 
-          <RichTextEditor
-            register={register}
-            content={props?.defaultValues?.content || ""}
-          />
+          <div className="w-full h-full flex flex-col gap-2">
+            <p className="text-lg font-medium">Content:</p>
+            <RichTextEditor
+              register={register}
+              content={props?.defaultValues?.content ?? ""}
+            />
+          </div>
 
-          <div className="combined-btns">
+          <div className="w-full flex gap-3 max-sm:flex-col mb-5! max-sm:**:w-full!">
             <FormSubmitBtn
               isLoading={activityMutation.isPending}
               pendingText={props?.defaultValues ? "Updating" : "Adding"}

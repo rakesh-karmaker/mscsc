@@ -5,7 +5,7 @@ export async function getAllActivities(
   page: number,
   limit: number,
   tag: string,
-  search: string
+  search: string,
 ) {
   return api.get(`/activity`, {
     params: {
@@ -31,20 +31,24 @@ export async function addActivity(data: ActivitySchemaType) {
   const formData = new FormData();
   for (const key in data) {
     if (key === "activityImage") {
-      formData.append(key, data[key][0]);
+      formData.append(key, data[key as keyof typeof data][0]);
+      continue;
+    }
+    if (key === "slug") {
       continue;
     }
     if (key === "gallery") {
       if (!data?.gallery || data?.gallery.length === 0) {
         continue;
       }
-      for (let i = 0; i < data[key].length; i++) {
-        formData.append("gallery", data[key][i]);
+      for (let i = 0; i < data[key as keyof typeof data].length; i++) {
+        formData.append("gallery", data[key as keyof typeof data][i]);
       }
       continue;
     }
     formData.append(key, data[key as keyof typeof data]);
   }
+
   return api.post("/activity", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -53,7 +57,7 @@ export async function addActivity(data: ActivitySchemaType) {
 }
 
 export async function editActivity(
-  data: ActivitySchemaType & { slug: string }
+  data: ActivitySchemaType & { slug: string },
 ) {
   const formData = new FormData();
   for (const key in data) {
@@ -61,7 +65,7 @@ export async function editActivity(
       if (!data?.activityImage || data?.activityImage.length === 0) {
         continue;
       }
-      formData.append(key, data[key][0]);
+      formData.append(key, data[key as keyof typeof data][0]);
       continue;
     }
     if (key === "gallery") {
