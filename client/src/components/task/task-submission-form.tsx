@@ -34,9 +34,9 @@ export default function TaskSubmissionForm({
         </div>
         {canSubmit ? (
           <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-            <h3 className="text-2xl font-semibold !mb-2">Answer</h3>
+            <h3 className="mb-2! text-2xl font-semibold">Answer</h3>
             <RichTextEditor
-              key={submission ? submission.username : "new"}
+              key={`${task.slug}-${submission?.answer || "new"}`}
               content={submission?.answer || ""}
               register={register}
             />

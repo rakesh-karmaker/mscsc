@@ -113,7 +113,7 @@ export default function Task({
     },
 
     onSuccess: (res) => {
-      queryClient.invalidateQueries({ queryKey: ["task"] });
+      queryClient.invalidateQueries({ queryKey: ["task", taskName, username] });
       toast.success(res?.data?.message);
       // reset the form
       reset();
@@ -177,8 +177,8 @@ export default function Task({
         {isLoading || isVerifying ? (
           <Loader />
         ) : (
-          <div className="flex gap-5 max-[1200px]:flex-col">
-            <div className="task-section">
+          <div className="w-full flex gap-5 max-[1200px]:flex-col">
+            <div className="task-section w-full">
               <TaskHeader
                 task={task}
                 mode={mode}

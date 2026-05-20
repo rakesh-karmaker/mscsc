@@ -24,8 +24,6 @@ import FormSubmitBtn from "@/components/ui/form-submit-btn";
 import { addTask, editTask } from "@/lib/api/task";
 import type { AxiosError, AxiosResponse } from "axios";
 
-import "./task-form.css";
-
 type TaskFormProps = {
   defaultValues?: Task;
   method?: "add" | "edit";
@@ -83,7 +81,7 @@ export default function TaskForm(props: TaskFormProps) {
         method: "add" | "edit";
         instructions: string;
         deadline: string;
-      }
+      },
     ) => {
       const { method, ...rest } = data;
       if (method == "add") {
@@ -107,7 +105,11 @@ export default function TaskForm(props: TaskFormProps) {
       return Promise.reject("Invalid method");
     },
     onSuccess: (res: AxiosResponse) => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      if (props?.method == "edit") {
+        queryClient.invalidateQueries({ queryKey: ["task"] });
+      } else {
+        queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      }
       toast.success(res?.data?.message);
       if (props?.method == "edit" && props?.setSelectedTask) {
         props?.setSelectedTask(null);
@@ -136,7 +138,10 @@ export default function TaskForm(props: TaskFormProps) {
         {props?.method == "add" ? "Add Task" : "Edit Task"}
       </FormHeading>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="task-form">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="task-form max-w-[min(var(--container-4xl),var(--max-elements-width))] mx-auto! mt-10! flex flex-col gap-5"
+      >
         <Stack
           direction={{ xs: "column", sm: "row" }}
           spacing={2}
@@ -209,15 +214,18 @@ export default function TaskForm(props: TaskFormProps) {
           render={({ field }) => (
             <FormControlLabel
               control={<Switch {...field} checked={field.value} />}
-              label="Image Required"
+              label="Image Required (For tasks like poster design)"
             />
           )}
         />
 
-        <RichTextEditor
-          register={register}
-          content={props?.defaultValues?.instructions ?? ""}
-        />
+        <div className="w-full h-full flex flex-col gap-2">
+          <p className="text-lg font-medium">Instructions:</p>
+          <RichTextEditor
+            register={register}
+            content={props?.defaultValues?.instructions ?? ""}
+          />
+        </div>
 
         <FormSubmitBtn
           isLoading={taskMutation.isPending}
