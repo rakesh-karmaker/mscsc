@@ -24,7 +24,7 @@ export default function MembersTable(): ReactNode {
     initialState: {
       columnPinning: { right: ["actions"] },
       columnVisibility: {
-        contactNumber: false,
+        contactNumber: !(window.innerWidth < 640),
       },
     },
     pageCount: data?.selectedCount
@@ -41,7 +41,7 @@ export default function MembersTable(): ReactNode {
       isLoading={isLoading}
       selectedLength={data?.selectedCount || 0}
     >
-      <TableToolbar table={table} />
+      <TableToolbar tId="members-table" table={table} />
     </Table>
   );
 }

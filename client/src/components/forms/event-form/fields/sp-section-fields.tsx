@@ -27,6 +27,7 @@ export default function SpSectionFields({
       name: "",
       logoFile: "",
       websiteUrl: "",
+      logoPublicId: "",
     });
   }
 

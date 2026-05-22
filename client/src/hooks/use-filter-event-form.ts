@@ -15,15 +15,19 @@ import dayjs from "dayjs";
 type useFilterEventFormProps = {
   data: any;
   sections: string[];
+  mode: "add" | "edit";
 };
 
 export default function useFilterEventForm({
   data,
   sections,
+  mode,
 }: useFilterEventFormProps): {
   filteredData: EventFormDataType;
 } {
   let filteredData: EventFormDataType = {} as EventFormDataType;
+
+  console.log("Raw Data:", data);
 
   const basicInfoFields: BasicInfoType = {
     template: "Explorion", // default template change it later if you want
@@ -56,9 +60,18 @@ export default function useFilterEventForm({
         data.formData.transactionMethods[method] &&
         data.formData.transactionMethods[method].number
       ) {
-        transactionMethods[method] = {
-          number: data.formData.transactionMethods[method].number,
-        };
+        if (data.formData.transactionMethods[method].qrCodeUrl) {
+          transactionMethods[method] = {
+            number: data.formData.transactionMethods[method].number,
+            qrCodePublicId:
+              data.formData.transactionMethods[method].qrCodePublicId || "",
+            qrCodeUrl: data.formData.transactionMethods[method].qrCodeUrl || "",
+          };
+        } else {
+          transactionMethods[method] = {
+            number: data.formData.transactionMethods[method].number,
+          };
+        }
       }
     });
   }
@@ -106,6 +119,7 @@ export default function useFilterEventForm({
     formData: formDataFields,
     eventLogo: data.eventLogo[0],
     eventFavicon: data.eventFavicon[0],
+    eventBanner: data.eventBanner[0],
   };
 
   if (caFormFields) {
@@ -126,7 +140,13 @@ export default function useFilterEventForm({
     data.videoFile &&
     data.videoFile.length > 0
   ) {
-    filteredData.videoData = data.videoFile[0];
+    filteredData.videoFile = data.videoFile[0];
+    if (data.videoData.url) {
+      filteredData.videoData = {
+        url: data.videoData.url,
+        videoPublicId: data.videoData.videoPublicId,
+      };
+    }
   }
 
   if (sections.includes("about")) {
@@ -136,6 +156,11 @@ export default function useFilterEventForm({
       heading: data.aboutData.heading,
       text: data.aboutData.text,
     };
+
+    if (data.aboutImageUrl) {
+      filteredData.aboutData.aboutImageUrl = data.aboutImageUrl;
+      filteredData.aboutData.aboutImagePublicId = data.aboutImagePublicId;
+    }
 
     if (data.aboutImageFile && data.aboutImageFile.length > 0) {
       filteredData.aboutImage = data.aboutImageFile[0];
@@ -178,26 +203,47 @@ export default function useFilterEventForm({
   }
 
   if (sections.includes("sp")) {
-    filteredData.spData = data.spData.map(
-      (sp: SpType & { logoFile: File[] }) => ({
-        name: sp.name,
-        websiteUrl: sp.websiteUrl,
-      }),
-    );
+    const spData: SpType[] = [];
+    data.spData.forEach((sp: SpType & { logoFile: File[] }) => {
+      if (sp.logoUrl && sp.logoPublicId) {
+        spData.push({
+          name: sp.name,
+          websiteUrl: sp.websiteUrl,
+          logoUrl: sp.logoUrl,
+          logoPublicId: sp.logoPublicId,
+        });
+      } else {
+        spData.push({
+          name: sp.name,
+          websiteUrl: sp.websiteUrl,
+        });
+      }
+    });
 
     const spLogos: File[] = [];
     data.spData.forEach((sp: SpType & { logoFile: File[] }) => {
       if (sp.logoFile && sp.logoFile.length > 0) {
-        spLogos.push(sp.logoFile[0]);
+        if (mode === "add") {
+          spLogos.push(sp.logoFile[0]);
+        } else {
+          spLogos.push(
+            new File([sp.logoFile[0]], sp.logoPublicId || "sp-logo.jpg", {
+              type: sp.logoFile[0].type,
+            }),
+          );
+        }
       }
     });
 
+    filteredData.spData = spData;
     filteredData.spLogos = spLogos;
   }
 
   if (sections.includes("faq")) {
     filteredData.faqData = data.faqData;
   }
+
+  console.log("Filtered Data:", filteredData);
 
   return { filteredData };
 }

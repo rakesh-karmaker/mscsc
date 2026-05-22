@@ -18,7 +18,11 @@ export default function getMessagesTableColumns({
       id: "name",
       accessorKey: "name",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Full Name" />
+        <TableColumnHeader
+          tId="messages-table"
+          column={column}
+          label="Full Name"
+        />
       ),
       meta: {
         label: "Full Name",
@@ -31,7 +35,7 @@ export default function getMessagesTableColumns({
       id: "email",
       accessorKey: "email",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Email" />
+        <TableColumnHeader tId="messages-table" column={column} label="Email" />
       ),
       meta: {
         label: "Email",
@@ -44,7 +48,11 @@ export default function getMessagesTableColumns({
       id: "source",
       accessorKey: "source",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Source" />
+        <TableColumnHeader
+          tId="messages-table"
+          column={column}
+          label="Source"
+        />
       ),
       cell: ({ row }) => (
         <div className="flex gap-1">
@@ -70,7 +78,11 @@ export default function getMessagesTableColumns({
       id: "subject",
       accessorKey: "subject",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Subject" />
+        <TableColumnHeader
+          tId="messages-table"
+          column={column}
+          label="Subject"
+        />
       ),
       cell: ({ row }) => (
         <div className="max-w-sm">
@@ -91,6 +103,7 @@ export default function getMessagesTableColumns({
 
         return (
           <TableActionColumn
+            tId="messages-table"
             rowId={row.id}
             open={open}
             setOpen={setOpen}

@@ -1,11 +1,11 @@
-import ImageKit from "imagekit";
+import ImageKit from "@imagekit/nodejs";
 import config from "./config.js";
 
 // Initialize ImageKit instance for image uploads
 const imagekit = new ImageKit({
-  publicKey: config.imagekitPublicKey,
+  // publicKey: config.imagekitPublicKey,
   privateKey: config.imagekitPrivateKey,
-  urlEndpoint: "https://ik.imagekit.io" + config.imagekitPublicKey,
+  // urlEndpoint: "https://ik.imagekit.io" + config.imagekitPublicKey,
 });
 
 export default imagekit;

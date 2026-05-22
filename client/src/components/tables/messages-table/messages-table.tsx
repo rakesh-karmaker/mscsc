@@ -48,7 +48,7 @@ export default function MessagesTable({
       isLoading={isLoading}
       selectedLength={data?.selectedCount || 0}
     >
-      <TableToolbar table={table} />
+      <TableToolbar tId="messages-table" table={table} />
     </Table>
   );
 }

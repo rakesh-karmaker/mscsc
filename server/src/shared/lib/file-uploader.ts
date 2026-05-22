@@ -1,6 +1,8 @@
 import sharp from "sharp";
 import imagekit from "../config/imagekit.js";
 import getDate from "../utils/get-date.js";
+import fs from "fs";
+import { toFile } from "@imagekit/nodejs";
 
 // Upload image to ImageKit and return the URL and image ID
 export async function uploadImage(
@@ -24,11 +26,18 @@ export async function uploadImage(
     }
 
     // Upload the processed image to ImageKit
-    const uploadedImage = await imagekit.upload({
-      file: resizedImageBuffer,
+    const uploadedImage = await imagekit.files.upload({
+      file: await toFile(
+        resizedImageBuffer,
+        `${Date.now()}-${file.originalname}`,
+      ),
       fileName: `${Date.now()}-${file.originalname}`,
       folder: folder,
     });
+
+    if (!uploadedImage || !uploadedImage.url || !uploadedImage.fileId) {
+      throw new Error("Invalid response from ImageKit");
+    }
 
     return { url: uploadedImage.url, imgId: uploadedImage.fileId };
   } catch (err) {
@@ -54,8 +63,13 @@ export async function uploadMultipleImages(
           .webp({ quality: 80 }) // Convert to WebP format
           .toBuffer();
 
-        const uploadedImage = await imagekit.upload({
-          file: convertedImageBuffer,
+        const uploadedImage = await imagekit.files.upload({
+          file: await toFile(
+            convertedImageBuffer,
+            `${Date.now()}-${file.originalname}-${Math.floor(
+              Math.random() * 1000,
+            )}`,
+          ),
           fileName: `${Date.now()}-${file.originalname}-${Math.floor(
             Math.random() * 1000,
           )}`,
@@ -68,8 +82,8 @@ export async function uploadMultipleImages(
 
     // create an array of objects with url and imgId
     const gallery = uploadedImages.map((image) => ({
-      url: image.url,
-      imgId: image.imgId,
+      url: image.url as string,
+      imgId: image.imgId as string,
     }));
 
     return gallery;
@@ -85,11 +99,16 @@ export async function uploadVideo(
   folder: string = "",
 ): Promise<{ url: string; videoId: string }> {
   try {
-    const uploadedVideo = await imagekit.upload({
-      file: file.buffer,
+    const uploadedVideo = await imagekit.files.upload({
+      file: await toFile(file.buffer, `${Date.now()}-${file.originalname}`),
       fileName: `${Date.now()}-${file.originalname}`,
       folder: folder,
     });
+
+    if (!uploadedVideo || !uploadedVideo.url || !uploadedVideo.fileId) {
+      throw new Error("Invalid response from ImageKit");
+    }
+
     return { url: uploadedVideo.url, videoId: uploadedVideo.fileId };
   } catch (err) {
     console.log("Error uploading video - ", getDate(), "\n---\n", err);
@@ -106,11 +125,15 @@ export async function uploadJsonFile(
   try {
     const jsonString = JSON.stringify(jsonData);
     const buffer = Buffer.from(jsonString, "utf-8");
-    const uploadedFile = await imagekit.upload({
-      file: buffer,
+    const uploadedFile = await imagekit.files.upload({
+      file: await toFile(buffer, `${Date.now()}-${fileName}.json`),
       fileName: `${Date.now()}-${fileName}.json`,
       folder: folder,
     });
+    if (!uploadedFile || !uploadedFile.url || !uploadedFile.fileId) {
+      throw new Error("Invalid response from ImageKit");
+    }
+
     return { url: uploadedFile.url, jsonPublicId: uploadedFile.fileId };
   } catch (err) {
     console.log("Error uploading JSON file - ", getDate(), "\n---\n", err);
@@ -118,18 +141,31 @@ export async function uploadJsonFile(
   }
 }
 
+// rename folder in ImageKit
+export async function renameFolder(
+  oldFolderPath: string,
+  newFolderName: string,
+) {
+  try {
+    // Create a new folder with the new name
+    await imagekit.folders.rename({
+      folderPath: oldFolderPath,
+      newFolderName: newFolderName,
+    });
+
+    console.log("Folder renamed successfully -", getDate(), "\n---\n");
+  } catch (err) {
+    console.log("Error renaming folder - ", getDate(), "\n---\n", err);
+    throw new Error("Failed to rename folder.");
+  }
+}
+
 // Delete file from ImageKit using the file ID
-export function deleteFile(fileId: string) {
+export async function deleteFile(fileId: string) {
   try {
     // Delete the file from ImageKit
-    imagekit.deleteFile(fileId, (err, _) => {
-      if (err) {
-        console.log("Error deleting file - ", getDate(), "\n---\n", err);
-        throw new Error("Failed to delete file.");
-      }
-
-      console.log("File deleted successfully -", getDate(), "\n---\n");
-    });
+    await imagekit.files.delete(fileId);
+    console.log("File deleted successfully -", getDate(), "\n---\n");
   } catch (err) {
     console.log("Error deleting file - ", getDate(), "\n---\n", err);
     throw new Error("Failed to delete file.");
@@ -137,15 +173,12 @@ export function deleteFile(fileId: string) {
 }
 
 // Delete folder
-export function deleteFolder(folderPath: string) {
+export async function deleteFolder(folderPath: string) {
   try {
-    imagekit.deleteFolder(folderPath, (err, _) => {
-      if (err) {
-        console.log("Error deleting folder - ", getDate(), "\n---\n", err);
-        throw new Error("Failed to delete folder.");
-      }
-      console.log("Folder deleted successfully -", getDate(), "\n---\n");
+    await imagekit.folders.delete({
+      folderPath: folderPath,
     });
+    console.log("Folder deleted successfully -", getDate(), "\n---\n");
   } catch (err) {
     console.log("Error deleting folder - ", getDate(), "\n---\n", err);
     throw new Error("Failed to delete folder.");

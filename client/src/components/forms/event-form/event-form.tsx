@@ -17,13 +17,14 @@ import RegistrationFormFields from "./fields/registration-form-fields/registrati
 import ContactInfoFields from "./fields/contact-info-fields";
 import FormSectionLayout from "./form-section-layout/form-section-layout";
 import useEventFormValidator from "@/hooks/use-event-form-validator";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type {
   EventFormDataType,
   FilteredEventDataType,
 } from "@/types/event/event-types";
-import { addEvent } from "@/lib/api/event/event";
+import { addEvent, editEvent } from "@/lib/api/event/event";
 import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function EventForm({
   defaultValues,
@@ -31,7 +32,9 @@ export default function EventForm({
   defaultValues?: FilteredEventDataType;
 }): ReactNode {
   const isEditMode = Boolean(defaultValues);
-  console.log("defaultValues", defaultValues);
+  const eventSlug = useParams().eventSlug || "";
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const [selectedSections, setSelectedSections] = useState<string[]>(
     defaultValues?.sections || [],
@@ -73,15 +76,28 @@ export default function EventForm({
   }
 
   const eventMutation = useMutation({
-    mutationFn: (data: EventFormDataType) => {
-      return addEvent(data);
+    mutationFn: ({
+      method,
+      data,
+    }: {
+      method: "add" | "edit";
+      data: EventFormDataType;
+    }) => {
+      if (method === "edit") {
+        return editEvent(eventSlug, data);
+      } else {
+        return addEvent(data);
+      }
     },
-    onSuccess: () => {
+    onSuccess: (res) => {
       toast.success(
         isEditMode
           ? "Event updated successfully!"
           : "Event created successfully!",
       );
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+      const slug = res.data.eventSlug;
+      navigate(`/admin/event/${slug}/`);
     },
     onError: () => {
       toast.error("An error occurred. Please try again.");
@@ -102,20 +118,30 @@ export default function EventForm({
   });
 
   function onSubmit(data: any) {
-    setValue("hiddenSections", hiddenSections);
+    data.hiddenSections = hiddenSections;
+    if (isEditMode) {
+      data.sections = selectedSections;
+    }
     const { filteredData, isValid } = useEventFormValidator({
       data,
       setError,
       clearErrors,
+      isEditMode,
     });
     if (!isValid) return;
 
     if (isEditMode) {
       // Handle edit event logic
-      eventMutation.mutate(data);
+      eventMutation.mutate({
+        method: "edit",
+        data: filteredData,
+      });
     } else {
       // Handle add event logic
-      eventMutation.mutate(filteredData);
+      eventMutation.mutate({
+        method: "add",
+        data: filteredData,
+      });
     }
   }
 

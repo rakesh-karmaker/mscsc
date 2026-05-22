@@ -21,12 +21,14 @@ export const eventFormSchema = Joi.object({
     registrationDeadline: Joi.string().required(),
     title: Joi.string().optional(),
     details: Joi.string().optional(),
-    fees: Joi.string().optional(),
+    fees: Joi.alternatives().try(Joi.string(), Joi.number()).optional(),
     transactionMethods: Joi.object()
       .pattern(
         Joi.string(),
         Joi.object({
           number: Joi.string().required(),
+          qrCodePublicId: Joi.string().optional(),
+          qrCodeUrl: Joi.string().optional(),
         }),
       )
       .optional(),
@@ -44,11 +46,18 @@ export const eventFormSchema = Joi.object({
     icons: Joi.array().items(Joi.string()).required(),
   }).optional(),
 
+  videoData: Joi.object({
+    url: Joi.string().required(),
+    videoPublicId: Joi.string().required(),
+  }).optional(),
+
   aboutData: Joi.object({
     title: Joi.string().required(),
     prizeCount: Joi.number().required(),
     heading: Joi.string().required(),
     text: Joi.string().required(),
+    imageUrl: Joi.string().optional(),
+    imagePublicId: Joi.string().optional(),
   }).optional(),
 
   segmentsData: Joi.array()
@@ -98,6 +107,8 @@ export const eventFormSchema = Joi.object({
       Joi.object({
         name: Joi.string().required(),
         websiteUrl: Joi.string().required(),
+        logoUrl: Joi.string().optional(),
+        logoPublicId: Joi.string().optional(),
       }),
     )
     .optional(),

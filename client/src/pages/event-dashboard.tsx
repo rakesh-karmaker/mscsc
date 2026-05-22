@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 import { FaUsers } from "react-icons/fa";
 import { TbCurrencyTaka } from "react-icons/tb";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router";
 import { PiMedalMilitaryFill } from "react-icons/pi";
 import { RiTeamFill } from "react-icons/ri";
 import { useMembers } from "@/contexts/members-context";
@@ -17,6 +17,7 @@ import { useState } from "react";
 import { Box, Popover, Tab, Tabs } from "@mui/material";
 import RegistrationsTable from "@/components/tables/event/registrations-table/registrations-table";
 import CaApplicationsTable from "@/components/tables/event/ca-table/ca-applications-table";
+import { NavLink } from "react-router";
 
 export default function EventDashboard() {
   const eventSlug = useParams().eventSlug || "";
@@ -34,7 +35,7 @@ export default function EventDashboard() {
     // error,
   } = useQuery({
     queryKey: ["event", eventSlug],
-    queryFn: () => getEventBySlug(eventSlug).then((res) => res.data),
+    queryFn: () => getEventBySlug(eventSlug, true).then((res) => res.data),
   });
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -67,8 +68,8 @@ export default function EventDashboard() {
       {/* page content */}
       <div className="w-full h-full min-h-[calc(100svh-60px)] flex flex-col gap-6">
         <AdminDashboardHeader title={"Event"}>
-          View all the details of the event{" "}
-          <span className="capitalize">{eventSlug}</span>
+          View all the details of{" "}
+          <span className="capitalize">{eventData?.eventName}</span>
         </AdminDashboardHeader>
         <div className="w-full flex gap-5 max-[1360px]:flex-col">
           <div className="w-full flex flex-col gap-5">
@@ -123,15 +124,15 @@ export default function EventDashboard() {
           <div className="info-lists w-full min-w-25 max-w-129 flex flex-col gap-5">
             <div className="w-full flex justify-between items-center gap-10">
               <p>Settings: </p>
-              <div>
-                <button
-                  className="p-3! font-lg rounded-md bg-secondary-bg hover:opacity-70 transition-opacity cursor-pointer"
+              <div className="flex gap-2">
+                <NavLink
+                  className="p-3! flex font-lg rounded-md bg-secondary-bg hover:opacity-70 transition-opacity cursor-pointer"
                   aria-describedby="Edit"
-                  onClick={() => setIsSettingsOpen((prev) => !prev)}
                   id="Edit-popover"
+                  to={`/admin/edit-event/${eventSlug}`}
                 >
                   <LuSquarePen />
-                </button>
+                </NavLink>
                 <button
                   className="p-3! font-lg rounded-md bg-secondary-bg hover:opacity-70 transition-opacity cursor-pointer"
                   aria-describedby="Settings"
@@ -174,6 +175,17 @@ export default function EventDashboard() {
                     </button>
                   </div>
                 </Popover>
+                <div>
+                  <button
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors"
+                    onClick={() => {
+                      setIsSettingsOpen(false);
+                      // Handle edit event logic here
+                    }}
+                  >
+                    Edit Event
+                  </button>
+                </div>
               </div>
             </div>
             <MemberList members={members || []} />

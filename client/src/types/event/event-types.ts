@@ -32,6 +32,8 @@ export type RawScheduleItemType = ScheduleItemType & {
 export type SpType = {
   name: string;
   websiteUrl: string;
+  logoPublicId?: string;
+  logoUrl?: string;
 };
 
 export type FaqType = {
@@ -58,6 +60,8 @@ export type FormDataType = {
   transactionMethods?: {
     [method: string]: {
       number: string;
+      qrCodePublicId?: string;
+      qrCodeUrl?: string;
     };
   };
 };
@@ -79,6 +83,8 @@ export type AboutDataType = {
   prizeCount: number;
   heading: string;
   text: string;
+  aboutImageUrl?: string;
+  aboutImagePublicId?: string;
 };
 
 export type ScheduleDataType = { [date: string]: ScheduleItemType[] };
@@ -91,6 +97,10 @@ export type EventFormDataType = {
   formData: FormDataType;
   caFormData?: CAFromDataType;
   heroData?: HeroDataType;
+  videoData?: {
+    url: string;
+    videoPublicId: string;
+  };
   aboutData?: AboutDataType;
   segmentsData?: SegmentType[];
   experiencesData?: ExperienceType[];
@@ -105,7 +115,7 @@ export type EventFormDataType = {
   bkashQrCode?: File;
   nagadQrCode?: File;
   rocketQrCode?: File;
-  videoData?: File;
+  videoFile?: File;
   aboutImage?: File;
   spLogos?: File[];
 };
@@ -131,18 +141,25 @@ export interface FilteredEventDataType {
     title: string;
     fees: string;
     details: string;
+    registrationDeadline: string;
     transactionMethods?: {
       [method: string]: {
         number: string;
+        qrCodePublicId?: string;
+        qrCodeUrl?: string;
       };
     };
   };
   sections: string[];
   hiddenSections: string[];
   heroData?: HeroDataType;
+  videoData?: {
+    url: string;
+    videoPublicId: string;
+  };
   aboutData?: AboutDataType;
   segmentsData?: Omit<SegmentType, "segmentSlug">[];
-  experiencesData?: Omit<ExperienceType, "experienceSlug">[];
+  experienceData?: Omit<ExperienceType, "experienceSlug">[];
   scheduleData?: RawScheduleItemType[];
   spData?: SpType[];
   faqData?: FaqType[];

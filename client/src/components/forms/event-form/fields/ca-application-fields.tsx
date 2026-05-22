@@ -23,7 +23,9 @@ export default function CAApplicationFields({
   setValue,
   getValues,
 }: CAApplicationFieldsProps): ReactNode {
-  const [hasCAForm, setHasCAForm] = useState<string>("no");
+  const [hasCAForm, setHasCAForm] = useState<string>(
+    getValues("hasCAForm") ? "yes" : "no",
+  );
 
   function handleSetHasCAForm(option: string) {
     setHasCAForm(option);

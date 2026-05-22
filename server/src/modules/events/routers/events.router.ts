@@ -6,6 +6,7 @@ import {
 import upload from "../../../shared/middlewares/multer.js";
 import {
   createEvent,
+  editEvent,
   deleteEvent,
   getAllEvents,
   getEventBySlug,
@@ -72,6 +73,14 @@ eventRouter.post(
   isAdmin,
   upload.fields(fileFields),
   createEvent,
+);
+
+eventRouter.put(
+  "/edit/:eventSlug",
+  isAuthorized,
+  isAdmin,
+  upload.fields(fileFields),
+  editEvent,
 );
 
 eventRouter.delete("/delete/:eventSlug", isAuthorized, isAdmin, deleteEvent);

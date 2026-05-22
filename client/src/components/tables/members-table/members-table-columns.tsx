@@ -16,7 +16,11 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       id: "name",
       accessorKey: "name",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Full Name" />
+        <TableColumnHeader
+          tId="members-table"
+          column={column}
+          label="Full Name"
+        />
       ),
       cell: ({ row }) => (
         <div className="w-full h-full flex gap-2 items-center">
@@ -53,7 +57,11 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       id: "contactNumber",
       accessorKey: "contactNumber",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Contact Number" />
+        <TableColumnHeader
+          tId="members-table"
+          column={column}
+          label="Contact Number"
+        />
       ),
       meta: {
         label: "Contact Number",
@@ -64,7 +72,7 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       id: "batch",
       accessorKey: "batch",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Batch" />
+        <TableColumnHeader tId="members-table" column={column} label="Batch" />
       ),
       meta: {
         label: "Batch",
@@ -78,7 +86,7 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       id: "branch",
       accessorKey: "branch",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Branch" />
+        <TableColumnHeader tId="members-table" column={column} label="Branch" />
       ),
       meta: {
         label: "Branch",
@@ -98,7 +106,11 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       id: "position",
       accessorKey: "position",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Position" />
+        <TableColumnHeader
+          tId="members-table"
+          column={column}
+          label="Position"
+        />
       ),
       cell: ({ row }) => (
         <div className="flex gap-1">
@@ -134,7 +146,11 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       id: "createdAt",
       accessorKey: "createdAt",
       header: ({ column }) => (
-        <TableColumnHeader column={column} label="Created At" />
+        <TableColumnHeader
+          tId="members-table"
+          column={column}
+          label="Created At"
+        />
       ),
       cell: ({ row }) => {
         const date = new Date(row.original.createdAt);
@@ -162,6 +178,7 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
 
         return (
           <TableActionColumn
+            tId="members-table"
             rowId={row.id}
             open={open}
             setOpen={setOpen}

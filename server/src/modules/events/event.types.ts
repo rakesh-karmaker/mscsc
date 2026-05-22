@@ -139,6 +139,9 @@ type BasicInfoType = {
 
   eventFaviconUrl: string;
   eventFaviconPublicId: string;
+
+  eventBannerUrl: string;
+  eventBannerPublicId: string;
 };
 
 export type FormDataType = {

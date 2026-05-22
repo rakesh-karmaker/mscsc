@@ -20,8 +20,14 @@ export default function RegistrationFormFields({
   setValue,
   getValues,
 }: RegistrationFormFields): ReactNode {
-  const [hasRegistrationForm, setHasRegistrationForm] = useState<string>("no");
-  const [selectedMethods, setSelectedMethods] = useState<string[]>([]);
+  const [hasRegistrationForm, setHasRegistrationForm] = useState<string>(
+    getValues("isInnerRegistration") ? "yes" : "no",
+  );
+  const [selectedMethods, setSelectedMethods] = useState<string[]>(
+    getValues("formData.transactionMethods")
+      ? Object.keys(getValues("formData.transactionMethods") as Object)
+      : [],
+  );
 
   function handleSetHasRegistrationForm(option: string) {
     setHasRegistrationForm(option);

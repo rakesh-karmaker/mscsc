@@ -5,17 +5,20 @@ type useEventFormValidatorProps = {
   data: any;
   setError: any;
   clearErrors?: any;
+  isEditMode: boolean;
 };
 
 export default function useEventFormValidator({
   data,
   setError,
   clearErrors,
+  isEditMode = false,
 }: useEventFormValidatorProps): {
   filteredData: EventFormDataType;
   isValid: boolean;
 } {
   let isValid: boolean = true;
+  const mode = isEditMode ? "edit" : "add";
 
   // clear manual errors from previous submit (if provided)
   if (typeof clearErrors === "function") {
@@ -40,7 +43,7 @@ export default function useEventFormValidator({
     isValid = false;
   }
 
-  if (!data.eventLogo || !data.eventLogo.length) {
+  if ((!data.eventLogo || !data.eventLogo.length) && mode === "add") {
     setError("eventLogo", {
       type: "manual",
       message: "Event logo is required",
@@ -48,10 +51,18 @@ export default function useEventFormValidator({
     isValid = false;
   }
 
-  if (!data.eventFavicon || !data.eventFavicon.length) {
+  if ((!data.eventFavicon || !data.eventFavicon.length) && mode === "add") {
     setError("eventFavicon", {
       type: "manual",
       message: "Event favicon logo is required",
+    });
+    isValid = false;
+  }
+
+  if ((!data.eventBanner || !data.eventBanner.length) && mode === "add") {
+    setError("eventBanner", {
+      type: "manual",
+      message: "Event banner is required",
     });
     isValid = false;
   }
@@ -69,7 +80,8 @@ export default function useEventFormValidator({
 
   if (
     sections.includes("video") &&
-    (!data || !data.videoFile || !data.videoFile.length)
+    (!data || !data.videoFile || !data.videoFile.length) &&
+    mode === "add"
   ) {
     setError("videoFile", {
       type: "manual",
@@ -169,7 +181,10 @@ export default function useEventFormValidator({
       isValid = false;
     } else {
       for (let i = 0; i < data.spData.length; i++) {
-        if (!data.spData[i].logoFile || !data.spData[i].logoFile.length) {
+        if (
+          (!data.spData[i].logoFile || !data.spData[i].logoFile.length) &&
+          mode === "add"
+        ) {
           setError(`spData.${i}.logoFile`, {
             type: "manual",
             message: "Logo file is required",
@@ -207,7 +222,7 @@ export default function useEventFormValidator({
   }
 
   // filter the data
-  const { filteredData } = useFilterEventForm({ data, sections });
+  const { filteredData } = useFilterEventForm({ data, sections, mode });
 
   return { filteredData, isValid };
 }

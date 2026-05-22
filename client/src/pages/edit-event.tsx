@@ -43,8 +43,6 @@ export default function EditEvent() {
         }),
   });
 
-  console.log("eventData", eventData);
-
   if (eventDataLoading) {
     return <Loader />;
   }

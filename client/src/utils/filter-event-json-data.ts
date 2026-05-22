@@ -13,18 +13,19 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
   filteredData.isInnerRegistration = data.isInnerRegistration || false;
   filteredData.hasCAForm = data.hasCAForm || false;
 
-  filteredData.contactLinks = [];
-  if (data.contactLinks && Array.isArray(data.contactLinks)) {
+  const contactLinks: { platform: string; url: string }[] = [];
+  if (data.contactLinks) {
     const links: { [platform: string]: string } = data.contactLinks;
-    for (const platform in links) {
+    Object.keys(links).forEach((platform) => {
       if (links[platform]) {
-        filteredData.contactLinks.push({
+        contactLinks.push({
           platform,
           url: links[platform],
         });
       }
-    }
+    });
   }
+  filteredData.contactLinks = contactLinks;
 
   if (filteredData.hasCAForm && data.caFormData) {
     filteredData.caFormData = {
@@ -34,28 +35,44 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
     };
   }
 
-  if (data.innerRegistration && data.formData) {
+  if (filteredData.isInnerRegistration && data.formData) {
     filteredData.formData = {
       title: data.formData.title,
       fees: data.formData.fees,
       details: data.formData.details,
+      registrationDeadline: data.formData.registrationDeadline,
     };
 
-    if (
-      data.formData.transactionMethods &&
-      Array.isArray(data.formData.transactionMethods)
-    ) {
-      filteredData.formData.transactionMethods = {};
+    if (data.formData.transactionMethods) {
+      const transactionMethods: {
+        [method: string]: {
+          number: string;
+          qrCodePublicId?: string;
+          qrCodeUrl?: string;
+        };
+      } = {};
+      console.log(
+        "Transaction Methods in filterEventJSONData:",
+        data.formData.transactionMethods,
+      );
 
-      for (const method of data.formData.transactionMethods) {
-        const transactionMethod =
-          data.formData.transactionMethodDetails?.[method];
+      for (const method of Object.keys(data.formData.transactionMethods)) {
+        const transactionMethod = data.formData.transactionMethods?.[method];
         if (transactionMethod) {
-          filteredData.formData.transactionMethods[method] = {
-            number: transactionMethod.number,
-          };
+          if (transactionMethod.qrCodeUrl) {
+            transactionMethods[method] = {
+              number: transactionMethod.number,
+              qrCodeUrl: transactionMethod.qrCodeUrl,
+              qrCodePublicId: transactionMethod.qrCodePublicId || "",
+            };
+          } else {
+            transactionMethods[method] = {
+              number: transactionMethod.number,
+            };
+          }
         }
       }
+      filteredData.formData.transactionMethods = transactionMethods;
     }
   }
 
@@ -70,6 +87,13 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
     };
   }
 
+  if (filteredData.sections.includes("video") && data.videoData) {
+    filteredData.videoData = {
+      url: data.videoData.url,
+      videoPublicId: data.videoData.videoPublicId,
+    };
+  }
+
   if (filteredData.sections.includes("about") && data.aboutData) {
     filteredData.aboutData = {
       title: data.aboutData.title,
@@ -77,6 +101,12 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
       heading: data.aboutData.heading,
       text: data.aboutData.text,
     };
+
+    if (data.aboutData.aboutImageUrl && data.aboutData.aboutImagePublicId) {
+      filteredData.aboutData.aboutImageUrl = data.aboutData.aboutImageUrl;
+      filteredData.aboutData.aboutImagePublicId =
+        data.aboutData.aboutImagePublicId;
+    }
   }
 
   if (filteredData.sections.includes("segments") && data.segmentsData) {
@@ -99,7 +129,7 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
   }
 
   if (filteredData.sections.includes("experiences") && data.experiencesData) {
-    filteredData.experiencesData = data.experiencesData.map(
+    filteredData.experienceData = data.experiencesData.map(
       (experience: any) => ({
         icon: experience.icon,
         title: experience.title,
@@ -134,6 +164,8 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
     filteredData.spData = data.spData.map((sp: any) => ({
       name: sp.name,
       websiteUrl: sp.websiteUrl,
+      logoUrl: sp.logoUrl,
+      logoPublicId: sp.logoPublicId,
     }));
   }
 
