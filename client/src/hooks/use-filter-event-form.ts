@@ -27,8 +27,6 @@ export default function useFilterEventForm({
 } {
   let filteredData: EventFormDataType = {} as EventFormDataType;
 
-  console.log("Raw Data:", data);
-
   const basicInfoFields: BasicInfoType = {
     template: "Explorion", // default template change it later if you want
     eventName: data.eventName,
@@ -131,7 +129,10 @@ export default function useFilterEventForm({
     filteredData.heroData = {
       heading: data.heroData.heading,
       text: data.heroData.text,
-      icons: [data.heroIcon1, data.heroIcon2, data.heroIcon3, data.heroIcon4],
+      icons:
+        !data.heroIcon1 || !data.heroIcon2 || !data.heroIcon3 || !data.heroIcon4
+          ? data.heroData.icons || []
+          : [data.heroIcon1, data.heroIcon2, data.heroIcon3, data.heroIcon4],
     };
   }
 
@@ -239,11 +240,9 @@ export default function useFilterEventForm({
     filteredData.spLogos = spLogos;
   }
 
-  if (sections.includes("faq")) {
+  if (sections.includes("faqs")) {
     filteredData.faqData = data.faqData;
   }
-
-  console.log("Filtered Data:", filteredData);
 
   return { filteredData };
 }

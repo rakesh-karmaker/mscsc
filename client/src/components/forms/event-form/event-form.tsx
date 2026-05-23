@@ -95,6 +95,9 @@ export default function EventForm({
           ? "Event updated successfully!"
           : "Event created successfully!",
       );
+      queryClient.invalidateQueries({
+        queryKey: ["eventData"],
+      });
       queryClient.invalidateQueries({ queryKey: ["events"] });
       const slug = res.data.eventSlug;
       navigate(`/admin/event/${slug}/`);
@@ -210,6 +213,7 @@ export default function EventForm({
             control={control}
             errors={errors}
             isSectionSelected={selectedSections.includes("hero")}
+            defaultIcons={defaultValues?.heroData?.icons || []}
           />
         )}
 

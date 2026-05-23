@@ -6,15 +6,17 @@ import type { Control } from "react-hook-form";
 export default function HeroIconsSelect({
   control,
   errors,
+  defaultValues,
 }: {
   control: Control<any>;
   errors: { [key: string]: any };
+  defaultValues: string[];
 }): ReactNode {
   const defaultIcons: { [key: string]: string } = {
-    icon1: "division",
-    icon2: "rocket",
-    icon3: "chess",
-    icon4: "atom",
+    icon1: defaultValues[0] || "division",
+    icon2: defaultValues[1] || "rocket",
+    icon3: defaultValues[2] || "chess",
+    icon4: defaultValues[3] || "atom",
   };
 
   return (

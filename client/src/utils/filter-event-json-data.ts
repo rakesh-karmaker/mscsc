@@ -165,7 +165,7 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
     }));
   }
 
-  if (filteredData.sections.includes("faq") && data.faqData) {
+  if (filteredData.sections.includes("faqs") && data.faqData) {
     filteredData.faqData = data.faqData.map((faq: any) => ({
       question: faq.question,
       answer: faq.answer,

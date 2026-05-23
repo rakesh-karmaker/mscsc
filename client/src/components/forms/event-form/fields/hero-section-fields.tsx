@@ -17,6 +17,7 @@ type HeroSectionFieldsProps = {
   control: Control<any>;
   errors: { [key: string]: any };
   isSectionSelected: boolean;
+  defaultIcons: string[];
 };
 
 export default function HeroSectionFields({
@@ -24,6 +25,7 @@ export default function HeroSectionFields({
   control,
   errors,
   isSectionSelected,
+  defaultIcons,
 }: HeroSectionFieldsProps): ReactNode {
   return (
     <FormLayout
@@ -65,7 +67,11 @@ export default function HeroSectionFields({
             helperText={errors.heroData?.text?.message as string}
           />
         </div>
-        <HeroIconsSelect control={control} errors={errors} />
+        <HeroIconsSelect
+          control={control}
+          errors={errors}
+          defaultValues={defaultIcons}
+        />
       </div>
     </FormLayout>
   );

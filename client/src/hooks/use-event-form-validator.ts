@@ -195,6 +195,36 @@ export default function useEventFormValidator({
     }
   }
 
+  if (sections.includes("faqs")) {
+    if (!data.faqData || data.faqData.length === 0) {
+      setError("faqData", {
+        type: "manual",
+        message: "At least one FAQ item is required",
+      });
+      isValid = false;
+    } else {
+      for (let i = 0; i < data.faqData.length; i++) {
+        if (
+          !data.faqData[i].question ||
+          data.faqData[i].question.trim() === ""
+        ) {
+          setError(`faqData.${i}.question`, {
+            type: "manual",
+            message: "FAQ question is required",
+          });
+          isValid = false;
+        }
+        if (!data.faqData[i].answer || data.faqData[i].answer.trim() === "") {
+          setError(`faqData.${i}.answer`, {
+            type: "manual",
+            message: "FAQ answer is required",
+          });
+          isValid = false;
+        }
+      }
+    }
+  }
+
   if (data.hasCAForm) {
     if (!data.caFormData || !data.caFormData.title) {
       setError("caFormData.title", {

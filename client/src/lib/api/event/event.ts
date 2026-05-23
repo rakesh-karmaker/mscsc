@@ -64,6 +64,7 @@ export async function addEvent(data: EventFormDataType) {
 
 export async function editEvent(eventSlug: string, data: EventFormDataType) {
   const formData = new FormData();
+  console.log(data);
   for (const key in data) {
     if (
       key === "eventLogo" ||

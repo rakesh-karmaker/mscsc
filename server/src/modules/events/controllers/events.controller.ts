@@ -340,7 +340,7 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
       eventData.spData = spData;
     }
 
-    if (sections.includes("faq") && body.faqData) {
+    if (sections.includes("faqs") && body.faqData) {
       eventData.faqData = body.faqData;
     }
 
@@ -710,7 +710,7 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
       eventData.spData = spData;
     }
 
-    if (sections.includes("faq") && body.faqData) {
+    if (sections.includes("faqs") && body.faqData) {
       eventData.faqData = body.faqData;
     }
 
