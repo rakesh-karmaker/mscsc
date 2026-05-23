@@ -1,4 +1,4 @@
-import { Activity, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { type SetValueConfig } from "react-hook-form";
 import FormLayout from "../../form-layout";
 import RadioField from "@/components/ui/radio-field";
@@ -140,11 +140,7 @@ export default function RegistrationFormFields({
                     }}
                   />
 
-                  <Activity
-                    mode={
-                      selectedMethods.includes(method) ? "visible" : "hidden"
-                    }
-                  >
+                  {selectedMethods.includes(method) && (
                     <Stack
                       direction={{ xs: "column", sm: "row" }}
                       spacing={2}
@@ -185,7 +181,7 @@ export default function RegistrationFormFields({
                         </FileInput>
                       </div>
                     </Stack>
-                  </Activity>
+                  )}
                 </div>
               ))}
             </div>

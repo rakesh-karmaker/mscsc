@@ -366,6 +366,10 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
       registrationDeadline: eventData.formData.registrationDeadline || "N/A",
       caApplicationDeadline: eventData.caFormData?.applicationDeadline || "N/A",
 
+      // by default, we hide the registration and CA forms until the admin explicitly enables them
+      hideRegistrationForm: true,
+      hideCAForm: true,
+
       eventDescription: eventData.eventDescription,
       eventLocation: eventData.eventLocation,
       eventDate: eventData.eventDate,
@@ -797,7 +801,15 @@ export async function deleteEvent(req: Request, res: Response): Promise<void> {
     await EventRegistration.deleteMany({ eventId: event._id });
     await EventCA.deleteMany({ eventId: event._id });
     await EventTeam.deleteMany({ eventId: event._id });
-    await deleteFolder(`events/${eventSlug}`);
+    try {
+      await deleteFolder(`events/${eventSlug}`);
+    } catch (err) {
+      logger.error("Error deleting event folder", {
+        error: err instanceof Error ? err.message : String(err),
+        stack: err instanceof Error ? err.stack : undefined,
+        eventSlug,
+      });
+    }
 
     res.status(200).send({ message: "Event deleted successfully" });
     logger.log(`Event deleted: ${event.eventName} (${event._id})`, {

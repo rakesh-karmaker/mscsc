@@ -91,12 +91,6 @@ export async function editEvent(eventSlug: string, data: EventFormDataType) {
     }
   }
 
-  // return api.get("/event/all", {
-  //   headers: {
-  //     shorten: "true",
-  //   },
-  // });
-
   return api.put(`/event/edit/${eventSlug}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",

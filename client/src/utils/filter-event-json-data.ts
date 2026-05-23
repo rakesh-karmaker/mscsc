@@ -51,10 +51,6 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
           qrCodeUrl?: string;
         };
       } = {};
-      console.log(
-        "Transaction Methods in filterEventJSONData:",
-        data.formData.transactionMethods,
-      );
 
       for (const method of Object.keys(data.formData.transactionMethods)) {
         const transactionMethod = data.formData.transactionMethods?.[method];

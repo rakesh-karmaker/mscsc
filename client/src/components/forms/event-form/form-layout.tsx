@@ -17,13 +17,15 @@ export default function FormLayout({
   textSize = "xl",
   fontWeight = "medium",
   cancelButton,
+  dragger,
 }: {
-  title: string;
+  title: ReactNode;
   description: ReactNode;
   children: ReactNode;
   textSize?: "sm" | "base" | "lg" | "xl" | "2xl" | "3xl";
   fontWeight?: "normal" | "medium" | "semibold" | "bold";
   cancelButton?: ReactNode;
+  dragger?: ReactNode;
 }): ReactNode {
   const [showOnRight, setShowOnRight] = useState<boolean>(false);
   const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(false);
@@ -46,27 +48,34 @@ export default function FormLayout({
 
   return (
     <div className="w-full h-full flex flex-col gap-2">
-      <div className="flex w-full items-center gap-2">
-        <h2 className={`font-${fontWeight} text-${textSize}`}>{title}</h2>
-        <div className="w-fit h-fit relative">
-          <button
-            ref={btnRef}
-            onClick={() => setIsTooltipVisible(!isTooltipVisible)}
-            className="text-xl rounded-full flex items-center justify-center text-highlighted-color hover:text-black transition cursor-pointer mt-1!"
-            type="button"
-          >
-            {isTooltipVisible ? <BsInfoCircleFill /> : <BsInfoCircle />}
-          </button>
-          <Activity mode={isTooltipVisible ? "visible" : "hidden"}>
-            <Tooltip
-              showOnRight={showOnRight}
-              tooltipRef={tooltipRef as RefObject<HTMLDivElement>}
-              description={description}
-              setIsTooltipVisible={setIsTooltipVisible}
-            />
-          </Activity>
+      <div className="flex w-full items-center gap-2 max-sm:flex-col max-sm:items-start">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
+            {dragger ? <>{dragger}</> : null}
+            <h2 className={`font-${fontWeight} text-${textSize}`}>{title}</h2>
+          </div>
+          <div className="w-fit h-fit relative">
+            <button
+              ref={btnRef}
+              onClick={() => setIsTooltipVisible(!isTooltipVisible)}
+              className="text-xl rounded-full flex items-center justify-center text-highlighted-color hover:text-black transition cursor-pointer mt-1!"
+              type="button"
+            >
+              {isTooltipVisible ? <BsInfoCircleFill /> : <BsInfoCircle />}
+            </button>
+            <Activity mode={isTooltipVisible ? "visible" : "hidden"}>
+              <Tooltip
+                showOnRight={showOnRight}
+                tooltipRef={tooltipRef as RefObject<HTMLDivElement>}
+                description={description}
+                setIsTooltipVisible={setIsTooltipVisible}
+              />
+            </Activity>
+          </div>
         </div>
-        {cancelButton && <div className="ml-auto!">{cancelButton}</div>}
+        {cancelButton && (
+          <div className="ml-auto! max-sm:ml-0!">{cancelButton}</div>
+        )}
       </div>
       {children}
     </div>

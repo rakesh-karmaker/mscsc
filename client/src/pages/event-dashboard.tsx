@@ -1,23 +1,25 @@
 import AdminDashboardHeader from "@/components/ui/admin-dashboard-header";
 import QuickStat from "@/components/ui/quick-stat";
-import { getEventBySlug } from "@/lib/api/event/event";
-import { useQuery } from "@tanstack/react-query";
+import { deleteEvent, getEventBySlug } from "@/lib/api/event/event";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 import { FaUsers } from "react-icons/fa";
 import { TbCurrencyTaka } from "react-icons/tb";
-import { useParams, useSearchParams } from "react-router";
+import { useNavigate, useParams, useSearchParams } from "react-router";
 import { PiMedalMilitaryFill } from "react-icons/pi";
 import { RiTeamFill } from "react-icons/ri";
 import { useMembers } from "@/contexts/members-context";
 import MemberList from "@/components/lists/member-list";
 // import CategoryDistributionChart from "@/components/charts/category-distribution";
 // import MembersTable from "@/components/tables/members-table/members-table";
-import { LuSettings, LuSquarePen } from "react-icons/lu";
+import { LuSettings, LuSquarePen, LuTrash2 } from "react-icons/lu";
 import { useState } from "react";
 import { Box, Popover, Tab, Tabs } from "@mui/material";
 import RegistrationsTable from "@/components/tables/event/registrations-table/registrations-table";
 import CaApplicationsTable from "@/components/tables/event/ca-table/ca-applications-table";
 import { NavLink } from "react-router";
+import DeleteWarning from "@/components/ui/delete-warning";
+import { toast } from "react-hot-toast";
 
 export default function EventDashboard() {
   const eventSlug = useParams().eventSlug || "";
@@ -26,19 +28,29 @@ export default function EventDashboard() {
   }
 
   const [_, setSearchParams] = useSearchParams();
-
   const { members } = useMembers();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const {
-    data: eventData,
-    // isLoading,
-    // error,
-  } = useQuery({
+  const { data: eventData } = useQuery({
     queryKey: ["event", eventSlug],
     queryFn: () => getEventBySlug(eventSlug, true).then((res) => res.data),
   });
 
+  const eventMutation = useMutation({
+    mutationFn: () => deleteEvent(eventSlug),
+    onError: () => {
+      toast.error("Failed to delete the event");
+    },
+    onSuccess: () => {
+      toast.success("Event deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+      navigate("/admin/dashboard");
+    },
+  });
+
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [tabValue, setTabValue] = useState<"registrations" | "caApplications">(
     "registrations",
   );
@@ -177,14 +189,25 @@ export default function EventDashboard() {
                 </Popover>
                 <div>
                   <button
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors"
-                    onClick={() => {
-                      setIsSettingsOpen(false);
-                      // Handle edit event logic here
-                    }}
+                    className="p-3! font-lg rounded-md bg-red text-white hover:opacity-70 transition-opacity cursor-pointer"
+                    aria-describedby="Delete"
+                    onClick={() => setIsDeleteOpen((prev) => !prev)}
+                    id="delete-popover"
                   >
-                    Edit Event
+                    <LuTrash2 />
                   </button>
+                  <DeleteWarning
+                    slug="delete-event"
+                    title="Delete Event"
+                    deleteFunc={() => eventMutation.mutate()}
+                    open={isDeleteOpen}
+                    setOpen={setIsDeleteOpen}
+                  >
+                    Are you sure you want to delete this event? This action
+                    cannot be undone. All the data related to this event,
+                    including registrations, teams, and CA applications, will be
+                    permanently deleted.
+                  </DeleteWarning>
                 </div>
               </div>
             </div>
