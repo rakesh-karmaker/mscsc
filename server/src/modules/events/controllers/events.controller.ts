@@ -119,6 +119,9 @@ export async function getEventBySlug(
     res.status(200).send({
       eventSlug: event.eventSlug,
       dataUrl: event.dataUrl,
+      hideRegistrationForm: event.hideRegistrationForm,
+      hideCAForm: event.hideCAForm,
+      participantCount: event.participantCount,
     });
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : String(err);

@@ -1,22 +1,9 @@
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, type ReactNode } from "react";
 import { useFieldArray, type Control } from "react-hook-form";
 import FormLayout from "../../form-layout";
-import {
-  DndContext,
-  TouchSensor,
-  PointerSensor,
-  closestCenter,
-  useSensor,
-  useSensors,
-  type DragCancelEvent,
-  type DragEndEvent,
-  type DragStartEvent,
-} from "@dnd-kit/core";
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
 import ExperienceFields from "./experience-fields";
+import { DragDropProvider } from "@dnd-kit/react";
+import { isSortable } from "@dnd-kit/react/sortable";
 
 const DEFAULT_EXPERIENCE = {
   icon: "games",
@@ -39,11 +26,10 @@ export default function ExperiencesFields({
   isSectionSelected,
   getValues,
 }: ExperiencesFieldsProps): ReactNode {
-  const { fields, append, remove, swap } = useFieldArray({
+  const { fields, append, remove, move } = useFieldArray({
     control: control,
     name: "experienceData",
   });
-  const [isDragging, setIsDragging] = useState(false);
 
   const handleAppend = useCallback(() => {
     append(DEFAULT_EXPERIENCE);
@@ -55,48 +41,6 @@ export default function ExperiencesFields({
     },
     [remove],
   );
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    }),
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 180,
-        tolerance: 8,
-      },
-    }),
-  );
-
-  const handleDragDrop = useCallback(
-    (event: DragEndEvent) => {
-      setIsDragging(false);
-      if (!event.over || event.active.id === event.over.id) return;
-
-      const startLinkIndex = fields.findIndex(
-        (item) => item.id === event.active.id,
-      );
-      const dropLinkId = event.over?.id;
-      if (!dropLinkId) return;
-
-      const dropLinkIndex = fields.findIndex((item) => item.id === dropLinkId);
-
-      if (startLinkIndex < 0 || dropLinkIndex < 0) return;
-
-      swap(startLinkIndex, dropLinkIndex);
-    },
-    [fields, swap],
-  );
-
-  const handleDragStart = useCallback((_event: DragStartEvent) => {
-    setIsDragging(true);
-  }, []);
-
-  const handleDragCancel = useCallback((_event: DragCancelEvent) => {
-    setIsDragging(false);
-  }, []);
 
   useEffect(() => {
     if (fields.length === 0) {
@@ -115,35 +59,35 @@ export default function ExperiencesFields({
       }
     >
       <div className="w-full h-full flex flex-col gap-0 max-sm:gap-3">
-        <DndContext
-          collisionDetection={closestCenter}
-          onDragCancel={handleDragCancel}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragDrop}
-          sensors={sensors}
+        <DragDropProvider
+          onDragEnd={(event) => {
+            if (event.canceled) return;
+            const { source } = event.operation;
+
+            if (isSortable(source)) {
+              const { initialIndex, index } = source;
+              if (initialIndex !== index) {
+                move(initialIndex, index);
+              }
+            }
+          }}
         >
-          <SortableContext
-            items={fields.map((field) => field.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            {fields.map((field, index) => (
-              <ExperienceFields
-                key={field.id}
-                id={field.id}
-                index={index}
-                length={fields.length}
-                field={field}
-                handleRemove={handleRemove}
-                control={control}
-                errors={errors}
-                isSectionSelected={isSectionSelected}
-                getValues={getValues}
-                isDragging={isDragging}
-                register={register}
-              />
-            ))}
-          </SortableContext>
-        </DndContext>
+          {fields.map((field, index) => (
+            <ExperienceFields
+              key={field.id}
+              id={field.id}
+              index={index}
+              length={fields.length}
+              field={field}
+              handleRemove={handleRemove}
+              control={control}
+              errors={errors}
+              isSectionSelected={isSectionSelected}
+              getValues={getValues}
+              register={register}
+            />
+          ))}
+        </DragDropProvider>
         <div className="w-full flex gap-5 items-center flex-wrap">
           <button
             type="button"

@@ -190,7 +190,6 @@ export default function EventForm({
             >
               <div className="flex flex-col gap-6">
                 <SectionsSelect
-                  register={register}
                   setValue={setValue}
                   selectedSections={selectedSections}
                   setSelectedSections={setSelectedSections}

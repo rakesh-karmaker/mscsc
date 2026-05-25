@@ -14,7 +14,7 @@ export default function DraggableItem({
     useSortable({ id: id });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: `translate3d(${transform?.x || 0}px, ${transform?.y || 0}px, 0)`,
     transition,
   };
   return (

@@ -1,12 +1,11 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { Controller, useWatch, type Control } from "react-hook-form";
 import FormLayout from "../../form-layout";
 import { Stack, TextField } from "@mui/material";
 import { icons } from "@/services/data/icons-data";
 import SelectIconField from "@/components/ui/select-icon-field";
 import { LuArrowDown, LuArrowUp } from "react-icons/lu";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import { useSortable } from "@dnd-kit/react/sortable";
 import { LuGripVertical } from "react-icons/lu";
 import { DatePicker } from "@/components/ui/date-picker";
 import dayjs, { Dayjs } from "dayjs";
@@ -22,7 +21,6 @@ export default function ScheduleItemFields({
   errors,
   isSectionSelected,
   register,
-  isDragging,
 }: {
   id: string;
   length: number;
@@ -33,15 +31,9 @@ export default function ScheduleItemFields({
   errors: { [key: string]: any };
   isSectionSelected: boolean;
   register: any;
-  isDragging: boolean;
 }): ReactNode {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: id });
+  const { ref, handleRef } = useSortable({ id: id, index });
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
   const title =
     (useWatch({
       control,
@@ -49,20 +41,13 @@ export default function ScheduleItemFields({
     }) as string) || "";
   const [isOpen, setIsOpen] = useState<boolean>(title ? false : true);
 
-  useEffect(() => {
-    if (isDragging) {
-      setIsOpen(false);
-    }
-  }, [isDragging]);
-
   return (
-    <div ref={setNodeRef} style={style} {...attributes}>
+    <div ref={ref}>
       <FormLayout
         dragger={
-          <LuGripVertical
-            {...listeners}
-            className="cursor-grab touch-none select-none text-xl min-w-5"
-          />
+          <div ref={handleRef} className="cursor-move">
+            <LuGripVertical className="cursor-grab touch-none select-none text-xl min-w-5" />
+          </div>
         }
         key={field.id}
         title={

@@ -142,7 +142,7 @@ export default function useFilterEventForm({
     data.videoFile.length > 0
   ) {
     filteredData.videoFile = data.videoFile[0];
-    if (data.videoData.url) {
+    if (data.videoData?.url) {
       filteredData.videoData = {
         url: data.videoData.url,
         videoPublicId: data.videoData.videoPublicId,
