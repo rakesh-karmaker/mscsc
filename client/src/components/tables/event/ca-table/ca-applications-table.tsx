@@ -7,6 +7,7 @@ import useGetCaApplicationSearchParams from "@/hooks/table-hooks/header-hooks/us
 import { useTable } from "@/hooks/table-hooks/use-table";
 import { Table } from "../../table/table";
 import TableToolbar from "../../table/table-toolbar";
+import { TablePagination } from "../../table/table-pagination";
 
 export default function CaApplicationsTable(): ReactNode {
   const eventSlug = useParams().eventSlug!;
@@ -45,6 +46,22 @@ export default function CaApplicationsTable(): ReactNode {
       isLoading={isLoading}
       selectedLength={data?.selectedCount || 0}
       border={false}
+      pagination={
+        <>
+          <TablePagination
+            table={table}
+            selectedLength={data?.selectedCount || 0}
+            pageSize={table.getState().pagination.pageSize}
+            onPageSizeChange={(newPageSize) => {
+              table.setPageSize(Number(newPageSize));
+            }}
+            pageIndex={table.getState().pagination.pageIndex}
+            onPageIndexChange={(newPageIndex) => {
+              table.setPageIndex(newPageIndex);
+            }}
+          />
+        </>
+      }
     >
       <TableToolbar table={table} tId="ca-applications" />
     </Table>

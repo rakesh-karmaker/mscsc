@@ -1,3 +1,4 @@
+import type { ClubPartnerFormData } from "@/lib/validation/club-partner-schema";
 import type { EditUserSchemaType } from "@/lib/validation/edit-user-schema";
 import type { MemberEditSchema } from "@/lib/validation/member-edit-schema";
 import type { RegisterSchemaType } from "@/lib/validation/register-schema";
@@ -10,7 +11,8 @@ type SelectInputProps<
     | RegisterSchemaType
     | EditUserSchemaType
     | MemberEditSchema
-    | TeamEditSchema,
+    | TeamEditSchema
+    | ClubPartnerFormData,
 > = {
   control: Control<T>;
   name: keyof T;
@@ -24,7 +26,8 @@ export default function SelectInput<
     | RegisterSchemaType
     | EditUserSchemaType
     | MemberEditSchema
-    | TeamEditSchema,
+    | TeamEditSchema
+    | ClubPartnerFormData,
 >({ control, name, errors, dataList, children }: SelectInputProps<T>) {
   return (
     <FormControl fullWidth error={!!errors[name as keyof T]?.message}>

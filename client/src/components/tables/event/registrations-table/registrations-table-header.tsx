@@ -17,7 +17,7 @@ export default function getRegistrationsTableColumns(
 ): ColumnDef<EventRegistrationTableData>[] {
   return [
     {
-      id: "name",
+      id: "regName",
       accessorKey: "name",
       header: ({ column }) => (
         <TableColumnHeader
@@ -60,7 +60,7 @@ export default function getRegistrationsTableColumns(
       size: 280,
     },
     {
-      id: "code",
+      id: "regCode",
       accessorKey: "code",
       header: ({ column }) => (
         <TableColumnHeader tId="registrations" column={column} label="Code" />
@@ -81,7 +81,7 @@ export default function getRegistrationsTableColumns(
       size: 100,
     },
     {
-      id: "status",
+      id: "regStatus",
       accessorKey: "status",
       header: ({ column }) => (
         <TableColumnHeader tId="registrations" column={column} label="Status" />
@@ -121,7 +121,7 @@ export default function getRegistrationsTableColumns(
       size: 130,
     },
     {
-      id: "hasAttended",
+      id: "regHasAttended",
       accessorKey: "hasAttended",
       header: ({ column }) => (
         <TableColumnHeader
@@ -148,7 +148,7 @@ export default function getRegistrationsTableColumns(
       size: 130,
     },
     {
-      id: "segments",
+      id: "regSegments",
       accessorKey: "segments",
       header: ({ column }) => (
         <TableColumnHeader
@@ -175,7 +175,7 @@ export default function getRegistrationsTableColumns(
       enableColumnFilter: true,
     },
     {
-      id: "phoneNumber",
+      id: "regPhoneNumber",
       accessorKey: "phoneNumber",
       header: ({ column }) => (
         <TableColumnHeader
@@ -190,7 +190,7 @@ export default function getRegistrationsTableColumns(
       enableColumnFilter: false,
     },
     {
-      id: "category",
+      id: "regCategory",
       accessorKey: "category",
       header: ({ column }) => (
         <TableColumnHeader
@@ -241,7 +241,7 @@ export default function getRegistrationsTableColumns(
       enableColumnFilter: false,
     },
     {
-      id: "transactionMethod",
+      id: "regTransactionMethod",
       accessorKey: "transactionMethod",
       header: ({ column }) => (
         <TableColumnHeader tId="registrations" column={column} label="Method" />
@@ -281,7 +281,7 @@ export default function getRegistrationsTableColumns(
       size: 130,
     },
     {
-      id: "registrationDate",
+      id: "regRegistrationDate",
       accessorKey: "registrationDate",
       header: ({ column }) => (
         <TableColumnHeader

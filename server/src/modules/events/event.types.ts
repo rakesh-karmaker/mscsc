@@ -116,6 +116,33 @@ export interface EventTeamSchemaType extends mongoose.Document {
   updatedAt: string;
 }
 
+export interface ClubPartnerSchemaType extends mongoose.Document {
+  _id: mongoose.Types.ObjectId;
+  eventId: mongoose.Types.ObjectId;
+
+  clubName: string;
+  clubLogoUrl: string;
+  clubLogoPublicId: string;
+
+  clubEmail: string;
+  phoneNumber: string;
+  facebookUrl: string;
+
+  institution: string;
+  address: string;
+
+  moderatorName: string;
+  moderatorEmail: string;
+  moderatorPhoneNumber: string;
+
+  score: number;
+  code: string;
+  status: "active" | "inactive";
+
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type TeamSegmentData = {
   teamName: string;
   leaderEmail: string;

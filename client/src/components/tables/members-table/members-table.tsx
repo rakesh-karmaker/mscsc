@@ -6,6 +6,7 @@ import { getMembers } from "@/lib/api/member";
 import { Table } from "../table/table";
 import TableToolbar from "../table/table-toolbar";
 import useGetMembersSearchParams from "@/hooks/table-hooks/header-hooks/use-get-members-search-params";
+import { TablePagination } from "../table/table-pagination";
 
 export default function MembersTable(): ReactNode {
   const columns = getMembersTableColumns();
@@ -40,6 +41,22 @@ export default function MembersTable(): ReactNode {
       table={table}
       isLoading={isLoading}
       selectedLength={data?.selectedCount || 0}
+      pagination={
+        <>
+          <TablePagination
+            table={table}
+            selectedLength={data?.selectedCount || 0}
+            pageSize={table.getState().pagination.pageSize}
+            onPageSizeChange={(newPageSize) => {
+              table.setPageSize(Number(newPageSize));
+            }}
+            pageIndex={table.getState().pagination.pageIndex}
+            onPageIndexChange={(newPageIndex) => {
+              table.setPageIndex(newPageIndex);
+            }}
+          />
+        </>
+      }
     >
       <TableToolbar tId="members-table" table={table} />
     </Table>

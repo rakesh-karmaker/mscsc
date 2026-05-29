@@ -140,16 +140,15 @@ function SectionItem({
   const { ref } = useSortable({ id: section, index });
 
   return (
-    <button
+    <div
       ref={ref}
-      className="flex items-center gap-1 px-3.5! py-0.5! h-12 rounded-sm border border-black/20 hover:bg-red/10! transition-colors cursor-pointer"
-      onClick={() => {
-        handleRemove(section);
-      }}
-      type="button"
+      className="flex items-center gap-1 px-3.5! py-0.5! h-12 rounded-sm border bg-primary-bg border-black/20 hover:bg-red/10! transition-colors cursor-pointer"
+      onClick={() => handleRemove(section)}
     >
-      <LuX className="text-lg ml-1.5 text-red" />
-      <p className="text-base mr-1!">{capitalize(section)}</p>
-    </button>
+      <div className="flex items-center gap-1">
+        <LuX className="text-lg ml-1.5 text-red" />
+        <p className="text-base mr-1!">{capitalize(section)}</p>
+      </div>
+    </div>
   );
 }

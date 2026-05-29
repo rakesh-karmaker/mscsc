@@ -12,6 +12,10 @@ interface TablePaginationProps<TData> extends React.ComponentProps<"div"> {
   table: Table<TData>;
   pageSizeOptions?: number[];
   selectedLength: number;
+  pageSize: number;
+  onPageSizeChange: (pageSize: number) => void;
+  pageIndex: number;
+  onPageIndexChange: (pageIndex: number) => void;
 }
 
 export function TablePagination<TData>({
@@ -19,6 +23,10 @@ export function TablePagination<TData>({
   pageSizeOptions = [10, 20, 30, 40, 50],
   selectedLength,
   className,
+  pageSize,
+  onPageSizeChange,
+  pageIndex,
+  onPageIndexChange,
   ...props
 }: TablePaginationProps<TData>) {
   return (
@@ -43,10 +51,10 @@ export function TablePagination<TData>({
             <Select
               labelId="pagination-rows"
               id="pagination-rows-select"
-              value={table.getState().pagination.pageSize || 10}
+              value={pageSize || 10}
               label="Rows"
               onChange={(e) => {
-                table.setPageSize(Number(e.target.value));
+                onPageSizeChange(Number(e.target.value));
               }}
               size="small"
             >
@@ -60,14 +68,12 @@ export function TablePagination<TData>({
         </div>
         <div className="max-sm:mb-2!">
           <Pagination
-            page={table.getState().pagination.pageIndex + 1}
-            count={Math.ceil(
-              selectedLength / table.getState().pagination.pageSize,
-            )}
+            page={pageIndex + 1}
+            count={Math.ceil(selectedLength / pageSize)}
             variant="outlined"
             shape="rounded"
             onChange={(_, value) => {
-              table.setPageIndex(value - 1);
+              onPageIndexChange(value - 1);
             }}
           />
         </div>

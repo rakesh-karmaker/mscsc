@@ -5,7 +5,21 @@ export async function getRegistrations(
   params: EventRegistrationsSearchParams,
   eventSlug: string,
 ) {
-  return api.get(`/event-registrations/${eventSlug}/registrations`, { params });
+  const filteredParams = {
+    page: params.page,
+    perPage: params.perPage,
+    sort: params.sort,
+    name: params.regName,
+    status: params.regStatus,
+    category: params.regCategory,
+    segments: params.regSegments,
+    code: params.regCode,
+    transactionMethod: params.regTransactionMethod,
+  };
+
+  return api.get(`/event-registrations/${eventSlug}/registrations`, {
+    params: filteredParams,
+  });
 }
 
 export async function getRegistrationById(

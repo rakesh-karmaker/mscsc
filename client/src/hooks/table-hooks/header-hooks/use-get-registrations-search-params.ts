@@ -18,16 +18,16 @@ export default function useGetRegistrationsSearchParams(): EventRegistrationsSea
     sort: getSortingStateParser<EventRegistrationTableData>().withDefault([
       { id: "registrationDate", desc: true },
     ]),
-    name: parseAsString.withDefault(""),
-    status: parseAsArrayOf(
+    regName: parseAsString.withDefault(""),
+    regStatus: parseAsArrayOf(
       parseAsStringEnum(["pending", "approved", "rejected"]),
     ).withDefault([]),
-    category: parseAsArrayOf(
+    regCategory: parseAsArrayOf(
       parseAsStringEnum(["primary", "junior", "secondary", "higher secondary"]),
     ).withDefault([]),
-    segments: parseAsArrayOf(parseAsString).withDefault([]),
-    code: parseAsString.withDefault(""),
-    transactionMethod: parseAsArrayOf(
+    regSegments: parseAsArrayOf(parseAsString).withDefault([]),
+    regCode: parseAsString.withDefault(""),
+    regTransactionMethod: parseAsArrayOf(
       parseAsStringEnum(["bkash", "nagad", "rocket", "other"]),
     ).withDefault([]),
   });

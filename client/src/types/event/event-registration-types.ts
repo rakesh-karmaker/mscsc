@@ -43,12 +43,12 @@ export type EventRegistrationsSearchParams = {
   page: number;
   perPage: number;
   sort: ExtendedColumnSort<EventRegistrationTableData>[];
-  name: string;
-  status: string[];
-  category: string[];
-  segments: string[];
-  code: string;
-  transactionMethod: string[];
+  regName: string;
+  regStatus: string[];
+  regCategory: string[];
+  regSegments: string[];
+  regCode: string;
+  regTransactionMethod: string[];
 };
 
 export type CaPreviewData = {

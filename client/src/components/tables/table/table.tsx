@@ -1,5 +1,6 @@
 import { flexRender, type Table as TanstackTable } from "@tanstack/react-table";
 import type * as React from "react";
+import type { ReactNode } from "react";
 
 // import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { getColumnPinningStyle } from "@/lib/table";
@@ -20,6 +21,7 @@ interface TableProps<TData> extends React.ComponentProps<"div"> {
   isLoading?: boolean;
   selectedLength: number;
   border?: boolean;
+  pagination?: ReactNode;
 }
 
 export function Table<TData>({
@@ -29,6 +31,7 @@ export function Table<TData>({
   isLoading,
   selectedLength,
   border = true,
+  pagination,
   ...props
 }: TableProps<TData>) {
   return (
@@ -104,9 +107,9 @@ export function Table<TData>({
               </TableBody>
             </TableWrapper>
           </div>
-          <div className="flex flex-col gap-2.5">
-            <TablePagination table={table} selectedLength={selectedLength} />
-          </div>
+          {pagination && (
+            <div className="flex flex-col gap-2.5">{pagination}</div>
+          )}
         </>
       )}
     </div>

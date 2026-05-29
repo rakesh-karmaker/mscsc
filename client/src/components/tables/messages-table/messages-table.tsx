@@ -7,6 +7,7 @@ import getMessagesTableColumns from "./messages-table-columns";
 import { getMessages } from "@/lib/api/message";
 import useGetMessagesSearchParams from "@/hooks/table-hooks/header-hooks/use-get-messages-search-params";
 import type { MessageTableData } from "@/types/message-types";
+import { TablePagination } from "../table/table-pagination";
 
 export default function MessagesTable({
   onViewClick,
@@ -47,6 +48,22 @@ export default function MessagesTable({
       table={table}
       isLoading={isLoading}
       selectedLength={data?.selectedCount || 0}
+      pagination={
+        <>
+          <TablePagination
+            table={table}
+            selectedLength={data?.selectedCount || 0}
+            pageSize={table.getState().pagination.pageSize}
+            onPageSizeChange={(newPageSize) => {
+              table.setPageSize(Number(newPageSize));
+            }}
+            pageIndex={table.getState().pagination.pageIndex}
+            onPageIndexChange={(newPageIndex) => {
+              table.setPageIndex(newPageIndex);
+            }}
+          />
+        </>
+      }
     >
       <TableToolbar tId="messages-table" table={table} />
     </Table>

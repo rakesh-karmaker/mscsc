@@ -15,6 +15,7 @@ import caApplicationsRouter from "./modules/events/routers/ca-applications.route
 import teamsRouter from "./modules/events/routers/teams.router.js";
 import logger from "./shared/config/winston.js";
 import morgan from "morgan";
+import clubPartnersRouter from "./modules/events/routers/club-partners.router.js";
 
 const app = express();
 
@@ -64,5 +65,6 @@ app.use("/api/event", eventRouter);
 app.use("/api/event-registrations", eventRegistrationRouter);
 app.use("/api/ca-applications", caApplicationsRouter);
 app.use("/api/teams", teamsRouter);
+app.use("/api/club-partners", clubPartnersRouter);
 
 export default app;
