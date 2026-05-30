@@ -95,14 +95,14 @@ export default function ApplicationDetails({
           <div className="flex flex-col gap-px">
             <a
               href={`mailto:${details.email}`}
-              className="w-full text-[0.97rem] flex gap-1 items-center text-highlighted-color transition-all hover:text-highlighted-color/80"
+              className="w-fit text-[0.97rem] flex gap-1 items-center text-highlighted-color transition-all hover:text-highlighted-color/80"
             >
               <LuMail className="opacity-70 text-sm" />
               <span>{details.email}</span>
             </a>
             <a
               href={`${details.facebookUrl}`}
-              className="w-full text-[0.97rem] flex gap-1 items-center text-highlighted-color transition-all hover:text-highlighted-color/80"
+              className="w-fit text-[0.97rem] flex gap-1 items-center text-highlighted-color transition-all hover:text-highlighted-color/80"
             >
               <LuFacebook className="opacity-70 text-sm" />
               <span>Facebook</span>
@@ -272,6 +272,11 @@ function StatusTags({ details }: { details: CaApplicationDetails }): ReactNode {
     }
     return (
       <>
+        <span
+          className={`text-sm py-1! px-2! rounded bg-gray-100 text-gray-900 inline-block`}
+        >
+          #{details.position}
+        </span>
         <span
           className={`text-sm py-1! px-2! rounded ${colorClasses} inline-block`}
         >

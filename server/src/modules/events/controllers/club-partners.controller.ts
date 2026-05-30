@@ -22,7 +22,7 @@ export async function getClubAllPartners(
     page?: string;
     perPage?: string;
     name?: string;
-    status?: string[];
+    status?: string | string[];
   };
 
   try {
@@ -34,35 +34,62 @@ export async function getClubAllPartners(
     }
 
     // parse and validate query params
-    const page = params.page ? parseInt(params.page) + 1 : 1;
-    const perPage = params.perPage ? parseInt(params.perPage) : 10;
-    const skip = (page - 1) * perPage;
-    const statusFilter = params.status
-      ? { status: { $in: params.status } }
-      : {};
-    const regex: { [key: string]: RegExp | undefined } = {
-      clubName: new RegExp(
-        typeof params.name === "string" ? params.name : "",
-        "i",
-      ),
-    };
+    const page = params.page ? parseInt(params.page, 10) + 1 : 1;
+    const perPage = params.perPage ? parseInt(params.perPage, 10) : 10;
+    const safePage = Number.isNaN(page) || page < 1 ? 1 : page;
+    const safePerPage =
+      Number.isNaN(perPage) || perPage < 1 ? 10 : Math.min(perPage, 100);
+    const skip = (safePage - 1) * safePerPage;
+    const statuses = Array.isArray(params.status)
+      ? params.status
+      : params.status
+        ? [params.status]
+        : [];
 
-    // find the club partners for the event
-    const clubPartners = await ClubPartner.find({
-      eventId: event._id,
-      ...regex,
-      ...statusFilter,
-    })
-      .sort({ score: -1 })
-      .select("_id clubName clubLogoUrl facebookUrl code status")
-      .lean();
+    const filterStage: Record<string, unknown> = {};
+    if (typeof params.name === "string" && params.name.trim()) {
+      filterStage.clubName = new RegExp(params.name.trim(), "i");
+    }
+    if (statuses.length > 0) {
+      filterStage.status = { $in: statuses };
+    }
 
-    const totalCount = clubPartners.length;
-    const paginatedClubPartners = clubPartners.slice(skip, skip + perPage);
+    // 1) Rank all partners in the event by score, 2) then filter, 3) then paginate.
+    const [aggregationResult] = await ClubPartner.aggregate([
+      { $match: { eventId: event._id } },
+      {
+        $setWindowFields: {
+          sortBy: { score: -1 },
+          output: {
+            position: { $documentNumber: {} },
+          },
+        },
+      },
+      ...(Object.keys(filterStage).length > 0 ? [{ $match: filterStage }] : []),
+      {
+        $project: {
+          _id: 1,
+          clubName: 1,
+          clubLogoUrl: 1,
+          facebookUrl: 1,
+          code: 1,
+          status: 1,
+          score: 1,
+          position: 1,
+        },
+      },
+      {
+        $facet: {
+          results: [{ $skip: skip }, { $limit: safePerPage }],
+          count: [{ $count: "selectedCount" }],
+        },
+      },
+    ]);
 
-    res
-      .status(200)
-      .json({ results: paginatedClubPartners, selectedCount: totalCount });
+    const selectedCount = aggregationResult?.count?.[0]?.selectedCount || 0;
+    const results = aggregationResult?.results || [];
+
+    res.status(200).json({ results, selectedCount });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
     logger.error("Error fetching club partners", {
@@ -92,14 +119,43 @@ export async function getClubPartnerById(
       return;
     }
 
-    // find club partner
-    const clubPartner = await ClubPartner.findOne({
-      _id: partnerId,
-      eventId: event._id,
-    })
-      .lean()
-      .select("-__v -eventId -updatedAt");
-    if (!clubPartner) {
+    //1) rank all partners in the event by score, 2) find the partner by id, 3) get the registrations for that partner
+    const [aggregationResult] = await ClubPartner.aggregate([
+      { $match: { eventId: event._id } },
+      {
+        $setWindowFields: {
+          sortBy: { score: -1 },
+          output: { position: { $documentNumber: {} } },
+        },
+      },
+      { $match: { _id: new mongoose.Types.ObjectId(partnerId) } },
+      {
+        $project: {
+          _id: 1,
+          clubName: 1,
+          clubLogoUrl: 1,
+
+          clubEmail: 1,
+          phoneNumber: 1,
+          facebookUrl: 1,
+
+          institution: 1,
+          address: 1,
+
+          moderatorName: 1,
+          moderatorEmail: 1,
+          moderatorPhoneNumber: 1,
+
+          code: 1,
+          status: 1,
+          score: 1,
+          position: 1,
+
+          createdAt: 1,
+        },
+      },
+    ]);
+    if (!aggregationResult) {
       res.status(404).json({ message: "Club partner not found" });
       return;
     }
@@ -107,13 +163,13 @@ export async function getClubPartnerById(
     // get the registrations
     const registrations = await EventRegistration.find({
       eventId: event._id,
-      clubPartnerId: clubPartner._id,
+      clubPartnerId: aggregationResult._id,
     })
       .lean()
       .select("_id name email photoUrl status");
 
     res.status(200).json({
-      clubPartnerDetails: clubPartner,
+      clubPartnerDetails: aggregationResult,
       registrations,
     });
   } catch (error) {
@@ -132,8 +188,6 @@ export async function createClubPartner(
   req: Request,
   res: Response,
 ): Promise<void> {
-  console.log(req.body);
-  console.log(req.file);
   const { eventSlug } = req.params;
   let fileId: string | null = null;
   if (!eventSlug) {

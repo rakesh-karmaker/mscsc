@@ -19,6 +19,7 @@ import {
 import { TeamSegmentData } from "../event.types.js";
 import getGradeRange from "../utils/get-grade-range.js";
 import EventTeam from "../models/event-team.model.js";
+import ClubPartner from "../models/club-partner.model.js";
 import logger from "../../../shared/config/winston.js";
 
 // get all event registrations
@@ -444,6 +445,26 @@ export async function changeRegistrationStatus(
         }
       }
 
+      if (registration.clubReference && registration.clubReference !== "N/A") {
+        const clubPartner = await ClubPartner.findOneAndUpdate(
+          {
+            code: registration.clubReference,
+            eventId: event._id,
+            status: "active",
+          },
+          { $inc: { score: 1 } },
+          { new: true },
+        );
+        if (!clubPartner) {
+          logger.warn("Invalid club code provided during registration", {
+            eventSlug,
+            email: registration.email,
+            name: registration.name,
+            clubReference: registration.clubReference,
+          });
+        }
+      }
+
       await sendEmail(
         registration.email,
         `Registration Confirmed for ${registration.name}`,
@@ -466,6 +487,21 @@ export async function changeRegistrationStatus(
             caCode: registration.reference,
             eventId: event._id,
             status: "approved",
+          },
+          { $inc: { score: -1 } },
+        );
+      }
+      // if the registration was previously validated and had a club reference, decrement the score of the corresponding club partner
+      if (
+        registration.status === "validated" &&
+        registration.clubReference &&
+        registration.clubReference !== "N/A"
+      ) {
+        await ClubPartner.findOneAndUpdate(
+          {
+            code: registration.clubReference,
+            eventId: event._id,
+            status: "active",
           },
           { $inc: { score: -1 } },
         );

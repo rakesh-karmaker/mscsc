@@ -1,7 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import TableColumnHeader from "../../table/table-column-header";
 import { useState } from "react";
-import { LuCopy, LuTrash2 } from "react-icons/lu";
+import { LuCircleCheck, LuCircleX, LuCopy, LuTrash2 } from "react-icons/lu";
 import TableActionColumn from "../../table/table-action-column";
 import { TableBtn } from "@/components/ui/btns";
 import DeleteWarning from "@/components/ui/delete-warning";
@@ -15,6 +15,19 @@ export default function getClubPartnersTableColumns(
   eventSlug: string,
 ): ColumnDef<ClubPartnerTableData>[] {
   return [
+    {
+      id: "position",
+      header: () => (
+        <span className="text-gray-500 text-center w-full pl-2.5!">
+          Position{" "}
+        </span>
+      ),
+      cell: ({ row }) => (
+        <span className="text-gray-500">{row.original.position}</span>
+      ),
+      enableColumnFilter: false,
+      size: 20,
+    },
     {
       id: "clubName",
       accessorKey: "name",
@@ -45,9 +58,18 @@ export default function getClubPartnersTableColumns(
                 <span className="leading-5.5">{row.original.clubName}</span>
               )}
             </p>
-            <p className="text-xs text-gray-500 max-w-52.5 truncate">
-              {row.original.code}
-            </p>
+            <div className="text-xs text-gray-500 max-w-52.5 truncate flex items-center gap-1">
+              <p>{row.original.code}</p>{" "}
+              {row.original.status === "active" ? (
+                <div className="bg-green-100 text-green-800 text-xs p-0.75! rounded-full">
+                  <LuCircleCheck className="opacity-70 " />
+                </div>
+              ) : (
+                <div className="bg-red-100 text-red-800 text-xs p-0.75! rounded-full">
+                  <LuCircleX className="opacity-70" />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       ),

@@ -25,8 +25,10 @@ export async function createClubPartner(
 ) {
   const formData = new FormData();
   for (const key in data) {
-    if (key === "clubLogo" && data.clubLogo) {
-      formData.append("clubLogo", data.clubLogo[0]);
+    if (key === "clubLogo") {
+      if (data.clubLogo && data.clubLogo.length > 0) {
+        formData.append("clubLogo", data.clubLogo[0] as Blob);
+      }
     } else {
       formData.append(key, data[key as keyof typeof data] as string);
     }
@@ -46,8 +48,10 @@ export async function editClubPartner(
 ) {
   const formData = new FormData();
   for (const key in data) {
-    if (key === "clubLogo" && data.clubLogo) {
-      formData.append("clubLogo", data.clubLogo[0]);
+    if (key === "clubLogo") {
+      if (data.clubLogo && data.clubLogo.length > 0) {
+        formData.append("clubLogo", data.clubLogo[0] as Blob);
+      }
     } else {
       formData.append(key, data[key as keyof typeof data] as string);
     }

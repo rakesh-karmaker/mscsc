@@ -94,14 +94,14 @@ export default function RegistrationDetails({
           <div className="flex flex-col gap-px">
             <a
               href={`mailto:${details.email}`}
-              className="w-full text-[0.97rem] flex gap-1 items-center text-highlighted-color transition-all hover:text-highlighted-color/80"
+              className="w-fit text-[0.97rem] flex gap-1 items-center text-highlighted-color transition-all hover:text-highlighted-color/80"
             >
               <LuMail className="opacity-70 text-sm" />
               <span>{details.email}</span>
             </a>
             <a
               href={`${details.facebookUrl}`}
-              className="w-full text-[0.97rem] flex gap-1 items-center text-highlighted-color transition-all hover:text-highlighted-color/80"
+              className="w-fit text-[0.97rem] flex gap-1 items-center text-highlighted-color transition-all hover:text-highlighted-color/80"
             >
               <LuFacebook className="opacity-70 text-sm" />
               <span>Facebook</span>

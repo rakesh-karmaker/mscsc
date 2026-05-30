@@ -20,6 +20,7 @@ export interface ClubPartnerData {
   score: number;
   code: string;
   status: "active" | "inactive";
+  position: number;
 
   createdAt: string;
 }
@@ -33,6 +34,7 @@ export type ClubPartnerTableData = Pick<
   | "score"
   | "status"
   | "facebookUrl"
+  | "position"
 >;
 
 export type ClubPartnerRegistrations = Pick<

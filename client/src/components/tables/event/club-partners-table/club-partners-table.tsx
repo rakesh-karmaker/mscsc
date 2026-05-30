@@ -23,7 +23,7 @@ export default function ClubPartnersTable(): ReactNode {
   const [modelOpen, setModelOpenState] = useState(false);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["club-partners", eventSlug, pageIndex, perPage],
+    queryKey: ["club-partners", eventSlug, pageIndex, perPage, params],
     queryFn: () =>
       getClubAllPartners(
         {

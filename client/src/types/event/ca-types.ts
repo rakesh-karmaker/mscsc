@@ -20,6 +20,7 @@ export interface CaApplicationDetails {
   rejectionReason?: string;
   caCode?: string;
   score: number;
+  position: number;
 }
 
 export type RegistrationUsingCACode = Pick<
@@ -40,6 +41,7 @@ export type CaApplicationTableData = Pick<
   | "status"
   | "caCode"
   | "score"
+  | "position"
 >;
 
 export type CaApplicationsSearchParams = {

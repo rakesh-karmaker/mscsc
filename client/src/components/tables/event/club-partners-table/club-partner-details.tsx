@@ -24,7 +24,6 @@ import type {
 } from "@/types/event/club-partner-types";
 import RegistrationDetailsModel from "../registrations-table/registration-details-model";
 import useClubPartnerMutation from "@/hooks/event-hooks/use-club-partner-mutation";
-// import ChangeClubPartnerStatus from "./change-club-partner-status";
 import ClubPartnerFormModel from "@/components/forms/club-partner-form/club-partner-form-model";
 
 export default function ClubPartnerDetails({
@@ -93,14 +92,14 @@ export default function ClubPartnerDetails({
           <div className="flex flex-col gap-px">
             <a
               href={`mailto:${details.clubEmail}`}
-              className="w-full text-[0.97rem] flex gap-1 items-center text-highlighted-color transition-all hover:text-highlighted-color/80"
+              className="w-fit text-[0.97rem] flex gap-1 items-center text-highlighted-color transition-all hover:text-highlighted-color/80"
             >
               <LuMail className="opacity-70 text-sm" />
               <span>{details.clubEmail}</span>
             </a>
             <a
               href={`${details.facebookUrl}`}
-              className="w-full text-[0.97rem] flex gap-1 items-center text-highlighted-color transition-all hover:text-highlighted-color/80"
+              className="w-fit text-[0.97rem] flex gap-1 items-center text-highlighted-color transition-all hover:text-highlighted-color/80"
             >
               <LuFacebook className="opacity-70 text-sm" />
               <span>Facebook</span>
@@ -117,27 +116,6 @@ export default function ClubPartnerDetails({
             </div>
           </div>
         </div>
-
-        {/* <div>
-          <h3 className="text-2xl mb-1!">Transaction Details:</h3>
-          <div className="flex flex-col gap-1"></div>
-          <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
-            <span>Transaction Method: </span>
-            <span className="font-medium ml-1!">
-              {capitalize(details.transactionMethod)}
-            </span>
-          </div>
-          <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
-            <span>Phone Number: </span>
-            <span className="font-medium ml-1!">
-              {details.transactionPhoneNumber}
-            </span>
-          </div>
-          <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
-            <span>Transaction ID: </span>
-            <span className="font-medium ml-1!">{details.transactionId}</span>
-          </div>
-        </div> */}
 
         <div>
           <h3 className="text-2xl mb-1!">Institution Details:</h3>
@@ -180,11 +158,10 @@ export default function ClubPartnerDetails({
         </div>
 
         <Activity mode={window.innerWidth < 768 ? "hidden" : "visible"}>
-          <RegistrationActions
+          <ClubPartnerActions
             details={details}
             clubPartnerId={details._id}
             setModelOpen={setModelOpen}
-            // version="desktop"
           />
         </Activity>
 
@@ -265,6 +242,11 @@ function StatusTags({ details }: { details: ClubPartnerData }): ReactNode {
     return (
       <>
         <span
+          className={`text-sm py-1! px-2! rounded bg-gray-100 text-gray-900 inline-block`}
+        >
+          #{details.position}
+        </span>
+        <span
           className={`text-sm py-1! px-2! rounded ${colorClasses} inline-block`}
         >
           {capitalize(status)}
@@ -290,16 +272,14 @@ function StatusTags({ details }: { details: ClubPartnerData }): ReactNode {
   );
 }
 
-function RegistrationActions({
+function ClubPartnerActions({
   details,
   clubPartnerId,
   setModelOpen,
-  // version,
 }: {
   details: ClubPartnerData;
   clubPartnerId: string;
   setModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  // version: "desktop" | "mobile";
 }): ReactNode {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [modelOpen, setModelOpenState] = useState(false);
@@ -310,14 +290,6 @@ function RegistrationActions({
       <h3 className="text-2xl mb-1.75!">Registration Actions:</h3>
       <div className="flex flex-col gap-1"></div>
       <div className="w-full flex flex-wrap items-center gap-4">
-        {/* <ChangeClubPartnerStatus
-          id={`change-status-details-${clubPartnerId}-${version}`}
-          documentId={clubPartnerId}
-          setOpen={() => {}}
-          mutation={clubPartnerMutation}
-          className="max-w-fit bg-highlighted-color text-white hover:bg-secondary-bg/20 hover:text-black border border-highlighted-color/20 transition-all duration-200"
-          insideModel={true}
-        /> */}
         <>
           <TableBtn
             onClick={() => setModelOpenState(true)}

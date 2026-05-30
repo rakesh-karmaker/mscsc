@@ -14,11 +14,13 @@ import ApplicationDetailsModel from "./application-details-model";
 export default function getCaApplicationTableColumns(): ColumnDef<CaApplicationTableData>[] {
   return [
     {
-      id: "order",
+      id: "position",
       header: () => (
         <span className="text-gray-500 text-center w-full pl-2.5!"># </span>
       ),
-      cell: ({ row }) => <span className="text-gray-500">{row.index + 1}</span>,
+      cell: ({ row }) => (
+        <span className="text-gray-500">{row.original.position}</span>
+      ),
       enableColumnFilter: false,
       size: 20,
     },

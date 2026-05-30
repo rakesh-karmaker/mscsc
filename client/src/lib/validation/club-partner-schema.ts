@@ -8,7 +8,13 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/webp",
 ] as const;
 
-type FileFromForm = FileList;
+type FileListLike = {
+  length: number;
+  0?: {
+    size: number;
+    type: string;
+  };
+};
 
 // Zod schema for form validation
 export const clubPartnerSchema = z.object({
@@ -48,24 +54,27 @@ export const clubPartnerSchema = z.object({
   }),
 
   clubLogo: z
-    .custom<FileFromForm>((fileList) => fileList instanceof FileList, {
-      message: "Please upload a valid file",
-    })
+    .custom<FileListLike>(
+      (files) => {
+        return (
+          !files || files.length === 0 || (files[0]?.size ?? 0) <= MAX_FILE_SIZE
+        );
+      },
+      {
+        message: `Max image size is ${MAX_FILE_SIZE / 1024}KB.`,
+      },
+    )
     .refine(
       (files) =>
-        files.length > 0 &&
-        files[0].size <= MAX_FILE_SIZE &&
-        ACCEPTED_IMAGE_TYPES.includes(
-          files[0].type as (typeof ACCEPTED_IMAGE_TYPES)[number],
-        ),
-      (files) => ({
-        message:
-          files.length === 0
-            ? "Image is required"
-            : files[0].size > MAX_FILE_SIZE
-              ? `Max image size is ${MAX_FILE_SIZE / 1024 / 1024}MB.`
-              : "Only JPG, JPEG, PNG, and WebP formats are supported.",
-      }),
+        !files ||
+        files.length === 0 ||
+        (files[0]?.type &&
+          ACCEPTED_IMAGE_TYPES.includes(
+            files[0]?.type as (typeof ACCEPTED_IMAGE_TYPES)[number],
+          )),
+      {
+        message: "Please upload a valid image file (JPG, JPEG, PNG or WebP).",
+      },
     ),
 });
 

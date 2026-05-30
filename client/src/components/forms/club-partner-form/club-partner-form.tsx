@@ -36,7 +36,7 @@ export default function ClubPartnerForm({
     register,
     control,
     handleSubmit,
-    // setError,
+    setError,
     formState: { errors },
   } = useForm<ClubPartnerFormData>({
     resolver: zodResolver(clubPartnerSchema),
@@ -65,6 +65,13 @@ export default function ClubPartnerForm({
         },
       });
     } else {
+      if (!data.clubLogo || data.clubLogo.length === 0) {
+        setError("clubLogo", {
+          type: "required",
+          message: "Club logo is required",
+        });
+        return;
+      }
       cPartnerMutation.mutate({
         method: "create",
         data: {

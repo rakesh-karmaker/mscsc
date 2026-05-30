@@ -27,19 +27,13 @@ export async function getAllCAApplications(
     page?: string;
     perPage?: string;
     name?: string;
-    status?: string[];
+    status?: string | string[];
     hasPreviousExperience?: string | string[];
     caCode?: string;
-    sort?: string[];
+    sort?: Array<{ id?: string; desc?: string | boolean }> | string[];
   };
 
   try {
-    const eventSlug = req.params.eventSlug;
-    if (!eventSlug) {
-      res.status(400).json({ message: "Event slug is required" });
-      return;
-    }
-
     // find the event by slug
     const event = await Event.findOne({ eventSlug }).lean();
     if (!event) {
@@ -48,58 +42,108 @@ export async function getAllCAApplications(
     }
 
     // parse and validate query parameters
-    const page = params.page ? parseInt(params.page) : 1;
-    const perPage = params.perPage ? parseInt(params.perPage) : 10;
-    const skip = (page - 1) * perPage;
-    const statusFilter =
-      params.status && params.status.length > 0
-        ? { status: { $in: params.status } }
-        : {};
-    const experienceFilter =
-      params.hasPreviousExperience === "yes" ||
-      params.hasPreviousExperience?.includes("yes")
-        ? { hasPreviousExperience: true }
-        : params.hasPreviousExperience === "no" ||
-            params.hasPreviousExperience?.includes("no")
-          ? { hasPreviousExperience: false }
-          : {};
-    const sort: { id: string; desc: boolean } | {} =
-      Array.isArray(params.sort) && params.sort.length > 0
-        ? params.sort[0]
-        : {};
+    const page = params.page ? parseInt(params.page, 10) : 1;
+    const perPage = params.perPage ? parseInt(params.perPage, 10) : 10;
+    const safePage = Number.isNaN(page) || page < 1 ? 1 : page;
+    const safePerPage =
+      Number.isNaN(perPage) || perPage < 1 ? 10 : Math.min(perPage, 100);
+    const skip = (safePage - 1) * safePerPage;
 
-    const regex: { [key: string]: RegExp | undefined } = {
-      name: new RegExp(typeof params.name === "string" ? params.name : "", "i"),
-      caCode: new RegExp(
-        typeof params.caCode === "string" ? params.caCode : "",
-        "i",
-      ),
-    };
+    const statuses = Array.isArray(params.status)
+      ? params.status
+      : params.status
+        ? [params.status]
+        : [];
 
-    // find the CA applications for the event
+    const experiences = Array.isArray(params.hasPreviousExperience)
+      ? params.hasPreviousExperience
+      : params.hasPreviousExperience
+        ? [params.hasPreviousExperience]
+        : [];
 
-    const caApplications = await EventCA.find({
-      eventId: event._id,
-      ...regex,
-      ...statusFilter,
-      ...experienceFilter,
-    })
-      .lean()
-      .sort(
-        sort && Object.keys(sort).length > 0 && "id" in sort && "desc" in sort
-          ? { [String(sort.id)]: sort.desc === "true" ? -1 : 1 }
-          : { createdAt: -1 },
-      )
-      .select(
-        "_id name email phoneNumber facebookUrl photoUrl applicationDate hasPreviousExperience status caCode score",
-      );
+    const filterStage: Record<string, unknown> = {};
+    if (typeof params.name === "string" && params.name.trim()) {
+      filterStage.name = new RegExp(params.name.trim(), "i");
+    }
+    if (typeof params.caCode === "string" && params.caCode.trim()) {
+      filterStage.caCode = new RegExp(params.caCode.trim(), "i");
+    }
+    if (statuses.length > 0) {
+      filterStage.status = { $in: statuses };
+    }
+    if (experiences.includes("yes") && !experiences.includes("no")) {
+      filterStage.hasPreviousExperience = true;
+    }
+    if (experiences.includes("no") && !experiences.includes("yes")) {
+      filterStage.hasPreviousExperience = false;
+    }
 
-    const totalCount = caApplications.length;
-    const paginatedApplications = caApplications.slice(skip, skip + perPage);
+    const allowedSortFields = new Set([
+      "name",
+      "email",
+      "applicationDate",
+      "status",
+      "caCode",
+      "score",
+      "position",
+      "createdAt",
+    ]);
 
-    res
-      .status(200)
-      .json({ results: paginatedApplications, selectedCount: totalCount });
+    const rawSort = Array.isArray(params.sort) ? params.sort[0] : undefined;
+    const sortField =
+      rawSort && typeof rawSort === "object" && rawSort.id
+        ? rawSort.id
+        : "createdAt";
+    const sortDesc =
+      rawSort && typeof rawSort === "object"
+        ? rawSort.desc === true || rawSort.desc === "true"
+        : true;
+    const safeSortField = allowedSortFields.has(sortField)
+      ? sortField
+      : "createdAt";
+    const sortDirection: 1 | -1 = sortDesc ? -1 : 1;
+
+    // 1) Rank all applications by score, 2) then filter, 3) then sort, 4) then paginate.
+    const [aggregationResult] = await EventCA.aggregate([
+      { $match: { eventId: event._id } },
+      {
+        $setWindowFields: {
+          sortBy: { score: -1 },
+          output: {
+            position: { $documentNumber: {} },
+          },
+        },
+      },
+      ...(Object.keys(filterStage).length > 0 ? [{ $match: filterStage }] : []),
+      { $sort: { [safeSortField]: sortDirection } },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          email: 1,
+          phoneNumber: 1,
+          facebookUrl: 1,
+          photoUrl: 1,
+          applicationDate: 1,
+          hasPreviousExperience: 1,
+          status: 1,
+          caCode: 1,
+          score: 1,
+          position: 1,
+        },
+      },
+      {
+        $facet: {
+          results: [{ $skip: skip }, { $limit: safePerPage }],
+          count: [{ $count: "selectedCount" }],
+        },
+      },
+    ]);
+
+    const selectedCount = aggregationResult?.count?.[0]?.selectedCount || 0;
+    const results = aggregationResult?.results || [];
+
+    res.status(200).json({ results, selectedCount });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
     logger.error("Error fetching CA applications", {
@@ -115,39 +159,64 @@ export async function getCAApplicationById(
   req: Request,
   res: Response,
 ): Promise<void> {
-  try {
-    const applicationId = req.params.applicationId;
-    const eventSlug = req.params.eventSlug;
-    if (!applicationId || !eventSlug) {
-      res
-        .status(400)
-        .json({ message: "Application ID and Event Slug are required" });
-      return;
-    }
+  const applicationId = req.params.applicationId;
+  const eventSlug = req.params.eventSlug;
+  if (!applicationId || !eventSlug) {
+    res
+      .status(400)
+      .json({ message: "Application ID and Event Slug are required" });
+    return;
+  }
 
+  try {
     const event = await Event.findOne({ eventSlug }).lean();
     if (!event) {
       res.status(404).json({ message: "Event not found" });
       return;
     }
 
-    // get the ca with their registrations that used their ca code
-    const caApplication = await EventCA.findOne({
-      _id: applicationId,
-      eventId: event._id,
-    })
-      .lean()
-      .select(
-        "_id name email phoneNumber facebookUrl photoUrl address gender institution grade hasPreviousExperience previousExperienceDetails description applicationDate status caCode rejectionReason score",
-      );
-    if (!caApplication) {
+    // 1) score rank all applications for the event, 2) get the position of the current application, 3) return the application details along with the registrations that used their CA code
+    const [aggregationResult] = await EventCA.aggregate([
+      { $match: { eventId: event._id } },
+      {
+        $setWindowFields: {
+          sortBy: { score: -1 },
+          output: { position: { $documentNumber: {} } },
+        },
+      },
+      { $match: { _id: new mongoose.Types.ObjectId(applicationId) } },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          email: 1,
+          phoneNumber: 1,
+          facebookUrl: 1,
+          photoUrl: 1,
+          address: 1,
+          gender: 1,
+          institution: 1,
+          grade: 1,
+          description: 1,
+          hasPreviousExperience: 1,
+          previousExperienceDetails: 1,
+          applicationDate: 1,
+          status: 1,
+          caCode: 1,
+          rejectionReason: 1,
+          score: 1,
+          position: 1,
+        },
+      },
+    ]);
+    if (!aggregationResult) {
       res.status(404).json({ message: "CA application not found" });
       return;
     }
 
     const registrationsUsingCACode = await EventRegistration.find({
       $and: [
-        { reference: { $eq: caApplication.caCode } },
+        { reference: { $eq: aggregationResult.caCode } },
         {
           reference: { $ne: "N/A" },
         },
@@ -157,9 +226,10 @@ export async function getCAApplicationById(
       .lean()
       .select("_id name email status photoUrl");
 
-    res
-      .status(200)
-      .json({ applicationDetails: caApplication, registrationsUsingCACode });
+    res.status(200).json({
+      applicationDetails: aggregationResult,
+      registrationsUsingCACode,
+    });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
     logger.error("Error fetching CA application by ID", {
