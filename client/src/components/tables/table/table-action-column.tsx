@@ -26,7 +26,7 @@ export default function TableActionColumn({
   const id = `popover-${rowId}-${tId}`;
 
   return (
-    <div>
+    <div className="w-fit flex items-center justify-center">
       <button
         id={id}
         className={

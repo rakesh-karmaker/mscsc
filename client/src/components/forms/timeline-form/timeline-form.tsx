@@ -7,7 +7,6 @@ import {
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import useErrorNavigator from "@/hooks/use-error-navigator";
 import {
   FormControl,
   InputLabel,
@@ -101,7 +100,8 @@ export default function TimelineForm({
       setIsEditing(false);
     },
     onError: (err) => {
-      useErrorNavigator(true, err);
+      console.log(err);
+      toast.error("Failed to edit timeline - Please try again later");
     },
   });
 

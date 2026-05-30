@@ -227,7 +227,7 @@ export async function editMember(req: Request, res: Response): Promise<void> {
       }
 
       // Authorization: only the user themselves or an admin can edit
-      if (previousUser._id.toString() !== req.user?._id) {
+      if (previousUser._id.toString() != req.user?._id.toString()) {
         const adminData = await Member.findById(req.user?._id);
         console.log(`Mismatched id - ${adminData?.name} - ${req.user?._id}`);
         if (!adminData || adminData?.role !== "admin") {
@@ -275,12 +275,7 @@ export async function editMember(req: Request, res: Response): Promise<void> {
       updates.branch = updates.branch?.trim() || previousUser.branch;
     }
 
-    if (
-      updates.position ||
-      updates.role ||
-      updates.isImageHidden ||
-      updates.isImageVerified
-    ) {
+    if (updates.position || updates.role || updates.isImageVerified) {
       const editor = await Member.findById(req.user?._id);
       if (!editor || editor.role !== "admin" || !isAdminEdit) {
         res.status(401).send({ message: "Access Denied" });

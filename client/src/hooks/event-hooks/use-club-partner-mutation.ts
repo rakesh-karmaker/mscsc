@@ -6,11 +6,14 @@ import {
 } from "@/lib/api/event/club-partner";
 import type { ClubPartnerFormData } from "@/lib/validation/club-partner-schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import toast from "react-hot-toast/headless";
+import type { AxiosError } from "axios";
+import { useState, type Dispatch, type SetStateAction } from "react";
+import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
-export default function useClubPartnerMutation() {
+export default function useClubPartnerMutation(
+  setOpen?: Dispatch<SetStateAction<boolean>>,
+) {
   const queryClient = useQueryClient();
   const eventSlug = useParams().eventSlug!;
 
@@ -59,7 +62,7 @@ export default function useClubPartnerMutation() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["clubPartners"],
+        queryKey: ["club-partners"],
       });
       if (currentMethod == "delete") {
         toast.success("Club partner deleted successfully");
@@ -70,18 +73,12 @@ export default function useClubPartnerMutation() {
       } else if (currentMethod == "changeStatus") {
         toast.success("Club partner status updated successfully");
       }
+
+      if (setOpen) setOpen(false);
     },
-    onError: (e: Error) => {
+    onError: (e: AxiosError<{ message: string }>) => {
       console.error(e);
-      if (currentMethod == "delete") {
-        toast.error("Failed to delete club partner");
-      } else if (currentMethod == "create") {
-        toast.error("Failed to create club partner");
-      } else if (currentMethod == "edit") {
-        toast.error("Failed to update club partner");
-      } else if (currentMethod == "changeStatus") {
-        toast.error("Failed to change club partner status");
-      }
+      toast.error(e?.response?.data?.message || "An error occurred");
     },
   });
 

@@ -9,12 +9,16 @@ import TableMultiSelect from "./table-multi-select";
 interface TableToolbarProps<TData> extends React.ComponentProps<"div"> {
   table: Table<TData>;
   tId: string;
+  viewOptions?: boolean;
+  children?: ReactNode;
 }
 
 export default function TableToolbar<TData>({
   table,
   className,
   tId,
+  viewOptions = true,
+  children,
   ...rest
 }: TableToolbarProps<TData>): ReactNode {
   const isFiltered = table.getState().columnFilters.length > 0;
@@ -52,9 +56,12 @@ export default function TableToolbar<TData>({
           </button>
         )}
       </div>
-      <div className="flex items-center gap-2">
-        <TableViewOptions table={table} tId={tId} />
-      </div>
+      {children}
+      {viewOptions && (
+        <div className="flex items-center gap-2">
+          <TableViewOptions table={table} tId={tId} />
+        </div>
+      )}
     </div>
   );
 }

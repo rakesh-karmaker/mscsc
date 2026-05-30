@@ -6,7 +6,7 @@ export async function getClubAllPartners(
     page?: number;
     perPage?: number;
     name?: string;
-    status?: string;
+    status?: string[];
   },
   eventSlug: string,
 ) {

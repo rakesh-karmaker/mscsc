@@ -1,19 +1,22 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import TableColumnHeader from "../../table/table-column-header";
 import { useState } from "react";
-import { LuFacebook, LuTrash2 } from "react-icons/lu";
+import { LuCopy, LuTrash2 } from "react-icons/lu";
 import TableActionColumn from "../../table/table-action-column";
 import { TableBtn } from "@/components/ui/btns";
 import DeleteWarning from "@/components/ui/delete-warning";
 import type { ClubPartnerTableData } from "@/types/event/club-partner-types";
-import { Link } from "react-router";
 import useClubPartnerMutation from "@/hooks/event-hooks/use-club-partner-mutation";
-import ClubPartnerDetails from "./club-partner-details";
+import ChangeClubPartnerStatus from "./change-club-partner-status";
+import ClubPartnerModel from "./club-partner-model";
+import toast from "react-hot-toast";
 
-export default function getClubPartnersTableColumns(): ColumnDef<ClubPartnerTableData>[] {
+export default function getClubPartnersTableColumns(
+  eventSlug: string,
+): ColumnDef<ClubPartnerTableData>[] {
   return [
     {
-      id: "regName",
+      id: "clubName",
       accessorKey: "name",
       header: ({ column }) => (
         <TableColumnHeader
@@ -50,8 +53,10 @@ export default function getClubPartnersTableColumns(): ColumnDef<ClubPartnerTabl
       ),
       meta: {
         label: "Full Name",
+        variant: "text",
+        placeholder: "Search by name...",
       },
-      enableColumnFilter: false,
+      enableColumnFilter: true,
       size: 280,
     },
     {
@@ -72,9 +77,9 @@ export default function getClubPartnersTableColumns(): ColumnDef<ClubPartnerTabl
             }}
           >
             <div className="max-h-65 scroll-py-1 overflow-y-auto overflow-x-hidden flex flex-col p-1!">
-              <ClubPartnerDetails
+              <ClubPartnerModel
                 clubPartnerId={row.original._id}
-                setModelOpen={setOpen}
+                setOpen={setOpen}
                 previousModels={{
                   applications: [],
                   registrations: [],
@@ -82,14 +87,25 @@ export default function getClubPartnersTableColumns(): ColumnDef<ClubPartnerTabl
                 }}
               />
 
-              <Link
-                to={row.original.facebookUrl || "#"}
-                className="w-full h-full flex gap-2 rounded-sm items-center px-2.5! py-1.5! hover:bg-[#f5f5f5] transition-all cursor-pointer"
-                onClick={() => setOpen(false)}
+              <ChangeClubPartnerStatus
+                id={`change-status-details-${row.original._id}`}
+                documentId={row.original._id}
+                setOpen={() => {}}
+                mutation={clubPartnerMutation}
+              />
+
+              <TableBtn
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `https://mscsc-events.netlify.app/${eventSlug}/registration/?club-ref=${row.original.code}`,
+                  );
+                  toast.success("Registration URL copied to clipboard");
+                  setOpen(false);
+                }}
               >
-                <LuFacebook className="opacity-70" />
-                <p>Facebook</p>
-              </Link>
+                <LuCopy className="opacity-70" />
+                <p>Copy Url</p>
+              </TableBtn>
 
               <div className="border-t border-gray-300">
                 <TableBtn onClick={() => setDeleteOpen(true)}>
@@ -103,6 +119,7 @@ export default function getClubPartnersTableColumns(): ColumnDef<ClubPartnerTabl
                       method: "delete",
                       clubPartnerId: row.original._id,
                     });
+                    setOpen(false);
                   }}
                   open={deleteOpen}
                   setOpen={setDeleteOpen}
@@ -119,7 +136,7 @@ export default function getClubPartnersTableColumns(): ColumnDef<ClubPartnerTabl
           </TableActionColumn>
         );
       },
-      size: 40,
+      size: 32,
     },
   ];
 }

@@ -59,8 +59,8 @@ export default function ClubPartnerModel({
       <Modal
         open={detailsModelOpen}
         onClose={() => handleClose()}
-        aria-labelledby="Member Edit Box"
-        aria-describedby="Edit Member Details"
+        aria-labelledby="Club Partner Box"
+        aria-describedby="Club Partner Details"
         className="flex items-center justify-center h-fit min-h-screen max-sm:overflow-y-auto absolute max-sm:bg-primary-bg border-none! outline-none! focus-visible:outline-none"
         onClick={(e) => {
           e.stopPropagation();
@@ -71,7 +71,7 @@ export default function ClubPartnerModel({
             <div className="w-full flex flex-col">
               <div className="w-full flex justify-between items-start gap-4">
                 <h2 className="text-2xl font-medium max-xs:text-2xl">
-                  Registration Details
+                  Club Partner Details
                 </h2>
                 <button
                   onClick={() => handleClose()}

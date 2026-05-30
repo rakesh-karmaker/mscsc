@@ -10,7 +10,7 @@ import {
   registerSchema,
   type RegisterSchemaType,
 } from "@/lib/validation/register-schema";
-import useErrorNavigator from "@/hooks/use-error-navigator";
+import { navigateError } from "@/hooks/use-error-navigator";
 import Consent from "./consent";
 import SelectInput from "@/components/ui/select-input";
 import type { AxiosError } from "axios";
@@ -58,7 +58,7 @@ export default function RegistrationForm() {
           message: err.response.data.message,
         });
       } else {
-        useErrorNavigator(true, err);
+        navigateError(navigate, err);
       }
       setError("root", {
         message: err.response?.data.message,

@@ -1,3 +1,4 @@
+import type { ExtendedColumnSort } from "../table-types";
 import type { EventRegistrationDetails } from "./event-registration-types";
 
 export interface ClubPartnerData {
@@ -38,3 +39,11 @@ export type ClubPartnerRegistrations = Pick<
   EventRegistrationDetails,
   "_id" | "name" | "email" | "status" | "photoUrl"
 >;
+
+export type ClubPartnerSearchParams = {
+  page: number;
+  perPage: number;
+  sort: ExtendedColumnSort<ClubPartnerTableData>[];
+  clubName: string;
+  clubStatus: string[];
+};

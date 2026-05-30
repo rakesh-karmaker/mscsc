@@ -10,7 +10,7 @@ import { PiMedalMilitaryFill } from "react-icons/pi";
 import { RiTeamFill } from "react-icons/ri";
 import { useMembers } from "@/contexts/members-context";
 import MemberList from "@/components/lists/member-list";
-// import CategoryDistributionChart from "@/components/charts/category-distribution";
+import CategoryDistributionChart from "@/components/charts/category-distribution";
 // import MembersTable from "@/components/tables/members-table/members-table";
 import { LuSettings, LuSquarePen, LuTrash2 } from "react-icons/lu";
 import { useState } from "react";
@@ -20,6 +20,7 @@ import CaApplicationsTable from "@/components/tables/event/ca-table/ca-applicati
 import { NavLink } from "react-router";
 import DeleteWarning from "@/components/ui/delete-warning";
 import { toast } from "react-hot-toast";
+import ClubPartnersTable from "@/components/tables/event/club-partners-table/club-partners-table";
 
 export default function EventDashboard() {
   const eventSlug = useParams().eventSlug || "";
@@ -112,7 +113,6 @@ export default function EventDashboard() {
               {/* <div className="w-full flex gap-5 max-[880px]:flex-col">
                 <BatchDistributionChart data={dashboardData} />
                 <BranchDistributionChart data={dashboardData} />
-                <CategoryDistributionChart data={eventData} />
               </div> */}
               <Box
                 sx={{ borderBottom: 1, borderColor: "divider", width: "100%" }}
@@ -211,7 +211,10 @@ export default function EventDashboard() {
                 </div>
               </div>
             </div>
-            <MemberList members={members || []} />
+            {/* <MemberList members={members || []} /> */}
+            <CategoryDistributionChart data={eventData} />
+
+            <ClubPartnersTable />
             {/* <MessageList messages={messages || []} /> */}
           </div>
         </div>

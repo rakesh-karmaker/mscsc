@@ -12,7 +12,6 @@ import {
   type EditUserSchemaType,
 } from "@/lib/validation/edit-user-schema";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
-import useErrorNavigator from "@/hooks/use-error-navigator";
 import type { AxiosError } from "axios";
 import SelectInput from "../ui/select-input";
 import FileInput from "../ui/file-input";
@@ -81,8 +80,6 @@ export default function UserEditForm({
         setError("email", {
           message: err.response?.data.message || "Email already exists",
         });
-      } else {
-        useErrorNavigator(true, err);
       }
       setError("root", {
         message: err.response?.data.message || "An error occurred",

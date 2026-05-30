@@ -14,4 +14,5 @@ export const clubPartnerSchema = Joi.object({
   moderatorPhoneNumber: Joi.string().optional(),
 
   code: Joi.string().required(),
+  status: Joi.string().valid("active", "inactive").required(),
 });

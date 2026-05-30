@@ -1,8 +1,6 @@
 import { flexRender, type Table as TanstackTable } from "@tanstack/react-table";
 import type * as React from "react";
 import type { ReactNode } from "react";
-
-// import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { getColumnPinningStyle } from "@/lib/table";
 import { cn } from "@/utils/cn";
 import {
@@ -14,13 +12,13 @@ import {
   TableRow,
 } from "./table-ui";
 import Loader from "@/components/ui/loader/loader";
-import { TablePagination } from "./table-pagination";
 
 interface TableProps<TData> extends React.ComponentProps<"div"> {
   table: TanstackTable<TData>;
   isLoading?: boolean;
   selectedLength: number;
   border?: boolean;
+  header?: boolean;
   pagination?: ReactNode;
 }
 
@@ -31,6 +29,7 @@ export function Table<TData>({
   isLoading,
   selectedLength,
   border = true,
+  header = true,
   pagination,
   ...props
 }: TableProps<TData>) {
@@ -50,28 +49,30 @@ export function Table<TData>({
             className={`overflow-hidden rounded-md ${border ? "border border-black/20" : ""}`}
           >
             <TableWrapper>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <TableHead
-                        key={header.id}
-                        colSpan={header.colSpan}
-                        style={{
-                          ...getColumnPinningStyle({ column: header.column }),
-                        }}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableHeader>
+              {header && (
+                <TableHeader>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <TableHead
+                          key={header.id}
+                          colSpan={header.colSpan}
+                          style={{
+                            ...getColumnPinningStyle({ column: header.column }),
+                          }}
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
+                        </TableHead>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableHeader>
+              )}
               <TableBody>
                 {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map((row) => (
@@ -84,6 +85,7 @@ export function Table<TData>({
                           key={cell.id}
                           style={{
                             ...getColumnPinningStyle({ column: cell.column }),
+                            maxWidth: !header ? "fit-content" : "none",
                           }}
                         >
                           {flexRender(

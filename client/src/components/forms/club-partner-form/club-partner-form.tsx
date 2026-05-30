@@ -28,7 +28,7 @@ export default function ClubPartnerForm({
 }): ReactNode {
   const isEditMode = Boolean(defaultValues);
   const eventSlug = useParams().eventSlug!;
-  const cPartnerMutation = useClubPartnerMutation();
+  const cPartnerMutation = useClubPartnerMutation(setClubPartnerModelOpen);
 
   const [deleteOpen, setDeleteOpen] = useState(false);
 
@@ -72,7 +72,7 @@ export default function ClubPartnerForm({
         },
       });
     }
-    setClubPartnerModelOpen(false);
+    // setClubPartnerModelOpen(false);
   }
 
   function onDelete() {
@@ -168,7 +168,7 @@ export default function ClubPartnerForm({
               variant="outlined"
               fullWidth
               error={!!errors.moderatorName}
-              helperText={errors.moderatorName?.message}
+              helperText={errors.moderatorName?.message as string}
               placeholder="Enter the club's moderator name"
             />
 
@@ -180,7 +180,7 @@ export default function ClubPartnerForm({
               variant="outlined"
               fullWidth
               error={!!errors.moderatorEmail}
-              helperText={errors.moderatorEmail?.message}
+              helperText={errors.moderatorEmail?.message as string}
               placeholder="eg. moderator@club.com"
             />
           </Stack>
@@ -193,7 +193,7 @@ export default function ClubPartnerForm({
               variant="outlined"
               fullWidth
               error={!!errors.moderatorPhoneNumber}
-              helperText={errors.moderatorPhoneNumber?.message}
+              helperText={errors.moderatorPhoneNumber?.message as string}
               placeholder="Enter the club's moderator phone number"
             />
 

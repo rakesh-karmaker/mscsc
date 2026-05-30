@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import { Activity, useState, type ReactNode } from "react";
 import {
   LuCalendar,
+  LuCircleDashed,
   LuEye,
   LuFacebook,
   LuMail,
@@ -23,7 +24,8 @@ import type {
 } from "@/types/event/club-partner-types";
 import RegistrationDetailsModel from "../registrations-table/registration-details-model";
 import useClubPartnerMutation from "@/hooks/event-hooks/use-club-partner-mutation";
-import ChangeClubPartnerStatus from "./change-club-partner-status";
+// import ChangeClubPartnerStatus from "./change-club-partner-status";
+import ClubPartnerFormModel from "@/components/forms/club-partner-form/club-partner-form-model";
 
 export default function ClubPartnerDetails({
   clubPartnerId,
@@ -182,7 +184,7 @@ export default function ClubPartnerDetails({
             details={details}
             clubPartnerId={details._id}
             setModelOpen={setModelOpen}
-            version="desktop"
+            // version="desktop"
           />
         </Activity>
 
@@ -292,14 +294,15 @@ function RegistrationActions({
   details,
   clubPartnerId,
   setModelOpen,
-  version,
+  // version,
 }: {
   details: ClubPartnerData;
   clubPartnerId: string;
   setModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  version: "desktop" | "mobile";
+  // version: "desktop" | "mobile";
 }): ReactNode {
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [modelOpen, setModelOpenState] = useState(false);
   const clubPartnerMutation = useClubPartnerMutation();
 
   return (
@@ -307,14 +310,44 @@ function RegistrationActions({
       <h3 className="text-2xl mb-1.75!">Registration Actions:</h3>
       <div className="flex flex-col gap-1"></div>
       <div className="w-full flex flex-wrap items-center gap-4">
-        <ChangeClubPartnerStatus
+        {/* <ChangeClubPartnerStatus
           id={`change-status-details-${clubPartnerId}-${version}`}
           documentId={clubPartnerId}
           setOpen={() => {}}
           mutation={clubPartnerMutation}
           className="max-w-fit bg-highlighted-color text-white hover:bg-secondary-bg/20 hover:text-black border border-highlighted-color/20 transition-all duration-200"
           insideModel={true}
-        />
+        /> */}
+        <>
+          <TableBtn
+            onClick={() => setModelOpenState(true)}
+            className={
+              "max-w-fit bg-highlighted-color text-white hover:bg-secondary-bg/20 hover:text-black border border-highlighted-color/20 transition-all duration-200"
+            }
+          >
+            <LuCircleDashed className="opacity-70" />
+            <p>Edit</p>
+          </TableBtn>
+          <ClubPartnerFormModel
+            setOpen={() => {}}
+            setClubPartnerModelOpen={setModelOpenState}
+            clubPartnerModelOpen={modelOpen}
+            documentId={clubPartnerId}
+            defaultValues={{
+              clubName: details.clubName,
+              clubEmail: details.clubEmail,
+              phoneNumber: details.phoneNumber,
+              facebookUrl: details.facebookUrl,
+              institution: details.institution,
+              address: details.address,
+              moderatorName: details.moderatorName,
+              moderatorEmail: details.moderatorEmail,
+              moderatorPhoneNumber: details.moderatorPhoneNumber,
+              code: details.code,
+              status: details.status,
+            }}
+          />
+        </>
         <div>
           <TableBtn
             className="max-w-fit bg-red-500 text-white hover:bg-secondary-bg/20 border hover:text-black border-red-500/20 transition-all duration-200"

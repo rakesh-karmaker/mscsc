@@ -33,19 +33,9 @@ export const clubPartnerSchema = z.object({
     .string({ required_error: "Provide the club's address" })
     .min(5, "Address must be at least 5 characters")
     .max(500),
-  moderatorName: z
-    .string({ required_error: "Provide the moderator's name" })
-    .min(2, "Moderator name must be at least 2 characters")
-    .max(255)
-    .optional(),
-  moderatorEmail: z
-    .string({ required_error: "Provide the moderator's email" })
-    .email("Invalid email address")
-    .optional(),
-  moderatorPhoneNumber: z
-    .string({ required_error: "Provide the moderator's phone number" })
-    .min(10, "Phone number must be at least 10 characters")
-    .optional(),
+  moderatorName: z.any().optional(),
+  moderatorEmail: z.any().optional(),
+  moderatorPhoneNumber: z.any().optional(),
 
   code: z
     .string({ required_error: "Provide the club partner code" })

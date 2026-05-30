@@ -5,6 +5,7 @@ import EventRegistration from "../models/event-registration.model.js";
 import ClubPartner from "../models/club-partner.model.js";
 import { deleteFile, uploadImage } from "../../../shared/lib/file-uploader.js";
 import { clubPartnerSchema } from "../schemas/club-partner.schema.js";
+import mongoose from "mongoose";
 
 // get all the club partners for an event
 export async function getClubAllPartners(
@@ -21,33 +22,38 @@ export async function getClubAllPartners(
     page?: string;
     perPage?: string;
     name?: string;
-    status?: string;
+    status?: string[];
   };
 
   try {
     // find event
-    const event = await Event.findOne({ slug: eventSlug }).lean();
+    const event = await Event.findOne({ eventSlug }).lean();
     if (!event) {
       res.status(404).json({ message: "Event not found" });
       return;
     }
 
     // parse and validate query params
-    const page = params.page ? parseInt(params.page) : 1;
+    const page = params.page ? parseInt(params.page) + 1 : 1;
     const perPage = params.perPage ? parseInt(params.perPage) : 10;
     const skip = (page - 1) * perPage;
-    const statusFilter = params.status ? { status: params.status } : {};
+    const statusFilter = params.status
+      ? { status: { $in: params.status } }
+      : {};
     const regex: { [key: string]: RegExp | undefined } = {
-      name: new RegExp(typeof params.name === "string" ? params.name : "", "i"),
+      clubName: new RegExp(
+        typeof params.name === "string" ? params.name : "",
+        "i",
+      ),
     };
 
     // find the club partners for the event
     const clubPartners = await ClubPartner.find({
       eventId: event._id,
-      clubName: regex.name,
+      ...regex,
       ...statusFilter,
     })
-      .sort({ createdAt: -1 })
+      .sort({ score: -1 })
       .select("_id clubName clubLogoUrl facebookUrl code status")
       .lean();
 
@@ -80,7 +86,7 @@ export async function getClubPartnerById(
 
   try {
     // find event
-    const event = await Event.findOne({ slug: eventSlug }).lean();
+    const event = await Event.findOne({ eventSlug }).lean();
     if (!event) {
       res.status(404).json({ message: "Event not found" });
       return;
@@ -126,7 +132,10 @@ export async function createClubPartner(
   req: Request,
   res: Response,
 ): Promise<void> {
+  console.log(req.body);
+  console.log(req.file);
   const { eventSlug } = req.params;
+  let fileId: string | null = null;
   if (!eventSlug) {
     res.status(400).json({ message: "Event slug is required" });
     return;
@@ -134,7 +143,7 @@ export async function createClubPartner(
 
   try {
     // find event
-    const event = await Event.findOne({ slug: eventSlug }).lean();
+    const event = await Event.findOne({ eventSlug }).lean();
     if (!event) {
       res.status(404).json({ message: "Event not found" });
       return;
@@ -164,8 +173,9 @@ export async function createClubPartner(
     }
 
     const { url, imgId } = await uploadImage(file, true, "club-partners");
+    fileId = imgId;
     await ClubPartner.create({
-      eventId: event._id,
+      eventId: new mongoose.Types.ObjectId(event._id),
       clubName: body.clubName,
       clubEmail: body.clubEmail,
       phoneNumber: body.phoneNumber,
@@ -188,6 +198,10 @@ export async function createClubPartner(
 
     res.status(201).json({ message: "Club partner created successfully" });
   } catch (error) {
+    if (fileId) {
+      await deleteFile(fileId);
+    }
+
     res.status(500).json({ message: "Internal server error" });
     logger.error("Error creating club partner", {
       error: error instanceof Error ? error.message : String(error),
@@ -217,7 +231,7 @@ export async function changeClubPartnerStatus(
 
   try {
     // find event
-    const event = await Event.findOne({ slug: eventSlug }).lean();
+    const event = await Event.findOne({ eventSlug }).lean();
     if (!event) {
       res.status(404).json({ message: "Event not found" });
       return;
@@ -262,10 +276,11 @@ export async function editClubPartner(
     res.status(400).json({ message: "Event slug and partner ID are required" });
     return;
   }
+  let fileId: string | null = null;
 
   try {
     // find event
-    const event = await Event.findOne({ slug: eventSlug }).lean();
+    const event = await Event.findOne({ eventSlug }).lean();
     if (!event) {
       res.status(404).json({ message: "Event not found" });
       return;
@@ -309,6 +324,7 @@ export async function editClubPartner(
       const { url, imgId } = await uploadImage(file, true, "club-partners");
       clubPartner.clubLogoUrl = url;
       clubPartner.clubLogoPublicId = imgId;
+      fileId = imgId;
     }
 
     clubPartner.clubName = body.clubName;
@@ -326,6 +342,9 @@ export async function editClubPartner(
 
     res.status(200).json({ message: "Club partner updated successfully" });
   } catch (error) {
+    if (fileId) {
+      await deleteFile(fileId);
+    }
     res.status(500).json({ message: "Internal server error" });
     logger.error("Error editing club partner", {
       error: error instanceof Error ? error.message : String(error),
@@ -350,7 +369,7 @@ export async function deleteClubPartner(
 
   try {
     // find event
-    const event = await Event.findOne({ slug: eventSlug }).lean();
+    const event = await Event.findOne({ eventSlug }).lean();
     if (!event) {
       res.status(404).json({ message: "Event not found" });
       return;
