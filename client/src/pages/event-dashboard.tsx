@@ -1,21 +1,18 @@
 import AdminDashboardHeader from "@/components/ui/admin-dashboard-header";
 import QuickStat from "@/components/ui/quick-stat";
-import { deleteEvent, getEventBySlug } from "@/lib/api/event/event";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getEventBySlug } from "@/lib/api/event/event";
+import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 import { FaUsers } from "react-icons/fa";
 import { TbCurrencyTaka } from "react-icons/tb";
-import { useNavigate, useParams, useSearchParams } from "react-router";
+import { useParams, useSearchParams } from "react-router";
 import { PiMedalMilitaryFill } from "react-icons/pi";
 import { RiTeamFill } from "react-icons/ri";
-import { LuSettings, LuSquarePen, LuTrash2 } from "react-icons/lu";
 import { useState } from "react";
-import { Box, Popover, Tab, Tabs } from "@mui/material";
+import { Box, Tab, Tabs } from "@mui/material";
 import RegistrationsTable from "@/components/tables/event/registrations-table/registrations-table";
 import CaApplicationsTable from "@/components/tables/event/ca-table/ca-applications-table";
-import { NavLink } from "react-router";
-import DeleteWarning from "@/components/ui/delete-warning";
-import { toast } from "react-hot-toast";
+import EventSettings from "@/components/events/event-settings";
 import ClubPartnersTable from "@/components/tables/event/club-partners-table/club-partners-table";
 import SegmentsDistributionChart from "@/components/charts/segments-distribution";
 
@@ -24,32 +21,17 @@ export default function EventDashboard() {
   if (!eventSlug) {
     throw new Error("Event slug is required");
   }
-
-  const [_, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const { data: eventData } = useQuery({
     queryKey: ["event", eventSlug],
     queryFn: () => getEventBySlug(eventSlug, true).then((res) => res.data),
   });
 
-  const eventMutation = useMutation({
-    mutationFn: () => deleteEvent(eventSlug),
-    onError: () => {
-      toast.error("Failed to delete the event");
-    },
-    onSuccess: () => {
-      toast.success("Event deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["events"] });
-      navigate("/admin/dashboard");
-    },
-  });
-
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [tabValue, setTabValue] = useState<"registrations" | "caApplications">(
-    "registrations",
+    searchParams.get("tab") === "caApplications"
+      ? "caApplications"
+      : "registrations",
   );
 
   function handleTabChange(
@@ -57,7 +39,12 @@ export default function EventDashboard() {
     newValue: "registrations" | "caApplications",
   ) {
     setTabValue(newValue);
-    setSearchParams({});
+    setSearchParams({
+      tab: newValue,
+      ...(searchParams.get("clubName") && {
+        clubName: searchParams.get("clubName")!,
+      }),
+    });
   }
 
   return (
@@ -81,6 +68,15 @@ export default function EventDashboard() {
           <span className="capitalize">{eventData?.eventName}</span>
         </AdminDashboardHeader>
         <div className="w-full flex gap-5 max-xl:flex-col">
+          {window.innerWidth < 1280 && (
+            <EventSettings
+              data={{
+                hideRegistrationForm: eventData?.hideRegistrationForm || false,
+                hideCAForm: eventData?.hideCAForm || false,
+                isHidden: eventData?.isHidden || false,
+              }}
+            />
+          )}
           <div className="w-full flex flex-col gap-5 max-[1800px]:max-w-[calc(100vw-(256px+32.25rem+(1.875rem*2)+1.25rem))] max-[1530px]:max-w-[calc(100vw-(32.25rem+(1.875rem*2)+1.25rem))] max-xl:max-w-full">
             <div className="w-full grid grid-cols-4 max-[830px]:grid-cols-2 max-[500px]:grid-cols-1 gap-3 items-center">
               <QuickStat
@@ -125,83 +121,16 @@ export default function EventDashboard() {
             </div>
           </div>
           <div className="info-lists w-full min-w-25 max-w-129 max-xl:max-w-full flex flex-col gap-5">
-            <div className="w-full flex justify-between items-center gap-10">
-              <p>Settings: </p>
-              <div className="flex gap-2">
-                <NavLink
-                  className="p-3! flex font-lg rounded-md bg-secondary-bg hover:opacity-70 transition-opacity cursor-pointer"
-                  aria-describedby="Edit"
-                  id="Edit-popover"
-                  to={`/admin/edit-event/${eventSlug}`}
-                >
-                  <LuSquarePen />
-                </NavLink>
-                <button
-                  className="p-3! font-lg rounded-md bg-secondary-bg hover:opacity-70 transition-opacity cursor-pointer"
-                  aria-describedby="Settings"
-                  onClick={() => setIsSettingsOpen((prev) => !prev)}
-                  id="settings-popover"
-                >
-                  <LuSettings />
-                </button>
-                <Popover
-                  id="Settings"
-                  anchorEl={() => {
-                    return document.getElementById("settings-popover");
-                  }}
-                  open={isSettingsOpen}
-                  onClose={() => setIsSettingsOpen(false)}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "right",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  PaperProps={{
-                    style: {
-                      boxShadow: "rgba(149, 157, 165, 0.1) 0px 8px 24px",
-                      marginTop: "4px",
-                    },
-                  }}
-                >
-                  <div className="w-full h-full flex flex-col bg-primary-bg rounded-md border border-gray-300 p-2!">
-                    <button
-                      className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors"
-                      onClick={() => {
-                        setIsSettingsOpen(false);
-                        // Handle edit event logic here
-                      }}
-                    >
-                      Edit Event
-                    </button>
-                  </div>
-                </Popover>
-                <div>
-                  <button
-                    className="p-3! font-lg rounded-md bg-red text-white hover:opacity-70 transition-opacity cursor-pointer"
-                    aria-describedby="Delete"
-                    onClick={() => setIsDeleteOpen((prev) => !prev)}
-                    id="delete-popover"
-                  >
-                    <LuTrash2 />
-                  </button>
-                  <DeleteWarning
-                    slug="delete-event"
-                    title="Delete Event"
-                    deleteFunc={() => eventMutation.mutate()}
-                    open={isDeleteOpen}
-                    setOpen={setIsDeleteOpen}
-                  >
-                    Are you sure you want to delete this event? This action
-                    cannot be undone. All the data related to this event,
-                    including registrations, teams, and CA applications, will be
-                    permanently deleted.
-                  </DeleteWarning>
-                </div>
-              </div>
-            </div>
+            {window.innerWidth >= 1280 && (
+              <EventSettings
+                data={{
+                  hideRegistrationForm:
+                    eventData?.hideRegistrationForm || false,
+                  hideCAForm: eventData?.hideCAForm || false,
+                  isHidden: eventData?.isHidden || false,
+                }}
+              />
+            )}
             <SegmentsDistributionChart data={eventData} />
             <ClubPartnersTable />
           </div>

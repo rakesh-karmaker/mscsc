@@ -64,7 +64,6 @@ export async function addEvent(data: EventFormDataType) {
 
 export async function editEvent(eventSlug: string, data: EventFormDataType) {
   const formData = new FormData();
-  console.log(data);
   for (const key in data) {
     if (
       key === "eventLogo" ||
@@ -97,6 +96,13 @@ export async function editEvent(eventSlug: string, data: EventFormDataType) {
       "Content-Type": "multipart/form-data",
     },
   });
+}
+
+export async function editEventMeta(
+  eventSlug: string,
+  data: { [key: string]: boolean },
+) {
+  return api.patch(`/event/meta/edit/${eventSlug}`, data);
 }
 
 export async function deleteEvent(eventSlug: string) {

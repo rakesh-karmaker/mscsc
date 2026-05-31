@@ -38,7 +38,6 @@ const EventSchema = new mongoose.Schema<EventSchemaType>(
     },
     fees: { type: String, required: true, default: "N/A" },
 
-    isUpcoming: { type: Boolean, required: true },
     isHidden: { type: Boolean, required: true, default: false },
 
     dataUrl: { type: String, required: true },

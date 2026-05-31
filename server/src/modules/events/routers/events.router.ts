@@ -10,6 +10,7 @@ import {
   deleteEvent,
   getAllEvents,
   getEventBySlug,
+  editEventMeta,
 } from "../controllers/events.controller.js";
 
 const eventRouter = express.Router();
@@ -81,6 +82,13 @@ eventRouter.put(
   isAdmin,
   upload.fields(fileFields),
   editEvent,
+);
+
+eventRouter.patch(
+  "/meta/edit/:eventSlug",
+  isAuthorized,
+  isAdmin,
+  editEventMeta,
 );
 
 eventRouter.delete("/delete/:eventSlug", isAuthorized, isAdmin, deleteEvent);

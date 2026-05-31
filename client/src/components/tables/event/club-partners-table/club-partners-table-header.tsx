@@ -10,6 +10,7 @@ import useClubPartnerMutation from "@/hooks/event-hooks/use-club-partner-mutatio
 import ChangeClubPartnerStatus from "./change-club-partner-status";
 import ClubPartnerModel from "./club-partner-model";
 import toast from "react-hot-toast";
+import { EVENT_WEBSITE_URL } from "@/config/constants";
 
 export default function getClubPartnersTableColumns(
   eventSlug: string,
@@ -119,7 +120,7 @@ export default function getClubPartnersTableColumns(
               <TableBtn
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    `https://mscsc-events.netlify.app/${eventSlug}/registration/?club-ref=${row.original.code}`,
+                    `${EVENT_WEBSITE_URL}/${eventSlug}/registration/?club-ref=${row.original.code}`,
                   );
                   toast.success("Registration URL copied to clipboard");
                   setOpen(false);

@@ -31,7 +31,7 @@ export async function getAllEvents(req: Request, res: Response): Promise<void> {
     const events = await Event.find().select(
       req.headers.shorten === "true"
         ? "eventName eventSlug"
-        : "eventName eventSlug eventLogoUrl eventBannerUrl eventDescription eventLocation eventDate participantCount segments isUpcoming",
+        : "eventName eventSlug eventLogoUrl eventBannerUrl eventDescription eventLocation eventDate participantCount segments",
     );
 
     res.status(200).send(events);
@@ -59,7 +59,7 @@ export async function getEventBySlug(
     const event = await Event.findOne({ eventSlug: eventSlug })
       .select(
         shorten
-          ? "dataUrl hideRegistrationForm hideCAForm participantCount"
+          ? "dataUrl hideRegistrationForm hideCAForm isHidden participantCount"
           : "-__v",
       )
       .lean();
@@ -125,6 +125,9 @@ export async function getEventBySlug(
         categoryCounts,
         segmentCounts,
         eventName: event.eventName,
+        hideRegistrationForm: event.hideRegistrationForm,
+        hideCAForm: event.hideCAForm,
+        isHidden: event.isHidden,
       });
       return;
     }
@@ -134,6 +137,7 @@ export async function getEventBySlug(
       dataUrl: event.dataUrl,
       hideRegistrationForm: event.hideRegistrationForm,
       hideCAForm: event.hideCAForm,
+      isHidden: event.isHidden,
       participantCount: event.participantCount,
     });
   } catch (err) {
@@ -402,7 +406,6 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
         : [],
       fees: eventData.fees || "N/A",
 
-      isUpcoming: new Date(eventData.eventDate) > new Date(),
       isHidden: true,
 
       dataUrl: jsonUrl,
@@ -775,7 +778,6 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
           : [],
         fees: eventData.fees || "N/A",
 
-        isUpcoming: new Date(eventData.eventDate) > new Date(),
         isHidden: true,
 
         dataUrl: jsonUrl,
@@ -806,6 +808,62 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
       stack: err instanceof Error ? err.stack : undefined,
       eventSlug,
       editor: req.user?._id,
+    });
+  }
+}
+
+// edit the meta data
+export async function editEventMeta(
+  req: Request,
+  res: Response,
+): Promise<void> {
+  const { eventSlug } = req.params;
+  if (!eventSlug) {
+    res
+      .status(400)
+      .send({ subject: "slug", message: "Event slug is required" });
+    return;
+  }
+
+  try {
+    const body = req.body;
+    const event = await Event.findOne({ eventSlug });
+    if (!event) {
+      res.status(404).send({ subject: "slug", message: "Event not found" });
+      return;
+    }
+
+    if (body.isHidden !== undefined) {
+      event.isHidden = body.isHidden;
+    }
+
+    if (body.hideRegistrationForm !== undefined) {
+      event.hideRegistrationForm = body.hideRegistrationForm;
+    }
+
+    if (body.hideCAForm !== undefined) {
+      event.hideCAForm = body.hideCAForm;
+    }
+
+    await event.save();
+
+    res.status(200).send({ message: "Event meta updated successfully" });
+    logger.log(`Event meta updated: ${event.eventName} (${event._id})`, {
+      eventId: event._id,
+      eventSlug: event.eventSlug,
+      updatedFields: Object.keys(body),
+      updater: req.user?._id,
+    });
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    res
+      .status(500)
+      .send({ subject: "root", message: "Server error", error: errorMessage });
+    logger.error("Error editing event meta", {
+      error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
+      eventSlug: req.params.eventSlug,
+      updater: req.user?._id,
     });
   }
 }

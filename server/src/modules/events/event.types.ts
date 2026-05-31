@@ -32,7 +32,6 @@ export interface EventSchemaType extends mongoose.Document {
   }[];
   fees: string;
 
-  isUpcoming: boolean;
   isHidden: boolean;
 
   dataUrl: string;
