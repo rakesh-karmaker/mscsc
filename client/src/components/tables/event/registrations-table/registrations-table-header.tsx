@@ -336,7 +336,7 @@ export default function getRegistrationsTableColumns(
                 onClick={() => {
                   registrationMutation.mutate({
                     method: "toggleAttendance",
-                    registrationId: row.original._id,
+                    documentId: row.original._id,
                     data: { hasAttended: !row.original.hasAttended },
                   });
                   setOpen(false);
@@ -373,7 +373,7 @@ export default function getRegistrationsTableColumns(
                   deleteFunc={() => {
                     registrationMutation.mutate({
                       method: "delete",
-                      registrationId: row.original._id,
+                      documentId: row.original._id,
                     });
                   }}
                   open={deleteOpen}

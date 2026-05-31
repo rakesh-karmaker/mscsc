@@ -70,11 +70,9 @@ export default function useCaApplicationMutation() {
       toast.success(
         `CA application ${currentMethod !== "delete" ? (currentMethod === "changeStatus" ? "status changed" : "code updated") : "deleted"} successfully`,
       );
-      // if (currentMethod === "delete") {
-      //   queryClient.invalidateQueries({
-      //     queryKey: ["event", eventSlug],
-      //   });
-      // }
+      queryClient.invalidateQueries({
+        queryKey: ["event", eventSlug],
+      });
     },
   });
 

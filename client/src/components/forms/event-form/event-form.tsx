@@ -7,7 +7,7 @@ import AboutSectionFields from "./fields/about-section-fields";
 import BasicInfoFields from "./fields/basic-info-fields";
 import VideoSectionFields from "./fields/video-section-fields";
 import HeroSectionFields from "./fields/hero-section-fields";
-import SegmentsSectionFields from "./fields/segments-section-fileds/segments-section-fields";
+import SegmentsSectionFields from "./fields/segments-section-fields/segments-section-fields";
 import ScheduleSectionFields from "./fields/schedule-section-fields/schedule-section-fields";
 import FaqSectionFields from "./fields/faq-section-fields/faq-section-fields";
 import SpSectionFields from "./fields/sp-section-fields/sp-section-fields";
@@ -97,6 +97,9 @@ export default function EventForm({
       );
       queryClient.invalidateQueries({
         queryKey: ["eventData"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["event"],
       });
       queryClient.invalidateQueries({ queryKey: ["events"] });
       const slug = res.data.eventSlug;

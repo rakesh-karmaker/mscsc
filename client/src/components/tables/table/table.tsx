@@ -85,7 +85,10 @@ export function Table<TData>({
                           key={cell.id}
                           style={{
                             ...getColumnPinningStyle({ column: cell.column }),
-                            maxWidth: !header ? "fit-content" : "none",
+                            maxWidth:
+                              !header && !cell.column.getIsPinned()
+                                ? "fit-content"
+                                : "none",
                           }}
                         >
                           {flexRender(

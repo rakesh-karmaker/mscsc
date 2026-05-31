@@ -23,6 +23,7 @@ import EventTeam from "../models/event-team.model.js";
 import getCategory from "../utils/get-category.js";
 import logger from "../../../shared/config/winston.js";
 import urlChanger from "../utils/url-changer.js";
+import { deSlugify } from "../utils/de-slugify.js";
 
 // get all events
 export async function getAllEvents(req: Request, res: Response): Promise<void> {
@@ -70,7 +71,7 @@ export async function getEventBySlug(
     if (req.user && req.headers.details === "true") {
       const registrations = await EventRegistration.find({
         eventId: event._id,
-        // status: "validated",
+        status: "validated",
       }).lean();
 
       const eventCAs = await EventCA.find({
@@ -84,6 +85,18 @@ export async function getEventBySlug(
       })
         .lean()
         .countDocuments();
+
+      const segments = event.segments.map((segment) =>
+        deSlugify(segment.segmentSlug, false),
+      );
+
+      const segmentCounts: { [segment: string]: number } = {};
+
+      for (const segment of segments) {
+        segmentCounts[segment] = registrations.filter((registration) =>
+          registration.segments.includes(segment),
+        ).length;
+      }
 
       const income =
         event.fees !== "N/A"
@@ -110,7 +123,7 @@ export async function getEventBySlug(
         eventCAs: eventCAs.length,
         teams: teams,
         categoryCounts,
-        segments: event.segments,
+        segmentCounts,
         eventName: event.eventName,
       });
       return;
@@ -378,7 +391,14 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
       eventDate: eventData.eventDate,
       participantCount: 0,
       segments: eventData.segmentsData
-        ? eventData.segmentsData.map((segment) => segment.title)
+        ? eventData.segmentsData.map((segment) => {
+            return {
+              segmentSlug: segment.segmentSlug,
+              isTeamSegment: segment.teamType === "team",
+              isPaidSegment: false,
+              price: 0,
+            };
+          })
         : [],
       fees: eventData.fees || "N/A",
 

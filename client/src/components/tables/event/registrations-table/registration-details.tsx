@@ -395,7 +395,7 @@ function RegistrationActions({
             deleteFunc={() => {
               registrationMutation.mutate({
                 method: "delete",
-                registrationId: details._id,
+                documentId: details._id,
               });
               setModelOpen(false);
             }}

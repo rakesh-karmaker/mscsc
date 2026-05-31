@@ -19,11 +19,11 @@ export default function useRegistrationMutation() {
   const registrationMutation = useMutation({
     mutationFn: ({
       method,
-      registrationId,
+      documentId,
       data,
     }: {
       method: "changeStatus" | "toggleAttendance" | "delete";
-      registrationId: string;
+      documentId: string;
       data?:
         | {
             status: "pending" | "validated" | "rejected";
@@ -33,14 +33,14 @@ export default function useRegistrationMutation() {
             hasAttended: boolean;
           }
         | {
-            registrationId: string;
+            documentId: string;
           };
     }) => {
       setCurrentMethod(method);
       if (method === "changeStatus" && data && "status" in data) {
         return changeRegistrationStatus(
           eventSlug,
-          registrationId,
+          documentId,
           data.status,
           data.rejectionReason,
         );
@@ -49,11 +49,11 @@ export default function useRegistrationMutation() {
         data &&
         "hasAttended" in data
       ) {
-        return editRegistration(eventSlug, registrationId, {
+        return editRegistration(eventSlug, documentId, {
           hasAttended: data.hasAttended,
         });
       } else if (method === "delete") {
-        return deleteRegistration(eventSlug, registrationId);
+        return deleteRegistration(eventSlug, documentId);
       }
       return Promise.reject(new Error("Invalid method or data"));
     },

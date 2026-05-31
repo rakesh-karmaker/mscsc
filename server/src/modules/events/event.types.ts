@@ -24,7 +24,12 @@ export interface EventSchemaType extends mongoose.Document {
   eventLocation: string;
   eventDate: string;
   participantCount: number;
-  segments: string[];
+  segments: {
+    segmentSlug: string;
+    isTeamSegment: boolean;
+    isPaidSegment: boolean;
+    fees: number;
+  }[];
   fees: string;
 
   isUpcoming: boolean;

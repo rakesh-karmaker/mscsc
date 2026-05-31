@@ -163,7 +163,7 @@ export async function getClubPartnerById(
     // get the registrations
     const registrations = await EventRegistration.find({
       eventId: event._id,
-      clubPartnerId: aggregationResult._id,
+      clubReference: aggregationResult.code,
     })
       .lean()
       .select("_id name email photoUrl status");
@@ -226,7 +226,11 @@ export async function createClubPartner(
       return;
     }
 
-    const { url, imgId } = await uploadImage(file, true, "club-partners");
+    const { url, imgId } = await uploadImage(
+      file,
+      true,
+      `events/${eventSlug}/club-partners`,
+    );
     fileId = imgId;
     await ClubPartner.create({
       eventId: new mongoose.Types.ObjectId(event._id),
@@ -375,7 +379,11 @@ export async function editClubPartner(
 
     if (file) {
       await deleteFile(clubPartner.clubLogoPublicId);
-      const { url, imgId } = await uploadImage(file, true, "club-partners");
+      const { url, imgId } = await uploadImage(
+        file,
+        true,
+        `events/${eventSlug}/club-partners`,
+      );
       clubPartner.clubLogoUrl = url;
       clubPartner.clubLogoPublicId = imgId;
       fileId = imgId;

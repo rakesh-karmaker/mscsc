@@ -8,10 +8,6 @@ import { TbCurrencyTaka } from "react-icons/tb";
 import { useNavigate, useParams, useSearchParams } from "react-router";
 import { PiMedalMilitaryFill } from "react-icons/pi";
 import { RiTeamFill } from "react-icons/ri";
-import { useMembers } from "@/contexts/members-context";
-import MemberList from "@/components/lists/member-list";
-import CategoryDistributionChart from "@/components/charts/category-distribution";
-// import MembersTable from "@/components/tables/members-table/members-table";
 import { LuSettings, LuSquarePen, LuTrash2 } from "react-icons/lu";
 import { useState } from "react";
 import { Box, Popover, Tab, Tabs } from "@mui/material";
@@ -21,6 +17,7 @@ import { NavLink } from "react-router";
 import DeleteWarning from "@/components/ui/delete-warning";
 import { toast } from "react-hot-toast";
 import ClubPartnersTable from "@/components/tables/event/club-partners-table/club-partners-table";
+import SegmentsDistributionChart from "@/components/charts/segments-distribution";
 
 export default function EventDashboard() {
   const eventSlug = useParams().eventSlug || "";
@@ -29,7 +26,6 @@ export default function EventDashboard() {
   }
 
   const [_, setSearchParams] = useSearchParams();
-  const { members } = useMembers();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -84,8 +80,8 @@ export default function EventDashboard() {
           View all the details of{" "}
           <span className="capitalize">{eventData?.eventName}</span>
         </AdminDashboardHeader>
-        <div className="w-full flex gap-5 max-[1360px]:flex-col">
-          <div className="w-full flex flex-col gap-5">
+        <div className="w-full flex gap-5 max-xl:flex-col">
+          <div className="w-full flex flex-col gap-5 max-[1800px]:max-w-[calc(100vw-(256px+32.25rem+(1.875rem*2)+1.25rem))] max-[1530px]:max-w-[calc(100vw-(32.25rem+(1.875rem*2)+1.25rem))] max-xl:max-w-full">
             <div className="w-full grid grid-cols-4 max-[830px]:grid-cols-2 max-[500px]:grid-cols-1 gap-3 items-center">
               <QuickStat
                 icon={<FaUsers className="text-2xl" />}
@@ -108,12 +104,7 @@ export default function EventDashboard() {
                 value={eventData?.teams || 0}
               />
             </div>
-            <div className="w-full max-w-265 flex gap-6 flex-wrap p-6! shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] rounded-lg">
-              {/* <MemberGrowthChart data={dashboardData} /> */}
-              {/* <div className="w-full flex gap-5 max-[880px]:flex-col">
-                <BatchDistributionChart data={dashboardData} />
-                <BranchDistributionChart data={dashboardData} />
-              </div> */}
+            <div className="w-full max-w-265 max-xl:max-w-full flex gap-6 flex-wrap p-6! shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] rounded-lg">
               <Box
                 sx={{ borderBottom: 1, borderColor: "divider", width: "100%" }}
               >
@@ -133,7 +124,7 @@ export default function EventDashboard() {
               )}
             </div>
           </div>
-          <div className="info-lists w-full min-w-25 max-w-129 flex flex-col gap-5">
+          <div className="info-lists w-full min-w-25 max-w-129 max-xl:max-w-full flex flex-col gap-5">
             <div className="w-full flex justify-between items-center gap-10">
               <p>Settings: </p>
               <div className="flex gap-2">
@@ -211,11 +202,8 @@ export default function EventDashboard() {
                 </div>
               </div>
             </div>
-            {/* <MemberList members={members || []} /> */}
-            <CategoryDistributionChart data={eventData} />
-
+            <SegmentsDistributionChart data={eventData} />
             <ClubPartnersTable />
-            {/* <MessageList messages={messages || []} /> */}
           </div>
         </div>
       </div>
