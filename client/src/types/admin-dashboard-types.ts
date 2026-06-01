@@ -1,3 +1,6 @@
+import type { AdminDashboardMemberPreview } from "./member-types";
+import type { MessageType } from "./message-types";
+
 export type AdminDashboardDataType = {
   memberGrowth: { date: string; count: number }[];
   startDate: string;
@@ -10,4 +13,6 @@ export type AdminDashboardDataType = {
     totalActivities: number;
     totalTasks: number;
   };
+  latestMembers: AdminDashboardMemberPreview[];
+  latestMessages: MessageType[];
 };

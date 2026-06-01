@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import { FaTasks, FaUsers } from "react-icons/fa";
-import { IoMailSharp } from "react-icons/io5";
-import { FiActivity } from "react-icons/fi";
-import { useMembers } from "@/contexts/members-context";
+import FaTasks from "~icons/fa/tasks";
+import FaUsers from "~icons/fa-solid/users";
+import IoMailSharp from "~icons/ion/mail-sharp";
+import FiActivity from "~icons/feather/activity";
 import { getAdminData } from "@/lib/api/admin-dashboard";
 import AdminDashboardHeader from "@/components/ui/admin-dashboard-header";
 import QuickStat from "../ui/quick-stat";
@@ -14,38 +13,17 @@ import MemberList from "../lists/member-list";
 import MessageList from "../lists/message-list";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
-import { getMessages } from "@/lib/api/message";
 
 import "./admin-dashboard.css";
 
 const AdminDashboard = () => {
-  const { members, setSearch, setPage, setRole } = useMembers();
-  const { data: messages } = useQuery({
-    queryKey: ["messages"],
-    queryFn: () => getMessages().then((res) => res.data.results),
+  const { data, isLoading: isDashboardLoading } = useQuery({
+    queryKey: ["adminDashboardData"],
+    queryFn: () => getAdminData().then((res) => res.data),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
-  const [dashboardData, setDashboardData] =
-    useState<AdminDashboardDataType | null>(null);
 
-  useEffect(() => {
-    setRole("");
-    setSearch("");
-    setPage(1);
-  }, []);
-
-  const fetchDashboardData = async () => {
-    try {
-      const res = await getAdminData();
-      setDashboardData(res.data);
-    } catch (error) {
-      console.error("Error fetching dashboard data:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
+  const dashboardData = data as AdminDashboardDataType;
 
   return (
     <>
@@ -102,8 +80,14 @@ const AdminDashboard = () => {
             </div>
           </div>
           <div className="info-lists w-full min-w-25 max-w-129 flex flex-col gap-5">
-            <MemberList members={members || []} />
-            <MessageList messages={messages || []} />
+            <MemberList
+              members={dashboardData?.latestMembers || []}
+              loading={isDashboardLoading}
+            />
+            <MessageList
+              messages={dashboardData?.latestMessages || []}
+              loading={isDashboardLoading}
+            />
           </div>
         </div>
       </div>

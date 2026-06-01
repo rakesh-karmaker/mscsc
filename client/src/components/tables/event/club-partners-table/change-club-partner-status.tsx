@@ -2,7 +2,9 @@ import { TableBtn } from "@/components/ui/btns";
 import capitalize from "@/utils/capitalize";
 import Popover from "@mui/material/Popover";
 import { useState, type ReactNode } from "react";
-import { LuCircleCheck, LuCircleDashed, LuCircleX } from "react-icons/lu";
+import LuCircleCheck from "~icons/lucide/circle-check";
+import LuCircleDashed from "~icons/lucide/circle-dashed";
+import LuCircleX from "~icons/lucide/circle-x";
 
 export interface ChangeClubPartnerStatusProps {
   id: string;

@@ -1,8 +1,8 @@
 import { TableBtn } from "@/components/ui/btns";
 import Modal from "@mui/material/Modal";
 import { useState, type ReactNode } from "react";
-import { FaXmark } from "react-icons/fa6";
-import { LuCircleUserRound } from "react-icons/lu";
+import FaXmark from "~icons/fa6-solid/xmark";
+import LuCircleUserRound from "~icons/lucide/circle-user-round";
 import ApplicationDetails from "./application-details";
 
 interface ApplicationDetailsModelProps {

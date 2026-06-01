@@ -3,36 +3,28 @@ import type { EditUserSchemaType } from "../validation/edit-user-schema";
 import type { TimelineSchemaType } from "../validation/timeline-schema";
 import type {
   MemberEditTypes,
+  MembersParams,
   MembersSearchParams,
 } from "@/types/member-types";
 
 export async function getMember(slug: string) {
-  const response = await api.get(`/member/${slug}`);
+  const response = await api.get(`/members/${slug}`);
   return response.data;
 }
 
 export async function getMembers(params: MembersSearchParams) {
-  return api.get(`/member/all-table`, {
+  return api.get(`/members/all-table`, {
     params,
   });
 }
 
-export async function getAllMembers(
-  page: number,
-  limit: number,
-  search: string,
-  role: string,
-  branch: string,
-  position: string,
-) {
-  return api.get(`/member/all`, {
+export async function getAllMembers(limit: number, params: MembersParams) {
+  const { search, ...rest } = params;
+  return api.get(`/members/all`, {
     params: {
-      page: page,
       limit: limit,
-      name: search,
-      role: role,
-      branch: branch,
-      position: position,
+      name: params.search,
+      ...rest,
     },
   });
 }
@@ -65,7 +57,7 @@ export async function editUser(
     formData.append(key, data[key as keyof EditUserSchemaType] as string);
   }
 
-  return api.patch("/member/edit-member", formData, {
+  return api.patch("/members/edit-member", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -80,7 +72,7 @@ export async function editTimeline(data: {
   formData.append("timeline", JSON.stringify(data.timeline));
   formData.append("slug", data.slug);
 
-  return api.patch(`/member/edit-member`, formData);
+  return api.patch(`/members/edit-member`, formData);
 }
 
 export async function editMember(
@@ -92,7 +84,7 @@ export async function editMember(
     formData.append(key, String(data[key as keyof typeof data]));
   }
   return api.patch(
-    `/member${isRoleOrPositionChange ? "/admin" : ""}/edit-member`,
+    `/members${isRoleOrPositionChange ? "/admin" : ""}/edit-member`,
     formData,
     {
       headers: isRoleOrPositionChange
@@ -105,5 +97,5 @@ export async function editMember(
 }
 
 export async function deleteMember(data: { slug: string }) {
-  return api.delete(`/member/${data.slug}`);
+  return api.delete(`/members/${data.slug}`);
 }

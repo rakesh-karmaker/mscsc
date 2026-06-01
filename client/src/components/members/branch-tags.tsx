@@ -1,11 +1,11 @@
-import type { Dispatch, ReactNode, SetStateAction } from "react";
+import type { ReactNode } from "react";
 
 export default function BranchTags({
   branch,
   setBranch,
 }: {
   branch: string;
-  setBranch: Dispatch<SetStateAction<string>>;
+  setBranch: (newBranch: string) => void;
 }): ReactNode {
   const branches = [
     "Branch - 1",

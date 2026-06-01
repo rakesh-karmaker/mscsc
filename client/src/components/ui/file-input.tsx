@@ -1,6 +1,6 @@
 import type React from "react";
 import { useRef, type ReactNode } from "react";
-import { FaUpload } from "react-icons/fa";
+import FaUpload from "~icons/fa/upload";
 import type { FieldErrors, UseFormRegister, Path } from "react-hook-form";
 
 type FileInputProps = {
@@ -39,7 +39,7 @@ export default function FileInput({
       if (labelRef.current) {
         labelRef.current.innerHTML = `<span class='line-clamp-1'>${fileName.slice(
           0,
-          20
+          20,
         )}${fileName.length > 20 ? "..." : ""}</span>`;
       }
     } else {

@@ -2,7 +2,8 @@ import { cn } from "@/utils/cn";
 import type { Column, Table } from "@tanstack/react-table";
 import { useCallback, type ReactNode } from "react";
 import TableViewOptions from "./table-view-options";
-import { LuSearch, LuX } from "react-icons/lu";
+import LuSearch from "~icons/lucide/search";
+import LuX from "~icons/lucide/x";
 import { InputAdornment, TextField } from "@mui/material";
 import TableMultiSelect from "./table-multi-select";
 

@@ -1,14 +1,12 @@
 import { Popover } from "@mui/material";
 import type { Column } from "@tanstack/react-table";
 import { useState, type ReactNode } from "react";
-import {
-  LuCheck,
-  LuChevronDown,
-  LuChevronsUpDown,
-  LuChevronUp,
-  LuEyeOff,
-  LuX,
-} from "react-icons/lu";
+import LuCheck from "~icons/lucide/check";
+import LuChevronDown from "~icons/lucide/chevron-down";
+import LuChevronsUpDown from "~icons/lucide/chevrons-up-down";
+import LuChevronUp from "~icons/lucide/chevron-up";
+import LuEyeOff from "~icons/lucide/eye-off";
+import LuX from "~icons/lucide/x";
 
 interface TableColumnHeaderProps<
   TData,

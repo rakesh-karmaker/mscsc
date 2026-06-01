@@ -6,7 +6,7 @@ import {
   type RefObject,
   type SetStateAction,
 } from "react";
-import { RxCross1 } from "react-icons/rx";
+import RxCross1 from "~icons/radix-icons/cross-1";
 
 type TooltipProps = {
   showOnRight: boolean;

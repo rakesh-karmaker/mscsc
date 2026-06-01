@@ -1,5 +1,6 @@
 import { verifyToken } from "@/lib/api/auth";
 import type { UserContextType } from "@/types/context-types";
+import type { User } from "@/types/user-types";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, type ReactNode } from "react";
 
@@ -22,7 +23,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   });
 
   if (error) console.log(error);
-  const user = data ? data.data.user : null;
+  const user: User | null = data ? data.data.user : null;
 
   return (
     <UserContext.Provider value={{ user, isVerifying }}>
@@ -35,7 +36,7 @@ export function useUser(): UserContextType {
   const context = useContext(UserContext);
 
   if (context === undefined) {
-    throw new Error("useAuth must be used within a AuthProvider");
+    throw new Error("useUser must be used within a UserProvider");
   }
 
   return context as UserContextType;

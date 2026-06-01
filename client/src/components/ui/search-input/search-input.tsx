@@ -1,5 +1,5 @@
 import type { CSSProperties, Dispatch, ReactNode, SetStateAction } from "react";
-import { FaSearch } from "react-icons/fa";
+import FaSearch from "~icons/fa/search";
 
 import "./search-input.css";
 
@@ -10,7 +10,7 @@ export default function SearchInput({
   ...rest
 }: {
   search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
+  setSearch: Dispatch<SetStateAction<string>> | ((newSearch: string) => void);
   children: string;
   style?: CSSProperties;
 }): ReactNode {
@@ -27,7 +27,7 @@ export default function SearchInput({
           onChange={(e) => {
             setSearch(e.target.value);
           }}
-          value={search}
+          defaultValue={search}
         />
       </div>
     </div>

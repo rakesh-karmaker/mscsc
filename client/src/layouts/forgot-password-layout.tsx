@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom";
-import { IoKeySharp } from "react-icons/io5";
-import { FaLock } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
-import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import IoKeySharp from "~icons/ion/key-sharp";
+import FaLock from "~icons/fa/lock";
+import MdEmail from "~icons/material-symbols/mail";
+import IoMdCheckmarkCircleOutline from "~icons/ion/md-checkmark-circle-outline";
+import FaArrowLeft from "~icons/fa6-solid/arrow-left";
 import type { ReactNode } from "react";
-import { FaArrowLeft } from "react-icons/fa6";
 import { Helmet } from "react-helmet-async";
 
 export default function ForgotPasswordLayout({

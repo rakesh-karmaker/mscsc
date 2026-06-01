@@ -1,8 +1,8 @@
 import { TableBtn } from "@/components/ui/btns";
 import Modal from "@mui/material/Modal";
 import { useState, type ReactNode } from "react";
-import { FaXmark } from "react-icons/fa6";
-import { LuUsersRound } from "react-icons/lu";
+import FaXmark from "~icons/fa6-solid/xmark";
+import LuUsersRound from "~icons/lucide/users-round";
 import TeamDetails from "./team-details";
 
 interface TeamDetailsModelProps {

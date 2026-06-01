@@ -1,22 +1,27 @@
 import type { ReactNode } from "react";
-import { BiSolidConversation } from "react-icons/bi";
-import {
-  FaChalkboardTeacher,
-  FaFacebook,
-  FaGlobeAsia,
-  FaInstagram,
-  FaPalette,
-  FaPhoneAlt,
-  FaPuzzlePiece,
-} from "react-icons/fa";
-import { FaClock, FaEnvelope, FaRobot, FaStar } from "react-icons/fa6";
-import { GiChessQueen } from "react-icons/gi";
-import { HiLightBulb } from "react-icons/hi";
-import { IoMdRocket } from "react-icons/io";
-import { LiaAtomSolid } from "react-icons/lia";
-import { LuDivide } from "react-icons/lu";
-import { TbMath } from "react-icons/tb";
-import { MdGames } from "react-icons/md";
+
+import BiSolidConversation from "~icons/bx/bxs-conversation";
+
+import FaChalkboardTeacher from "~icons/fa-solid/chalkboard-teacher";
+import FaFacebook from "~icons/fa/facebook";
+import FaGlobeAsia from "~icons/fa-solid/globe-asia";
+import FaInstagram from "~icons/fa/instagram";
+import FaPalette from "~icons/fa-solid/palette";
+import FaPhoneAlt from "~icons/fa/phone";
+import FaPuzzlePiece from "~icons/fa/puzzle-piece";
+
+import FaClock from "~icons/fa6-regular/clock";
+import FaEnvelope from "~icons/fa6-regular/envelope";
+import FaRobot from "~icons/fa6-solid/robot";
+import FaStar from "~icons/fa6-solid/star";
+
+import GiChessQueen from "~icons/game-icons/chess-queen";
+import HiLightBulb from "~icons/heroicons-solid/light-bulb";
+import IoMdRocket from "~icons/ion/md-rocket";
+import LiaAtomSolid from "~icons/la/atom";
+import LuDivide from "~icons/lucide/divide";
+import TbMath from "~icons/tabler/math";
+import MdGames from "~icons/ic/baseline-games";
 
 export const socialMediaIcons: { [iconName: string]: ReactNode } = {
   facebook: <FaFacebook />,

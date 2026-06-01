@@ -7,11 +7,11 @@ import TaskSidebarCard from "@/components/ui/task-sidebar-card";
 import "./tasks-sidebar.css";
 
 export default function TasksSidebar({ admin }: { admin?: boolean }) {
-  const { category: currentCategory, setCategory, response } = useTasks();
+  const { response, params, setParams } = useTasks();
   const { user } = useUser();
   const totalLengthRef = useRef<null | number>(null);
   const [initialTotalLength, setInitialTotalLength] = useState<null | number>(
-    null
+    null,
   );
 
   const categories = ["Article Writing", "Poster Design"];
@@ -36,9 +36,17 @@ export default function TasksSidebar({ admin }: { admin?: boolean }) {
               key={category}
               className={
                 "task-category" +
-                (category === currentCategory ? " active" : "")
+                (category === params.category ? " active" : "")
               }
-              onClick={() => setCategory(category.toLowerCase())}
+              onClick={() =>
+                setParams({
+                  ...params,
+                  category: category.toLowerCase() as
+                    | "article writing"
+                    | "poster design",
+                  page: 1,
+                })
+              }
             >
               {category}
             </p>

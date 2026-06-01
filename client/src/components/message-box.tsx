@@ -1,8 +1,8 @@
 import type { MessageTableData } from "@/types/message-types";
 import { Modal } from "@mui/material";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
-import { FaReply } from "react-icons/fa";
-import { FaXmark } from "react-icons/fa6";
+import FaReply from "~icons/fa-solid/reply";
+import LuX from "~icons/lucide/x";
 import { Link } from "react-router-dom";
 
 export default function MessageBox({
@@ -31,7 +31,7 @@ export default function MessageBox({
                 onClick={() => setData(null)}
                 className="text-3xl transition-all duration-200 hover:text-red-400 cursor-pointer"
               >
-                <FaXmark />
+                <LuX />
               </button>
             </div>
             <a

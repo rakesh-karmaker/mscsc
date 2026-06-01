@@ -1,6 +1,6 @@
 import { cn } from "@/utils/cn";
 import type { ReactNode } from "react";
-import { LuSearch } from "react-icons/lu";
+import LuSearch from "~icons/lucide/search";
 
 export default function ColumnInput({
   className,

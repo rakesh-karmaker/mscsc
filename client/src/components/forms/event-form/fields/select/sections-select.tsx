@@ -8,7 +8,8 @@ import {
   type SetStateAction,
 } from "react";
 import type { SetValueConfig } from "react-hook-form";
-import { LuPlus, LuX } from "react-icons/lu";
+import LuPlus from "~icons/lucide/plus";
+import LuX from "~icons/lucide/x";
 import { TableBtn } from "@/components/ui/btns";
 import { DragDropProvider } from "@dnd-kit/react";
 import { useSortable, isSortable } from "@dnd-kit/react/sortable";

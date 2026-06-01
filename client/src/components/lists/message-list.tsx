@@ -7,7 +7,13 @@ import ListLayout from "./list-layout";
 import Empty from "../ui/empty/empty";
 import MessageBox from "../message-box";
 
-export default function MessageList({ messages }: { messages: MessageType[] }) {
+export default function MessageList({
+  messages,
+  loading,
+}: {
+  messages: MessageType[];
+  loading: boolean;
+}) {
   const queryClient = useQueryClient();
 
   const messageMutation = useMutation({
@@ -23,6 +29,7 @@ export default function MessageList({ messages }: { messages: MessageType[] }) {
     },
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: ["messages"] });
+      queryClient.invalidateQueries({ queryKey: ["adminDashboardData"] });
       toast.success(res?.data?.message);
     },
     onError: (err) => {
@@ -48,7 +55,7 @@ export default function MessageList({ messages }: { messages: MessageType[] }) {
   }
 
   return (
-    <ListLayout title="Message List">
+    <ListLayout title="Message List" isLoading={loading}>
       {!messages || messages?.length == 0 ? (
         <Empty />
       ) : (

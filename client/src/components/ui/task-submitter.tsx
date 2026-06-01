@@ -1,7 +1,7 @@
 import type { Task, TaskSubmitterType } from "@/types/task-types";
 import getPosition from "@/utils/get-position";
 import type { ReactNode } from "react";
-import { FaCrown } from "react-icons/fa";
+import FaCrown from "~icons/fa-solid/crown";
 import { NavLink } from "react-router-dom";
 
 type TaskSubmitterProps = {

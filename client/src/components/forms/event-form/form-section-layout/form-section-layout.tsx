@@ -6,7 +6,7 @@ import {
   type SetStateAction,
 } from "react";
 import toast from "react-hot-toast";
-import { IoWarning } from "react-icons/io5";
+import IoWarning from "~icons/ion/warning";
 import FormErrorsModal from "../form-errors";
 import FormSectionHeader from "./form-section-header";
 import HideSectionSelect from "./hide-section-select";
@@ -44,14 +44,11 @@ export default function FormSectionLayout({
   isLoading,
 }: FormSectionLayoutProps): ReactNode {
   const [isViewingErrors, setIsViewingErrors] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
     <section className="w-full h-full rounded-md border max-sm:border-none border-gray-400 flex flex-col gap-4 bg-third-level-bg/30 max-sm:bg-primary-bg">
       <FormSectionHeader
         title={title}
-        isDropdownOpen={isDropdownOpen}
-        setIsDropdownOpen={setIsDropdownOpen}
         currentNumber={currentNumber}
         totalSections={totalSections}
         handleFieldChange={handleFieldChange}
@@ -85,7 +82,6 @@ export default function FormSectionLayout({
                 className="primary-button w-fit! min-w-fit! px-6! py-2! text-base! font-normal! h-fit! before:bg-highlighted-color/20! text-black! hover:text-white!"
                 onClick={() => {
                   handleFieldChange("previous");
-                  setIsDropdownOpen(false);
                 }}
               >
                 Previous
@@ -97,7 +93,6 @@ export default function FormSectionLayout({
                 className="primary-button w-fit! min-w-fit! px-4! py-2! text-base! font-normal! h-fit!"
                 onClick={() => {
                   handleFieldChange("next");
-                  setIsDropdownOpen(false);
                 }}
               >
                 Next
@@ -111,7 +106,6 @@ export default function FormSectionLayout({
                 }
                 className="w-fit! min-w-fit! px-4! py-2! text-base! font-normal! h-fit!"
                 onClick={() => {
-                  setIsDropdownOpen(false);
                   if (Object.keys(errors).length > 0) {
                     toast.error(
                       "Please fix the errors in the form before submitting.",

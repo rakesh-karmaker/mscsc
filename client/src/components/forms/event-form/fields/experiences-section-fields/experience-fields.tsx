@@ -5,9 +5,10 @@ import { Stack, TextField } from "@mui/material";
 import { icons } from "@/services/data/icons-data";
 import RichTextEditor from "@/lib/rich-text-editor/rich-text-editor";
 import SelectIconField from "@/components/ui/select-icon-field";
-import { LuArrowDown, LuArrowUp } from "react-icons/lu";
 import { useSortable } from "@dnd-kit/react/sortable";
-import { LuGripVertical } from "react-icons/lu";
+import LuArrowDown from "~icons/lucide/arrow-down";
+import LuArrowUp from "~icons/lucide/arrow-up";
+import LuGripVertical from "~icons/lucide/grip-vertical";
 
 export default function ExperienceFields({
   id,

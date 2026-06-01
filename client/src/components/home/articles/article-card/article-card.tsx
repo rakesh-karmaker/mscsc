@@ -3,7 +3,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import type { Article } from "@/types/activity-types";
 import type { ReactNode } from "react";
-import { FaArrowRight } from "react-icons/fa6";
+import FaArrowRight from "~icons/fa6-solid/arrow-right";
 import formatDate from "@/utils/format-date";
 
 import "./article-card.css";

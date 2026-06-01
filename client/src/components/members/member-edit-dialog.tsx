@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Modal } from "@mui/material";
 import { editMember } from "@/lib/api/member";
-import { FaXmark } from "react-icons/fa6";
+import FaXmark from "~icons/fa6-solid/xmark";
 import type { MemberTableData } from "@/types/member-types";
 import MemberEditForm from "@/components/forms/member-edit-form";
 

@@ -1,7 +1,7 @@
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 import AdminSidebarLink from "./admin-sidebar-link";
 import { adminSidebarLinkData } from "@/services/data/admin-sidebar-data";
-import { BiSolidCalendarEvent } from "react-icons/bi";
+import LuCalenderRange from "~icons/lucide/calendar-range";
 
 type AdminSidebarLinkProps = {
   isSidebarOpen: boolean;
@@ -103,7 +103,7 @@ export default function AdminSidebarLinks({
                 data={{
                   name: event.eventName,
                   to: `/admin/event/${event.eventSlug}`,
-                  icon: <BiSolidCalendarEvent />,
+                  icon: <LuCalenderRange />,
                 }}
                 isSidebarOpen={isSidebarOpen}
                 setIsSidebarOpen={setIsSidebarOpen}

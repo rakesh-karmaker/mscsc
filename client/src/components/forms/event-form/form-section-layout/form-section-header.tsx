@@ -1,11 +1,12 @@
 import { sectionsTitle } from "@/services/data/event-form-data";
-import { FaChevronDown } from "react-icons/fa";
-import type { Dispatch, ReactNode, SetStateAction } from "react";
+import FaChevronDown from "~icons/fa/chevron-down";
+import type { ReactNode } from "react";
+import { useState } from "react";
+import Popover from "@mui/material/Popover";
+import { TableBtn } from "@/components/ui/btns";
 
 type FormSectionHeaderProps = {
   title: string;
-  isDropdownOpen: boolean;
-  setIsDropdownOpen: Dispatch<SetStateAction<boolean>>;
   currentNumber: number;
   totalSections: number;
   handleFieldChange: (
@@ -19,8 +20,6 @@ type FormSectionHeaderProps = {
 
 export default function FormSectionHeader({
   title,
-  isDropdownOpen,
-  setIsDropdownOpen,
   currentNumber,
   totalSections,
   handleFieldChange,
@@ -33,69 +32,99 @@ export default function FormSectionHeader({
     basic: "Basic Information",
     ...rest,
   };
+  const [sectionPopoverOpen, setSectionPopoverOpen] = useState(false);
+  const sectionPopoverId = "form-section-header-popover";
 
   return (
     <div className="w-full flex justify-between items-center gap-3 p-5! max-sm:px-0! border-b border-gray-400 max-md:flex-col-reverse">
       <h2 className="w-full text-2xl max-w-full max-lg:text-xl font-semibold line-clamp-2">
         {title}
       </h2>
-      <div className="w-full h-full relative flex justify-end max-md:justify-start">
+
+      <div className="w-full flex justify-end">
         <button
+          id={sectionPopoverId}
           className={`w-fit min-w-fit h-fit px-3! py-1.5! flex items-center gap-2 text-base cursor-pointer font-medium text-white ${Object.keys(errors).length > 0 ? "bg-red-600" : "bg-highlighted-color"} hover:opacity-80 transition-all duration-200 rounded-sm`}
-          onClick={() => {
-            setIsDropdownOpen((prev) => !prev);
-          }}
+          onClick={() => setSectionPopoverOpen(!sectionPopoverOpen)}
           type="button"
+          aria-describedby={sectionPopoverId}
         >
-          Section {currentNumber} of {totalSections}{" "}
+          <span className="w-full">
+            Section {currentNumber} of {totalSections}
+          </span>
           <span
             className="text-base text-white transition-all duration-300"
             style={{
-              rotate: isDropdownOpen ? "180deg" : "0deg",
+              rotate: sectionPopoverOpen ? "180deg" : "0deg",
             }}
           >
             <FaChevronDown />
           </span>
         </button>
-        <div
-          className="w-fit absolute top-[120%] right-0 max-md:right-auto max-md:left-0 grid transition-all duration-300 z-10 shadow-sm"
-          style={{
-            gridTemplateRows: isDropdownOpen ? "1fr" : "0fr",
+        <Popover
+          id={sectionPopoverId}
+          open={sectionPopoverOpen}
+          anchorEl={document.getElementById(sectionPopoverId)}
+          onClose={() => setSectionPopoverOpen(false)}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          PaperProps={{
+            style: {
+              boxShadow: "rgba(149, 157, 165, 0.1) 0px 8px 24px",
+              marginTop: "4px",
+            },
           }}
         >
-          <menu className="w-fit overflow-hidden bg-white rounded-sm flex flex-col">
-            <li
-              className={`w-full h-full px-4! py-2! text-base text-left hover:bg-highlighted-color/10 border-y border-gray-500/10 cursor-pointer ${currentField === "basic" ? "bg-highlighted-color/20" : ""} transition-all duration-200 `}
-              onClick={() => {
-                handleFieldChange("jump", "basic");
-                setIsDropdownOpen(false);
-              }}
-            >
-              {sectionNameMap["basic"]}
-            </li>
-            {sections.map((section) => (
-              <li
-                key={section}
-                className={`w-full h-full px-4! py-2! text-base text-left hover:bg-highlighted-color/10 border-y border-gray-500/10 cursor-pointer ${currentField === section ? "bg-highlighted-color/20" : ""} transition-all duration-200 `}
+          <div className="w-full h-full flex flex-col bg-primary-bg rounded-md border border-gray-300">
+            <div className="max-h-65 scroll-py-1 overflow-y-auto overflow-x-hidden flex flex-col p-1!">
+              <TableBtn
                 onClick={() => {
-                  handleFieldChange("jump", section);
-                  setIsDropdownOpen(false);
+                  handleFieldChange("jump", "basic");
+                  setSectionPopoverOpen(false);
                 }}
+                type="button"
+                className={
+                  currentField === "basic" ? "bg-highlighted-color/10" : ""
+                }
               >
-                {sectionNameMap[section]}
-              </li>
-            ))}
-            <li
-              className={`w-full h-full px-4! py-2! text-base text-left hover:bg-highlighted-color/10 border-y border-gray-500/10 cursor-pointer ${currentField === "final" ? "bg-highlighted-color/20" : ""} transition-all duration-200 `}
-              onClick={() => {
-                handleFieldChange("jump", "final");
-                setIsDropdownOpen(false);
-              }}
-            >
-              {sectionNameMap["final"]}
-            </li>
-          </menu>
-        </div>
+                {sectionNameMap["basic"]}
+              </TableBtn>
+              {sections.map((section) => (
+                <TableBtn
+                  key={section}
+                  onClick={() => {
+                    handleFieldChange("jump", section);
+                    setSectionPopoverOpen(false);
+                  }}
+                  type="button"
+                  className={
+                    currentField === section ? "bg-highlighted-color/10" : ""
+                  }
+                >
+                  {sectionNameMap[section]}
+                </TableBtn>
+              ))}
+              <TableBtn
+                onClick={() => {
+                  handleFieldChange("jump", "final");
+                  setSectionPopoverOpen(false);
+                }}
+                type="button"
+                className={
+                  currentField === "final" ? "bg-highlighted-color/10" : ""
+                }
+              >
+                {sectionNameMap["final"]}
+              </TableBtn>
+            </div>
+          </div>
+        </Popover>
       </div>
     </div>
   );

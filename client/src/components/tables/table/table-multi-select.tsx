@@ -1,7 +1,8 @@
 import type { Option } from "@/types/table-types";
 import type { Column } from "@tanstack/react-table";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
-import { LuPlus, LuX } from "react-icons/lu";
+import LuPlus from "~icons/lucide/plus";
+import LuX from "~icons/lucide/x";
 import FilterBadge from "./filter-badge";
 import { Checkbox, Popover, Tooltip } from "@mui/material";
 import ColumnInput, { EmptyResults, ColumnLists } from "./column-input";

@@ -9,7 +9,7 @@ import { Table } from "../../table/table";
 import { TablePagination } from "../../table/table-pagination";
 import TableToolbar from "../../table/table-toolbar";
 import { TableBtn } from "@/components/ui/btns";
-import { LuPlus } from "react-icons/lu";
+import LuPlus from "~icons/lucide/plus";
 import ClubPartnerFormModel from "@/components/forms/club-partner-form/club-partner-form-model";
 
 export default function ClubPartnersTable(): ReactNode {

@@ -1,7 +1,11 @@
 import getPosition from "@/utils/get-position";
 import type { Task, TaskPreview } from "@/types/task-types";
-import { FaNewspaper } from "react-icons/fa6";
-import { FaCheck, FaClock, FaCrown, FaPenNib, FaUser } from "react-icons/fa";
+import FaNewspaper from "~icons/fa6-solid/newspaper";
+import FaCheck from "~icons/fa/check";
+import FaClock from "~icons/fa-solid/clock";
+import FaCrown from "~icons/fa-solid/crown";
+import FaPenNib from "~icons/fa-solid/pen-nib";
+import FaUser from "~icons/fa/user";
 import type { ReactNode } from "react";
 import formatDate from "@/utils/format-date";
 

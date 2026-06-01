@@ -6,31 +6,33 @@ import Member from "../../../shared/models/member.model.js";
 import generateSlug from "../../../shared/utils/generate-slug.js";
 import { taskSchema } from "../task.schema.js";
 import { deleteFile } from "../../../shared/lib/file-uploader.js";
-
 import logger from "../../../shared/config/winston.js";
 
 // get all tasks
 export async function getAllTasks(req: Request, res: Response): Promise<void> {
+  const params = req.query as {
+    name?: string;
+    category?: string;
+    page?: string;
+  };
+
+  // Create regex for filtering
+  const regex = {
+    name: new RegExp(typeof params.name === "string" ? params.name : "", "i"),
+    category: new RegExp(
+      typeof params.category === "string" ? params.category : "",
+      "i",
+    ),
+  };
+
+  // Pagination and sorting options
+  const sorted = {
+    sort: { createdAt: -1 as 1 | -1 },
+    select:
+      "_id name slug summary deadline category submissions first second third", // Select only necessary fields
+  };
+
   try {
-    // Create regex for filtering
-    const regex = {
-      name: new RegExp(
-        typeof req.query.name === "string" ? req.query.name : "",
-        "i",
-      ),
-      category: new RegExp(
-        typeof req.query.category === "string" ? req.query.category : "",
-        "i",
-      ),
-    };
-
-    // Pagination and sorting options
-    const sorted = {
-      sort: { createdAt: -1 as 1 | -1 },
-      select:
-        "_id name slug summary deadline category submissions first second third", // Select only necessary fields
-    };
-
     // Get paginated results
     const paginatedTasks = await paginateResults(req, Task, regex, sorted);
 

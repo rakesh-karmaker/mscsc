@@ -13,22 +13,22 @@ import {
   isAuthorized,
 } from "../../shared/middlewares/auth-middleware.js";
 
-const memberRouter = express.Router();
+const membersRouter = express.Router();
 
 // Member Routes
-memberRouter.get("/all", getAllMembers);
-memberRouter.get("/all-table", getAllMembersForTable);
-memberRouter.get("/top-submitters", getTopSubmitters);
-memberRouter.get("/:slug", getMember);
+membersRouter.get("/all", getAllMembers);
+membersRouter.get("/all-table", getAllMembersForTable);
+membersRouter.get("/top-submitters", getTopSubmitters);
+membersRouter.get("/:slug", getMember);
 
-memberRouter.patch(
+membersRouter.patch(
   "/edit-member",
   isAuthorized,
   upload.single("image"),
   editMember,
 );
-memberRouter.patch("/admin/edit-member", isAuthorized, isAdmin, editMember);
+membersRouter.patch("/admin/edit-member", isAuthorized, isAdmin, editMember);
 
-memberRouter.delete("/:slug", isAuthorized, isAdmin, deleteMember);
+membersRouter.delete("/:slug", isAuthorized, isAdmin, deleteMember);
 
-export default memberRouter;
+export default membersRouter;

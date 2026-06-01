@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { FaArrowRight } from "react-icons/fa";
+import FaArrowRight from "~icons/fa6-solid/arrow-right";
 import { NavLink } from "react-router-dom";
 
 export function HeroActionBtns(): ReactNode {

@@ -1,4 +1,5 @@
-import { FaCheck, FaCloudArrowUp } from "react-icons/fa6";
+import FaCheck from "~icons/fa6-solid/check";
+import FaCloudArrowUp from "~icons/fa6-solid/cloud-arrow-up";
 import { useRef, useState } from "react";
 
 import "./image-dropper.css";
@@ -17,7 +18,7 @@ export default function ImageDropper({
   const [active, setActive] = useState(false);
 
   const handleDrop = (
-    e: React.InputEvent<HTMLLabelElement> | React.DragEvent<HTMLLabelElement>
+    e: React.InputEvent<HTMLLabelElement> | React.DragEvent<HTMLLabelElement>,
   ) => {
     e.preventDefault();
     e.stopPropagation();

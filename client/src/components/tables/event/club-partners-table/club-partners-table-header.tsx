@@ -1,7 +1,10 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import TableColumnHeader from "../../table/table-column-header";
 import { useState } from "react";
-import { LuCircleCheck, LuCircleX, LuCopy, LuTrash2 } from "react-icons/lu";
+import LuCircleCheck from "~icons/lucide/circle-check";
+import LuCircleX from "~icons/lucide/circle-x";
+import LuCopy from "~icons/lucide/copy";
+import LuTrash2 from "~icons/lucide/trash-2";
 import TableActionColumn from "../../table/table-action-column";
 import { TableBtn } from "@/components/ui/btns";
 import DeleteWarning from "@/components/ui/delete-warning";

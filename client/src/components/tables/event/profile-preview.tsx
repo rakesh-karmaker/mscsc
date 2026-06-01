@@ -5,7 +5,9 @@ import type {
 import capitalize from "@/utils/capitalize";
 import { Tooltip } from "@mui/material";
 import type { ReactNode } from "react";
-import { LuCircleCheck, LuCircleX, LuTimer } from "react-icons/lu";
+import LuCircleCheck from "~icons/lucide/circle-check";
+import LuCircleX from "~icons/lucide/circle-x";
+import LuTimer from "~icons/lucide/timer";
 
 interface ProfilePreviewProps {
   details:

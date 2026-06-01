@@ -4,9 +4,11 @@
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
+  "types": ["unplugin-icons/types/react"],
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["unplugin-icons/types/react"]
   }
 }

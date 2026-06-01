@@ -3,8 +3,10 @@ import Member from "../../shared/models/member.model.js";
 import Message from "../messages/message.model.js";
 import Activity from "../activities/activity.model.js";
 import Task from "../tasks/task.model.js";
+import logger from "../../shared/config/winston.js";
+
 export async function getDashboardData(
-  req: Request,
+  _: Request,
   res: Response,
 ): Promise<void> {
   try {
@@ -89,11 +91,24 @@ export async function getDashboardData(
     ]);
 
     // filter and sort batchDistribution
-    const filteredBatchDistribution = batchDistribution.map((item) => ({
-      batch: parseInt(item._id, 10),
-      count: item.count,
-    }));
+    const filteredBatchDistribution: { batch: number; count: number }[] =
+      batchDistribution.map((item) => ({
+        batch: parseInt(item._id, 10),
+        count: item.count,
+      }));
     filteredBatchDistribution.sort((a, b) => a.batch - b.batch);
+
+    // get 6 latest members
+    const latestMembers = await Member.find({})
+      .sort({ createdAt: -1 })
+      .limit(6)
+      .select("_id name slug image branch batch slug createdAt");
+
+    // get 6 latest messages
+    const latestMessages = await Message.find({})
+      .sort({ createdAt: -1 })
+      .limit(6)
+      .select("_id name subject email message source createdAt new");
 
     res.status(200).json({
       memberGrowth: filledData,
@@ -102,6 +117,8 @@ export async function getDashboardData(
       branchDistribution,
       quickStats: { totalMembers, totalMessages, totalActivities, totalTasks },
       batchDistribution: filteredBatchDistribution.slice(0, 12), // limit to top 10 batches
+      latestMembers,
+      latestMessages,
     });
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : String(err);

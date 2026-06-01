@@ -5,21 +5,20 @@ import SearchInput from "@/components/ui/search-input/search-input";
 import BranchTags from "@/components/members/branch-tags";
 import MembersContainer from "@/components/members/members-container";
 import { Helmet } from "react-helmet-async";
+import { useDebouncedCallback } from "@/hooks/table-hooks/use-debounced-callback";
 
 import "./members.css";
 
 export default function MemberPage(): ReactNode {
-  const {
-    members,
-    search,
-    setSearch,
-    page,
-    setPage,
-    branch,
-    setBranch,
-    length,
-    isLoading,
-  } = useMembers();
+  const { members, length, isLoading, params, setParams } = useMembers();
+  const { search, branch, page } = params;
+
+  const debouncedSetFilterValues = useDebouncedCallback(
+    (values: typeof params) => {
+      void setParams(values);
+    },
+    300,
+  );
 
   return (
     <>
@@ -41,12 +40,23 @@ export default function MemberPage(): ReactNode {
         <div className="filter-members">
           <SearchInput
             search={search}
-            setSearch={setSearch}
+            setSearch={(newSearch: string) =>
+              debouncedSetFilterValues({
+                ...params,
+                search: newSearch,
+                page: 1,
+              })
+            }
             style={{ maxWidth: "100%", flex: "1" }}
           >
             Search members
           </SearchInput>
-          <BranchTags branch={branch} setBranch={setBranch} />
+          <BranchTags
+            branch={branch}
+            setBranch={(newBranch: string) =>
+              setParams({ ...params, branch: newBranch, page: 1 })
+            }
+          />
         </div>
 
         <section className="members-list-container">
@@ -57,7 +67,9 @@ export default function MemberPage(): ReactNode {
               members={members || []}
               length={length}
               page={page}
-              setPage={setPage}
+              setPage={(newPage: number) =>
+                setParams({ ...params, page: newPage })
+              }
             />
           )}
         </section>

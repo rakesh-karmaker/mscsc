@@ -9,11 +9,9 @@ export type MessageType = {
   source: string;
   new: boolean;
   createdAt: string;
-  updatedAt: string;
-  __v: number;
 };
 
-export type MessageTableData = Omit<MessageType, "__v" | "updatedAt">;
+export type MessageTableData = MessageType;
 
 export type MessagesSearchParams = {
   page: number;

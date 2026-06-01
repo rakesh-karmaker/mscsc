@@ -5,15 +5,21 @@ import Loader from "@/components/ui/loader/loader";
 import TaskList from "@/components/tasks/taskList/task-list";
 import TasksSidebar from "@/layouts/tasks-sidebar/tasks-sidebar";
 import { Helmet } from "react-helmet-async";
+import { useDebouncedCallback } from "@/hooks/table-hooks/use-debounced-callback";
 
 export default function Tasks({ admin }: { admin?: boolean }) {
   // check if the user is logged in
   const { user, isVerifying } = useUser();
-
   const submissions = user?.submissions.map((s) => s.taskId.toString());
 
-  const { tasks, length, page, setPage, search, setSearch, isLoading } =
-    useTasks();
+  const { tasks, length, isLoading, params, setParams } = useTasks();
+  const { search, page } = params;
+  const debouncedSetFilterValues = useDebouncedCallback(
+    (values: typeof params) => {
+      void setParams(values);
+    },
+    300,
+  );
 
   return (
     <>
@@ -30,9 +36,9 @@ export default function Tasks({ admin }: { admin?: boolean }) {
       <main
         className={`w-full ${
           admin
-            ? "w-full !pt-5"
-            : "max-w-[1400px] min-h-[calc(100svh-var(--nav-height))] !pt-[calc(var(--nav-height)+3rem)] !pb-25 max-[1000px]:!pt-[calc(var(--nav-height)+2rem)]"
-        } h-full flex !flex-row  justify-between !items-start gap-4 max-[1500px]:max-w-max-width max-[1000px]:!flex-col max-[1000px]:gap-10`}
+            ? "w-full pt-5!"
+            : "max-w-350 min-h-[calc(100svh-var(--nav-height))] pt-[calc(var(--nav-height)+3rem)]! pb-25! max-[1000px]:pt-[calc(var(--nav-height)+2rem)]!"
+        } h-full flex flex-row!  justify-between items-start! gap-4 max-[1500px]:max-w-max-width max-[1000px]:flex-col! max-[1000px]:gap-10`}
       >
         {isVerifying ? (
           <Loader />
@@ -41,7 +47,13 @@ export default function Tasks({ admin }: { admin?: boolean }) {
             <div className="w-full flex flex-col gap-4 min-h-full">
               <SearchInput
                 search={search}
-                setSearch={setSearch}
+                setSearch={(newSearch: string) =>
+                  debouncedSetFilterValues({
+                    ...params,
+                    search: newSearch,
+                    page: 1,
+                  })
+                }
                 style={{ maxWidth: "100%" }}
               >
                 Search tasks...
@@ -54,7 +66,9 @@ export default function Tasks({ admin }: { admin?: boolean }) {
                   tasks={tasks || []}
                   length={length}
                   page={page}
-                  setPage={setPage}
+                  setPage={(newPage: number) =>
+                    setParams({ ...params, page: newPage })
+                  }
                   submissions={submissions}
                   username={user?.slug}
                   admin={admin}

@@ -1,6 +1,6 @@
 import { Tooltip } from "@mui/material";
-import { RxCross2 } from "react-icons/rx";
-import { FaPlus } from "react-icons/fa6";
+import RxCross2 from "~icons/radix-icons/cross-2";
+import FaPlus from "~icons/fa6-solid/plus";
 import { cn } from "@/utils/cn";
 
 export function AddSocialLinkButton({ append }: { append: () => void }) {

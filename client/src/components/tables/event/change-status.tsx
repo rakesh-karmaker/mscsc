@@ -4,13 +4,11 @@ import { Modal, TextField } from "@mui/material";
 import Popover from "@mui/material/Popover";
 import { Activity, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
-import { FaXmark } from "react-icons/fa6";
-import {
-  LuCircleCheck,
-  LuCircleDashed,
-  LuCircleX,
-  LuTimer,
-} from "react-icons/lu";
+import FaXmark from "~icons/fa6-solid/xmark";
+import LuCircleCheck from "~icons/lucide/circle-check";
+import LuCircleDashed from "~icons/lucide/circle-dashed";
+import LuCircleX from "~icons/lucide/circle-x";
+import LuTimer from "~icons/lucide/timer";
 import ApproveStatus from "./ca-table/approve-status";
 
 export interface ChangeStatusProps {

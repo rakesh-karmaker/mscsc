@@ -19,25 +19,25 @@ import {
   submitTask,
 } from "./controllers/task-submissions.controller.js";
 
-const taskRouter = express.Router();
+const tasksRouter = express.Router();
 
 // Task Routes
-taskRouter.get("/", getAllTasks);
-taskRouter.get("/:slug", getTask);
-taskRouter.post("/create", isAuthorized, isAdmin, createTask);
-taskRouter.patch("/edit-task", isAuthorized, isAdmin, editTask);
-taskRouter.delete("/delete-task", isAuthorized, isAdmin, deleteTask);
+tasksRouter.get("/", getAllTasks);
+tasksRouter.get("/:slug", getTask);
+tasksRouter.post("/create", isAuthorized, isAdmin, createTask);
+tasksRouter.patch("/edit-task", isAuthorized, isAdmin, editTask);
+tasksRouter.delete("/delete-task", isAuthorized, isAdmin, deleteTask);
 
-taskRouter.post("/submit", isAuthorized, upload.single("poster"), submitTask);
-taskRouter.patch(
+tasksRouter.post("/submit", isAuthorized, upload.single("poster"), submitTask);
+tasksRouter.patch(
   "/edit-submission",
   isAuthorized,
   upload.single("poster"),
   editSubmission,
 );
-taskRouter.delete("/delete-submission", isAuthorized, deleteSubmission);
+tasksRouter.delete("/delete-submission", isAuthorized, deleteSubmission);
 
-taskRouter.put("/make-winner", isAuthorized, isAdmin, makeWinner);
-taskRouter.delete("/delete-winner", isAuthorized, isAdmin, removeWinner);
+tasksRouter.put("/make-winner", isAuthorized, isAdmin, makeWinner);
+tasksRouter.delete("/delete-winner", isAuthorized, isAdmin, removeWinner);
 
-export default taskRouter;
+export default tasksRouter;

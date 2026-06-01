@@ -3,7 +3,8 @@ import type { EventRegistrationDetails } from "@/types/event/event-registration-
 import capitalize from "@/utils/capitalize";
 import { useQuery } from "@tanstack/react-query";
 import type { ReactNode } from "react";
-import { LuCircleX, LuEye } from "react-icons/lu";
+import LuCircleX from "~icons/lucide/circle-x";
+import LuEye from "~icons/lucide/eye";
 import { useParams } from "react-router-dom";
 import { getTeamById } from "@/lib/api/event/event-teams";
 import { Tooltip } from "@mui/material";

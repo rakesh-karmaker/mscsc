@@ -1,13 +1,11 @@
 import { deleteEvent, editEventMeta } from "@/lib/api/event/event";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
-import {
-  LuEye,
-  LuEyeOff,
-  LuSettings,
-  LuSquarePen,
-  LuTrash2,
-} from "react-icons/lu";
+import LuEye from "~icons/lucide/eye";
+import LuEyeOff from "~icons/lucide/eye-off";
+import LuSettings from "~icons/lucide/settings";
+import LuSquarePen from "~icons/lucide/square-pen";
+import LuTrash2 from "~icons/lucide/trash-2";
 import { useState, type ReactNode } from "react";
 import { Popover } from "@mui/material";
 import { NavLink } from "react-router";

@@ -10,14 +10,12 @@ import getCategory from "@/utils/get-category";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Activity, useState, type ReactNode } from "react";
-import {
-  LuCalendar,
-  LuEye,
-  LuFacebook,
-  LuMail,
-  LuPhone,
-  LuTrash2,
-} from "react-icons/lu";
+import LuCalendar from "~icons/lucide/calendar";
+import LuEye from "~icons/lucide/eye";
+import LuFacebook from "~icons/lucide/facebook";
+import LuMail from "~icons/lucide/mail";
+import LuPhone from "~icons/lucide/phone";
+import LuTrash2 from "~icons/lucide/trash-2";
 import { useParams } from "react-router-dom";
 import TeamDetailsModel from "../team-details/team-details-model";
 import ChangeStatus from "../change-status";

@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useState, type ReactNode } from "react";
-import { FaBars, FaTimes } from "react-icons/fa";
+import FaBars from "~icons/fa/bars";
+import LuX from "~icons/lucide/x";
 import Welcome from "./welcome";
 import AdminSidebarLinks from "./admin-sidebar-links";
 
@@ -51,7 +52,7 @@ export default function AdminSidebar({
                       className="sidebar-toggle"
                       onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                     >
-                      <FaTimes />
+                      <LuX />
                     </button>
                   )}
                 </div>

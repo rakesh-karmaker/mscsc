@@ -1,4 +1,5 @@
-import { FaBars, FaXmark } from "react-icons/fa6";
+import FaBars6 from "~icons/fa6-solid/bars";
+import FaXmark from "~icons/fa6-solid/xmark";
 import { handleNavbarTogglerClick } from "./navbar";
 import type { ReactNode, RefObject, Dispatch, SetStateAction } from "react";
 
@@ -20,7 +21,7 @@ export default function NavbarToggleBtn({
       type="button"
       aria-label="Toggle navbar"
     >
-      {isOpened ? <FaXmark /> : <FaBars />}
+      {isOpened ? <FaXmark /> : <FaBars6 />}
     </button>
   );
 }

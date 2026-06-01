@@ -2,9 +2,10 @@ import { useState, type ReactNode } from "react";
 import { useWatch, type Control } from "react-hook-form";
 import FormLayout from "../../form-layout";
 import { Stack, TextField } from "@mui/material";
-import { LuArrowDown, LuArrowUp } from "react-icons/lu";
 import { useSortable } from "@dnd-kit/react/sortable";
-import { LuGripVertical } from "react-icons/lu";
+import LuArrowDown from "~icons/lucide/arrow-down";
+import LuArrowUp from "~icons/lucide/arrow-up";
+import LuGripVertical from "~icons/lucide/grip-vertical";
 import FileInput from "@/components/ui/file-input";
 
 export default function SPFields({

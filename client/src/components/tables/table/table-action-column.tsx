@@ -5,7 +5,7 @@ import {
   type ReactNode,
   type SetStateAction,
 } from "react";
-import { LuEllipsisVertical } from "react-icons/lu";
+import LuEllipsisVertical from "~icons/lucide/ellipsis-vertical";
 
 interface TableActionColumnProps extends HTMLAttributes<HTMLButtonElement> {
   rowId: string;

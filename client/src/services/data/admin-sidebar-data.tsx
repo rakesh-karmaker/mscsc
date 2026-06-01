@@ -1,6 +1,10 @@
 import type { ReactNode } from "react";
-import { FaCalendarAlt, FaEnvelopeSquare, FaTasks } from "react-icons/fa";
-import { FaHouse, FaPlus, FaUser } from "react-icons/fa6";
+import FaCalendarAlt from "~icons/fa-solid/calendar-alt";
+import FaEnvelopeSquare from "~icons/fa/envelope-square";
+import FaTasks from "~icons/fa-solid/tasks";
+import FaHouse from "~icons/fa6-solid/house";
+import FaPlus from "~icons/fa6-solid/plus";
+import FaUser from "~icons/fa6-solid/user";
 
 export type AdminSidebarLinkDataType = {
   name: string;

@@ -7,7 +7,8 @@ import {
   type RefObject,
 } from "react";
 import Tooltip from "./tooltip";
-import { BsInfoCircleFill, BsInfoCircle } from "react-icons/bs";
+import BsInfoCircleFill from "~icons/bi/info-circle-fill";
+import BsInfoCircle from "~icons/bi/info-circle";
 import { styled } from "@mui/material";
 
 export default function FormLayout({

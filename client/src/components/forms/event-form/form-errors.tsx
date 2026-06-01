@@ -1,6 +1,6 @@
 import { Modal } from "@mui/material";
 import { type Dispatch, type ReactNode, type SetStateAction } from "react";
-import { FaXmark } from "react-icons/fa6";
+import FaXmark from "~icons/fa6-solid/xmark";
 
 type Errors = Record<string, any>;
 

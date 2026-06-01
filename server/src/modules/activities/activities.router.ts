@@ -13,14 +13,14 @@ import {
   getHomeActivities,
 } from "./activities.controller.js";
 
-const activityRouter = express.Router();
+const activitiesRouter = express.Router();
 
 // Activity Routes
-activityRouter.get("/", getAllActivities);
-activityRouter.get("/get-home-activities", getHomeActivities);
-activityRouter.get("/:slug", getActivity);
+activitiesRouter.get("/", getAllActivities);
+activitiesRouter.get("/get-home-activities", getHomeActivities);
+activitiesRouter.get("/:slug", getActivity);
 
-activityRouter.post(
+activitiesRouter.post(
   "/",
   isAuthorized,
   isAdmin,
@@ -30,7 +30,7 @@ activityRouter.post(
   ]),
   createActivity,
 );
-activityRouter.patch(
+activitiesRouter.patch(
   "/",
   isAuthorized,
   isAdmin,
@@ -41,6 +41,6 @@ activityRouter.patch(
   editActivity,
 );
 
-activityRouter.delete("/", isAuthorized, isAdmin, deleteActivity);
+activitiesRouter.delete("/", isAuthorized, isAdmin, deleteActivity);
 
-export default activityRouter;
+export default activitiesRouter;

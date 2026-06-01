@@ -2,19 +2,17 @@ import { useState, type ReactNode } from "react";
 import { useWatch, type Control } from "react-hook-form";
 import FormLayout from "../../form-layout";
 import { Stack, TextField } from "@mui/material";
-import { FaGlobeAsia } from "react-icons/fa";
-import { IoLocationOutline } from "react-icons/io5";
 import { icons } from "@/services/data/icons-data";
 import RichTextEditor from "@/lib/rich-text-editor/rich-text-editor";
 import SelectIconField from "@/components/ui/select-icon-field";
-import {
-  LuArrowDown,
-  LuArrowUp,
-  LuUserRound,
-  LuUsersRound,
-} from "react-icons/lu";
+import FaGlobeAsia from "~icons/fa/globe";
+import IoLocationOutline from "~icons/ion/location-outline";
+import LuArrowDown from "~icons/lucide/arrow-down";
+import LuArrowUp from "~icons/lucide/arrow-up";
+import LuUserRound from "~icons/lucide/user-round";
+import LuUsersRound from "~icons/lucide/users-round";
+import LuGripVertical from "~icons/lucide/grip-vertical";
 import { useSortable } from "@dnd-kit/react/sortable";
-import { LuGripVertical } from "react-icons/lu";
 
 export default function SegmentFields({
   id,

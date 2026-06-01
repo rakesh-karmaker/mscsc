@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import Loader from "@/components/ui/loader/loader";
 
 // Lazy load pages
-// const Home = lazy(() => import("@/pages/home"));
+const Home = lazy(() => import("@/pages/home"));
 const About = lazy(() => import("@/pages/about"));
 const MembersPage = lazy(() => import("@/pages/members/members"));
 const ActivitiesPage = lazy(() => import("@/pages/activities"));
@@ -27,7 +27,8 @@ import { TasksProvider } from "@/contexts/tasks-context";
 
 // Layouts
 import UserLayout from "@/layouts/user-layout";
-import Home from "@/pages/home";
+
+// import Home from "@/pages/home";
 
 export const publicRoutes = {
   path: "/",
@@ -37,9 +38,9 @@ export const publicRoutes = {
     {
       path: "/",
       element: (
-        // <Suspense fallback={<Loader />}>
-        <Home />
-        // </Suspense>
+        <Suspense fallback={<Loader />}>
+          <Home />
+        </Suspense>
       ),
     },
     {

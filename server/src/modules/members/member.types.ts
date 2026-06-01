@@ -36,7 +36,5 @@ export interface MemberSchemaType {
 
 export type GetAllMembersRegexType = {
   name: RegExp;
-  role: RegExp;
   branch: RegExp;
-  position?: RegExp;
 };

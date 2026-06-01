@@ -1,11 +1,9 @@
 import type { ReactNode } from "react";
-import {
-  FaFacebook,
-  FaGithub,
-  FaInstagram,
-  FaLinkedin,
-  FaTwitter,
-} from "react-icons/fa";
+import FaFacebook from "~icons/fa/facebook";
+import FaGithub from "~icons/fa/github";
+import FaInstagram from "~icons/fa/instagram";
+import FaLinkedin from "~icons/fa/linkedin";
+import FaTwitter from "~icons/fa/twitter";
 
 export default function SocialIcon({ social }: { social: string }): ReactNode {
   switch (social) {

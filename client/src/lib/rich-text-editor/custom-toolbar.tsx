@@ -5,36 +5,34 @@ import {
   useEffect,
   type RefObject,
 } from "react";
-import {
-  LuAlignCenter,
-  LuAlignLeft,
-  LuAlignRight,
-  LuBold,
-  LuCodeXml,
-  LuHeading,
-  LuHeading1,
-  LuHeading2,
-  LuHeading3,
-  LuHeading4,
-  LuHeading5,
-  LuHighlighter,
-  LuIndentDecrease,
-  LuIndentIncrease,
-  LuItalic,
-  LuLink,
-  LuList,
-  LuListOrdered,
-  LuPalette,
-  LuQuote,
-  LuRedo2,
-  LuStrikethrough,
-  LuUnderline,
-  LuUndo2,
-  LuUnlink,
-  LuX,
-} from "react-icons/lu";
-import { TbPlusEqual } from "react-icons/tb";
-import { MdEmojiEmotions } from "react-icons/md";
+import LuAlignCenter from "~icons/lucide/align-center";
+import LuAlignLeft from "~icons/lucide/align-left";
+import LuAlignRight from "~icons/lucide/align-right";
+import LuBold from "~icons/lucide/bold";
+import LuCodeXml from "~icons/lucide/code-xml";
+import LuHeading from "~icons/lucide/heading";
+import LuHeading1 from "~icons/lucide/heading-1";
+import LuHeading2 from "~icons/lucide/heading-2";
+import LuHeading3 from "~icons/lucide/heading-3";
+import LuHeading4 from "~icons/lucide/heading-4";
+import LuHeading5 from "~icons/lucide/heading-5";
+import LuHighlighter from "~icons/lucide/highlighter";
+import LuIndentDecrease from "~icons/lucide/indent-decrease";
+import LuIndentIncrease from "~icons/lucide/indent-increase";
+import LuItalic from "~icons/lucide/italic";
+import LuLink from "~icons/lucide/link";
+import LuList from "~icons/lucide/list";
+import LuListOrdered from "~icons/lucide/list-ordered";
+import LuPalette from "~icons/lucide/palette";
+import LuQuote from "~icons/lucide/quote";
+import LuRedo2 from "~icons/lucide/redo-2";
+import LuStrikethrough from "~icons/lucide/strikethrough";
+import LuUnderline from "~icons/lucide/underline";
+import LuUndo2 from "~icons/lucide/undo-2";
+import LuUnlink from "~icons/lucide/unlink";
+import LuX from "~icons/lucide/x";
+import TbPlusEqual from "~icons/tabler/plus-equal";
+import MdEmojiEmotions from "~icons/material-symbols/sentiment-satisfied";
 
 import "./custom-toolbar.css";
 
@@ -61,7 +59,7 @@ export function CustomToolbar({
     event: React.MouseEvent<HTMLButtonElement>,
     setIsOpen: (isOpen: boolean) => void,
     isOpen: boolean,
-    dropdownRef: React.RefObject<HTMLDivElement>
+    dropdownRef: React.RefObject<HTMLDivElement>,
   ) => {
     // Toggle the dropdown state
     setIsOpen(!isOpen);
@@ -154,7 +152,7 @@ export function CustomToolbar({
       // Focus back on the editor to maintain cursor position
       contentRef.current.focus();
     },
-    [contentRef]
+    [contentRef],
   );
 
   // Custom indent/outdent handlers to avoid styling issues
@@ -201,7 +199,7 @@ export function CustomToolbar({
       // Apply padding-left instead of using execCommand
       const currentPadding =
         Number.parseInt(
-          window.getComputedStyle(blockElement as Element).paddingLeft
+          window.getComputedStyle(blockElement as Element).paddingLeft,
         ) || 0;
       (blockElement as HTMLElement).style.paddingLeft = `${
         currentPadding + 20
@@ -252,12 +250,12 @@ export function CustomToolbar({
       // Reduce padding-left instead of using execCommand
       const currentPadding =
         Number.parseInt(
-          window.getComputedStyle(blockElement as HTMLElement).paddingLeft
+          window.getComputedStyle(blockElement as HTMLElement).paddingLeft,
         ) || 0;
       if (currentPadding > 0) {
         (blockElement as HTMLElement).style.paddingLeft = `${Math.max(
           0,
-          currentPadding - 20
+          currentPadding - 20,
         )}px`;
       }
     }
@@ -307,7 +305,7 @@ export function CustomToolbar({
     (level: number) => {
       execCommand("formatBlock", `<h${level}>`);
     },
-    [execCommand]
+    [execCommand],
   );
 
   const handleParagraph = useCallback(() => {
@@ -319,7 +317,7 @@ export function CustomToolbar({
     (color: string) => {
       execCommand("foreColor", color);
     },
-    [execCommand]
+    [execCommand],
   );
 
   // Handle highlight
@@ -327,7 +325,7 @@ export function CustomToolbar({
     (color: string) => {
       execCommand("hiliteColor", color);
     },
-    [execCommand]
+    [execCommand],
   );
 
   // Handle font size
@@ -339,7 +337,7 @@ export function CustomToolbar({
 
       execCommand("fontSize", ptValue.toString());
     },
-    [execCommand]
+    [execCommand],
   );
 
   // Handle emoji insertion
@@ -347,7 +345,7 @@ export function CustomToolbar({
     (emoji: string) => {
       execCommand("insertText", emoji);
     },
-    [execCommand]
+    [execCommand],
   );
 
   // Handle undo/redo
@@ -526,7 +524,7 @@ export function CustomToolbar({
         showHeadingMenu &&
         headingDropdownRef.current &&
         !(headingDropdownRef.current as HTMLElement)?.contains(
-          event.target as Node
+          event.target as Node,
         ) &&
         !(event.target as HTMLElement)?.closest(".toolbar-button")
       ) {
@@ -536,7 +534,7 @@ export function CustomToolbar({
         showFontSizeMenu &&
         fontSizeDropdownRef.current &&
         !(fontSizeDropdownRef.current as HTMLElement)?.contains(
-          event.target as Node
+          event.target as Node,
         ) &&
         !(event.target as HTMLElement)?.closest(".toolbar-button")
       ) {
@@ -546,7 +544,7 @@ export function CustomToolbar({
         showTextColorMenu &&
         textColorDropdownRef.current &&
         !(textColorDropdownRef.current as HTMLElement)?.contains(
-          event.target as Node
+          event.target as Node,
         ) &&
         !(event.target as HTMLElement)?.closest(".toolbar-button")
       ) {
@@ -556,7 +554,7 @@ export function CustomToolbar({
         showHighlightMenu &&
         highlightDropdownRef.current &&
         !(highlightDropdownRef.current as HTMLElement)?.contains(
-          event.target as Node
+          event.target as Node,
         ) &&
         !(event.target as HTMLElement)?.closest(".toolbar-button")
       ) {
@@ -566,7 +564,7 @@ export function CustomToolbar({
         showMathMenu &&
         mathDropdownRef.current &&
         !(mathDropdownRef.current as HTMLElement)?.contains(
-          event.target as Node
+          event.target as Node,
         ) &&
         !(event.target as HTMLElement)?.closest(".toolbar-button")
       ) {
@@ -576,7 +574,7 @@ export function CustomToolbar({
         showEmojiMenu &&
         emojiDropdownRef.current &&
         !(emojiDropdownRef.current as HTMLElement)?.contains(
-          event.target as Node
+          event.target as Node,
         ) &&
         !(event.target as HTMLElement)?.closest(".toolbar-button")
       ) {
@@ -648,7 +646,7 @@ export function CustomToolbar({
               e,
               setShowHeadingMenu,
               showHeadingMenu,
-              headingDropdownRef as RefObject<HTMLDivElement>
+              headingDropdownRef as RefObject<HTMLDivElement>,
             )
           }
           title="Heading"
@@ -737,7 +735,7 @@ export function CustomToolbar({
               e,
               setShowFontSizeMenu,
               showFontSizeMenu,
-              fontSizeDropdownRef as RefObject<HTMLDivElement>
+              fontSizeDropdownRef as RefObject<HTMLDivElement>,
             )
           }
           title="Font Size"
@@ -775,7 +773,7 @@ export function CustomToolbar({
               e,
               setShowTextColorMenu,
               showTextColorMenu,
-              textColorDropdownRef as RefObject<HTMLDivElement>
+              textColorDropdownRef as RefObject<HTMLDivElement>,
             )
           }
           title="Text Color"
@@ -811,7 +809,7 @@ export function CustomToolbar({
               e,
               setShowHighlightMenu,
               showHighlightMenu,
-              highlightDropdownRef as RefObject<HTMLDivElement>
+              highlightDropdownRef as RefObject<HTMLDivElement>,
             )
           }
           title="Highlight Color"
@@ -937,7 +935,7 @@ export function CustomToolbar({
               e,
               setShowMathMenu,
               showMathMenu,
-              mathDropdownRef as RefObject<HTMLDivElement>
+              mathDropdownRef as RefObject<HTMLDivElement>,
             )
           }
           title="Math"
@@ -1003,7 +1001,7 @@ export function CustomToolbar({
               e,
               setShowEmojiMenu,
               showEmojiMenu,
-              emojiDropdownRef as RefObject<HTMLDivElement>
+              emojiDropdownRef as RefObject<HTMLDivElement>,
             )
           }
           title="Emoji"

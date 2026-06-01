@@ -28,7 +28,6 @@ const EventDashboard = lazy(() => import("@/pages/event-dashboard"));
 const NotFound = lazy(() => import("@/pages/error-pages/not-found"));
 
 // Contexts
-import { MembersProvider } from "@/contexts/members-context";
 import { ActivitiesProvider } from "@/contexts/activities-context";
 import { TasksProvider } from "@/contexts/tasks-context";
 
@@ -39,9 +38,7 @@ export const adminRoutes = {
   path: "/admin",
   element: (
     <ProtectedRoute>
-      <MembersProvider>
-        <AdminLayout />
-      </MembersProvider>
+      <AdminLayout />
     </ProtectedRoute>
   ),
   children: [

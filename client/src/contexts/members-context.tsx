@@ -1,48 +1,30 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useErrorNavigator from "@/hooks/use-error-navigator";
 import { getAllMembers } from "@/lib/api/member";
 import type { MembersContextType } from "@/types/context-types";
+import useMembersParams from "@/hooks/context-params-hooks/use-members-params";
 
 const MembersContext = createContext<MembersContextType | null>(null);
 
 export function MembersProvider({ children }: { children: ReactNode }) {
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [role, setRole] = useState("");
-  const [branch, setBranch] = useState("");
-  const [position, setPosition] = useState("");
-
-  useEffect(() => {
-    setBranch("");
-    setPage(1);
-  }, [search, role, position]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [branch]);
+  const [params, setParams] = useMembersParams();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [page]);
+  }, [params]);
 
   const { data, isLoading, error, isError } = useQuery({
-    queryKey: ["members", page, search, role, branch, position],
-    queryFn: () => getAllMembers(page, 12, search, role, branch, position),
+    queryKey: ["members", params],
+    queryFn: () => getAllMembers(12, params),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   useErrorNavigator(isError, error);
 
-  const response = data?.data;
-  const members = data?.data.results;
-  const length = data?.data?.totalLength || 0;
+  const response: any = data?.data;
+  const members: any[] = data?.data.results;
+  const length: number = data?.data?.totalLength || 0;
 
   return (
     <MembersContext.Provider
@@ -50,17 +32,9 @@ export function MembersProvider({ children }: { children: ReactNode }) {
         response,
         members,
         isLoading,
-        search,
-        setSearch,
-        page,
-        setPage,
-        role,
-        setRole,
-        branch,
-        setBranch,
         length,
-        position,
-        setPosition,
+        params,
+        setParams,
       }}
     >
       {children}

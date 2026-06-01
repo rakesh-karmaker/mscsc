@@ -4,15 +4,15 @@ import getCategory from "@/utils/get-category";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Activity, useState, type ReactNode } from "react";
-import {
-  LuCalendar,
-  LuEye,
-  LuFacebook,
-  LuHouse,
-  LuMail,
-  LuPhone,
-  LuTrash2,
-} from "react-icons/lu";
+import LuCalendar from "~icons/lucide/calendar";
+import LuEye from "~icons/lucide/eye";
+import LuFacebook from "~icons/lucide/facebook";
+import LuHouse from "~icons/lucide/house";
+import LuMail from "~icons/lucide/mail";
+import LuPhone from "~icons/lucide/phone";
+import LuTrash2 from "~icons/lucide/trash-2";
+import IoMdFemale from "~icons/ion/md-female";
+import IoMdMale from "~icons/ion/md-male";
 import { useParams } from "react-router-dom";
 import ChangeStatus from "../change-status";
 import DeleteWarning from "@/components/ui/delete-warning";
@@ -27,7 +27,6 @@ import RegistrationDetailsModel from "../registrations-table/registration-detail
 import { Tooltip } from "@mui/material";
 import useCaApplicationMutation from "@/hooks/event-hooks/use-ca-application-mutation";
 import CaCodeModel from "./ca-code-model";
-import { IoMdFemale, IoMdMale } from "react-icons/io";
 
 export default function ApplicationDetails({
   applicationId,

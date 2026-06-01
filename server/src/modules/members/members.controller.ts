@@ -11,35 +11,30 @@ export async function getAllMembers(
   req: Request,
   res: Response,
 ): Promise<void> {
+  const params = req.query as {
+    page?: string;
+    limit?: string;
+    name?: string;
+    branch?: string;
+  };
+
+  // Create regex for filtering
+  const regex: GetAllMembersRegexType = {
+    name: new RegExp(typeof params.name === "string" ? params.name : "", "i"),
+    branch: new RegExp(
+      typeof params.branch === "string" ? params.branch : "",
+      "i",
+    ),
+  };
+
+  // Pagination and sorting options
+  const sorted = {
+    sort: { createdAt: -1 as 1 | -1 },
+    select:
+      "_id name slug batch branch image role position new isImageVerified isImageHidden createdAt", // Select only necessary fields
+  };
+
   try {
-    // Create regex for filtering
-    const regex: GetAllMembersRegexType = {
-      name: new RegExp(
-        typeof req.query.name === "string" ? req.query.name : "",
-        "i",
-      ),
-      role: new RegExp(
-        typeof req.query.role === "string" ? req.query.role : "",
-        "i",
-      ),
-      branch: new RegExp(
-        typeof req.query.branch === "string" ? req.query.branch : "",
-        "i",
-      ),
-    };
-
-    if (req.query.position && req.query.position === "executive") {
-      // Create a regex that matches values except for the query value
-      regex.position = new RegExp(`^(?!.*member).*$`, "i");
-    }
-
-    // Pagination and sorting options
-    const sorted = {
-      sort: { _id: -1 as 1 | -1 },
-      select:
-        "_id name slug batch branch image role position new isImageVerified isImageHidden createdAt", // Select only necessary fields
-    };
-
     // Get paginated results
     const members = await paginateResults(req, Member, regex, sorted);
     members.adminLength = await Member.countDocuments({ role: "admin" });

@@ -1,6 +1,5 @@
 import { useEffect, type Dispatch, type SetStateAction } from "react";
 import { useActivities } from "@/contexts/activities-context";
-import { useLocation } from "react-router-dom";
 import Loader from "@/components/ui/loader/loader";
 import Empty from "@/components/ui/empty/empty";
 import PaginationContainer from "@/components/ui/pagination-container/pagination-container";
@@ -16,21 +15,8 @@ export default function Activities({
   admin?: boolean;
   setSelectedActivity?: Dispatch<SetStateAction<ActivityPreview | null>>;
 }) {
-  const link = useLocation();
-  const searchParams = new URLSearchParams(link.search);
-  const linkTag = searchParams.get("tag");
-
-  const {
-    activities,
-    length,
-    tag,
-    setTag,
-    search,
-    setSearch,
-    page,
-    isLoading,
-    setPage,
-  } = useActivities();
+  const { activities, length, isLoading, params, setParams } = useActivities();
+  const { tag, page } = params;
 
   const elementsPerPage = 12;
 
@@ -40,16 +26,10 @@ export default function Activities({
     });
   }, [activities]);
 
-  useEffect(() => {
-    if (linkTag && search === "") {
-      setTag(linkTag);
-    }
-  }, [isLoading, linkTag]);
-
   const handleSetCurrentPageClick = (page: number) => {
-    setPage(page);
-    window.scrollTo(0, 0);
+    setParams({ ...params, page });
   };
+
   return (
     <>
       {/* page meta data */}
@@ -66,16 +46,10 @@ export default function Activities({
         className={`page-activities w-full min-h-screen max-w-max-width ${
           admin
             ? ""
-            : "!pt-[calc(var(--nav-height)+3rem)] !pb-25 max-[1000px]:!pt-[calc(var(--nav-height)+2rem)]"
+            : "pt-[calc(var(--nav-height)+3rem)]! pb-25! max-[1000px]:pt-[calc(var(--nav-height)+2rem)]!"
         } flex flex-col max-[1000px]:gap-10`}
       >
-        <ActivitiesNavbar
-          tag={tag}
-          setTag={setTag}
-          search={search}
-          setSearch={setSearch}
-          admin={admin}
-        />
+        <ActivitiesNavbar />
         <section className="activities-container">
           {isLoading ? (
             <Loader />

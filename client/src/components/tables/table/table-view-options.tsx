@@ -1,7 +1,8 @@
 import { Popover } from "@mui/material";
 import { type Column, type Table } from "@tanstack/react-table";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { LuCheck, LuSettings2 } from "react-icons/lu";
+import LuCheck from "~icons/lucide/check";
+import LuSettings2 from "~icons/lucide/settings-2";
 import ColumnInput, { ColumnLists, EmptyResults } from "./column-input";
 
 interface TableViewOptionsProps<

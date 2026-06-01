@@ -8,29 +8,34 @@ import {
   uploadMultipleImages,
 } from "../../shared/lib/file-uploader.js";
 import { activitySchema } from "./activity.schema.js";
+import logger from "../../shared/config/winston.js";
+
 // Get all activities
 export async function getAllActivities(
   req: Request,
   res: Response,
 ): Promise<void> {
+  const params = req.query as {
+    title?: string;
+    tag?: string;
+    page?: string;
+  };
+
+  // Create regex for filtering
+  const regex = {
+    title: new RegExp(
+      typeof params.title === "string" ? params.title : "",
+      "i",
+    ),
+    tag: new RegExp(typeof params.tag === "string" ? params.tag : "", "i"),
+  };
+
+  const sorted = {
+    sort: { date: -1 as 1 | -1 },
+    select: "_id title slug date tag coverImageUrl summary createdAt",
+  };
+
   try {
-    // Create regex for filtering
-    const regex = {
-      title: new RegExp(
-        typeof req.query.title === "string" ? req.query.title : "",
-        "i",
-      ),
-      tag: new RegExp(
-        typeof req.query.tag === "string" ? req.query.tag : "",
-        "i",
-      ),
-    };
-
-    const sorted = {
-      sort: { date: -1 as 1 | -1 },
-      select: "_id title slug date tag coverImageUrl summary createdAt",
-    };
-
     const activities = await paginateResults(req, Activity, regex, sorted);
     res.status(200).send(activities);
   } catch (err) {

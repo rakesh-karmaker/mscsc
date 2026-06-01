@@ -11,6 +11,12 @@ export interface Activity {
   createdAt: string;
 }
 
+export type ActivitiesParams = {
+  page: number;
+  search: string;
+  tag: string;
+};
+
 export type ActivityPreview = Omit<Activity, "gallery" | "content">;
 
 export type Event = Pick<

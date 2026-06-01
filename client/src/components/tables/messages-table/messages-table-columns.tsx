@@ -3,7 +3,8 @@ import type { ColumnDef } from "@tanstack/react-table";
 import TableColumnHeader from "../table/table-column-header";
 import { useState } from "react";
 import TableActionColumn from "../table/table-action-column";
-import { LuEye, LuTrash } from "react-icons/lu";
+import LuEye from "~icons/lucide/eye";
+import LuTrash from "~icons/lucide/trash";
 import dayjs from "dayjs";
 
 export default function getMessagesTableColumns({

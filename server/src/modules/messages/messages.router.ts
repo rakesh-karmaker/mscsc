@@ -10,17 +10,17 @@ import {
   sendMessage,
 } from "./messages.controller.js";
 
-const messageRouter = express.Router();
+const messagesRouter = express.Router();
 
 // Message Routes
-messageRouter.get("/messages", isAuthorized, isAdmin, getAllMessages);
-messageRouter.post("/send-message", sendMessage);
-messageRouter.patch(
+messagesRouter.get("/messages", isAuthorized, isAdmin, getAllMessages);
+messagesRouter.post("/send-message", sendMessage);
+messagesRouter.patch(
   "/mark-message-as-read",
   isAuthorized,
   isAdmin,
   markMessageAsRead,
 );
-messageRouter.delete("/delete-message", isAuthorized, isAdmin, deleteMessage);
+messagesRouter.delete("/delete-message", isAuthorized, isAdmin, deleteMessage);
 
-export default messageRouter;
+export default messagesRouter;

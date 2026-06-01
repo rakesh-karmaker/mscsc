@@ -16,6 +16,17 @@ export type MemberPreview = Pick<
   | "createdAt"
 > & { new: boolean };
 
+export type AdminDashboardMemberPreview = Pick<
+  User,
+  "_id" | "name" | "slug" | "batch" | "branch" | "image" | "createdAt"
+>;
+
+export type MembersParams = {
+  page: number;
+  search: string;
+  branch: string;
+};
+
 export type MemberEditTypes = {
   slug: string;
   isImageVerified?: boolean | undefined;

@@ -1,4 +1,4 @@
-import { IoIosCreate } from "react-icons/io";
+import IoIosCreate from "~icons/ion/ios-create";
 import type { Task } from "@/types/task-types";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 import formatDate from "@/utils/format-date";

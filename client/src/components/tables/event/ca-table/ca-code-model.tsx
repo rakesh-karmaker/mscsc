@@ -1,8 +1,7 @@
 import { Modal, TextField } from "@mui/material";
 import type { ReactNode } from "react";
 import { useForm } from "react-hook-form";
-import { FaXmark } from "react-icons/fa6";
-
+import FaXmark from "~icons/fa6-solid/xmark";
 interface CaCodeModelProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setCaCodeModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
