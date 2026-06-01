@@ -1,5 +1,5 @@
 import { sectionsTitle } from "@/services/data/event-form-data";
-import FaChevronDown from "~icons/fa/chevron-down";
+import FaChevronDown from "~icons/fa-solid/chevron-down";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import Popover from "@mui/material/Popover";

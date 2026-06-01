@@ -52,11 +52,12 @@ export default function ExperiencesFields({
     <FormLayout
       title={"Experiences"}
       description={
-        <p className="w-full min-w-[30ch] h-full">
+        <p className="w-full  h-full">
           Define the different experiences such as workshops, talks, and
           activities that make up the event.
         </p>
       }
+      id="experiences-section"
     >
       <div className="w-full h-full flex flex-col gap-0 max-sm:gap-3">
         <DragDropProvider

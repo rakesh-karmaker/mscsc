@@ -38,10 +38,11 @@ export default function RegistrationFormFields({
     <FormLayout
       title={"Registration Form Information"}
       description={
-        <p className="w-full min-w-[30ch] h-full">
+        <p className="w-full  h-full">
           Configure the details for the Registration Form for this event.
         </p>
       }
+      id="registration-form"
     >
       <div className="w-full h-full flex flex-col gap-1.5">
         <RadioField
@@ -99,10 +100,11 @@ export default function RegistrationFormFields({
             textSize="lg"
             fontWeight="medium"
             description={
-              <p className="w-full min-w-[30ch] h-full">
+              <p className="w-full  h-full">
                 Provide detailed information about the Registration process.
               </p>
             }
+            id="registration-form-details"
           >
             <RichTextEditor
               register={register}
@@ -116,10 +118,11 @@ export default function RegistrationFormFields({
             textSize="lg"
             fontWeight="medium"
             description={
-              <p className="w-full min-w-[30ch] h-full">
+              <p className="w-full  h-full">
                 Specify the payment methods available for registration.
               </p>
             }
+            id="payment-methods"
           >
             <div className="w-full flex flex-col gap-3">
               {["bkash", "nagad", "rocket"].map((method) => (

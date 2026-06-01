@@ -25,11 +25,12 @@ export default function BasicInfoFields({
     <FormLayout
       title={"Event Basic Information"}
       description={
-        <p className="w-full min-w-[30ch] h-full">
+        <p className="w-full  h-full">
           Provide the essential details about the event, including its name,
           date, location, and a brief description.
         </p>
       }
+      id="basic-info"
     >
       <div className="flex flex-col gap-4 mt-2!">
         <Stack

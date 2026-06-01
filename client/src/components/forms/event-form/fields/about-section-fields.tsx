@@ -18,11 +18,12 @@ export default function AboutSectionFields({
     <FormLayout
       title={"About Section"}
       description={
-        <p className="w-full min-w-[30ch] h-full">
+        <p className="w-full  h-full">
           The about section provides detailed information about the event,
           including its purpose, agenda, speakers, and other relevant details.
         </p>
       }
+      id="about-section"
     >
       <div className="flex flex-col gap-4">
         <Stack
@@ -90,12 +91,13 @@ export default function AboutSectionFields({
         <FormLayout
           title={"About Section Image"}
           description={
-            <p className="w-full min-w-[30ch] h-full">
+            <p className="w-full  h-full">
               The about image visually represents the event and enhances the
               overall design of the about section.
             </p>
           }
           textSize="xl"
+          id="about-section-image"
         >
           <FileInput
             register={register}

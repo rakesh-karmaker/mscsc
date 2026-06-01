@@ -1,15 +1,8 @@
-import {
-  Activity,
-  useEffect,
-  useRef,
-  useState,
-  type ReactNode,
-  type RefObject,
-} from "react";
-import Tooltip from "./tooltip";
+import { useState, type ReactNode } from "react";
+import { Popover } from "@mui/material";
 import BsInfoCircleFill from "~icons/bi/info-circle-fill";
 import BsInfoCircle from "~icons/bi/info-circle";
-import { styled } from "@mui/material";
+import LuX from "~icons/lucide/x";
 
 export default function FormLayout({
   title,
@@ -19,6 +12,7 @@ export default function FormLayout({
   fontWeight = "medium",
   cancelButton,
   dragger,
+  id,
 }: {
   title: ReactNode;
   description: ReactNode;
@@ -27,51 +21,64 @@ export default function FormLayout({
   fontWeight?: "normal" | "medium" | "semibold" | "bold";
   cancelButton?: ReactNode;
   dragger?: ReactNode;
+  id: string;
 }): ReactNode {
-  const [showOnRight, setShowOnRight] = useState<boolean>(false);
-  const [isTooltipVisible, setIsTooltipVisible] = useState<boolean>(false);
-
-  const tooltipRef = useRef<HTMLDivElement>(null);
-  const btnRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    if (isTooltipVisible && btnRef.current && tooltipRef.current) {
-      const btnRect = btnRef.current.getBoundingClientRect();
-      const tooltipWidth = tooltipRef.current.offsetWidth;
-      const tooltipRight = btnRect.right - tooltipWidth;
-      if (tooltipRight > 0) {
-        setShowOnRight(true);
-      } else {
-        setShowOnRight(false);
-      }
-    }
-  }, [isTooltipVisible]);
+  const [isTooltipOpen, setIsTooltipOpen] = useState<boolean>(false);
+  const tooltipId = `tooltip-${id || Math.random().toString(36).substr(2, 9)}`;
 
   return (
     <div className="w-full h-full flex flex-col gap-2">
       <div className="flex w-full items-center gap-2 max-sm:flex-col max-sm:items-start">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           <div className="flex items-center gap-2">
             {dragger ? <>{dragger}</> : null}
             <h2 className={`font-${fontWeight} text-${textSize}`}>{title}</h2>
           </div>
           <div className="w-fit h-fit relative">
             <button
-              ref={btnRef}
-              onClick={() => setIsTooltipVisible(!isTooltipVisible)}
-              className="text-xl rounded-full flex items-center justify-center text-highlighted-color hover:text-black transition cursor-pointer mt-1!"
+              onClick={() => setIsTooltipOpen(!isTooltipOpen)}
+              className="text-base rounded-full flex items-center justify-center text-highlighted-color hover:text-black transition cursor-pointer mt-1!"
               type="button"
+              id={tooltipId}
             >
-              {isTooltipVisible ? <BsInfoCircleFill /> : <BsInfoCircle />}
+              {isTooltipOpen ? <BsInfoCircleFill /> : <BsInfoCircle />}
             </button>
-            <Activity mode={isTooltipVisible ? "visible" : "hidden"}>
-              <Tooltip
-                showOnRight={showOnRight}
-                tooltipRef={tooltipRef as RefObject<HTMLDivElement>}
-                description={description}
-                setIsTooltipVisible={setIsTooltipVisible}
-              />
-            </Activity>
+            <Popover
+              id={id}
+              open={isTooltipOpen}
+              anchorEl={document.getElementById(tooltipId)}
+              onClose={() => setIsTooltipOpen(false)}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              PaperProps={{
+                style: {
+                  boxShadow: "rgba(149, 157, 165, 0.1) 0px 8px 24px",
+                  marginTop: "4px",
+                },
+              }}
+            >
+              <div className="w-full h-full flex flex-col bg-primary-bg rounded-md border border-gray-300 p-4!">
+                <div className="w-full h-full flex flex-col gap-2 max-w-xs">
+                  <div className="w-full h-full flex items-center justify-between gap-10 pb-3! border-b border-gray-300">
+                    <h3 className="text-lg font-semibold">Info</h3>
+                    <button
+                      className="w-fit bg-secondary-bg text-red-500 p-1! rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-400/30 transition"
+                      onClick={() => setIsTooltipOpen(false)}
+                      type="button"
+                    >
+                      <LuX />
+                    </button>
+                  </div>
+                  {description}
+                </div>
+              </div>
+            </Popover>
           </div>
         </div>
         {cancelButton && (
@@ -82,15 +89,3 @@ export default function FormLayout({
     </div>
   );
 }
-
-export const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});

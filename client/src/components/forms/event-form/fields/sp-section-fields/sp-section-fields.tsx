@@ -51,12 +51,13 @@ export default function SpSectionFields({
     <FormLayout
       title={"Sponsors & Partners Section"}
       description={
-        <p className="w-full min-w-[30ch] h-full">
+        <p className="w-full  h-full">
           The sponsors & partners section highlights the organizations that
           support the event, showcasing their logos and providing links to their
           websites.
         </p>
       }
+      id="sponsors-partners-section"
     >
       <div className="w-full h-full flex flex-col gap-0 max-sm:gap-3">
         <DragDropProvider

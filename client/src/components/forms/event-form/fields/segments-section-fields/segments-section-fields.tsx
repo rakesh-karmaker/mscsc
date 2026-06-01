@@ -58,11 +58,12 @@ export default function SegmentsSectionFields({
     <FormLayout
       title={"Segments Section"}
       description={
-        <p className="w-full min-w-[30ch] h-full">
+        <p className="w-full  h-full">
           The segments section is a part of the event page that typically
           contains various segments or parts related to the event.
         </p>
       }
+      id="segments-section"
     >
       <div className="w-full h-full flex flex-col gap-0 max-sm:gap-3">
         <DragDropProvider

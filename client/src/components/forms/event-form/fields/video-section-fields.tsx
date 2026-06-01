@@ -15,12 +15,13 @@ export default function VideoSectionFields({
     <FormLayout
       title={"Video Section"}
       description={
-        <p className="w-full min-w-[30ch] h-full">
+        <p className="w-full  h-full">
           The video section showcases a promotional or informational video about
           the event. It helps to engage visitors and provide them with more
           context about the event.
         </p>
       }
+      id="video-section"
     >
       <FileInput
         register={register}

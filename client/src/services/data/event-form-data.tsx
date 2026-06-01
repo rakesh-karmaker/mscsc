@@ -6,9 +6,7 @@ export const sectionsData: {
   sectionOptions: string[];
 } = {
   title: "Sections",
-  description: (
-    <p className="w-full min-w-[30ch] h-full">Sections for the event.</p>
-  ),
+  description: <p className="w-full  h-full">Sections for the event.</p>,
   sectionOptions: [
     "hero",
     "video",

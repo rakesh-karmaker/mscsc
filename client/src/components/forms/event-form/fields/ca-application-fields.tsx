@@ -36,10 +36,11 @@ export default function CAApplicationFields({
     <FormLayout
       title={"CA Application Information"}
       description={
-        <p className="w-full min-w-[30ch] h-full">
+        <p className="w-full  h-full">
           Configure the details for the CA Application Form for this event.
         </p>
       }
+      id="ca-application"
     >
       <div className="w-full h-full flex flex-col gap-1.5">
         <RadioField
@@ -96,10 +97,11 @@ export default function CAApplicationFields({
             textSize="lg"
             fontWeight="medium"
             description={
-              <p className="w-full min-w-[30ch] h-full">
+              <p className="w-full  h-full">
                 Provide detailed information about the CA Application process.
               </p>
             }
+            id="ca-application-details"
           >
             <RichTextEditor
               register={register}

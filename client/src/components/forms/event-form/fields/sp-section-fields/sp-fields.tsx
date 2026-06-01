@@ -53,7 +53,7 @@ export default function SPFields({
           </p>
         }
         description={
-          <p className="w-full min-w-[30ch] h-full">
+          <p className="w-full  h-full">
             Details for sponsor/partner item {index + 1}.
           </p>
         }
@@ -78,6 +78,7 @@ export default function SPFields({
             </button>
           </div>
         }
+        id={`sp-item-${index}`}
       >
         <div
           className="w-full h-fit overflow-hidden grid gap-5 transition-all duration-300"

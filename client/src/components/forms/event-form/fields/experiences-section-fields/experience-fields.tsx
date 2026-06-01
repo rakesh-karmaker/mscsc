@@ -55,9 +55,7 @@ export default function ExperienceFields({
           <p className="line-clamp-1">{title || `Experience ${index + 1}`}</p>
         }
         description={
-          <p className="w-full min-w-[30ch] h-full">
-            Details for experience {index + 1}.
-          </p>
+          <p className="w-full  h-full">Details for experience {index + 1}.</p>
         }
         textSize="lg"
         fontWeight="medium"
@@ -80,6 +78,7 @@ export default function ExperienceFields({
             </button>
           </div>
         }
+        id={`experience-${index}`}
       >
         <div
           className="w-full h-fit overflow-hidden grid gap-5 transition-all duration-300"
@@ -141,11 +140,12 @@ export default function ExperienceFields({
               textSize="lg"
               fontWeight="medium"
               description={
-                <p className="w-full min-w-[30ch] h-full">
+                <p className="w-full  h-full">
                   Provide detailed information about this experience of the
                   event.
                 </p>
               }
+              id={`experience-details-${index}`}
             >
               <RichTextEditor
                 content={

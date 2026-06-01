@@ -42,11 +42,12 @@ export default function ContactInfoFields({
     <FormLayout
       title={"Contact Information"}
       description={
-        <p className="w-full min-w-[30ch] h-full">
+        <p className="w-full  h-full">
           The contact information section provides links to various social media
           platforms or contact methods related to the event.
         </p>
       }
+      id="contact-info-section"
     >
       <div className="w-full h-full flex flex-col gap-6">
         {fields.map((field, index) => (

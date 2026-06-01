@@ -31,11 +31,12 @@ export default function HeroSectionFields({
     <FormLayout
       title={"Hero Section"}
       description={
-        <p className="w-full min-w-[30ch] h-full">
+        <p className="w-full  h-full">
           The hero section is the first section of the event page. It typically
           contains the event title, date, and a call-to-action button.
         </p>
       }
+      id="hero-section"
     >
       <div className="w-full h-full flex gap-4 max-md:flex-col">
         <div className="w-full flex flex-col gap-4">

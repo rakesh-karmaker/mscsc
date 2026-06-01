@@ -54,11 +54,12 @@ export default function ScheduleSectionFields({
     <FormLayout
       title={"Schedule Section"}
       description={
-        <p className="w-full min-w-[30ch] h-full">
+        <p className="w-full  h-full">
           Define the schedule for the event, including dates, times, and
           descriptions of each scheduled item.
         </p>
       }
+      id="schedule-section"
     >
       <div className="w-full h-full flex flex-col gap-0 max-sm:gap-3">
         <DragDropProvider

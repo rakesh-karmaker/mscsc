@@ -59,9 +59,7 @@ export default function SegmentFields({
           <p className="line-clamp-1">{title || `Segment ${index + 1}`}</p>
         }
         description={
-          <p className="w-full min-w-[30ch] h-full">
-            Details for segment {index + 1}.
-          </p>
+          <p className="w-full  h-full">Details for segment {index + 1}.</p>
         }
         textSize="lg"
         fontWeight="medium"
@@ -84,6 +82,7 @@ export default function SegmentFields({
             </button>
           </div>
         }
+        id={`segment-${index}`}
       >
         <div
           className="w-full h-fit overflow-hidden grid gap-5 transition-all duration-300"
@@ -228,10 +227,11 @@ export default function SegmentFields({
               textSize="lg"
               fontWeight="medium"
               description={
-                <p className="w-full min-w-[30ch] h-full">
+                <p className="w-full  h-full">
                   Provide detailed information about this segment of the event.
                 </p>
               }
+              id={`segment-details-${index}`}
             >
               <RichTextEditor
                 content={
@@ -247,11 +247,12 @@ export default function SegmentFields({
               textSize="lg"
               fontWeight="medium"
               description={
-                <p className="w-full min-w-[30ch] h-full">
+                <p className="w-full  h-full">
                   Specify any rules or guidelines that participants need to
                   follow for this segment.
                 </p>
               }
+              id={`segment-rules-${index}`}
             >
               <RichTextEditor
                 content={

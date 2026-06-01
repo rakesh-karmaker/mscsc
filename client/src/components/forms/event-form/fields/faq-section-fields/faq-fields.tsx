@@ -50,9 +50,7 @@ export default function FaqFields({
           <p className="line-clamp-1">{title || `FAQ Item ${index + 1}`}</p>
         }
         description={
-          <p className="w-full min-w-[30ch] h-full">
-            Details for FAQ item {index + 1}.
-          </p>
+          <p className="w-full  h-full">Details for FAQ item {index + 1}.</p>
         }
         textSize="lg"
         fontWeight="medium"
@@ -75,6 +73,7 @@ export default function FaqFields({
             </button>
           </div>
         }
+        id={`faq-item-${index}`}
       >
         <div
           className="w-full h-fit overflow-hidden grid gap-5 transition-all duration-300"

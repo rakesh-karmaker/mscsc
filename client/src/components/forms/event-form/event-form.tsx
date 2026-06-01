@@ -190,6 +190,7 @@ export default function EventForm({
             <FormLayout
               title={sectionsData.title}
               description={sectionsData.description}
+              id="sections-selection"
             >
               <div className="flex flex-col gap-6">
                 <SectionsSelect

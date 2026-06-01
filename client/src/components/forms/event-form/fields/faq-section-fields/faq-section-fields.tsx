@@ -48,12 +48,13 @@ export default function FaqSectionFields({
     <FormLayout
       title={"FAQ Section"}
       description={
-        <p className="w-full min-w-[30ch] h-full">
+        <p className="w-full  h-full">
           The FAQ (Frequently Asked Questions) section provides answers to
           common questions that attendees or participants may have about the
           event.
         </p>
       }
+      id="faq-section"
     >
       <div className="w-full h-full flex flex-col gap-0 max-sm:gap-3">
         <DragDropProvider
