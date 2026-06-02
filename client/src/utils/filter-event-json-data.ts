@@ -44,6 +44,7 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
       fees: data.formData.fees,
       details: data.formData.details,
       registrationDeadline: data.formData.registrationDeadline,
+      transactionPlatforms: Object.keys(data.formData.transactionMethods || {}),
     };
 
     if (data.formData.transactionMethods) {
@@ -123,6 +124,7 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
           maxTeamSize: segment.maxTeamSize,
           isPaidSegment: segment.isPaidSegment || false,
           fees: segment.fees || 0,
+          transactionPlatforms: Object.keys(segment.transactionMethods || {}),
         };
 
         if (segment.transactionMethods) {

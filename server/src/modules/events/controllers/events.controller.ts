@@ -1,20 +1,11 @@
 import { Request, Response } from "express";
 import { eventFormSchema } from "../schemas/event.schema.js";
-import {
-  AboutDataType,
-  EventDataType,
-  FormDataType,
-  SegmentType,
-  SpType,
-} from "../event.types.js";
+import { EventDataType } from "../event.types.js";
 import { generateSlugFromTitle } from "../../../shared/utils/generate-slug.js";
 import {
   deleteFile,
   deleteFolder,
-  uploadImage,
   uploadJsonFile,
-  uploadMultipleImages,
-  uploadVideo,
   renameFolder,
 } from "../../../shared/lib/file-uploader.js";
 import Event from "../models/event.model.js";
@@ -23,7 +14,12 @@ import EventCA from "../models/event-ca.model.js";
 import EventTeam from "../models/event-team.model.js";
 import getCategory from "../utils/get-category.js";
 import logger from "../../../shared/config/winston.js";
-import urlChanger from "../utils/url-changer.js";
+import {
+  parseRequestBodyJson,
+  validateBodySchema,
+} from "../utils/request-parser.js";
+import { buildEventData } from "../services/event-data.service.js";
+import { processEventAssets } from "../services/event-files-upload.service.js";
 
 // get all events
 export async function getAllEvents(req: Request, res: Response): Promise<void> {
@@ -169,40 +165,20 @@ export async function getEventBySlug(
 
 // create a new event
 export async function createEvent(req: Request, res: Response): Promise<void> {
+  const body = req.body;
+  const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
   try {
-    const body = req.body;
-    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-
-    // validate and parse JSON fields in the request body
-    for (const key in body) {
-      if (typeof body[key] === "string") {
-        try {
-          body[key] = JSON.parse(body[key]);
-        } catch (err) {
-          // If parsing fails, keep the original string value
-          res.status(400).send({
-            subject: key,
-            message: `Invalid JSON format for field ${key}`,
-          });
-          return;
-        }
-      }
-    }
-
-    const { error: validationError } = eventFormSchema.validate(body);
-    if (validationError) {
-      res.status(400).send({
-        subject: validationError.details[0].context?.key,
-        message: validationError.details[0].message,
-      });
-      return;
-    }
+    if (!parseRequestBodyJson(body, res)) return;
+    if (!validateBodySchema(eventFormSchema, body, res)) return;
 
     if (
       !files["eventLogo"] ||
       files["eventLogo"].length === 0 ||
       !files["eventFavicon"] ||
-      files["eventFavicon"].length === 0
+      files["eventFavicon"].length === 0 ||
+      !files["eventBanner"] ||
+      files["eventBanner"].length === 0
     ) {
       res.status(400).send({
         subject: "eventLogo/eventFavicon",
@@ -212,17 +188,10 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
     }
 
     // at this point, the data is valid and we can proceed with event creation logic
-    const eventData: EventDataType = {
-      ...body.basicInfo,
-      sections: body.sections,
-      hiddenSections: body.hiddenSections,
-      contactLinks: body.contactLinks,
-      ...(body.basicInfo.hasCAForm ? { caFormData: body.caFormData } : {}),
-    } as EventDataType;
-
-    const eventSlug = generateSlugFromTitle(eventData.eventName, false);
-
-    // check if an event with the same slug already exists
+    const eventSlug = generateSlugFromTitle(
+      body.basicInfo?.eventName || "",
+      false,
+    );
     const existingEvent = await Event.findOne({ eventSlug });
     if (existingEvent) {
       res
@@ -231,228 +200,18 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
       return;
     }
 
-    // upload event logo and favicon first to get their URLs and public IDs
-    const { url: eventLogoUrl, imgId: eventLogoPublicId } = await uploadImage(
-      files["eventLogo"][0],
-      false,
-      `events/${eventSlug}/logo`,
+    const eventData: EventDataType | null = await buildEventData(
+      body,
+      files,
+      eventSlug,
     );
-    const { url: eventFaviconUrl, imgId: eventFaviconPublicId } =
-      await uploadImage(
-        files["eventFavicon"][0],
-        false,
-        `events/${eventSlug}/logo`,
-      );
-
-    const { url: eventBannerUrl, imgId: eventBannerPublicId } =
-      await uploadImage(files["eventBanner"][0], false, `events/${eventSlug}`);
-
-    eventData.eventLogoUrl = eventLogoUrl;
-    eventData.eventLogoPublicId = eventLogoPublicId;
-    eventData.eventFaviconUrl = eventFaviconUrl;
-    eventData.eventFaviconPublicId = eventFaviconPublicId;
-    eventData.eventBannerUrl = eventBannerUrl;
-    eventData.eventBannerPublicId = eventBannerPublicId;
-
-    const formData: FormDataType = {
-      registrationDeadline: body.formData.registrationDeadline,
-    };
-
-    if (eventData.isInnerRegistration) {
-      formData.title = body.formData.title;
-      formData.details = body.formData.details;
-      formData.fees = body.formData.fees;
-      eventData.fees = body.formData.fees; // store fees in the main event data for easy access
-
-      // handle QR code files for inner registration
-      const transactionMethods: {
-        [method: string]: {
-          number: string;
-          qrCodeUrl?: string;
-          qrCodePublicId?: string;
-        };
-      } = body.formData.transactionMethods || {};
-      const qrCodeFields: { [key: string]: string } = {
-        bkash: "bkashQrCode",
-        nagad: "nagadQrCode",
-        rocket: "rocketQrCode",
-      };
-
-      for (const method of Object.keys(qrCodeFields)) {
-        if (
-          transactionMethods[method] &&
-          transactionMethods[method].number &&
-          files[qrCodeFields[method]] &&
-          files[qrCodeFields[method]].length > 0
-        ) {
-          const file = files[qrCodeFields[method]][0];
-          const { url, imgId } = await uploadImage(
-            file,
-            false,
-            `events/${eventSlug}/qr-codes`,
-          );
-
-          transactionMethods[method] = {
-            number: transactionMethods[method].number,
-            qrCodeUrl: url,
-            qrCodePublicId: imgId,
-          };
-        }
-      }
-      formData.transactionMethods = transactionMethods;
+    if (!eventData) {
+      res.status(400).send({ message: "Invalid event data" });
+      return;
     }
 
-    eventData.formData = formData;
-
-    // handle section-specific data and file uploads
-    const sections: string[] = eventData.sections;
-
-    if (sections.includes("hero") && body.heroData) {
-      eventData.heroData = body.heroData;
-    }
-
-    if (
-      sections.includes("video") &&
-      files.videoData &&
-      files.videoData.length > 0
-    ) {
-      const file = files.videoData[0];
-      const { url, videoId } = await uploadVideo(
-        file,
-        `events/${eventSlug}/videos`,
-      );
-      eventData.videoData = {
-        url,
-        videoPublicId: videoId,
-        hasAudio: false, // for simplicity, we're not extracting audio info from the video file. This can be enhanced in the future.
-      };
-    }
-
-    if (sections.includes("about") && body.aboutData) {
-      const aboutData: AboutDataType = body.aboutData;
-      if (files.aboutImage && files.aboutImage.length > 0) {
-        const file = files.aboutImage[0];
-        const { url, imgId } = await uploadImage(
-          file,
-          false,
-          `events/${eventSlug}/about`,
-        );
-        aboutData.aboutImageUrl = url;
-        aboutData.aboutImagePublicId = imgId;
-      }
-
-      eventData.aboutData = aboutData;
-    }
-
-    if (sections.includes("segments") && body.segmentsData) {
-      const segmentData: SegmentType[] = [];
-      const qrCodeImages: Express.Multer.File[] =
-        files["segmentTMethodQrs"] || [];
-
-      for (const segment of body.segmentsData) {
-        const segmentDataItem: SegmentType = {
-          segmentSlug: segment.segmentSlug,
-          locationType: segment.locationType,
-          teamType: segment.teamType,
-          icon: segment.icon,
-          title: segment.title,
-          summary: segment.summary,
-          details: segment.details,
-          rules: segment.rules,
-          maxTeamSize: segment.maxTeamSize,
-          isPaidSegment: segment.isPaidSegment || false,
-          fees: parseFloat(segment.fees) || 0,
-        };
-
-        if (!segment.transactionMethods) {
-          segmentData.push(segmentDataItem);
-          return;
-        }
-
-        const methods = Object.keys(segment.transactionMethods || {});
-        for (const method of methods) {
-          if (!segment.transactionMethods[method].number) return;
-
-          if (!segmentDataItem.transactionMethods) {
-            segmentDataItem.transactionMethods = {};
-          }
-
-          const transactionMethod: {
-            number: string;
-            qrCodeUrl?: string;
-            qrCodePublicId?: string;
-          } = {} as {
-            number: string;
-            qrCodeUrl?: string;
-            qrCodePublicId?: string;
-          };
-
-          if (segment.transactionMethods[method].number) {
-            transactionMethod["number"] =
-              segment.transactionMethods[method].number;
-          }
-
-          // check if a QR code file was uploaded for this transaction method
-          if (segment.transactionMethods[method]?.code) {
-            const qrCodeFile = qrCodeImages.find(
-              (file) =>
-                file.originalname.split(".")[0] ===
-                segment.transactionMethods[method].code,
-            );
-            if (qrCodeFile) {
-              const { url, imgId } = await uploadImage(
-                qrCodeFile,
-                false,
-                `events/${eventSlug}/transaction-methods`,
-              );
-              transactionMethod["qrCodeUrl"] = url;
-              transactionMethod["qrCodePublicId"] = imgId;
-            }
-          }
-
-          segmentDataItem.transactionMethods[method] = transactionMethod;
-        }
-
-        if (
-          Object.keys(segmentDataItem.transactionMethods || {}).length === 0
-        ) {
-          delete segmentDataItem.transactionMethods;
-        }
-        segmentData.push(segmentDataItem);
-      }
-
-      eventData.segmentsData = segmentData;
-    }
-
-    if (sections.includes("experiences") && body.experiencesData) {
-      eventData.experiencesData = body.experiencesData;
-    }
-
-    if (sections.includes("schedule") && body.scheduleData) {
-      eventData.scheduleData = body.scheduleData;
-    }
-
-    if (sections.includes("sp") && body.spData) {
-      const spData: SpType[] = [];
-      const gallery: { url: string; imgId: string }[] =
-        await uploadMultipleImages(
-          files.spLogos,
-          `events/${eventSlug}/sponsors-partners`,
-        );
-      for (let i = 0; i < body.spData.length; i++) {
-        const sp: SpType = body.spData[i];
-        if (gallery[i]) {
-          sp.logoUrl = gallery[i].url;
-          sp.logoPublicId = gallery[i].imgId;
-        }
-        spData.push(sp);
-      }
-      eventData.spData = spData;
-    }
-
-    if (sections.includes("faqs") && body.faqData) {
-      eventData.faqData = body.faqData;
-    }
+    const assets = await processEventAssets(files, eventSlug);
+    Object.assign(eventData, assets);
 
     const { url: jsonUrl, jsonPublicId } = await uploadJsonFile(
       eventData,
@@ -464,14 +223,7 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
       eventSlug,
       eventName: eventData.eventName,
 
-      eventLogoUrl: eventData.eventLogoUrl,
-      eventLogoPublicId: eventData.eventLogoPublicId,
-
-      eventFaviconUrl: eventData.eventFaviconUrl,
-      eventFaviconPublicId: eventData.eventFaviconPublicId,
-
-      eventBannerUrl: eventData.eventBannerUrl,
-      eventBannerPublicId: eventData.eventBannerPublicId,
+      ...assets,
 
       registrationDeadline: eventData.formData.registrationDeadline || "N/A",
       caApplicationDeadline: eventData.caFormData?.applicationDeadline || "N/A",
@@ -527,6 +279,10 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
 // edit an existing event by slug
 export async function editEvent(req: Request, res: Response): Promise<void> {
   const { eventSlug } = req.params;
+
+  const body = req.body;
+  const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
   try {
     const existingEvent = await Event.findOne({ eventSlug });
     if (!existingEvent) {
@@ -534,389 +290,30 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
       return;
     }
 
-    const body = req.body;
-    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    if (!parseRequestBodyJson(body, res)) return;
+    if (!validateBodySchema(eventFormSchema, body, res)) return;
 
-    // validate and parse JSON fields in the request body
-    for (const key in body) {
-      if (typeof body[key] === "string") {
-        try {
-          body[key] = JSON.parse(body[key]);
-        } catch (err) {
-          // If parsing fails, keep the original string value
-          res.status(400).send({
-            subject: key,
-            message: `Invalid JSON format for field ${key}`,
-          });
-          return;
-        }
-      }
-    }
-
-    const { error: validationError } = eventFormSchema.validate(body);
-    if (validationError) {
-      res.status(400).send({
-        subject: validationError.details[0].context?.key,
-        message: validationError.details[0].message,
-      });
-      return;
-    }
-
-    // at this point, the data is valid and we can proceed with event creation logic
-    const eventData: EventDataType = {
-      ...body.basicInfo,
-      sections: body.sections,
-      hiddenSections: body.hiddenSections,
-      contactLinks: body.contactLinks,
-      ...(body.basicInfo.hasCAForm ? { caFormData: body.caFormData } : {}),
-    } as EventDataType;
-
-    const newSlug = generateSlugFromTitle(eventData.eventName, false);
-
+    const newSlug = generateSlugFromTitle(
+      body.basicInfo?.eventName || "",
+      false,
+    );
     if (newSlug !== eventSlug) {
       await renameFolder(`events/${eventSlug}`, newSlug);
     }
 
-    eventData.eventLogoUrl = urlChanger(
-      eventSlug,
+    const eventData: EventDataType | null = await buildEventData(
+      body,
+      files,
       newSlug,
-      existingEvent.eventLogoUrl,
-    );
-    eventData.eventLogoPublicId = existingEvent.eventLogoPublicId;
-    eventData.eventFaviconUrl = urlChanger(
       eventSlug,
-      newSlug,
-      existingEvent.eventFaviconUrl,
     );
-    eventData.eventFaviconPublicId = existingEvent.eventFaviconPublicId;
-    eventData.eventBannerUrl = urlChanger(
-      eventSlug,
-      newSlug,
-      existingEvent.eventBannerUrl,
-    );
-    eventData.eventBannerPublicId = existingEvent.eventBannerPublicId;
-
-    if (files["eventLogo"] && files["eventLogo"].length > 0) {
-      await deleteFile(existingEvent.eventLogoPublicId);
-
-      // upload event logo and favicon first to get their URLs and public IDs
-      const { url: eventLogoUrl, imgId: eventLogoPublicId } = await uploadImage(
-        files["eventLogo"][0],
-        false,
-        `events/${newSlug}/logo`,
-      );
-
-      eventData.eventLogoUrl = eventLogoUrl;
-      eventData.eventLogoPublicId = eventLogoPublicId;
+    if (!eventData) {
+      res.status(400).send({ message: "Invalid event data" });
+      return;
     }
 
-    if (files["eventFavicon"] && files["eventFavicon"].length > 0) {
-      const { url: eventFaviconUrl, imgId: eventFaviconPublicId } =
-        await uploadImage(
-          files["eventFavicon"][0],
-          false,
-          `events/${newSlug}/logo`,
-        );
-
-      eventData.eventFaviconUrl = eventFaviconUrl;
-      eventData.eventFaviconPublicId = eventFaviconPublicId;
-    }
-
-    if (files["eventBanner"] && files["eventBanner"].length > 0) {
-      const { url: eventBannerUrl, imgId: eventBannerPublicId } =
-        await uploadImage(files["eventBanner"][0], false, `events/${newSlug}`);
-      eventData.eventBannerUrl = eventBannerUrl;
-      eventData.eventBannerPublicId = eventBannerPublicId;
-    }
-
-    const formData: FormDataType = {
-      registrationDeadline: body.formData.registrationDeadline,
-    };
-
-    if (eventData.isInnerRegistration) {
-      formData.title = body.formData.title;
-      formData.details = body.formData.details;
-      formData.fees = body.formData.fees;
-      eventData.fees = body.formData.fees; // store fees in the main event data for easy access
-
-      // handle QR code files for inner registration
-      const transactionMethods: {
-        [method: string]: {
-          number: string;
-          qrCodeUrl?: string;
-          qrCodePublicId?: string;
-        };
-      } = body.formData.transactionMethods || {};
-      const qrCodeFields: { [key: string]: string } = {
-        bkash: "bkashQrCode",
-        nagad: "nagadQrCode",
-        rocket: "rocketQrCode",
-      };
-
-      for (const method of Object.keys(qrCodeFields)) {
-        if (
-          transactionMethods[method] &&
-          transactionMethods[method].number &&
-          files[qrCodeFields[method]] &&
-          files[qrCodeFields[method]].length > 0
-        ) {
-          if (transactionMethods[method].qrCodePublicId) {
-            await deleteFile(transactionMethods[method].qrCodePublicId || "");
-          }
-
-          const file = files[qrCodeFields[method]][0];
-          const { url, imgId } = await uploadImage(
-            file,
-            false,
-            `events/${newSlug}/qr-codes`,
-          );
-
-          transactionMethods[method] = {
-            number: transactionMethods[method].number,
-            qrCodeUrl: url,
-            qrCodePublicId: imgId,
-          };
-        } else if (
-          transactionMethods[method] &&
-          transactionMethods[method].number
-        ) {
-          if (
-            transactionMethods[method].qrCodeUrl &&
-            transactionMethods[method].qrCodePublicId
-          ) {
-            transactionMethods[method] = {
-              number: transactionMethods[method].number,
-              qrCodeUrl: urlChanger(
-                eventSlug,
-                newSlug,
-                transactionMethods[method].qrCodeUrl,
-              ),
-              qrCodePublicId: transactionMethods[method].qrCodePublicId,
-            };
-          } else {
-            transactionMethods[method] = {
-              number: transactionMethods[method].number,
-            };
-          }
-        } else {
-          // if the transaction method is removed, delete the existing QR code file
-          if (transactionMethods[method]?.qrCodePublicId) {
-            await deleteFile(transactionMethods[method].qrCodePublicId || "");
-          }
-          delete transactionMethods[method];
-        }
-      }
-      formData.transactionMethods = transactionMethods;
-    }
-
-    eventData.formData = formData;
-
-    // handle section-specific data and file uploads
-    const sections: string[] = eventData.sections;
-
-    if (sections.includes("hero") && body.heroData) {
-      eventData.heroData = body.heroData;
-    }
-
-    if (sections.includes("video")) {
-      if (files.videoData && files.videoData.length > 0) {
-        await deleteFile(existingEvent.dataPublicId);
-        const file = files.videoData[0];
-        const { url, videoId } = await uploadVideo(
-          file,
-          `events/${newSlug}/videos`,
-        );
-        eventData.videoData = {
-          url,
-          videoPublicId: videoId,
-          hasAudio: false, // for simplicity, we're not extracting audio info from the video file. This can be enhanced in the future.
-        };
-      } else {
-        eventData.videoData = {
-          url: urlChanger(eventSlug, newSlug, existingEvent.dataUrl),
-          videoPublicId: body.videoData.videoPublicId,
-          hasAudio: false,
-        };
-      }
-    }
-
-    if (sections.includes("about") && body.aboutData) {
-      const aboutData: AboutDataType = body.aboutData;
-      if (files.aboutImage && files.aboutImage.length > 0) {
-        if (aboutData.aboutImagePublicId) {
-          await deleteFile(aboutData.aboutImagePublicId);
-        }
-
-        const file = files.aboutImage[0];
-        const { url, imgId } = await uploadImage(
-          file,
-          false,
-          `events/${newSlug}/about`,
-        );
-        aboutData.aboutImageUrl = url;
-        aboutData.aboutImagePublicId = imgId;
-      } else if (aboutData.aboutImageUrl && aboutData.aboutImagePublicId) {
-        aboutData.aboutImageUrl = urlChanger(
-          eventSlug,
-          newSlug,
-          aboutData.aboutImageUrl,
-        );
-        aboutData.aboutImagePublicId = aboutData.aboutImagePublicId;
-      }
-
-      eventData.aboutData = aboutData;
-    }
-
-    if (sections.includes("segments") && body.segmentsData) {
-      const segmentData: SegmentType[] = [];
-      const qrCodeImages: Express.Multer.File[] =
-        files["segmentTMethodQrs"] || [];
-
-      for (const segment of body.segmentsData) {
-        const segmentDataItem: SegmentType = {
-          segmentSlug: segment.segmentSlug,
-          locationType: segment.locationType,
-          teamType: segment.teamType,
-          icon: segment.icon,
-          title: segment.title,
-          summary: segment.summary,
-          details: segment.details,
-          rules: segment.rules,
-          maxTeamSize: segment.maxTeamSize,
-          isPaidSegment: segment.isPaidSegment || false,
-          fees:
-            typeof segment.fees === "string"
-              ? parseFloat(segment.fees)
-              : segment.fees || 0,
-        };
-
-        if (!segment.transactionMethods) {
-          segmentData.push(segmentDataItem);
-          continue;
-        }
-
-        const methods = Object.keys(segment.transactionMethods || {});
-        for (const method of methods) {
-          if (!segment.transactionMethods[method].number) continue;
-
-          if (!segmentDataItem.transactionMethods) {
-            segmentDataItem.transactionMethods = {};
-          }
-
-          const transactionMethod: {
-            number: string;
-            qrCodeUrl?: string;
-            qrCodePublicId?: string;
-          } = {} as {
-            number: string;
-            qrCodeUrl?: string;
-            qrCodePublicId?: string;
-          };
-
-          if (segment.transactionMethods[method].number) {
-            transactionMethod["number"] =
-              segment.transactionMethods[method].number;
-          }
-
-          // check if a QR code file was uploaded for this transaction method
-          if (segment.transactionMethods[method]?.code) {
-            if (segment.transactionMethods[method]?.qrCodePublicId) {
-              await deleteFile(
-                segment.transactionMethods[method].qrCodePublicId || "",
-              );
-            }
-
-            const qrCodeFile = qrCodeImages.find(
-              (file) =>
-                file.originalname.split(".")[0] ===
-                segment.transactionMethods[method].code,
-            );
-            if (qrCodeFile) {
-              const { url, imgId } = await uploadImage(
-                qrCodeFile,
-                false,
-                `events/${eventSlug}/transaction-methods`,
-              );
-              transactionMethod["qrCodeUrl"] = url;
-              transactionMethod["qrCodePublicId"] = imgId;
-            }
-          } else if (segment.transactionMethods[method]?.qrCodeUrl) {
-            transactionMethod["qrCodeUrl"] =
-              segment.transactionMethods[method].qrCodeUrl;
-            transactionMethod["qrCodePublicId"] =
-              segment.transactionMethods[method].qrCodePublicId || "";
-          }
-
-          segmentDataItem.transactionMethods[method] = transactionMethod;
-        }
-
-        if (Object.keys(segment.transactionMethods || {}).length === 0) {
-          delete segmentDataItem.transactionMethods;
-        }
-        segmentData.push(segmentDataItem);
-      }
-
-      eventData.segmentsData = segmentData;
-    }
-
-    if (sections.includes("experiences") && body.experiencesData) {
-      eventData.experiencesData = body.experiencesData;
-    }
-
-    if (sections.includes("schedule") && body.scheduleData) {
-      eventData.scheduleData = body.scheduleData;
-    }
-
-    if (sections.includes("sp") && body.spData) {
-      const spData: SpType[] = [];
-      if (files.spLogos && files.spLogos.length > 0) {
-        const newSPLogos: { [publicId: string]: Express.Multer.File } = {};
-        files.spLogos.forEach((file) => {
-          newSPLogos[file.originalname] = file;
-        });
-
-        for (const sp of body.spData) {
-          if (sp.logoPublicId && newSPLogos[sp.logoPublicId]) {
-            await deleteFile(sp.logoPublicId);
-
-            const { url, imgId } = await uploadImage(
-              newSPLogos[sp.logoPublicId],
-              false,
-              `events/${newSlug}/sponsors-partners`,
-            );
-
-            spData.push({
-              name: sp.name,
-              websiteUrl: sp.websiteUrl,
-              logoUrl: url,
-              logoPublicId: imgId,
-            });
-          } else {
-            spData.push({
-              name: sp.name,
-              websiteUrl: sp.websiteUrl,
-              logoUrl: urlChanger(eventSlug, newSlug, sp.logoUrl || ""),
-              logoPublicId: sp.logoPublicId,
-            });
-          }
-        }
-      } else {
-        body.spData.forEach((sp: SpType) => {
-          spData.push({
-            name: sp.name,
-            websiteUrl: sp.websiteUrl,
-            logoUrl: urlChanger(eventSlug, newSlug, sp.logoUrl || ""),
-            logoPublicId: sp.logoPublicId,
-          });
-        });
-      }
-
-      eventData.spData = spData;
-    }
-
-    if (sections.includes("faqs") && body.faqData) {
-      eventData.faqData = body.faqData;
-    }
+    const assets = await processEventAssets(files, newSlug, existingEvent);
+    Object.assign(eventData, assets);
 
     await deleteFile(existingEvent.dataPublicId);
 
@@ -934,14 +331,7 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
         eventSlug: newSlug,
         eventName: eventData.eventName,
 
-        eventLogoUrl: eventData.eventLogoUrl,
-        eventLogoPublicId: eventData.eventLogoPublicId,
-
-        eventFaviconUrl: eventData.eventFaviconUrl,
-        eventFaviconPublicId: eventData.eventFaviconPublicId,
-
-        eventBannerUrl: eventData.eventBannerUrl,
-        eventBannerPublicId: eventData.eventBannerPublicId,
+        ...assets,
 
         registrationDeadline: eventData.formData.registrationDeadline || "N/A",
         caApplicationDeadline:
@@ -976,7 +366,7 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
 
     res.status(201).send({ eventSlug: newSlug });
     logger.log(
-      `Event created: ${updatedEvent.eventName} (${updatedEvent._id})`,
+      `Event Updated: ${updatedEvent.eventName} (${updatedEvent._id})`,
       {
         eventId: updatedEvent._id,
         eventSlug: updatedEvent.eventSlug,

@@ -10,6 +10,7 @@ export type SegmentType = {
   maxTeamSize: string;
   isPaidSegment: boolean;
   fees: number;
+  transactionPlatforms?: string[];
   transactionMethods?: {
     [method: string]: {
       number: string;
@@ -153,6 +154,7 @@ export interface FilteredEventDataType {
     fees: string;
     details: string;
     registrationDeadline: string;
+    transactionPlatforms?: string[];
     transactionMethods?: {
       [method: string]: {
         number: string;

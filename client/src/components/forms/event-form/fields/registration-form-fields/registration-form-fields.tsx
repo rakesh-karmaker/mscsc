@@ -139,6 +139,7 @@ export default function RegistrationFormFields({
                       } else {
                         updatedMethods.push(platform);
                       }
+                      setValue(`formData.transactionPlatforms`, updatedMethods);
                       setSelectedMethods(updatedMethods);
                     }}
                   />
@@ -180,7 +181,12 @@ export default function RegistrationFormFields({
                           addText={false}
                           className="p-[14px_22px]! min-w-fit!"
                         >
-                          Upload QR Code
+                          {getValues(
+                            `formData.transactionMethods.${method}.qrCodeUrl`,
+                          )
+                            ? "Change"
+                            : "Upload"}{" "}
+                          QR Code
                         </FileInput>
                       </div>
                     </Stack>

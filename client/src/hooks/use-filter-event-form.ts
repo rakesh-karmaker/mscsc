@@ -82,6 +82,7 @@ export default function useFilterEventForm({
           details: data.formData.details,
           fees: data.formData.fees,
           transactionMethods: transactionMethods,
+          transactionPlatforms: data.formData.transactionPlatforms,
         }
       : {}),
   };
@@ -187,6 +188,7 @@ export default function useFilterEventForm({
         maxTeamSize: segment.maxTeamSize || 1,
         isPaidSegment: segment.isPaidSegment || false,
         fees: parseFloat(segment.fees) || 0,
+        transactionPlatforms: segment.transactionPlatforms || [],
       };
 
       if (!segment.transactionMethods) {

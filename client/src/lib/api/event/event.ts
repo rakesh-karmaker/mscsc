@@ -70,7 +70,6 @@ export async function addEvent(data: EventFormDataType) {
 }
 
 export async function editEvent(eventSlug: string, data: EventFormDataType) {
-  console.log(data);
   const formData = new FormData();
   for (const key in data) {
     if (

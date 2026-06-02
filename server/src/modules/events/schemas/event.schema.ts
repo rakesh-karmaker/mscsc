@@ -22,6 +22,7 @@ export const eventFormSchema = Joi.object({
     title: Joi.string().optional(),
     details: Joi.string().optional(),
     fees: Joi.alternatives().try(Joi.string(), Joi.number()).optional(),
+    transactionPlatforms: Joi.array().items(Joi.string()).optional(),
     transactionMethods: Joi.object()
       .pattern(
         Joi.string(),
@@ -74,6 +75,7 @@ export const eventFormSchema = Joi.object({
         maxTeamSize: Joi.string().required(),
         isPaidSegment: Joi.boolean().required(),
         fees: Joi.number().required(),
+        transactionPlatforms: Joi.array().items(Joi.string()).optional(),
         transactionMethods: Joi.object()
           .pattern(
             Joi.string(),

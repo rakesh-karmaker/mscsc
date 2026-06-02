@@ -284,6 +284,10 @@ export default function SegmentFields({
                             } else {
                               updatedMethods.push(platform);
                             }
+                            setValue(
+                              `segmentsData.${index}.transactionPlatforms`,
+                              updatedMethods,
+                            );
                             setSelectedMethods(updatedMethods);
                           }}
                         />

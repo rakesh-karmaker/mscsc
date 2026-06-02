@@ -11,7 +11,6 @@ export async function uploadImage(
   folder: string = "",
 ): Promise<{ url: string; imgId: string }> {
   try {
-    console.log(file);
     let resizedImageBuffer;
 
     // Resize if needed and convert image to WebP format using Sharp
@@ -92,6 +91,15 @@ export async function uploadMultipleImages(
       imgId: image.imgId as string,
     }));
 
+    console.log(
+      "Multiple images uploaded successfully - ",
+      getDate(),
+      "\n---\n",
+      {
+        gallery,
+      },
+    );
+
     return gallery;
   } catch (err) {
     console.log("Error uploading images - ", getDate(), "\n---\n", err);
@@ -139,6 +147,11 @@ export async function uploadJsonFile(
     if (!uploadedFile || !uploadedFile.url || !uploadedFile.fileId) {
       throw new Error("Invalid response from ImageKit");
     }
+
+    console.log("JSON file uploaded successfully - ", getDate(), "\n---\n", {
+      url: uploadedFile.url,
+      jsonPublicId: uploadedFile.fileId,
+    });
 
     return { url: uploadedFile.url, jsonPublicId: uploadedFile.fileId };
   } catch (err) {
