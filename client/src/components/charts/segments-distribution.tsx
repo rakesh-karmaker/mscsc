@@ -2,6 +2,7 @@ import { PieChart } from "@mui/x-charts";
 import Loader from "@/components/ui/loader/loader";
 import { styled } from "@mui/material/styles";
 import { useDrawingArea } from "@mui/x-charts/hooks";
+import { deSlugify } from "@/utils/de-slugify";
 
 const StyledText = styled("text")(({ theme }) => ({
   fill: theme.palette.text.primary,
@@ -84,7 +85,7 @@ export default function SegmentsDistributionChart({
               data: segmentDistribution.map((item) => ({
                 id: item.label,
                 value: item.value,
-                label: item.label,
+                label: deSlugify(item.label, false),
               })),
               innerRadius: 65,
             },

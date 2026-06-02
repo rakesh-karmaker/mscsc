@@ -1,5 +1,5 @@
-import { useState, type ReactNode } from "react";
-import { useWatch, type Control } from "react-hook-form";
+import { Activity, useState, type ReactNode } from "react";
+import { useWatch, type Control, type SetValueConfig } from "react-hook-form";
 import FormLayout from "../../form-layout";
 import { Stack, TextField } from "@mui/material";
 import { icons } from "@/services/data/icons-data";
@@ -13,6 +13,10 @@ import LuUserRound from "~icons/lucide/user-round";
 import LuUsersRound from "~icons/lucide/users-round";
 import LuGripVertical from "~icons/lucide/grip-vertical";
 import { useSortable } from "@dnd-kit/react/sortable";
+import RadioField from "@/components/ui/radio-field";
+import FileInput from "@/components/ui/file-input";
+import PaymentMethodCard from "../registration-form-fields/payment-method-card";
+import generateUID from "@/utils/generate-uid";
 
 export default function SegmentFields({
   id,
@@ -25,6 +29,7 @@ export default function SegmentFields({
   isSectionSelected,
   getValues,
   register,
+  setValue,
 }: {
   id: string;
   length: number;
@@ -36,6 +41,7 @@ export default function SegmentFields({
   isSectionSelected: boolean;
   getValues: (payload?: string | string[]) => Object;
   register: any;
+  setValue: (name: string, value: unknown, config?: SetValueConfig) => void;
 }): ReactNode {
   const { ref, handleRef } = useSortable({ id: id, index });
 
@@ -44,7 +50,20 @@ export default function SegmentFields({
       control,
       name: `segmentsData.${index}.title`,
     }) as string) || "";
+  const isPaidSegment =
+    (useWatch({
+      control,
+      name: `segmentsData.${index}.isPaidSegment`,
+    }) as boolean) || false;
+
   const [isOpen, setIsOpen] = useState<boolean>(title ? false : true);
+  const [selectedMethods, setSelectedMethods] = useState<string[]>(
+    getValues(`segmentsData.${index}.transactionMethods`)
+      ? Object.keys(
+          getValues(`segmentsData.${index}.transactionMethods`) as Object,
+        )
+      : [],
+  );
 
   return (
     <div ref={ref}>
@@ -195,7 +214,166 @@ export default function SegmentFields({
               >
                 Segment Icon
               </SelectIconField>
+
+              <TextField
+                fullWidth
+                variant="outlined"
+                {...register(`segmentsData.${index}.fees`, {
+                  required: isSectionSelected
+                    ? "Segment fees is required"
+                    : false,
+                  pattern: {
+                    value: /^\d+(\.\d{1,2})?$/,
+                    message: "Please enter a valid fee amount",
+                  },
+                })}
+                label="Segment Fees (Only if paid)"
+                error={Boolean(
+                  errors.segmentsData &&
+                  errors.segmentsData[index] &&
+                  errors.segmentsData[index].fees,
+                )}
+                helperText={
+                  errors.segmentsData &&
+                  errors.segmentsData[index] &&
+                  errors.segmentsData[index].fees &&
+                  (errors.segmentsData[index].fees.message as string)
+                }
+                defaultValue={"0"}
+              />
             </Stack>
+
+            <div className="w-full h-full flex flex-col gap-1.5">
+              <RadioField
+                options={["yes", "no"]}
+                onClick={(option) =>
+                  setValue(
+                    `segmentsData.${index}.isPaidSegment`,
+                    option === "yes",
+                  )
+                }
+                selectedOption={isPaidSegment ? "yes" : "no"}
+                errors={errors.segmentsData?.[index]?.isPaidSegment}
+              >
+                Is this a paid segment?
+              </RadioField>
+              <Activity mode={isPaidSegment ? "visible" : "hidden"}>
+                <FormLayout
+                  title="Payment Methods"
+                  textSize="lg"
+                  fontWeight="medium"
+                  description={
+                    <p className="w-full  h-full">
+                      Specify the payment methods available for this segment.
+                    </p>
+                  }
+                  id="payment-methods"
+                >
+                  <div className="w-full flex flex-col gap-3">
+                    {["bkash", "nagad", "rocket"].map((method) => (
+                      <div key={method} className="flex flex-col gap-3">
+                        <PaymentMethodCard
+                          platform={method}
+                          isSelected={selectedMethods.includes(method)}
+                          onClick={(platform) => {
+                            let updatedMethods = [...selectedMethods];
+                            if (updatedMethods.includes(platform)) {
+                              updatedMethods = updatedMethods.filter(
+                                (m) => m !== platform,
+                              );
+                            } else {
+                              updatedMethods.push(platform);
+                            }
+                            setSelectedMethods(updatedMethods);
+                          }}
+                        />
+
+                        {selectedMethods.includes(method) && (
+                          <Stack
+                            direction={{ xs: "column", sm: "row" }}
+                            spacing={2}
+                            sx={{ width: "100%", marginBottom: "16px" }}
+                          >
+                            <TextField
+                              fullWidth
+                              variant="outlined"
+                              {...register(
+                                `segmentsData.${index}.transactionMethods.${method}.number`,
+                                {
+                                  required:
+                                    selectedMethods.includes(method) &&
+                                    isPaidSegment === true
+                                      ? "Account number is required"
+                                      : false,
+                                },
+                              )}
+                              label="Account Number"
+                              error={Boolean(
+                                errors.segmentsData?.[index]
+                                  ?.transactionMethods?.[method]?.number,
+                              )}
+                              helperText={
+                                errors.segmentsData?.[index]
+                                  ?.transactionMethods?.[method]?.number
+                                  ?.message as string
+                              }
+                              placeholder="e.g., 01XXXXXXXXX"
+                            />
+                            <div className="w-fit">
+                              <FileInput
+                                register={register}
+                                name={`segmentsData.${index}.transactionMethods.${method}.qrCode`}
+                                errors={errors}
+                                addText={false}
+                                className="p-[14px_22px]! min-w-fit!"
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+
+                                  if (file) {
+                                    const uid = generateUID();
+                                    const extension = file.name.includes(".")
+                                      ? file.name.slice(
+                                          file.name.lastIndexOf("."),
+                                        )
+                                      : "";
+                                    const renamedFile = new File(
+                                      [file as Blob],
+                                      `${uid}${extension}`,
+                                      {
+                                        type: file.type,
+                                      },
+                                    );
+                                    setValue(
+                                      `segmentsData.${index}.transactionMethods.${method}.qrCode`,
+                                      renamedFile,
+                                      {
+                                        shouldValidate: true,
+                                      },
+                                    );
+                                    setValue(
+                                      `segmentsData.${index}.transactionMethods.${method}.code`,
+                                      uid,
+                                      { shouldValidate: false },
+                                    );
+                                  }
+                                }}
+                              >
+                                {getValues(
+                                  `segmentsData.${index}.transactionMethods.${method}.qrCodeUrl`,
+                                )
+                                  ? "Change"
+                                  : "Upload"}{" "}
+                                QR Code
+                              </FileInput>
+                            </div>
+                          </Stack>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </FormLayout>
+              </Activity>
+            </div>
 
             <TextField
               fullWidth

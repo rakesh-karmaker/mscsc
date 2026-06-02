@@ -12,7 +12,12 @@ import { TablePagination } from "../../table/table-pagination";
 export default function RegistrationsTable({
   segments,
 }: {
-  segments: string[];
+  segments: {
+    segmentSlug: string;
+    isTeamSegment: boolean;
+    isPaidSegment: boolean;
+    fees: number;
+  }[];
 }): ReactNode {
   const eventSlug = useParams().eventSlug!;
 

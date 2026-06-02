@@ -62,16 +62,16 @@ export default function EditEvent() {
     <>
       {/* page meta data */}
       <Helmet>
-        <title>MSCSC - Add Event</title>
-        <meta property="og:title" content="MSCSC - Add Event" />
-        <meta name="twitter:title" content="MSCSC - Add Event" />
+        <title>MSCSC - Edit Event</title>
+        <meta property="og:title" content="MSCSC - Edit Event" />
+        <meta name="twitter:title" content="MSCSC - Edit Event" />
         <meta
           name="og:url"
-          content="https://mscsc.netlify.app/admin/add-event"
+          content="https://mscsc.netlify.app/admin/edit-event/:eventSlug"
         />
         <link
           rel="canonical"
-          href={`https://mscsc.netlify.app/admin/add-event`}
+          href={`https://mscsc.netlify.app/admin/edit-event/:eventSlug`}
         />
       </Helmet>
 

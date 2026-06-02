@@ -51,6 +51,10 @@ const fileFields: { name: string; maxCount: number }[] = [
     name: "spLogos",
     maxCount: 40,
   },
+  {
+    name: "segmentTMethodQrs",
+    maxCount: 40,
+  },
 ];
 
 // event routes

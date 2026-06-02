@@ -43,6 +43,13 @@ export async function addEvent(data: EventFormDataType) {
       if (file) {
         formData.append(key, file);
       }
+    } else if (key === "segmentTMethodQrs") {
+      const files = data[key as keyof typeof data] as File[];
+      if (files && files.length > 0) {
+        files.forEach((file) => {
+          formData.append(`segmentTMethodQrs`, file);
+        });
+      }
     } else if (key === "spLogos") {
       const files = data[key as keyof typeof data] as File[];
       if (files && files.length > 0) {
@@ -63,6 +70,7 @@ export async function addEvent(data: EventFormDataType) {
 }
 
 export async function editEvent(eventSlug: string, data: EventFormDataType) {
+  console.log(data);
   const formData = new FormData();
   for (const key in data) {
     if (
@@ -78,6 +86,13 @@ export async function editEvent(eventSlug: string, data: EventFormDataType) {
       const file = data[key as keyof typeof data] as File;
       if (file) {
         formData.append(key, file);
+      }
+    } else if (key === "segmentTMethodQrs") {
+      const files = data[key as keyof typeof data] as File[];
+      if (files && files.length > 0) {
+        files.forEach((file) => {
+          formData.append(`segmentTMethodQrs`, file);
+        });
       }
     } else if (key === "spLogos") {
       const files = data[key as keyof typeof data] as File[];

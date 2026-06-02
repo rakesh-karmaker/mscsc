@@ -32,7 +32,7 @@ export function generateSlugFromTitle(
   return (
     title
       .toLowerCase()
-      .replace(/[^a-z0-9_ ]/g, "")
+      .replace(/[^a-z0-9&-_ ]/g, "")
       .replace(/\s+/g, "-") +
     (addAdditionalText ? "-" + Math.floor(Math.random() * 1000) : "")
   );

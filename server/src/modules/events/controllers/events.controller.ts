@@ -4,6 +4,7 @@ import {
   AboutDataType,
   EventDataType,
   FormDataType,
+  SegmentType,
   SpType,
 } from "../event.types.js";
 import { generateSlugFromTitle } from "../../../shared/utils/generate-slug.js";
@@ -23,7 +24,6 @@ import EventTeam from "../models/event-team.model.js";
 import getCategory from "../utils/get-category.js";
 import logger from "../../../shared/config/winston.js";
 import urlChanger from "../utils/url-changer.js";
-import { deSlugify } from "../utils/de-slugify.js";
 
 // get all events
 export async function getAllEvents(req: Request, res: Response): Promise<void> {
@@ -59,7 +59,7 @@ export async function getEventBySlug(
     const event = await Event.findOne({ eventSlug: eventSlug })
       .select(
         shorten
-          ? "dataUrl hideRegistrationForm hideCAForm isHidden participantCount"
+          ? "dataUrl hideRegistrationForm hideCAForm isHidden participantCount segments"
           : "-__v",
       )
       .lean();
@@ -86,22 +86,35 @@ export async function getEventBySlug(
         .lean()
         .countDocuments();
 
-      const segments = event.segments.map((segment) =>
-        deSlugify(segment.segmentSlug, false),
-      );
-
+      // calculate segment counts
+      const segments = event.segments.map((segment) => segment.segmentSlug);
       const segmentCounts: { [segment: string]: number } = {};
-
       for (const segment of segments) {
         segmentCounts[segment] = registrations.filter((registration) =>
           registration.segments.includes(segment),
         ).length;
       }
 
-      const income =
+      // calculate income from registrations
+      let income: number =
         event.fees !== "N/A"
           ? registrations.length * parseFloat(event.fees)
-          : "N/A";
+          : 0;
+
+      // if there are paid segments, calculate income based on the segments registered for each registration
+      const segmentFeeMap: { [segment: string]: number } = {};
+      for (const segment of event.segments.filter(
+        (segment) => segment.isPaidSegment,
+      )) {
+        segmentFeeMap[segment.segmentSlug] = segment.fees || 0;
+      }
+      for (const registration of registrations) {
+        for (const segment of registration.segments) {
+          if (segmentFeeMap[segment]) {
+            income += segmentFeeMap[segment];
+          }
+        }
+      }
 
       const categoryCounts: { [category: string]: number } = {
         Primary: 0,
@@ -128,6 +141,7 @@ export async function getEventBySlug(
         hideRegistrationForm: event.hideRegistrationForm,
         hideCAForm: event.hideCAForm,
         isHidden: event.isHidden,
+        segments: event.segments,
       });
       return;
     }
@@ -331,7 +345,83 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
     }
 
     if (sections.includes("segments") && body.segmentsData) {
-      eventData.segmentsData = body.segmentsData;
+      const segmentData: SegmentType[] = [];
+      const qrCodeImages: Express.Multer.File[] =
+        files["segmentTMethodQrs"] || [];
+
+      for (const segment of body.segmentsData) {
+        const segmentDataItem: SegmentType = {
+          segmentSlug: segment.segmentSlug,
+          locationType: segment.locationType,
+          teamType: segment.teamType,
+          icon: segment.icon,
+          title: segment.title,
+          summary: segment.summary,
+          details: segment.details,
+          rules: segment.rules,
+          maxTeamSize: segment.maxTeamSize,
+          isPaidSegment: segment.isPaidSegment || false,
+          fees: parseFloat(segment.fees) || 0,
+        };
+
+        if (!segment.transactionMethods) {
+          segmentData.push(segmentDataItem);
+          return;
+        }
+
+        const methods = Object.keys(segment.transactionMethods || {});
+        for (const method of methods) {
+          if (!segment.transactionMethods[method].number) return;
+
+          if (!segmentDataItem.transactionMethods) {
+            segmentDataItem.transactionMethods = {};
+          }
+
+          const transactionMethod: {
+            number: string;
+            qrCodeUrl?: string;
+            qrCodePublicId?: string;
+          } = {} as {
+            number: string;
+            qrCodeUrl?: string;
+            qrCodePublicId?: string;
+          };
+
+          if (segment.transactionMethods[method].number) {
+            transactionMethod["number"] =
+              segment.transactionMethods[method].number;
+          }
+
+          // check if a QR code file was uploaded for this transaction method
+          if (segment.transactionMethods[method]?.code) {
+            const qrCodeFile = qrCodeImages.find(
+              (file) =>
+                file.originalname.split(".")[0] ===
+                segment.transactionMethods[method].code,
+            );
+            if (qrCodeFile) {
+              const { url, imgId } = await uploadImage(
+                qrCodeFile,
+                false,
+                `events/${eventSlug}/transaction-methods`,
+              );
+              transactionMethod["qrCodeUrl"] = url;
+              transactionMethod["qrCodePublicId"] = imgId;
+            }
+          }
+
+          segmentDataItem.transactionMethods[method] = transactionMethod;
+        }
+
+        if (
+          Object.keys(segmentDataItem.transactionMethods || {}).length === 0
+        ) {
+          delete segmentDataItem.transactionMethods;
+        }
+        segmentData.push(segmentDataItem);
+      }
+
+      eventData.segmentsData = segmentData;
     }
 
     if (sections.includes("experiences") && body.experiencesData) {
@@ -399,8 +489,8 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
             return {
               segmentSlug: segment.segmentSlug,
               isTeamSegment: segment.teamType === "team",
-              isPaidSegment: false,
-              price: 0,
+              isPaidSegment: segment.isPaidSegment || false,
+              price: segment.fees || 0,
             };
           })
         : [],
@@ -678,7 +768,95 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
     }
 
     if (sections.includes("segments") && body.segmentsData) {
-      eventData.segmentsData = body.segmentsData;
+      const segmentData: SegmentType[] = [];
+      const qrCodeImages: Express.Multer.File[] =
+        files["segmentTMethodQrs"] || [];
+
+      for (const segment of body.segmentsData) {
+        const segmentDataItem: SegmentType = {
+          segmentSlug: segment.segmentSlug,
+          locationType: segment.locationType,
+          teamType: segment.teamType,
+          icon: segment.icon,
+          title: segment.title,
+          summary: segment.summary,
+          details: segment.details,
+          rules: segment.rules,
+          maxTeamSize: segment.maxTeamSize,
+          isPaidSegment: segment.isPaidSegment || false,
+          fees:
+            typeof segment.fees === "string"
+              ? parseFloat(segment.fees)
+              : segment.fees || 0,
+        };
+
+        if (!segment.transactionMethods) {
+          segmentData.push(segmentDataItem);
+          continue;
+        }
+
+        const methods = Object.keys(segment.transactionMethods || {});
+        for (const method of methods) {
+          if (!segment.transactionMethods[method].number) continue;
+
+          if (!segmentDataItem.transactionMethods) {
+            segmentDataItem.transactionMethods = {};
+          }
+
+          const transactionMethod: {
+            number: string;
+            qrCodeUrl?: string;
+            qrCodePublicId?: string;
+          } = {} as {
+            number: string;
+            qrCodeUrl?: string;
+            qrCodePublicId?: string;
+          };
+
+          if (segment.transactionMethods[method].number) {
+            transactionMethod["number"] =
+              segment.transactionMethods[method].number;
+          }
+
+          // check if a QR code file was uploaded for this transaction method
+          if (segment.transactionMethods[method]?.code) {
+            if (segment.transactionMethods[method]?.qrCodePublicId) {
+              await deleteFile(
+                segment.transactionMethods[method].qrCodePublicId || "",
+              );
+            }
+
+            const qrCodeFile = qrCodeImages.find(
+              (file) =>
+                file.originalname.split(".")[0] ===
+                segment.transactionMethods[method].code,
+            );
+            if (qrCodeFile) {
+              const { url, imgId } = await uploadImage(
+                qrCodeFile,
+                false,
+                `events/${eventSlug}/transaction-methods`,
+              );
+              transactionMethod["qrCodeUrl"] = url;
+              transactionMethod["qrCodePublicId"] = imgId;
+            }
+          } else if (segment.transactionMethods[method]?.qrCodeUrl) {
+            transactionMethod["qrCodeUrl"] =
+              segment.transactionMethods[method].qrCodeUrl;
+            transactionMethod["qrCodePublicId"] =
+              segment.transactionMethods[method].qrCodePublicId || "";
+          }
+
+          segmentDataItem.transactionMethods[method] = transactionMethod;
+        }
+
+        if (Object.keys(segment.transactionMethods || {}).length === 0) {
+          delete segmentDataItem.transactionMethods;
+        }
+        segmentData.push(segmentDataItem);
+      }
+
+      eventData.segmentsData = segmentData;
     }
 
     if (sections.includes("experiences") && body.experiencesData) {
@@ -774,7 +952,14 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
         eventDate: eventData.eventDate,
         participantCount: 0,
         segments: eventData.segmentsData
-          ? eventData.segmentsData.map((segment) => segment.title)
+          ? eventData.segmentsData.map((segment) => {
+              return {
+                segmentSlug: segment.segmentSlug,
+                isTeamSegment: segment.teamType === "team",
+                isPaidSegment: segment.isPaidSegment || false,
+                fees: segment.fees,
+              };
+            })
           : [],
         fees: eventData.fees || "N/A",
 

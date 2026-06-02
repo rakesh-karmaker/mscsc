@@ -169,12 +169,95 @@ export default function useFilterEventForm({
   }
 
   if (sections.includes("segments")) {
-    filteredData.segmentsData = data.segmentsData.map(
-      (segment: Omit<SegmentType, "segmentSlug">) => ({
-        ...segment,
+    const segmentData: SegmentType[] = [];
+    const segmentTMethodQrs: File[] = [];
+
+    data.segmentsData.forEach((segment: any) => {
+      if (!segment.title) return;
+
+      const segmentDataItem: SegmentType = {
         segmentSlug: generateSlug(segment.title, false),
-      }),
-    );
+        locationType: segment.locationType || "onsite",
+        teamType: segment.teamType || "solo",
+        icon: segment.icon || "bulb",
+        title: segment.title || "",
+        summary: segment.summary || "",
+        details: segment.details || "",
+        rules: segment.rules || "",
+        maxTeamSize: segment.maxTeamSize || 1,
+        isPaidSegment: segment.isPaidSegment || false,
+        fees: parseFloat(segment.fees) || 0,
+      };
+
+      if (!segment.transactionMethods) {
+        segmentData.push(segmentDataItem);
+        return;
+      }
+
+      const methods = Object.keys(segment.transactionMethods || {});
+      methods.forEach((method) => {
+        if (!segment.transactionMethods[method]) return;
+
+        if (!segmentDataItem.transactionMethods) {
+          segmentDataItem.transactionMethods = {};
+        }
+
+        const transactionMethod: {
+          number: string;
+          code?: string;
+          qrCodeUrl?: string;
+          qrCodePublicId?: string;
+        } = {} as {
+          number: string;
+          code?: string;
+          qrCodeUrl?: string;
+          qrCodePublicId?: string;
+        };
+
+        if (segment.transactionMethods[method].number) {
+          transactionMethod["number"] =
+            segment.transactionMethods[method].number;
+        } else {
+          return;
+        }
+
+        if (segment.transactionMethods[method]?.code) {
+          transactionMethod["code"] = segment.transactionMethods[method].code;
+        }
+
+        if (segment.transactionMethods[method]?.qrCodeUrl) {
+          transactionMethod["qrCodeUrl"] =
+            segment.transactionMethods[method].qrCodeUrl;
+          transactionMethod["qrCodePublicId"] =
+            segment.transactionMethods[method].qrCodePublicId || "";
+        }
+
+        segmentDataItem.transactionMethods[method] = transactionMethod;
+
+        if (segment.transactionMethods[method]?.qrCode) {
+          if (
+            Array.isArray(segment.transactionMethods[method].qrCode) &&
+            segment.transactionMethods[method].qrCode.length > 0
+          ) {
+            segmentTMethodQrs.push(
+              segment.transactionMethods[method].qrCode[0],
+            );
+          } else if (
+            segment.transactionMethods[method].qrCode instanceof File
+          ) {
+            segmentTMethodQrs.push(segment.transactionMethods[method].qrCode);
+          }
+        }
+      });
+
+      if (Object.keys(segmentDataItem.transactionMethods || {}).length === 0) {
+        delete segmentDataItem.transactionMethods;
+      }
+      segmentData.push(segmentDataItem);
+    });
+
+    filteredData.segmentsData = segmentData;
+    filteredData.segmentTMethodQrs = segmentTMethodQrs;
   }
 
   if (sections.includes("experiences")) {

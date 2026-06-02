@@ -13,10 +13,17 @@ import ChangeStatus from "../change-status";
 import RegistrationDetailsModel from "./registration-details-model";
 import DeleteWarning from "@/components/ui/delete-warning";
 import useRegistrationMutation from "@/hooks/event-hooks/use-registration-mutation";
+import { deSlugify } from "@/utils/de-slugify";
 
 export default function getRegistrationsTableColumns(
-  segments: string[],
+  segments: {
+    segmentSlug: string;
+    isTeamSegment: boolean;
+    isPaidSegment: boolean;
+    fees: number;
+  }[],
 ): ColumnDef<EventRegistrationTableData>[] {
+  console.log(segments);
   return [
     {
       id: "regName",
@@ -170,8 +177,8 @@ export default function getRegistrationsTableColumns(
         label: "Segments",
         variant: "multiSelect",
         options: segments.map((segment) => ({
-          label: segment,
-          value: segment,
+          label: deSlugify(segment.segmentSlug, false),
+          value: segment.segmentSlug,
         })),
       },
       enableColumnFilter: true,

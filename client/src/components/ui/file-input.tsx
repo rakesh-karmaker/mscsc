@@ -6,7 +6,7 @@ import type { FieldErrors, UseFormRegister, Path } from "react-hook-form";
 type FileInputProps = {
   register: UseFormRegister<any>;
   errors: FieldErrors<any>;
-  children: string;
+  children: ReactNode;
   name: Path<any>;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   addText?: boolean;

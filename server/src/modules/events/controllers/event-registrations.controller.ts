@@ -21,6 +21,8 @@ import getGradeRange from "../utils/get-grade-range.js";
 import EventTeam from "../models/event-team.model.js";
 import ClubPartner from "../models/club-partner.model.js";
 import logger from "../../../shared/config/winston.js";
+import { deSlugify } from "../utils/de-slugify.js";
+import { generateSlugFromTitle } from "../../../shared/utils/generate-slug.js";
 
 // get all event registrations
 export async function getAllEventRegistrations(
@@ -323,7 +325,9 @@ export async function registerForEvent(
       institution: cleanedBody.institution,
       grade: cleanedBody.grade,
       category: cleanedBody.category,
-      segments: cleanedBody.segments,
+      segments: cleanedBody.segments.map((segment) =>
+        generateSlugFromTitle(segment, false),
+      ),
       transactionMethod: cleanedBody.transactionMethod,
       transactionPhoneNumber: cleanedBody.transactionPhoneNumber,
       transactionId: cleanedBody.transactionId,

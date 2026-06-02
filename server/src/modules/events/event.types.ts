@@ -56,6 +56,15 @@ export interface EventRegistrationSchemaType extends mongoose.Document {
   grade: string;
 
   segments: string[];
+  paidSoloSegments: {
+    segmentSlug: string;
+    fees: number;
+    transactionMethod: string;
+    transactionPhoneNumber: string;
+    transactionId: string;
+    status: "pending" | "validated" | "rejected";
+    rejectionReason: string;
+  }[];
 
   transactionMethod: string;
   transactionPhoneNumber: string;
@@ -111,10 +120,16 @@ export interface EventTeamSchemaType extends mongoose.Document {
   eventId: mongoose.Types.ObjectId;
   segmentSlug: string;
 
+  isPaidSegment: boolean;
+  transactionMethod: string;
+  transactionPhoneNumber: string;
+  transactionId: string;
+
   teamName: string;
   leaderEmail: string;
   memberEmails: string[];
-  status: "registering" | "pending" | "approved";
+  status: "pending" | "approved" | "rejected";
+  rejectionReason: string;
 
   createdAt: string;
   updatedAt: string;
@@ -217,7 +232,7 @@ export type AboutDataType = {
   aboutImagePublicId?: string;
 };
 
-type SegmentType = {
+export type SegmentType = {
   segmentSlug: string;
   locationType: "onsite" | "online";
   teamType: "solo" | "team";
@@ -226,6 +241,16 @@ type SegmentType = {
   summary: string;
   details: string;
   rules: string;
+  maxTeamSize: string;
+  isPaidSegment: boolean;
+  fees: number;
+  transactionMethods?: {
+    [method: string]: {
+      number: string;
+      qrCodePublicId?: string;
+      qrCodeUrl?: string;
+    };
+  };
 };
 
 type ExperienceType = {

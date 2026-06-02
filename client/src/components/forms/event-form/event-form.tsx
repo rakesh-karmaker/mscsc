@@ -242,6 +242,7 @@ export default function EventForm({
             errors={errors}
             isSectionSelected={selectedSections.includes("segments")}
             getValues={getValues}
+            setValue={setValue}
           />
         )}
 

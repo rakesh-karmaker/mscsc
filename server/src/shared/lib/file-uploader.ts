@@ -11,6 +11,7 @@ export async function uploadImage(
   folder: string = "",
 ): Promise<{ url: string; imgId: string }> {
   try {
+    console.log(file);
     let resizedImageBuffer;
 
     // Resize if needed and convert image to WebP format using Sharp
@@ -38,6 +39,11 @@ export async function uploadImage(
     if (!uploadedImage || !uploadedImage.url || !uploadedImage.fileId) {
       throw new Error("Invalid response from ImageKit");
     }
+
+    console.log("Image uploaded successfully - ", getDate(), "\n---\n", {
+      url: uploadedImage.url,
+      imgId: uploadedImage.fileId,
+    });
 
     return { url: uploadedImage.url, imgId: uploadedImage.fileId };
   } catch (err) {
@@ -166,9 +172,14 @@ export async function deleteFile(fileId: string) {
     // Delete the file from ImageKit
     await imagekit.files.delete(fileId);
     console.log("File deleted successfully -", getDate(), "\n---\n");
-  } catch (err) {
-    console.log("Error deleting file - ", getDate(), "\n---\n", err);
-    throw new Error("Failed to delete file.");
+  } catch (err: any) {
+    // If the error is a 404, it means the file was not found in ImageKit, which can happen if it was already deleted. We can log this and continue without throwing an error.
+    if (err?.status && err.status?.toString() === "404") {
+      console.log("File not found in ImageKit - ", getDate(), "\n---\n", err);
+    } else {
+      console.log("Error deleting file - ", getDate(), "\n---\n", err);
+      throw new Error("Failed to delete file.");
+    }
   }
 }
 

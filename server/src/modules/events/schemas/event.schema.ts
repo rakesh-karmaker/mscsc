@@ -72,6 +72,19 @@ export const eventFormSchema = Joi.object({
         details: Joi.string().required(),
         rules: Joi.string().required(),
         maxTeamSize: Joi.string().required(),
+        isPaidSegment: Joi.boolean().required(),
+        fees: Joi.number().required(),
+        transactionMethods: Joi.object()
+          .pattern(
+            Joi.string(),
+            Joi.object({
+              number: Joi.string().required(),
+              qrCodePublicId: Joi.string().optional(),
+              qrCodeUrl: Joi.string().optional(),
+              code: Joi.string().optional(),
+            }),
+          )
+          .optional(),
       }),
     )
     .optional(),

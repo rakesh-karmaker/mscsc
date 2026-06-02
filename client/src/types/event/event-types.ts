@@ -8,6 +8,16 @@ export type SegmentType = {
   details: string;
   rules: string;
   maxTeamSize: string;
+  isPaidSegment: boolean;
+  fees: number;
+  transactionMethods?: {
+    [method: string]: {
+      number: string;
+      code?: string;
+      qrCodePublicId?: string;
+      qrCodeUrl?: string;
+    };
+  };
 };
 
 export type ExperienceType = {
@@ -118,6 +128,7 @@ export type EventFormDataType = {
   videoFile?: File;
   aboutImage?: File;
   spLogos?: File[];
+  segmentTMethodQrs?: File[];
 };
 
 export interface FilteredEventDataType {

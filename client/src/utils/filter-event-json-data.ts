@@ -1,4 +1,7 @@
-import type { FilteredEventDataType } from "@/types/event/event-types";
+import type {
+  FilteredEventDataType,
+  SegmentType,
+} from "@/types/event/event-types";
 import dayjs from "dayjs";
 
 export default function filterEventJSONData(data: any): FilteredEventDataType {
@@ -109,7 +112,7 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
     const segments: FilteredEventDataType["segmentsData"] = [];
     data.segmentsData.forEach((segment: any) => {
       if (segment.title && segment.details) {
-        segments.push({
+        const segmentData: Omit<SegmentType, "segmentSlug"> = {
           locationType: segment.locationType,
           teamType: segment.teamType,
           title: segment.title,
@@ -118,7 +121,27 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
           details: segment.details,
           rules: segment.rules,
           maxTeamSize: segment.maxTeamSize,
-        });
+          isPaidSegment: segment.isPaidSegment || false,
+          fees: segment.fees || 0,
+        };
+
+        if (segment.transactionMethods) {
+          Object.keys(segment.transactionMethods).forEach((method) => {
+            const transactionMethod = segment.transactionMethods?.[method];
+            if (transactionMethod) {
+              if (!segmentData.transactionMethods) {
+                segmentData.transactionMethods = {};
+              }
+              segmentData.transactionMethods[method] = {
+                number: transactionMethod.number,
+                qrCodePublicId: transactionMethod.qrCodePublicId || "",
+                qrCodeUrl: transactionMethod.qrCodeUrl || "",
+              };
+            }
+          });
+        }
+
+        segments.push(segmentData);
       }
     });
     filteredData.segmentsData = segments;

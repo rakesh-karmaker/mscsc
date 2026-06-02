@@ -47,6 +47,8 @@ export default function EventDashboard() {
     });
   }
 
+  console.log(eventData);
+
   return (
     <>
       {/* page metadata */}
@@ -77,7 +79,7 @@ export default function EventDashboard() {
               }}
             />
           )}
-          <div className="w-full flex flex-col gap-5 max-[1800px]:max-w-[calc(100vw-(256px+32.25rem+(1.875rem*2)+1.25rem))] max-[1530px]:max-w-[calc(100vw-(32.25rem+(1.875rem*2)+1.25rem))] max-xl:max-w-full">
+          <div className="w-full flex flex-col gap-5 max-[1800px]:max-w-[calc(100vw-(256px+32.25rem+3.75rem+1.25rem))] max-[1530px]:max-w-[calc(100vw-(32.25rem+3.75rem+1.25rem))] max-xl:max-w-full">
             <div className="w-full grid grid-cols-4 max-[830px]:grid-cols-2 max-[500px]:grid-cols-1 gap-3 items-center">
               <QuickStat
                 icon={<FaUsers className="text-2xl" />}

@@ -1,5 +1,9 @@
 import { useCallback, useEffect, type ReactNode } from "react";
-import { useFieldArray, type Control } from "react-hook-form";
+import {
+  useFieldArray,
+  type Control,
+  type SetValueConfig,
+} from "react-hook-form";
 import FormLayout from "../../form-layout";
 import { DragDropProvider } from "@dnd-kit/react";
 import { isSortable } from "@dnd-kit/react/sortable";
@@ -15,6 +19,8 @@ const DEFAULT_SEGMENT = {
   icon: "bulb",
   summary: "",
   rules: "",
+  isPaidSegment: false,
+  fees: "0",
 };
 
 type SegmentsSectionFieldsProps = {
@@ -23,6 +29,7 @@ type SegmentsSectionFieldsProps = {
   errors: { [key: string]: any };
   isSectionSelected: boolean;
   getValues: (payload?: string | string[]) => Object;
+  setValue: (name: string, value: unknown, config?: SetValueConfig) => void;
 };
 
 export default function SegmentsSectionFields({
@@ -31,6 +38,7 @@ export default function SegmentsSectionFields({
   errors,
   isSectionSelected,
   getValues,
+  setValue,
 }: SegmentsSectionFieldsProps): ReactNode {
   const { fields, append, remove, move } = useFieldArray({
     control: control,
@@ -92,6 +100,7 @@ export default function SegmentsSectionFields({
               isSectionSelected={isSectionSelected}
               getValues={getValues}
               register={register}
+              setValue={setValue}
             />
           ))}
         </DragDropProvider>

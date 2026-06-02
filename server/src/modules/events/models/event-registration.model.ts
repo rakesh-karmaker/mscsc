@@ -18,7 +18,27 @@ const EventRegistrationSchema =
 
       institution: { type: String, required: true },
       grade: { type: String, required: true },
+
       segments: { type: [String], required: true },
+      paidSoloSegments: {
+        type: [
+          {
+            segmentSlug: { type: String, required: true },
+            fees: { type: Number, required: true },
+            transactionMethod: { type: String, required: true },
+            transactionPhoneNumber: { type: String, required: true },
+            transactionId: { type: String, required: true },
+            status: {
+              type: String,
+              enum: ["pending", "validated", "rejected"],
+              required: true,
+              default: "pending",
+            },
+            rejectionReason: { type: String, default: "" },
+          },
+        ],
+        default: [],
+      },
 
       transactionMethod: { type: String, required: true },
       transactionPhoneNumber: { type: String, required: true },

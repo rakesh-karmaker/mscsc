@@ -100,6 +100,17 @@ export default function useEventFormValidator({
     } else {
       for (let i = 0; i < data.segmentsData.length; i++) {
         if (
+          !data.segmentsData[i].title ||
+          data.segmentsData[i].title.trim() === ""
+        ) {
+          setError(`segmentsData.${i}.title`, {
+            type: "manual",
+            message: "Segment title is required",
+          });
+          isValid = false;
+        }
+
+        if (
           !data.segmentsData[i].details ||
           data.segmentsData[i].details.trim() === ""
         ) {
