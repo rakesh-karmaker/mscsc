@@ -1,7 +1,6 @@
 import sharp from "sharp";
 import imagekit from "../config/imagekit.js";
 import getDate from "../utils/get-date.js";
-import fs from "fs";
 import { toFile } from "@imagekit/nodejs";
 
 // Upload image to ImageKit and return the URL and image ID

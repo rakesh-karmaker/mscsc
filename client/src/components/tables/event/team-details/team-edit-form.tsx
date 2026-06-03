@@ -86,8 +86,6 @@ export default function TeamEditForm({
         }
       }
 
-      console.log(keys.filter((key): key is string => key !== null));
-
       queryClient.invalidateQueries({
         queryKey: keys.filter((key): key is string => key !== null),
       });

@@ -36,7 +36,7 @@ export async function addEvent(data: EventFormDataType) {
       key === "bkashQrCode" ||
       key === "nagadQrCode" ||
       key === "rocketQrCode" ||
-      key === "videoData" ||
+      key === "videoFile" ||
       key === "aboutImage"
     ) {
       const file = data[key as keyof typeof data] as File;
@@ -79,7 +79,7 @@ export async function editEvent(eventSlug: string, data: EventFormDataType) {
       key === "bkashQrCode" ||
       key === "nagadQrCode" ||
       key === "rocketQrCode" ||
-      key === "videoData" ||
+      key === "videoFile" ||
       key === "aboutImage"
     ) {
       const file = data[key as keyof typeof data] as File;

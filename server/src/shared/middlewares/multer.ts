@@ -2,19 +2,20 @@ import multer from "multer";
 import path from "path";
 
 const LIMIT: number = 100 * 1024 * 1024; // 100MB
-const allowedExtensions = [
-  ".jpg",
-  ".jpeg",
-  ".webp",
-  ".png",
-  ".gif",
-  ".pdf",
-  ".docx",
-  ".doc",
-  ".txt",
-  ".mp4",
-  ".mp3",
-  ".wav",
+const notAllowedExtensions = [
+  ".exe",
+  ".bat",
+  ".cmd",
+  ".sh",
+  ".js",
+  ".php",
+  ".py",
+  ".rb",
+  ".jar",
+  ".msi",
+  ".com",
+  ".vbs",
+  ".wsf",
 ]; // Allowed file extensions
 
 // Configure storage (in memory for processing with Sharp)
@@ -24,7 +25,7 @@ const upload = multer({
   storage,
   fileFilter: (_, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
-    if (!allowedExtensions.includes(ext)) {
+    if (notAllowedExtensions.includes(ext)) {
       return cb(
         new multer.MulterError("LIMIT_UNEXPECTED_FILE", file.fieldname),
       );

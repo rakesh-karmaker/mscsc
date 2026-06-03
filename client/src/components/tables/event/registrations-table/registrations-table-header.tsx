@@ -23,7 +23,6 @@ export default function getRegistrationsTableColumns(
     fees: number;
   }[],
 ): ColumnDef<EventRegistrationTableData>[] {
-  console.log(segments);
   return [
     {
       id: "regName",

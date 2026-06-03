@@ -5,7 +5,7 @@ import AboutProfile from "@/components/profile/about-profile/about-profile";
 import { useQuery } from "@tanstack/react-query";
 import { getMember } from "@/lib/api/member";
 import HiPencil from "~icons/hugeicons/pencil-edit-01";
-import FaEye from "~icons/fa/eye";
+import FaEye from "~icons/fa-solid/eye";
 import Loader from "@/components/ui/loader/loader";
 import ProfileDetails from "@/components/profile/profile-details/profile-details";
 import Timeline from "@/components/profile/timeline";

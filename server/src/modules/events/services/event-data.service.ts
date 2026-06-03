@@ -121,13 +121,13 @@ export async function buildEventData(
 
   // 2. Video
   if (sections.includes("video")) {
-    if (files.videoData?.length > 0) {
-      if (isEdit && body.videoData?.videoPublicId) {
-        await deleteFile(body.videoData.videoPublicId);
+    if (files.videoFile?.length > 0) {
+      if (isEdit && body.videoFile?.videoPublicId) {
+        await deleteFile(body.videoFile.videoPublicId);
       }
       const { url, videoId } = await uploadVideo(
-        files.videoData[0],
-        `events/${eventSlug}/videos`,
+        files.videoFile[0],
+        `events/${eventSlug}`,
       );
       eventData.videoData = { url, videoPublicId: videoId, hasAudio: false };
     } else if (isEdit && body.videoData) {

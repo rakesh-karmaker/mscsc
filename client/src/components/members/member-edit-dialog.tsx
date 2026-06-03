@@ -28,7 +28,6 @@ export default function MemberEditDialog({
           e.stopPropagation();
           setIsOpen(true);
           if (member?.new) {
-            console.log("Marking member as old - ", member.slug);
             memberNewMutation.mutate();
           }
         }}

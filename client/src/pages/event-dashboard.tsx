@@ -47,8 +47,6 @@ export default function EventDashboard() {
     });
   }
 
-  console.log(eventData);
-
   return (
     <>
       {/* page metadata */}

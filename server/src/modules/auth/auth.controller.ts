@@ -3,7 +3,6 @@ import generateSlug from "../../shared/utils/generate-slug.js";
 import Member from "../../shared/models/member.model.js";
 import jwt from "jsonwebtoken";
 import config from "../../shared/config/config.js";
-import getDate from "../../shared/utils/get-date.js";
 import { registerSchema } from "./auth.schema.js";
 import { uploadImage } from "../../shared/lib/file-uploader.js";
 import { compareHash, generateHash } from "../../shared/utils/hash.js";

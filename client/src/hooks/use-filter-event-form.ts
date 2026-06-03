@@ -137,12 +137,10 @@ export default function useFilterEventForm({
     };
   }
 
-  if (
-    sections.includes("video") &&
-    data.videoFile &&
-    data.videoFile.length > 0
-  ) {
-    filteredData.videoFile = data.videoFile[0];
+  if (sections.includes("video")) {
+    if (data.videoFile && data.videoFile.length > 0) {
+      filteredData.videoFile = data.videoFile[0];
+    }
     if (data.videoData?.url) {
       filteredData.videoData = {
         url: data.videoData.url,
@@ -185,7 +183,7 @@ export default function useFilterEventForm({
         summary: segment.summary || "",
         details: segment.details || "",
         rules: segment.rules || "",
-        maxTeamSize: segment.maxTeamSize || 1,
+        maxTeamSize: segment.maxTeamSize?.toString() || "1",
         isPaidSegment: segment.isPaidSegment || false,
         fees: parseFloat(segment.fees) || 0,
         transactionPlatforms: segment.transactionPlatforms || [],

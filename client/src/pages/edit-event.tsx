@@ -33,7 +33,7 @@ export default function EditEvent() {
                 hideCAForm: res.data.hideCAForm,
                 participantCount: res.data.participantCount,
               })
-            : console.log("hello"),
+            : console.log("Invalid response while fetching event data:", res),
         )
         .catch((error: AxiosError | any) => {
           setError(

@@ -19,7 +19,7 @@ export function forgotPasswordOtpDraft(otp: string) {
                             <td style="width: 100%; padding: 0;">
                                 <table class="top" style="border-spacing: 0;width: 100%; height: 100%; background-color: #f9f9f9; background-image: url('https://scontent.xx.fbcdn.net/v/t1.15752-9/434360080_414158554560714_4905350436994214544_n.jpg?stp=dst-jpg_p403x403&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_ohc=3do5PVBv3zcAb5Q6oD5&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AdXckBBA2xrh34kpUznTinLk5eNjUn3UhYP4h4u5eK1tpQ&oe=664062D4'); background-repeat: no-repeat; background-size: 100% 230px; background-position: top center;">
                                     <tr>
-                                        <td><center><img src="https://ik.imagekit.io/testingimage/email_header_blue.png?updatedAt=1738585803510" alt="logo" style="width: 100%; height: 100%; margin: 0; padding: 0;"></center></td>
+                                        <td><center><img src="https://ik.imagekit.io/mscsc/email-header_QR_oUDueF.png" alt="logo" style="width: 100%; height: 100%; margin: 0; padding: 0;"></center></td>
                                     </tr>
                                     <tr>
                                         <td><h2 style="margin: 0; padding: 0 20px; font-size: 32px; font-weight: 500; line-height: 39px; letter-spacing: 0.01em; text-align: center; margin-top: 20px;  color: #11181c;">Password Change Request</h2></td>

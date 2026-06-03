@@ -20,6 +20,8 @@ import {
 } from "../utils/request-parser.js";
 import { buildEventData } from "../services/event-data.service.js";
 import { processEventAssets } from "../services/event-files-upload.service.js";
+import ClubPartner from "../models/club-partner.model.js";
+import urlChanger from "../utils/url-changer.js";
 
 // get all events
 export async function getAllEvents(req: Request, res: Response): Promise<void> {
@@ -298,7 +300,55 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
       false,
     );
     if (newSlug !== eventSlug) {
+      logger.warn(
+        `Event slug is changing from ${eventSlug} to ${newSlug}. This will affect all existing registrations, CAs, teams and club partners associated with this event.`,
+        {
+          eventId: existingEvent._id,
+          oldSlug: eventSlug,
+          newSlug,
+          editor: req.user?._id,
+        },
+      );
       await renameFolder(`events/${eventSlug}`, newSlug);
+
+      // update the registration, CA and Club Partner records to reflect the new event slug in their ImageKit folder paths
+      const registrations = await EventRegistration.find({
+        eventId: existingEvent._id,
+      });
+      for (const registration of registrations) {
+        if (registration.photoUrl && registration.photoPublicId) {
+          registration.photoUrl = urlChanger(
+            eventSlug,
+            newSlug,
+            registration.photoUrl,
+          );
+        }
+        await registration.save();
+      }
+
+      const eventCAs = await EventCA.find({
+        eventId: existingEvent._id,
+      });
+      for (const ca of eventCAs) {
+        if (ca.photoUrl && ca.photoPublicId) {
+          ca.photoUrl = urlChanger(eventSlug, newSlug, ca.photoUrl);
+        }
+        await ca.save();
+      }
+
+      const clubPartners = await ClubPartner.find({
+        eventId: existingEvent._id,
+      });
+      for (const partner of clubPartners) {
+        if (partner.clubLogoUrl && partner.clubLogoPublicId) {
+          partner.clubLogoUrl = urlChanger(
+            eventSlug,
+            newSlug,
+            partner.clubLogoUrl,
+          );
+        }
+        await partner.save();
+      }
     }
 
     const eventData: EventDataType | null = await buildEventData(
@@ -457,6 +507,7 @@ export async function deleteEvent(req: Request, res: Response): Promise<void> {
     await EventRegistration.deleteMany({ eventId: event._id });
     await EventCA.deleteMany({ eventId: event._id });
     await EventTeam.deleteMany({ eventId: event._id });
+    await ClubPartner.deleteMany({ eventIds: event._id });
     try {
       await deleteFolder(`events/${eventSlug}`);
     } catch (err) {

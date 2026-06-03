@@ -45,7 +45,7 @@ export function caApplicationConfirmationDraft({
                             <tr>
                                 <td>
                                     <center>
-                                        <img src="https://ik.imagekit.io/testingimage/events/banner.png" alt="banner"
+                                        <img src="https://ik.imagekit.io/mscsc/events/email-template-image_RxYMeUhXs.png" alt="banner"
                                             style="width: 100%; height: 100%; margin: 0; padding: 0;">
                                     </center>
                                 </td>
@@ -254,7 +254,7 @@ export function caApplicationRejectionDraft({
                             <tr>
                                 <td>
                                     <center>
-                                        <img src="https://ik.imagekit.io/testingimage/events/banner.png" alt="banner"
+                                        <img src="https://ik.imagekit.io/mscsc/events/email-template-image_RxYMeUhXs.png" alt="banner"
                                             style="width: 100%; height: 100%; margin: 0; padding: 0;">
                                     </center>
                                 </td>
