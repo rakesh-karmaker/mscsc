@@ -1,4 +1,4 @@
-import FaTasks from "~icons/fa/tasks";
+import FaTasks from "~icons/fa-solid/tasks";
 import FaUsers from "~icons/fa-solid/users";
 import IoMailSharp from "~icons/ion/mail-sharp";
 import FiActivity from "~icons/feather/activity";

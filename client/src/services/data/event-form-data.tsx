@@ -16,6 +16,7 @@ export const sectionsData: {
     "schedule",
     "sp",
     "faqs",
+    "contact",
   ],
 };
 

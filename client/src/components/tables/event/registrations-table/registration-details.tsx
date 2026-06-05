@@ -175,7 +175,7 @@ export default function RegistrationDetails({
                   className="min-w-fit py-0.75! px-1.5! text-sm bg-gray-100  rounded-md"
                   key={segment}
                 >
-                  {segment}
+                  {deSlugify(segment, false)}
                 </p>
               ))}
           </div>

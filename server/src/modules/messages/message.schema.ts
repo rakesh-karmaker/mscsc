@@ -5,4 +5,6 @@ export const messageSchema = Joi.object({
   email: Joi.string().email().required(),
   subject: Joi.string().required(),
   message: Joi.string().required(),
+  phoneNumber: Joi.string().optional(),
+  source: Joi.string().optional(),
 });

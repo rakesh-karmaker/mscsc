@@ -73,58 +73,74 @@ export default function SectionsSelect({
           />
         ))}
       </DragDropProvider>
-      {sectionsData.sectionOptions.length > selectedSections.length && (
-        <div>
-          <button
-            id={id}
-            className={
-              "flex items-center px-3.5! py-0.5! h-12 rounded-sm border border-black/20 hover:bg-lightest-black/20! transition-colors cursor-pointer"
-            }
-            aria-describedby={id}
-            onClick={() => setOpen(!open)}
-            style={{
-              background: "white",
-            }}
-            type="button"
-          >
-            <LuPlus className="mr-1! opacity-70" /> <span>Add Section</span>
-          </button>
-          <Popover
-            id={id}
-            open={open}
-            anchorEl={document.getElementById(id)}
-            onClose={() => setOpen(false)}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            PaperProps={{
-              style: {
-                boxShadow: "rgba(149, 157, 165, 0.1) 0px 8px 24px",
-                marginTop: "4px",
-              },
-            }}
-          >
-            <div className="w-full h-full flex flex-col bg-primary-bg rounded-md border border-gray-300">
-              <div className="max-h-65 scroll-py-1 overflow-y-auto overflow-x-hidden flex flex-col p-1!">
-                {sectionsData.sectionOptions.map((section, index) => (
-                  <div key={index}>
-                    {!selectedSections.includes(section) && (
-                      <TableBtn onClick={() => handleAddSection(section)}>
-                        <LuPlus className="opacity-70" /> {capitalize(section)}
-                      </TableBtn>
-                    )}
-                  </div>
-                ))}
-              </div>
+      <div>
+        <button
+          id={id}
+          className={
+            "flex items-center px-3.5! py-0.5! h-12 rounded-sm border border-black/20 hover:bg-lightest-black/20! transition-colors cursor-pointer"
+          }
+          aria-describedby={id}
+          onClick={() => setOpen(!open)}
+          style={{
+            background: "white",
+            opacity:
+              sectionsData.sectionOptions.length > selectedSections.length
+                ? 1
+                : 0.5,
+            pointerEvents:
+              sectionsData.sectionOptions.length > selectedSections.length
+                ? "auto"
+                : "none",
+          }}
+          type="button"
+        >
+          <LuPlus className="mr-1! opacity-70" /> <span>Add Section</span>
+        </button>
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={document.getElementById(id)}
+          onClose={() => setOpen(false)}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+          PaperProps={{
+            style: {
+              boxShadow: "rgba(149, 157, 165, 0.1) 0px 8px 24px",
+              marginTop: "4px",
+            },
+          }}
+          style={{
+            opacity:
+              sectionsData.sectionOptions.length > selectedSections.length
+                ? 1
+                : 0,
+            pointerEvents:
+              sectionsData.sectionOptions.length > selectedSections.length
+                ? "auto"
+                : "none",
+          }}
+        >
+          <div className="w-full h-full flex flex-col bg-primary-bg rounded-md border border-gray-300">
+            <div className="max-h-65 scroll-py-1 overflow-y-auto overflow-x-hidden flex flex-col p-1!">
+              {sectionsData.sectionOptions.map((section, index) => (
+                <div key={index}>
+                  {!selectedSections.includes(section) && (
+                    <TableBtn onClick={() => handleAddSection(section)}>
+                      <LuPlus className="opacity-70" /> {capitalize(section)}
+                    </TableBtn>
+                  )}
+                </div>
+              ))}
             </div>
-          </Popover>
-        </div>
-      )}
+          </div>
+        </Popover>
+      </div>
     </div>
   );
 }

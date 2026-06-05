@@ -70,7 +70,11 @@ export async function register(req: Request, res: Response): Promise<void> {
       imgId: imgId,
       new: true,
     };
-    const newMember = await Member.create(newMemberData);
+    const newMember = await Member.create(newMemberData).then((member) =>
+      member.toObject(),
+    );
+
+    const { password, ...memberData } = newMember;
 
     // generate JWT token
     const token = jwt.sign({ _id: newMember._id }, config.jwtSecret, {
@@ -81,10 +85,10 @@ export async function register(req: Request, res: Response): Promise<void> {
       subject: "register",
       message: "Registered successfully.",
       token,
-      member: newMember,
+      member: memberData,
     });
 
-    logger.log(`New member registered - ${newMember.name}`, {
+    logger.log("info", `New member registered - ${newMember.name}`, {
       memberId: newMember._id,
       memberName: newMember.name,
     });
@@ -109,14 +113,17 @@ export async function login(req: Request, res: Response): Promise<void> {
     }
 
     // find the member by email
-    const member = await Member.findOne({ email });
+    const member = await Member.findOne({ email })
+      .select("-imgId -reference -updatedAt -new -__v")
+      .lean();
     if (!member) {
       res.status(404).send({ subject: "email", message: "Invalid email" });
       return;
     }
+    const { password, ...memberData } = member;
 
     // compare the password
-    const isPasswordMatch = await compareHash(rawPassword, member.password);
+    const isPasswordMatch = await compareHash(rawPassword, password);
     if (!isPasswordMatch) {
       res
         .status(400)
@@ -133,9 +140,9 @@ export async function login(req: Request, res: Response): Promise<void> {
       subject: "login",
       message: "Logged in successfully.",
       token,
-      member,
+      member: memberData,
     });
-    logger.log(`Member logged in - ${member.name}`, {
+    logger.log("info", `Member logged in - ${member.name}`, {
       memberId: member._id,
       memberName: member.name,
     });
@@ -154,9 +161,9 @@ export async function login(req: Request, res: Response): Promise<void> {
 export async function verifyUser(req: Request, res: Response): Promise<void> {
   try {
     const data = req.user;
-    const user = await Member.findById(data?._id || "").select(
-      "-password -imgId -reference -updatedAt -new -__v",
-    );
+    const user = await Member.findById(data?._id || "")
+      .select("-password -imgId -reference -updatedAt -new -__v")
+      .lean();
     if (!user) {
       res.status(404).send({ message: "User not found" });
       return;

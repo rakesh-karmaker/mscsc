@@ -110,6 +110,29 @@ export default function useEventFormValidator({
           isValid = false;
         }
 
+        if (data.segmentsData[i].isPaidSegment) {
+          const price = parseFloat(data.segmentsData[i].fees) || 0;
+          if (price <= 0) {
+            setError(`segmentsData.${i}.fees`, {
+              type: "manual",
+              message: "Fees must be greater than 0 for paid segments",
+            });
+            isValid = false;
+          }
+
+          if (
+            !data.segmentsData[i].transactionPlatforms ||
+            data.segmentsData[i].transactionPlatforms.length === 0
+          ) {
+            setError(`segmentsData.${i}.transactionPlatforms`, {
+              type: "manual",
+              message:
+                "At least one transaction platform is required for paid segments",
+            });
+            isValid = false;
+          }
+        }
+
         if (
           !data.segmentsData[i].details ||
           data.segmentsData[i].details.trim() === ""

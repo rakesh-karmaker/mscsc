@@ -47,6 +47,7 @@ export interface EventRegistrationSchemaType extends mongoose.Document {
   eventId: mongoose.Types.ObjectId;
   name: string;
   email: string;
+  password: string;
   phoneNumber: string;
   facebookUrl: string;
   photoUrl: string;

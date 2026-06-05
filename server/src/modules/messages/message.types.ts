@@ -3,6 +3,7 @@ export type MessageSchemaType = {
   email: string;
   subject: string;
   message: string;
+  phoneNumber: string;
   source: string;
   new: boolean;
   createdAt: Date;

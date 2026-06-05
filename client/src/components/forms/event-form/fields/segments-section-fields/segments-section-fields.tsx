@@ -30,6 +30,9 @@ type SegmentsSectionFieldsProps = {
   isSectionSelected: boolean;
   getValues: (payload?: string | string[]) => Object;
   setValue: (name: string, value: unknown, config?: SetValueConfig) => void;
+  clearErrors: (
+    name?: string | string[] | readonly string[] | undefined,
+  ) => void;
 };
 
 export default function SegmentsSectionFields({
@@ -39,6 +42,7 @@ export default function SegmentsSectionFields({
   isSectionSelected,
   getValues,
   setValue,
+  clearErrors,
 }: SegmentsSectionFieldsProps): ReactNode {
   const { fields, append, remove, move } = useFieldArray({
     control: control,
@@ -101,6 +105,7 @@ export default function SegmentsSectionFields({
               getValues={getValues}
               register={register}
               setValue={setValue}
+              clearErrors={clearErrors}
             />
           ))}
         </DragDropProvider>

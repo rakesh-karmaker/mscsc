@@ -50,7 +50,8 @@ export default function FormSectionHeader({
           aria-describedby={sectionPopoverId}
         >
           <span className="w-full">
-            Section {currentNumber} of {totalSections}
+            Section {currentNumber} of{" "}
+            {sections.includes("contact") ? totalSections - 1 : totalSections}
           </span>
           <span
             className="text-base text-white transition-all duration-300"
@@ -95,21 +96,23 @@ export default function FormSectionHeader({
               >
                 {sectionNameMap["basic"]}
               </TableBtn>
-              {sections.map((section) => (
-                <TableBtn
-                  key={section}
-                  onClick={() => {
-                    handleFieldChange("jump", section);
-                    setSectionPopoverOpen(false);
-                  }}
-                  type="button"
-                  className={
-                    currentField === section ? "bg-highlighted-color/10" : ""
-                  }
-                >
-                  {sectionNameMap[section]}
-                </TableBtn>
-              ))}
+              {sections
+                .filter((s) => s != "contact")
+                .map((section) => (
+                  <TableBtn
+                    key={section}
+                    onClick={() => {
+                      handleFieldChange("jump", section);
+                      setSectionPopoverOpen(false);
+                    }}
+                    type="button"
+                    className={
+                      currentField === section ? "bg-highlighted-color/10" : ""
+                    }
+                  >
+                    {sectionNameMap[section]}
+                  </TableBtn>
+                ))}
               <TableBtn
                 onClick={() => {
                   handleFieldChange("jump", "final");

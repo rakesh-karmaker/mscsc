@@ -70,7 +70,11 @@ export async function submitTask(req: Request, res: Response): Promise<void> {
 
     // upload the image if exists
     if (req.file) {
-      const { url, imgId } = await uploadImage(req.file, true, `tasks/${slug}`);
+      const { url, imgId } = await uploadImage(
+        req.file,
+        false, // don't crop the image
+        `tasks/${slug}`,
+      );
       submission.poster = url;
       submission.posterId = imgId;
     }
@@ -164,7 +168,7 @@ export async function editSubmission(
         deleteFile(previousSubmission.posterId);
       }
       // upload the poster
-      const { url, imgId } = await uploadImage(file, true, `tasks/${slug}`);
+      const { url, imgId } = await uploadImage(file, false, `tasks/${slug}`);
 
       // add the poster
       updates["submissions.$.poster"] = url;

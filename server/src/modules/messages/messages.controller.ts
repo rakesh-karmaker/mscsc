@@ -75,7 +75,7 @@ export async function sendMessage(req: Request, res: Response): Promise<void> {
     // Create and save the message
     await Message.create(req.body);
     res.status(200).send({ message: "Message sent" });
-    logger.log("Message sent from contact form", {
+    logger.log("info", "Message sent from contact form", {
       name: req.body.name,
       email: req.body.email,
       source: req.body.source,
@@ -142,7 +142,7 @@ export async function deleteMessage(
     }
 
     res.status(200).send({ message: "Message deleted" });
-    logger.log("Message deleted", {
+    logger.log("info", "Message deleted", {
       email: message.email,
       deletedBy: req.user?._id,
     });

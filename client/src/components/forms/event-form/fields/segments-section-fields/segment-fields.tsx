@@ -30,6 +30,7 @@ export default function SegmentFields({
   getValues,
   register,
   setValue,
+  clearErrors,
 }: {
   id: string;
   length: number;
@@ -42,6 +43,9 @@ export default function SegmentFields({
   getValues: (payload?: string | string[]) => Object;
   register: any;
   setValue: (name: string, value: unknown, config?: SetValueConfig) => void;
+  clearErrors: (
+    name?: string | string[] | readonly string[] | undefined,
+  ) => void;
 }): ReactNode {
   const { ref, handleRef } = useSortable({ id: id, index });
 
@@ -246,12 +250,21 @@ export default function SegmentFields({
             <div className="w-full h-full flex flex-col gap-1.5">
               <RadioField
                 options={["yes", "no"]}
-                onClick={(option) =>
+                onClick={(option) => {
                   setValue(
                     `segmentsData.${index}.isPaidSegment`,
                     option === "yes",
-                  )
-                }
+                  );
+                  if (option === "no") {
+                    setValue(`segmentsData.${index}.fees`, "0");
+                    setValue(`segmentsData.${index}.transactionPlatforms`, []);
+                    setSelectedMethods([]);
+                    clearErrors([
+                      `segmentsData.${index}.fees`,
+                      `segmentsData.${index}.transactionPlatforms`,
+                    ]);
+                  }
+                }}
                 selectedOption={isPaidSegment ? "yes" : "no"}
                 errors={errors.segmentsData?.[index]?.isPaidSegment}
               >
@@ -289,6 +302,11 @@ export default function SegmentFields({
                               updatedMethods,
                             );
                             setSelectedMethods(updatedMethods);
+                            if (updatedMethods.length > 0) {
+                              clearErrors(
+                                `segmentsData.${index}.transactionPlatforms`,
+                              );
+                            }
                           }}
                         />
 

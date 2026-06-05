@@ -10,19 +10,17 @@ import {
   eventConfirmationDraft,
   eventRejectionDraft,
 } from "../utils/registration-drafts.js";
-import {
-  createOrUpdateEventTeams,
-  normalizeEmail,
-  normalizeTeamSegmentsData,
-  validateTeamSegmentsData,
-} from "../utils/event-registration.helpers.js";
-import { TeamSegmentData } from "../event.types.js";
+import { normalizeEmail } from "../utils/event-registration.helpers.js";
 import getGradeRange from "../utils/get-grade-range.js";
 import EventTeam from "../models/event-team.model.js";
 import ClubPartner from "../models/club-partner.model.js";
 import logger from "../../../shared/config/winston.js";
-import { deSlugify } from "../utils/de-slugify.js";
 import { generateSlugFromTitle } from "../../../shared/utils/generate-slug.js";
+import jwt from "jsonwebtoken";
+import config from "../../../shared/config/config.js";
+import { generateHash } from "../../../shared/utils/hash.js";
+
+const JWT_EXPIRATION = "1yr"; // Token valid for 1 year
 
 // get all event registrations
 export async function getAllEventRegistrations(
@@ -181,7 +179,7 @@ export async function registerForEvent(
   let publicId = "";
   let registrationId = "";
   let eventId = "";
-  let normalizedReference: string | undefined;
+  let reference = "";
 
   try {
     const eventSlug = req.params.eventSlug;
@@ -193,18 +191,18 @@ export async function registerForEvent(
     const body = req.body as Record<string, unknown>;
     const file = req.file;
 
-    if (
-      body &&
-      body.teamSegmentsData &&
-      typeof body.teamSegmentsData === "string"
-    ) {
-      try {
-        body.teamSegmentsData = JSON.parse(body.teamSegmentsData);
-      } catch (error) {
-        res.status(400).json({ message: "Invalid teamSegmentsData format" });
-        return;
-      }
-    }
+    // if (
+    //   body &&
+    //   body.teamSegmentsData &&
+    //   typeof body.teamSegmentsData === "string"
+    // ) {
+    //   try {
+    //     body.teamSegmentsData = JSON.parse(body.teamSegmentsData);
+    //   } catch (error) {
+    //     res.status(400).json({ message: "Invalid teamSegmentsData format" });
+    //     return;
+    //   }
+    // }
 
     const { error: validationError } = eventRegistrationSchema.validate(body);
     if (validationError) {
@@ -253,9 +251,10 @@ export async function registerForEvent(
       clubReference: body.clubReference
         ? String(body.clubReference).toUpperCase().trim()
         : undefined,
-      teamSegmentsData: normalizeTeamSegmentsData(body.teamSegmentsData),
+      // teamSegmentsData: normalizeTeamSegmentsData(body.teamSegmentsData),
     } as {
       email: string;
+      password: string;
       name: string;
       phoneNumber: string;
       facebookUrl: string;
@@ -268,10 +267,9 @@ export async function registerForEvent(
       transactionId: string;
       reference?: string;
       clubReference?: string;
-      teamSegmentsData?: Record<string, TeamSegmentData>;
     };
 
-    normalizedReference = cleanedBody.reference;
+    reference = cleanedBody.reference || "";
 
     const existingRegistration = await EventRegistration.findOne({
       eventId: event._id,
@@ -285,20 +283,20 @@ export async function registerForEvent(
       return;
     }
 
-    if (cleanedBody.teamSegmentsData) {
-      const teamValidationError = await validateTeamSegmentsData(
-        event._id,
-        cleanedBody.email,
-        cleanedBody.teamSegmentsData,
-      );
-      if (teamValidationError) {
-        res.status(400).json({
-          subject: `teamSegmentsData.${teamValidationError.segmentSlug}`,
-          message: teamValidationError.message,
-        });
-        return;
-      }
-    }
+    // if (cleanedBody.teamSegmentsData) {
+    //   const teamValidationError = await validateTeamSegmentsData(
+    //     event._id,
+    //     cleanedBody.email,
+    //     cleanedBody.teamSegmentsData,
+    //   );
+    //   if (teamValidationError) {
+    //     res.status(400).json({
+    //       subject: `teamSegmentsData.${teamValidationError.segmentSlug}`,
+    //       message: teamValidationError.message,
+    //     });
+    //     return;
+    //   }
+    // }
 
     const { url, imgId } = await uploadImage(
       file,
@@ -309,6 +307,9 @@ export async function registerForEvent(
       publicId = imgId;
     }
 
+    // hash the password
+    const hashedPassword = await generateHash(cleanedBody.password);
+
     let code = generateCode(6);
     while (await EventRegistration.exists({ eventId: event._id, code })) {
       code = generateCode(6);
@@ -316,15 +317,16 @@ export async function registerForEvent(
 
     const registration = await EventRegistration.create({
       eventId: event._id,
-      name: cleanedBody.name,
-      email: cleanedBody.email,
-      phoneNumber: cleanedBody.phoneNumber,
-      facebookUrl: cleanedBody.facebookUrl,
+      name: cleanedBody.name.trim(),
+      email: cleanedBody.email.trim().toLowerCase(),
+      password: hashedPassword,
+      phoneNumber: cleanedBody.phoneNumber.trim(),
+      facebookUrl: cleanedBody.facebookUrl.trim(),
       photoUrl: url,
       photoPublicId: imgId,
-      institution: cleanedBody.institution,
-      grade: cleanedBody.grade,
-      category: cleanedBody.category,
+      institution: cleanedBody.institution.trim(),
+      grade: cleanedBody.grade.trim(),
+      category: cleanedBody.category.trim(),
       segments: cleanedBody.segments.map((segment) =>
         generateSlugFromTitle(segment, false),
       ),
@@ -344,16 +346,43 @@ export async function registerForEvent(
     event.participantCount = (event.participantCount || 0) + 1;
     await event.save();
 
-    if (cleanedBody.teamSegmentsData) {
-      await createOrUpdateEventTeams(
-        event._id,
-        cleanedBody.email,
-        cleanedBody.teamSegmentsData,
-      );
-    }
+    await Event.findByIdAndUpdate(event._id, {
+      $inc: { participantCount: 1 },
+    });
 
-    res.status(201).json({ message: "Registration successful" });
-    logger.warn(
+    // generate JWT token
+    const token = jwt.sign({ _id: registration._id }, config.jwtSecret, {
+      expiresIn: JWT_EXPIRATION,
+    });
+
+    // get the team data
+    const teamSegmentsData = await EventTeam.find({
+      eventId: event._id,
+      $or: [
+        { leaderEmail: registration.email },
+        { memberEmails: { $in: [registration.email] } },
+      ],
+    })
+      .select(
+        "segmentSlug isPaidSegment transactionMethod teamName leaderEmail memberEmails status rejectionReason",
+      )
+      .lean();
+
+    res.status(201).json({
+      message: "Registration successful",
+      token,
+      registrationData: {
+        _id: registration._id,
+        name: registration.name,
+        email: registration.email,
+        photoUrl: registration.photoUrl,
+        paidSoloSegments: registration.paidSoloSegments,
+        teamSegmentsData,
+        status: registration.status,
+      },
+    });
+    logger.info(
+      "info",
       `New registration for event ${event.eventName}: ${registration.name} (${registration.email})`,
       {
         eventSlug,
@@ -362,6 +391,7 @@ export async function registerForEvent(
       },
     );
   } catch (error) {
+    console.log(error);
     if (publicId) {
       deleteFile(publicId);
     }
@@ -372,11 +402,11 @@ export async function registerForEvent(
       });
     }
 
-    if (normalizedReference && normalizedReference !== "N/A") {
+    if (reference && reference !== "N/A") {
       await EventCA.findOneAndUpdate(
         {
           eventId,
-          caCode: normalizedReference,
+          caCode: reference,
         },
         { $inc: { score: -1 } },
       );

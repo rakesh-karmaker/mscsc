@@ -12,6 +12,11 @@ import {
   isAuthorized,
 } from "../../../shared/middlewares/auth-middleware.js";
 import upload from "../../../shared/middlewares/multer.js";
+import {
+  getRegistrationData,
+  loginParticipant,
+  verifyRegistrationToken,
+} from "../controllers/event-auth.controller.js";
 
 const eventRegistrationRouter = Router();
 
@@ -29,11 +34,28 @@ eventRegistrationRouter.get(
   getRegistrationById,
 );
 
+eventRegistrationRouter.get(
+  "/:eventSlug/registrations/:registrationId/verify",
+  isAuthorized,
+  verifyRegistrationToken,
+);
+
+eventRegistrationRouter.get(
+  "/:eventSlug/registrations/:registrationId/get-data",
+  isAuthorized,
+  getRegistrationData,
+);
+
 // POST route for registering for an event
 eventRegistrationRouter.post(
   "/:eventSlug/register",
   upload.single("photo"),
   registerForEvent,
+);
+
+eventRegistrationRouter.post(
+  "/:eventSlug/registrations/:registrationId/login",
+  loginParticipant,
 );
 
 // PATCH routes for validating and editing a registration

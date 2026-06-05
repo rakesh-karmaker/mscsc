@@ -26,11 +26,13 @@ import urlChanger from "../utils/url-changer.js";
 // get all events
 export async function getAllEvents(req: Request, res: Response): Promise<void> {
   try {
-    const events = await Event.find().select(
-      req.headers.shorten === "true"
-        ? "eventName eventSlug"
-        : "eventName eventSlug eventLogoUrl eventBannerUrl eventDescription eventLocation eventDate participantCount segments",
-    );
+    const events = await Event.find()
+      .select(
+        req.headers.shorten === "true"
+          ? "eventName eventSlug"
+          : "eventName eventSlug eventLogoUrl eventBannerUrl eventDescription eventLocation eventDate participantCount segments",
+      )
+      .lean();
 
     res.status(200).send(events);
   } catch (err) {
@@ -260,11 +262,15 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
       message: "Event created successfully",
       eventSlug: newEvent.eventSlug,
     });
-    logger.log(`Event created: ${newEvent.eventName} (${newEvent._id})`, {
-      eventId: newEvent._id,
-      eventSlug: newEvent.eventSlug,
-      creator: req.user?._id,
-    });
+    logger.log(
+      "info",
+      `Event created: ${newEvent.eventName} (${newEvent._id})`,
+      {
+        eventId: newEvent._id,
+        eventSlug: newEvent.eventSlug,
+        creator: req.user?._id,
+      },
+    );
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
@@ -390,7 +396,7 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
         eventDescription: eventData.eventDescription,
         eventLocation: eventData.eventLocation,
         eventDate: eventData.eventDate,
-        participantCount: 0,
+        participantCount: existingEvent.participantCount,
         segments: eventData.segmentsData
           ? eventData.segmentsData.map((segment) => {
               return {
@@ -416,6 +422,7 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
 
     res.status(201).send({ eventSlug: newSlug });
     logger.log(
+      "info",
       `Event Updated: ${updatedEvent.eventName} (${updatedEvent._id})`,
       {
         eventId: updatedEvent._id,
@@ -473,12 +480,16 @@ export async function editEventMeta(
     await event.save();
 
     res.status(200).send({ message: "Event meta updated successfully" });
-    logger.log(`Event meta updated: ${event.eventName} (${event._id})`, {
-      eventId: event._id,
-      eventSlug: event.eventSlug,
-      updatedFields: Object.keys(body),
-      updater: req.user?._id,
-    });
+    logger.log(
+      "info",
+      `Event meta updated: ${event.eventName} (${event._id})`,
+      {
+        eventId: event._id,
+        eventSlug: event.eventSlug,
+        updatedFields: Object.keys(body),
+        updater: req.user?._id,
+      },
+    );
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
@@ -519,7 +530,7 @@ export async function deleteEvent(req: Request, res: Response): Promise<void> {
     }
 
     res.status(200).send({ message: "Event deleted successfully" });
-    logger.log(`Event deleted: ${event.eventName} (${event._id})`, {
+    logger.log("info", `Event deleted: ${event.eventName} (${event._id})`, {
       eventId: event._id,
       eventSlug: event.eventSlug,
       deletedBy: req.user?._id,

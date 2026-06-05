@@ -57,7 +57,11 @@ export default function EventForm({
     method: "next" | "previous" | "jump",
     jumpToField?: string,
   ) {
-    const sections: string[] = ["basic", ...filteredSections, "final"];
+    const sections: string[] = [
+      "basic",
+      ...filteredSections.filter((s) => s != "contact"),
+      "final",
+    ];
 
     if (method === "jump" && jumpToField) {
       setCurrentField(jumpToField);
@@ -243,6 +247,7 @@ export default function EventForm({
             isSectionSelected={selectedSections.includes("segments")}
             getValues={getValues}
             setValue={setValue}
+            clearErrors={clearErrors}
           />
         )}
 

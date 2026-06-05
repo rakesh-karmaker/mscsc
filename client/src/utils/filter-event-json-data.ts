@@ -167,7 +167,7 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
           if (item.title && item.icon) {
             schedule.push({
               title: item.title,
-              date: dayjs(item.date).toISOString(),
+              date: dayjs(date, "MMM D, YYYY").toISOString(),
               icon: item.icon,
               fromTime: item.fromTime,
               toTime: item.toTime,
