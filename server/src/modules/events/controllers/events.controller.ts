@@ -22,6 +22,8 @@ import { buildEventData } from "../services/event-data.service.js";
 import { processEventAssets } from "../services/event-files-upload.service.js";
 import ClubPartner from "../models/club-partner.model.js";
 import urlChanger from "../utils/url-changer.js";
+import jwt from "jsonwebtoken";
+import config from "../../../shared/config/config.js";
 
 // get all events
 export async function getAllEvents(req: Request, res: Response): Promise<void> {
@@ -144,6 +146,64 @@ export async function getEventBySlug(
         segments: event.segments,
       });
       return;
+    }
+
+    // if the request includes a valid registration token, include the registration data in the response
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer ")
+    ) {
+      const token = req.headers.authorization.split(" ")[1];
+      // Verify token
+      const verified = jwt.verify(token, config.jwtSecret) as { _id: string };
+      if (verified) {
+        const registration = await EventRegistration.findOne({
+          eventId: event._id,
+          _id: verified._id,
+        }).lean();
+
+        if (!registration) {
+          logger.warn(
+            "Token is valid but no registration found for this user and event",
+            {
+              eventId: event._id,
+              userId: verified._id,
+            },
+          );
+        } else {
+          const teamSegmentsData = await EventTeam.find({
+            eventId: event._id,
+            $or: [
+              { leaderEmail: registration.email },
+              { memberEmails: { $in: [registration.email] } },
+            ],
+          })
+            .select(
+              "segmentSlug isPaidSegment transactionMethod teamName leaderEmail memberEmails status rejectionReason",
+            )
+            .lean();
+
+          res.status(200).json({
+            message: "Sign in successful",
+            eventSlug: event.eventSlug,
+            dataUrl: event.dataUrl,
+            hideRegistrationForm: event.hideRegistrationForm,
+            hideCAForm: event.hideCAForm,
+            isHidden: event.isHidden,
+            participantCount: event.participantCount,
+            registrationData: {
+              _id: registration._id,
+              name: registration.name,
+              email: registration.email,
+              photoUrl: registration.photoUrl,
+              paidSoloSegments: registration.paidSoloSegments,
+              teamSegmentsData,
+              status: registration.status,
+            },
+          });
+          return;
+        }
+      }
     }
 
     res.status(200).send({

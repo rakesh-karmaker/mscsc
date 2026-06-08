@@ -48,41 +48,7 @@ export async function loginParticipant(
       res.status(401).json({ message: "Invalid credentials" });
       return;
     }
-  } catch (error) {
-    res.status(500).json({ message: "Error logging in participant" });
-    logger.error("Error logging in participant", { error });
-  }
-}
 
-// verify registration token and return registration data
-export async function verifyRegistrationToken(
-  req: Request,
-  res: Response,
-): Promise<void> {
-  const eventSlug = req.params.eventSlug;
-  const id = req.user?._id;
-  if (!eventSlug || !id) {
-    res.status(400).json({ message: "Event slug and user ID are required" });
-    return;
-  }
-
-  try {
-    const event = await Event.findOne({ eventSlug });
-    if (!event) {
-      res.status(404).json({ message: "Event not found" });
-      return;
-    }
-
-    const registration = await EventRegistration.findOne({
-      eventId: event._id,
-      _id: id,
-    });
-    if (!registration) {
-      res.status(404).json({ message: "Registration not found" });
-      return;
-    }
-
-    // generate JWT token
     const token = jwt.sign({ _id: registration._id }, config.jwtSecret, {
       expiresIn: JWT_EXPIRATION,
     });
@@ -100,7 +66,7 @@ export async function verifyRegistrationToken(
       .lean();
 
     res.status(200).json({
-      message: "Sign in successful",
+      message: "Login successful",
       token,
       registrationData: {
         _id: registration._id,
@@ -113,8 +79,8 @@ export async function verifyRegistrationToken(
       },
     });
   } catch (error) {
-    res.status(500).json({ message: "Error signing in participant" });
-    logger.error("Error signing in participant", { error });
+    res.status(500).json({ message: "Error logging in participant" });
+    logger.error("Error logging in participant", { error });
   }
 }
 
@@ -163,9 +129,11 @@ export async function getRegistrationData(
       .lean();
 
     res.status(200).json({
-      message: "Registration data fetched successfully",
-      registrationData: registration,
-      teamSegmentsData,
+      userData: {
+        ...registration,
+        teamSegmentsData,
+      },
+      bannerUrl: event.eventBannerUrl,
     });
   } catch (error) {
     res.status(500).json({ message: "Error fetching registration data" });

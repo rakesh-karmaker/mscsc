@@ -15,7 +15,6 @@ import upload from "../../../shared/middlewares/multer.js";
 import {
   getRegistrationData,
   loginParticipant,
-  verifyRegistrationToken,
 } from "../controllers/event-auth.controller.js";
 
 const eventRegistrationRouter = Router();
@@ -29,21 +28,16 @@ eventRegistrationRouter.get(
   isAdmin,
   getAllEventRegistrations,
 );
+
+eventRegistrationRouter.get(
+  "/:eventSlug/registrations/get-data",
+  isAuthorized,
+  getRegistrationData,
+);
+
 eventRegistrationRouter.get(
   "/:eventSlug/registrations/:registrationId",
   getRegistrationById,
-);
-
-eventRegistrationRouter.get(
-  "/:eventSlug/registrations/:registrationId/verify",
-  isAuthorized,
-  verifyRegistrationToken,
-);
-
-eventRegistrationRouter.get(
-  "/:eventSlug/registrations/:registrationId/get-data",
-  isAuthorized,
-  getRegistrationData,
 );
 
 // POST route for registering for an event

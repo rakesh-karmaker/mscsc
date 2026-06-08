@@ -36,14 +36,28 @@ import MdEmojiEmotions from "~icons/material-symbols/sentiment-satisfied";
 
 import "./custom-toolbar.css";
 
+export const OPTIONS = [
+  "fontSize",
+  "highlight",
+  "indents",
+  "align",
+  "code",
+  "quote",
+  "math",
+  "link",
+  "emoji",
+] as const;
+
 export function CustomToolbar({
   contentRef,
   onLinkClick,
   onMathClick,
+  options,
 }: {
   contentRef: RefObject<HTMLElement | null>;
   onLinkClick: () => void;
   onMathClick: (type: "block" | "inline") => void;
+  options: (typeof OPTIONS)[number][];
 }) {
   // Create refs for each dropdown to access them directly
   const headingDropdownRef = useRef<HTMLDivElement | null>(null);
@@ -726,40 +740,42 @@ export function CustomToolbar({
       </div>
 
       {/* Font Size */}
-      <div className="toolbar-dropdown">
-        <button
-          type="button"
-          className="toolbar-button toolbar-button-with-text"
-          onClick={(e) =>
-            positionDropdown(
-              e,
-              setShowFontSizeMenu,
-              showFontSizeMenu,
-              fontSizeDropdownRef as RefObject<HTMLDivElement>,
-            )
-          }
-          title="Font Size"
-        >
-          <span>Size</span>
-        </button>
-        {showFontSizeMenu && (
-          <div className="dropdown-menu" ref={fontSizeDropdownRef}>
-            {FONT_SIZES.map((size) => (
-              <button
-                type="button"
-                key={size}
-                className="dropdown-item"
-                onClick={() => {
-                  handleFontSize(size);
-                  setShowFontSizeMenu(false);
-                }}
-              >
-                {size}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+      {options.includes("fontSize") && (
+        <div className="toolbar-dropdown">
+          <button
+            type="button"
+            className="toolbar-button toolbar-button-with-text"
+            onClick={(e) =>
+              positionDropdown(
+                e,
+                setShowFontSizeMenu,
+                showFontSizeMenu,
+                fontSizeDropdownRef as RefObject<HTMLDivElement>,
+              )
+            }
+            title="Font Size"
+          >
+            <span>Size</span>
+          </button>
+          {showFontSizeMenu && (
+            <div className="dropdown-menu" ref={fontSizeDropdownRef}>
+              {FONT_SIZES.map((size) => (
+                <button
+                  type="button"
+                  key={size}
+                  className="dropdown-item"
+                  onClick={() => {
+                    handleFontSize(size);
+                    setShowFontSizeMenu(false);
+                  }}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="toolbar-separator"></div>
 
@@ -800,40 +816,45 @@ export function CustomToolbar({
       </div>
 
       {/* Highlight Color */}
-      <div className="toolbar-dropdown">
-        <button
-          type="button"
-          className="toolbar-button"
-          onClick={(e) =>
-            positionDropdown(
-              e,
-              setShowHighlightMenu,
-              showHighlightMenu,
-              highlightDropdownRef as RefObject<HTMLDivElement>,
-            )
-          }
-          title="Highlight Color"
-        >
-          <LuHighlighter />
-        </button>
-        {showHighlightMenu && (
-          <div className="dropdown-menu color-menu" ref={highlightDropdownRef}>
-            {HIGHLIGHT_COLORS.map((color) => (
-              <button
-                type="button"
-                key={color.value}
-                className="color-item"
-                style={{ backgroundColor: color.value }}
-                onClick={() => {
-                  handleHighlight(color.value);
-                  setShowHighlightMenu(false);
-                }}
-                title={color.name}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      {options.includes("highlight") && (
+        <div className="toolbar-dropdown">
+          <button
+            type="button"
+            className="toolbar-button"
+            onClick={(e) =>
+              positionDropdown(
+                e,
+                setShowHighlightMenu,
+                showHighlightMenu,
+                highlightDropdownRef as RefObject<HTMLDivElement>,
+              )
+            }
+            title="Highlight Color"
+          >
+            <LuHighlighter />
+          </button>
+          {showHighlightMenu && (
+            <div
+              className="dropdown-menu color-menu"
+              ref={highlightDropdownRef}
+            >
+              {HIGHLIGHT_COLORS.map((color) => (
+                <button
+                  type="button"
+                  key={color.value}
+                  className="color-item"
+                  style={{ backgroundColor: color.value }}
+                  onClick={() => {
+                    handleHighlight(color.value);
+                    setShowHighlightMenu(false);
+                  }}
+                  title={color.name}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="toolbar-separator"></div>
 
@@ -856,179 +877,207 @@ export function CustomToolbar({
         <LuListOrdered />
       </button>
 
-      <button
-        type="button"
-        className="toolbar-button"
-        onClick={handleOutdent}
-        title="Decrease Indent"
-      >
-        <LuIndentDecrease />
-      </button>
+      {options.includes("indents") && (
+        <>
+          <button
+            type="button"
+            className="toolbar-button"
+            onClick={handleOutdent}
+            title="Decrease Indent"
+          >
+            <LuIndentDecrease />
+          </button>
 
-      <button
-        type="button"
-        className="toolbar-button"
-        onClick={handleIndent}
-        title="Increase Indent"
-      >
-        <LuIndentIncrease />
-      </button>
+          <button
+            type="button"
+            className="toolbar-button"
+            onClick={handleIndent}
+            title="Increase Indent"
+          >
+            <LuIndentIncrease />
+          </button>
+        </>
+      )}
 
       <div className="toolbar-separator"></div>
 
       {/* Alignment */}
-      <button
-        type="button"
-        className="toolbar-button"
-        onClick={handleAlignLeft}
-        title="Align Left"
-      >
-        <LuAlignLeft />
-      </button>
+      {options.includes("align") && (
+        <>
+          <button
+            type="button"
+            className="toolbar-button"
+            onClick={handleAlignLeft}
+            title="Align Left"
+          >
+            <LuAlignLeft />
+          </button>
 
-      <button
-        type="button"
-        className="toolbar-button"
-        onClick={handleAlignCenter}
-        title="Align Center"
-      >
-        <LuAlignCenter />
-      </button>
+          <button
+            type="button"
+            className="toolbar-button"
+            onClick={handleAlignCenter}
+            title="Align Center"
+          >
+            <LuAlignCenter />
+          </button>
 
-      <button
-        type="button"
-        className="toolbar-button"
-        onClick={handleAlignRight}
-        title="Align Right"
-      >
-        <LuAlignRight />
-      </button>
+          <button
+            type="button"
+            className="toolbar-button"
+            onClick={handleAlignRight}
+            title="Align Right"
+          >
+            <LuAlignRight />
+          </button>
 
-      <div className="toolbar-separator"></div>
+          <div className="toolbar-separator"></div>
+        </>
+      )}
 
-      {/* Special Formatting */}
-      <button
-        type="button"
-        className="toolbar-button"
-        onClick={handleCodeBlock}
-        title="Code Block"
-      >
-        <LuCodeXml />
-      </button>
-
-      <button
-        type="button"
-        className="toolbar-button"
-        onClick={handleBlockquote}
-        title="Quote"
-      >
-        <LuQuote />
-      </button>
-
-      {/* Math */}
-      <div className="toolbar-dropdown">
-        <button
-          type="button"
-          className="toolbar-button"
-          onClick={(e) =>
-            positionDropdown(
-              e,
-              setShowMathMenu,
-              showMathMenu,
-              mathDropdownRef as RefObject<HTMLDivElement>,
-            )
-          }
-          title="Math"
-        >
-          <TbPlusEqual />
-        </button>
-        {showMathMenu && (
-          <div className="dropdown-menu" ref={mathDropdownRef}>
+      {options.includes("code") ||
+      options.includes("quote") ||
+      options.includes("math") ? (
+        <>
+          {/* Special Formatting */}
+          {options.includes("code") && (
             <button
               type="button"
-              className="dropdown-item"
-              onClick={() => {
-                onMathClick("inline");
-                setShowMathMenu(false);
-              }}
+              className="toolbar-button"
+              onClick={handleCodeBlock}
+              title="Code Block"
             >
-              Inline Math
+              <LuCodeXml />
             </button>
+          )}
+
+          {options.includes("quote") && (
             <button
               type="button"
-              className="dropdown-item"
-              onClick={() => {
-                onMathClick("block");
-                setShowMathMenu(false);
-              }}
+              className="toolbar-button"
+              onClick={handleBlockquote}
+              title="Quote"
             >
-              Math Block
+              <LuQuote />
             </button>
-          </div>
-        )}
-      </div>
+          )}
 
-      <div className="toolbar-separator"></div>
-
-      {/* Links */}
-      <button
-        type="button"
-        className="toolbar-button"
-        onClick={handleLinkClick}
-        title="Add Link"
-      >
-        <LuLink />
-      </button>
-
-      <button
-        type="button"
-        className="toolbar-button"
-        onClick={handleUnlink}
-        title="Remove Link"
-      >
-        <LuUnlink />
-      </button>
-
-      <div className="toolbar-separator"></div>
-
-      {/* Emojis */}
-      <div className="toolbar-dropdown">
-        <button
-          type="button"
-          className="toolbar-button"
-          onClick={(e) =>
-            positionDropdown(
-              e,
-              setShowEmojiMenu,
-              showEmojiMenu,
-              emojiDropdownRef as RefObject<HTMLDivElement>,
-            )
-          }
-          title="Emoji"
-        >
-          <MdEmojiEmotions />
-        </button>
-        {showEmojiMenu && (
-          <div className="dropdown-menu emoji-menu" ref={emojiDropdownRef}>
-            {EMOJIS.map((emoji) => (
+          {/* Math */}
+          {options.includes("math") && (
+            <div className="toolbar-dropdown">
               <button
                 type="button"
-                key={emoji}
-                className="emoji-item"
-                onClick={() => {
-                  handleEmoji(emoji);
-                  setShowEmojiMenu(false);
-                }}
-                title={emoji}
+                className="toolbar-button"
+                onClick={(e) =>
+                  positionDropdown(
+                    e,
+                    setShowMathMenu,
+                    showMathMenu,
+                    mathDropdownRef as RefObject<HTMLDivElement>,
+                  )
+                }
+                title="Math"
               >
-                {emoji}
+                <TbPlusEqual />
               </button>
-            ))}
-          </div>
-        )}
-      </div>
+              {showMathMenu && (
+                <div className="dropdown-menu" ref={mathDropdownRef}>
+                  <button
+                    type="button"
+                    className="dropdown-item"
+                    onClick={() => {
+                      onMathClick("inline");
+                      setShowMathMenu(false);
+                    }}
+                  >
+                    Inline Math
+                  </button>
+                  <button
+                    type="button"
+                    className="dropdown-item"
+                    onClick={() => {
+                      onMathClick("block");
+                      setShowMathMenu(false);
+                    }}
+                  >
+                    Math Block
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
 
-      <div className="toolbar-separator"></div>
+          <div className="toolbar-separator"></div>
+        </>
+      ) : null}
+
+      {/* Links */}
+      {options.includes("link") && (
+        <>
+          <button
+            type="button"
+            className="toolbar-button"
+            onClick={handleLinkClick}
+            title="Add Link"
+          >
+            <LuLink />
+          </button>
+
+          <button
+            type="button"
+            className="toolbar-button"
+            onClick={handleUnlink}
+            title="Remove Link"
+          >
+            <LuUnlink />
+          </button>
+
+          <div className="toolbar-separator"></div>
+        </>
+      )}
+
+      {/* Emojis */}
+      {options.includes("emoji") && (
+        <>
+          <div className="toolbar-dropdown">
+            <button
+              type="button"
+              className="toolbar-button"
+              onClick={(e) =>
+                positionDropdown(
+                  e,
+                  setShowEmojiMenu,
+                  showEmojiMenu,
+                  emojiDropdownRef as RefObject<HTMLDivElement>,
+                )
+              }
+              title="Emoji"
+            >
+              <MdEmojiEmotions />
+            </button>
+            {showEmojiMenu && (
+              <div className="dropdown-menu emoji-menu" ref={emojiDropdownRef}>
+                {EMOJIS.map((emoji) => (
+                  <button
+                    type="button"
+                    key={emoji}
+                    className="emoji-item"
+                    onClick={() => {
+                      handleEmoji(emoji);
+                      setShowEmojiMenu(false);
+                    }}
+                    title={emoji}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="toolbar-separator"></div>
+        </>
+      )}
 
       {/* Undo/Redo */}
       <button

@@ -5,7 +5,7 @@ import {
   useEffect,
   type RefObject,
 } from "react";
-import { CustomToolbar } from "./custom-toolbar";
+import { CustomToolbar, OPTIONS } from "./custom-toolbar";
 import type { UseFormRegister, Path } from "react-hook-form";
 
 // Import KaTeX for math rendering
@@ -17,10 +17,12 @@ export default function RichTextEditor<T extends { content: string }>({
   content = "",
   label = "content",
   register,
+  options = ["quote", "math", "link"],
 }: {
   content: string;
   label?: string;
   register: UseFormRegister<T>;
+  options?: (typeof OPTIONS)[number][];
 }) {
   const [showLinkMenu, setShowLinkMenu] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
@@ -53,7 +55,7 @@ export default function RichTextEditor<T extends { content: string }>({
       return;
 
     const mathElements = contentRef.current.querySelectorAll(
-      "[data-math-formula]"
+      "[data-math-formula]",
     );
     mathElements.forEach((el) => {
       try {
@@ -247,7 +249,7 @@ export default function RichTextEditor<T extends { content: string }>({
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
       setSavedSelection(
-        selection.getRangeAt(0).cloneRange() as unknown as null
+        selection.getRangeAt(0).cloneRange() as unknown as null,
       );
     }
   }, []);
@@ -285,7 +287,7 @@ export default function RichTextEditor<T extends { content: string }>({
       setShowMathMenu(true);
       setMathInput("");
     },
-    [saveSelection]
+    [saveSelection],
   );
 
   // Generate a unique ID for math elements
@@ -298,7 +300,7 @@ export default function RichTextEditor<T extends { content: string }>({
     (e: MouseEvent) => {
       const target = e.target;
       const mathElement = (target as HTMLElement)?.closest(
-        "[data-math-formula]"
+        "[data-math-formula]",
       );
 
       if (mathElement) {
@@ -326,7 +328,7 @@ export default function RichTextEditor<T extends { content: string }>({
         }
       }
     },
-    [saveSelection]
+    [saveSelection],
   );
 
   // Add a function to handle paste events for automatic link detection
@@ -361,7 +363,7 @@ export default function RichTextEditor<T extends { content: string }>({
         }
       }
     },
-    [handleContentChange]
+    [handleContentChange],
   );
 
   // Add a helper function to validate URLs
@@ -392,7 +394,7 @@ export default function RichTextEditor<T extends { content: string }>({
         if (mathElement.nextSibling) {
           mathElement.parentNode?.insertBefore(
             paragraph,
-            mathElement.nextSibling
+            mathElement.nextSibling,
           );
         } else {
           mathElement.parentNode?.appendChild(paragraph);
@@ -436,7 +438,7 @@ export default function RichTextEditor<T extends { content: string }>({
 
     // Create a math element
     const mathElement = document.createElement(
-      mathType === "inline" ? "span" : "div"
+      mathType === "inline" ? "span" : "div",
     );
     mathElement.className =
       mathType === "inline" ? "math-inline" : "math-block";
@@ -600,7 +602,7 @@ export default function RichTextEditor<T extends { content: string }>({
       saveToUndoStack,
       ensureContentStructure,
       isContentEmpty,
-    ]
+    ],
   );
   // Add a focus handler to ensure proper structure when the editor gets focus
   const handleFocus = useCallback(() => {
@@ -683,10 +685,11 @@ export default function RichTextEditor<T extends { content: string }>({
         contentRef={contentRef}
         onLinkClick={handleLinkClick}
         onMathClick={handleMathClick}
+        options={options}
       />
 
       <div
-        className="editor-content"
+        className="editor-content bg-primary-bg rounded-b-lg"
         ref={contentRef as RefObject<HTMLDivElement>}
         contentEditable={true}
         onInput={handleContentChange}
