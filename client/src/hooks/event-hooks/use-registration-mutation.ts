@@ -4,6 +4,7 @@ import {
   editRegistration,
 } from "@/lib/api/event/event-registrations";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { AxiosError, AxiosResponse } from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
@@ -57,7 +58,9 @@ export default function useRegistrationMutation() {
       }
       return Promise.reject(new Error("Invalid method or data"));
     },
-    onSuccess: () => {
+    onSuccess: (
+      res: AxiosResponse<{ message: string; emailSentError?: boolean }>,
+    ) => {
       if (currentMethod == "delete") {
         queryClient.invalidateQueries({
           queryKey: ["event", eventSlug],
@@ -66,8 +69,20 @@ export default function useRegistrationMutation() {
       queryClient.invalidateQueries({
         queryKey: ["event-registrations", eventSlug],
       });
-      toast.success("Registration updated successfully");
+      if (res.data.emailSentError) {
+        toast.error(
+          "Registration updated but failed to send email. Check the logs",
+        );
+      }
+      toast.success(res.data.message || "Operation successful");
+      if (res.data?.emailSentError) {
+        toast.error("Error sending email. Check log");
+      }
+
       setCurrentMethod(null);
+    },
+    onError: (error: AxiosError<{ message?: string }>) => {
+      toast.error(error.response?.data?.message || "An error occurred");
     },
   });
 

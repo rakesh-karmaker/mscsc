@@ -40,7 +40,7 @@ export async function getAllEventRegistrations(
     name?: string;
     status?: (typeof statusOptions)[number][];
     category?: string[];
-    segments?: string[];
+    segment?: string | string[];
     code?: string;
     transactionMethod?: string[];
     sort?: string[];
@@ -48,7 +48,7 @@ export async function getAllEventRegistrations(
 
   try {
     // find the event by slug
-    const event = await Event.findOne({ eventSlug }).lean();
+    const event = await Event.findOne({ eventSlug }).select("_id").lean();
     if (!event) {
       res.status(404).json({ message: "Event not found" });
       return;
@@ -62,10 +62,15 @@ export async function getAllEventRegistrations(
       params.status && params.status.length > 0
         ? { status: { $in: params.status } }
         : {};
-    const segmentsFilter =
-      params.segments && params.segments.length > 0
-        ? { segments: { $in: params.segments } }
-        : {};
+    const segmentsFilter = params.segment
+      ? {
+          segments: {
+            $in: Array.isArray(params.segment)
+              ? params.segment
+              : [params.segment],
+          },
+        }
+      : {};
     const transactionMethodFilter =
       params.transactionMethod && params.transactionMethod.length > 0
         ? { transactionMethod: { $in: params.transactionMethod } }
@@ -99,8 +104,9 @@ export async function getAllEventRegistrations(
           : { createdAt: -1 },
       )
       .select(
-        "_id name photoUrl email phoneNumber status hasAttended grade code transactionMethod registrationDate segments",
-      );
+        "_id name photoUrl email phoneNumber status hasAttended grade code transactionMethod registrationDate segments paidSoloSegments.segmentSlug paidSoloSegments.status",
+      )
+      .lean();
 
     const totalCount = registrations.length;
     const paginatedRegistrations = registrations.slice(skip, skip + perPage);
@@ -133,7 +139,7 @@ export async function getRegistrationById(
     const registration = await EventRegistration.findById(registrationId)
       .lean()
       .select(
-        "_id eventId name email phoneNumber facebookUrl photoUrl institution grade segments transactionMethod transactionPhoneNumber transactionId registrationDate status rejectionReason code reference clubReference",
+        "_id eventId name email phoneNumber facebookUrl photoUrl institution grade segments transactionMethod transactionPhoneNumber transactionId registrationDate status rejectionReason code reference clubReference paidSoloSegments",
       );
     if (!registration) {
       res.status(404).json({ message: "Registration not found" });
@@ -430,6 +436,8 @@ export async function changeRegistrationStatus(
       return;
     }
 
+    let emailSentError = false;
+
     // send the registration mail
     if (body.status === "validated") {
       if (registration.reference && registration.reference !== "N/A") {
@@ -472,7 +480,7 @@ export async function changeRegistrationStatus(
         }
       }
 
-      await sendEmail(
+      const emailSent = await sendEmail(
         registration.email,
         `Registration Confirmed for ${registration.name}`,
         eventConfirmationDraft({
@@ -482,6 +490,9 @@ export async function changeRegistrationStatus(
           logoUrl: event.eventLogoUrl,
         }),
       );
+      if (!emailSent) {
+        emailSentError = true;
+      }
     } else if (body.status === "rejected") {
       // if the registration was previously validated and had a reference code, decrement the score of the corresponding CA
       if (
@@ -513,7 +524,7 @@ export async function changeRegistrationStatus(
           { $inc: { score: -1 } },
         );
       }
-      await sendEmail(
+      const emailSent = await sendEmail(
         registration.email,
         `Registration Rejected for ${registration.name}`,
         eventRejectionDraft({
@@ -522,6 +533,9 @@ export async function changeRegistrationStatus(
           reason: body.rejectionReason || "N/A",
         }),
       );
+      if (!emailSent) {
+        emailSentError = true;
+      }
     }
 
     registration.status = body.status;
@@ -530,10 +544,11 @@ export async function changeRegistrationStatus(
     }
     await registration.save();
 
-    res
-      .status(200)
-      .json({ message: "Registration status changed and email sent" });
-    logger.warn(
+    res.status(200).json({
+      message: "Registration status changed and email sent",
+      emailSentError,
+    });
+    logger.info(
       `Registration status changed to ${registration.status} for ${registration.name} (${registration.email})`,
       {
         eventSlug,

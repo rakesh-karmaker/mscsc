@@ -13,6 +13,7 @@ import RegistrationDetailsModel from "../registrations-table/registration-detail
 import type { EventTeamData } from "@/types/event/event-team-types";
 import { TeamStatusTag } from "@/utils/get-status-tags";
 import TeamActions from "./team-actions";
+import capitalize from "@/utils/capitalize";
 
 export default function TeamDetails({
   teamId,
@@ -174,6 +175,31 @@ export default function TeamDetails({
           <p className="text-gray-500">No members added to the team.</p>
         )}
       </div>
+
+      {teamData.isPaidSegment ? (
+        <div>
+          <h3 className="text-xl mb-1!">Transaction Details:</h3>
+          <div className="flex flex-col gap-1"></div>
+          <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
+            <span>Transaction Method: </span>
+            <span className="font-medium ml-1!">
+              {capitalize(teamData.transactionMethod || "N/A")}
+            </span>
+          </div>
+          <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
+            <span>Phone Number: </span>
+            <span className="font-medium ml-1!">
+              {teamData.transactionPhoneNumber || "N/A"}
+            </span>
+          </div>
+          <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
+            <span>Transaction ID: </span>
+            <span className="font-medium ml-1!">
+              {teamData.transactionId || "N/A"}
+            </span>
+          </div>
+        </div>
+      ) : null}
 
       <TeamActions
         details={teamData}

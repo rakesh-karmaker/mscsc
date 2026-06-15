@@ -3,7 +3,7 @@ import getClubPartnersTableColumns from "./club-partners-table-header";
 import { useState, type ReactNode } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getClubAllPartners } from "@/lib/api/event/club-partner";
-import useClubPartnersSearchParams from "@/hooks/table-hooks/header-hooks/use-club-partners-search-params";
+import useGetClubPartnersSearchParams from "@/hooks/table-hooks/header-hooks/use-get-club-partners-search-params";
 import { useTable } from "@/hooks/table-hooks/use-table";
 import { Table } from "../../table/table";
 import { TablePagination } from "../../table/table-pagination";
@@ -16,7 +16,7 @@ export default function ClubPartnersTable(): ReactNode {
   const eventSlug = useParams().eventSlug!;
 
   const columns = getClubPartnersTableColumns(eventSlug);
-  const params = useClubPartnersSearchParams();
+  const params = useGetClubPartnersSearchParams();
 
   const [pageIndex, setPageIndex] = useState<number>(0);
   const [perPage, setPerPage] = useState<number>(10);

@@ -1,15 +1,15 @@
-import { type ReactNode } from "react";
-import getRegistrationsTableColumns from "./registrations-table-header";
-import useGetRegistrationsSearchParams from "@/hooks/table-hooks/header-hooks/use-get-registrations-search-params";
-import { getRegistrations } from "@/lib/api/event/event-registrations";
+import type { ReactNode } from "react";
 import { useParams } from "react-router-dom";
+import getTeamsTableColumns from "./teams-table-header";
+import useGetTeamsSearchParams from "@/hooks/table-hooks/header-hooks/use-get-teams-search-params";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { getTeams } from "@/lib/api/event/event-teams";
 import { useTable } from "@/hooks/table-hooks/use-table";
 import { Table } from "../../table/table";
-import TableToolbar from "../../table/table-toolbar";
 import { TablePagination } from "../../table/table-pagination";
+import TableToolbar from "../../table/table-toolbar";
 
-export default function RegistrationsTable({
+export default function TeamsTable({
   segments,
 }: {
   segments: {
@@ -21,15 +21,12 @@ export default function RegistrationsTable({
 }): ReactNode {
   const eventSlug = useParams().eventSlug!;
 
-  const params = useGetRegistrationsSearchParams();
-  const columns = getRegistrationsTableColumns(
-    segments,
-    params.regSegment || "",
-  );
+  const columns = getTeamsTableColumns(segments);
+  const params = useGetTeamsSearchParams();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["event-registrations", eventSlug, params],
-    queryFn: () => getRegistrations(params, eventSlug).then((res) => res.data),
+    queryKey: ["event-teams", eventSlug, params],
+    queryFn: () => getTeams(eventSlug, params).then((res) => res.data),
     staleTime: 1000 * 60 * 5, // 5 minutes
     placeholderData: keepPreviousData,
   });
@@ -40,10 +37,7 @@ export default function RegistrationsTable({
     initialState: {
       columnPinning: { right: ["actions"] },
       columnVisibility: {
-        regPhoneNumber: false,
-        regHasAttended: false,
-        regSegment: false,
-        regTransactionMethod: false,
+        teamSegments: false,
       },
     },
     pageCount: data?.selectedCount

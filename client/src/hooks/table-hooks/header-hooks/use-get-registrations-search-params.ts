@@ -25,7 +25,7 @@ export default function useGetRegistrationsSearchParams(): EventRegistrationsSea
     regCategory: parseAsArrayOf(
       parseAsStringEnum(["primary", "junior", "secondary", "higher secondary"]),
     ).withDefault([]),
-    regSegments: parseAsArrayOf(parseAsString).withDefault([]),
+    regSegment: parseAsString.withDefault(""),
     regCode: parseAsString.withDefault(""),
     regTransactionMethod: parseAsArrayOf(
       parseAsStringEnum(["bkash", "nagad", "rocket", "other"]),

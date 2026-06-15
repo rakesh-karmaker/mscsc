@@ -14,7 +14,7 @@ import {
 const teamsRouter = Router();
 
 // team routes
-teamsRouter.get("/:eventSlug/teams", isAuthorized, getAllTeams);
+teamsRouter.get("/:eventSlug/", isAuthorized, getAllTeams);
 teamsRouter.get("/:eventSlug/:teamId", isAuthorized, getTeamById);
 
 teamsRouter.post("/:eventSlug/create", isAuthorized, createSegmentTeam);

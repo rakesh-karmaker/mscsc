@@ -1,3 +1,4 @@
+import type { ExtendedColumnSort } from "../table-types";
 import type { EventRegistrationDetails } from "./event-registration-types";
 
 export interface EventTeamData {
@@ -24,9 +25,31 @@ export interface EventTeamData {
     EventRegistrationDetails,
     "_id" | "name" | "email" | "status" | "photoUrl"
   >;
+
+  createdAt: string;
 }
 
 export type EventTeamPreviewData = Pick<
   EventTeamData,
   "_id" | "segmentSlug" | "teamName" | "leaderEmail" | "memberEmails" | "status"
 >;
+
+export type EventTeamTableData = Pick<
+  EventTeamData,
+  | "_id"
+  | "segmentSlug"
+  | "teamName"
+  | "status"
+  | "isPaidSegment"
+  | "transactionMethod"
+  | "createdAt"
+>;
+
+export type EventTeamsSearchParams = {
+  page: number;
+  perPage: number;
+  sort: ExtendedColumnSort<EventTeamTableData>[];
+  teamName: string;
+  teamStatus: string[];
+  teamSegments: string[];
+};

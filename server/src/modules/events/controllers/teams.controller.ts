@@ -15,29 +15,76 @@ import { teamSchema } from "../schemas/team.schema.js";
 
 // get all teams
 export async function getAllTeams(req: Request, res: Response): Promise<void> {
-  const params: { eventSlug?: string; segmentSlug?: string } = req.query;
-  const eventSlug = params.eventSlug;
-  const segmentSlug = params.segmentSlug;
-  if (!eventSlug || !segmentSlug) {
-    res.status(400).json({ message: "Missing eventSlug or segmentSlug" });
+  const eventSlug = req.params.eventSlug;
+  if (!eventSlug) {
+    res.status(400).json({ message: "Event slug is required" });
     return;
   }
+  const statusOptions = ["pending", "approved", "rejected"] as const;
+
+  const params = req.query as {
+    page?: string;
+    perPage?: string;
+    sort?: string[];
+    teamName?: string;
+    status?: (typeof statusOptions)[number][];
+    segments?: string[];
+  };
 
   try {
     const event = await Event.findOne({
       eventSlug: eventSlug,
-    }).lean();
+    })
+      .select("_id")
+      .lean();
     if (!event) {
       res.status(404).json({ message: "Event not found" });
       return;
     }
 
-    const teams = await EventTeam.findOne({
-      eventId: event._id,
-      segmentSlug,
-    });
+    // parse and validate query parameters
+    const page = params.page ? parseInt(params.page) : 1;
+    const perPage = params.perPage ? parseInt(params.perPage) : 10;
+    const skip = (page - 1) * perPage;
+    const statusFilter =
+      params.status && params.status.length > 0
+        ? { status: { $in: params.status } }
+        : {};
+    const segmentsFilter =
+      params.segments && params.segments.length > 0
+        ? { segmentSlug: { $in: params.segments } }
+        : {};
+    const sort: { id: string; desc: boolean } | {} =
+      Array.isArray(params.sort) && params.sort.length > 0
+        ? params.sort[0]
+        : {};
 
-    res.json({ teams });
+    const teamNameFilter = params.teamName
+      ? { teamName: { $regex: params.teamName, $options: "i" } }
+      : {};
+
+    const teams = await EventTeam.find({
+      eventId: event._id,
+      ...statusFilter,
+      ...segmentsFilter,
+      ...teamNameFilter,
+    })
+      .sort(
+        sort && Object.keys(sort).length > 0 && "id" in sort && "desc" in sort
+          ? { [String(sort.id)]: sort.desc === "true" ? -1 : 1 }
+          : { createdAt: -1 },
+      )
+      .select(
+        "_id segmentSlug teamName status createdAt isPaidSegment transactionMethod",
+      )
+      .lean();
+
+    const totalCount = teams.length;
+    const paginatedTeams = teams.slice(skip, skip + perPage);
+
+    res
+      .status(200)
+      .json({ results: paginatedTeams, selectedCount: totalCount });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
     logger.error("Error fetching teams", {

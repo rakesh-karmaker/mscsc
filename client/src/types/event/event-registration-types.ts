@@ -1,5 +1,16 @@
 import type { ExtendedColumnSort } from "../table-types";
 
+export type PaidSoloSegments = {
+  segmentSlug: string;
+  fees: number;
+  transactionMethod: string;
+  transactionPhoneNumber: string;
+  transactionId: string;
+  status: "pending" | "validated" | "rejected";
+  rejectionReason: string;
+  registrationDate: string;
+};
+
 export interface EventRegistrationDetails {
   _id: string;
   eventId: string;
@@ -11,6 +22,7 @@ export interface EventRegistrationDetails {
   institution: string;
   grade: string;
   segments: string[];
+  paidSoloSegments: PaidSoloSegments[];
   transactionMethod: "bkash" | "nagad" | "rocket" | "Other";
   transactionPhoneNumber: string;
   transactionId: string;
@@ -37,7 +49,9 @@ export type EventRegistrationTableData = Pick<
   | "code"
   | "transactionMethod"
   | "registrationDate"
->;
+> & {
+  paidSoloSegments: Pick<PaidSoloSegments, "segmentSlug" | "status">[];
+};
 
 export type EventRegistrationsSearchParams = {
   page: number;
@@ -46,7 +60,7 @@ export type EventRegistrationsSearchParams = {
   regName: string;
   regStatus: string[];
   regCategory: string[];
-  regSegments: string[];
+  regSegment: string;
   regCode: string;
   regTransactionMethod: string[];
 };

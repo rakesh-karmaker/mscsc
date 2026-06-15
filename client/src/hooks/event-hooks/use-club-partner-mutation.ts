@@ -6,8 +6,8 @@ import {
 } from "@/lib/api/event/club-partner";
 import type { ClubPartnerFormData } from "@/lib/validation/club-partner-schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { AxiosError } from "axios";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import type { AxiosError, AxiosResponse } from "axios";
+import { type Dispatch, type SetStateAction } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
@@ -16,10 +16,6 @@ export default function useClubPartnerMutation(
 ) {
   const queryClient = useQueryClient();
   const eventSlug = useParams().eventSlug!;
-
-  const [currentMethod, setCurrentMethod] = useState<
-    "create" | "delete" | "changeStatus" | "edit" | null
-  >(null);
 
   const clubPartnerMutation = useMutation({
     mutationFn: ({
@@ -38,7 +34,6 @@ export default function useClubPartnerMutation(
             status: "active" | "inactive";
           };
     }) => {
-      setCurrentMethod(method);
       if (method === "create" && data && "formData" in data) {
         return createClubPartner(eventSlug, data.formData);
       } else if (
@@ -60,23 +55,14 @@ export default function useClubPartnerMutation(
       }
       return Promise.reject(new Error("Invalid method or data"));
     },
-    onSuccess: () => {
+    onSuccess: (res: AxiosResponse<{ message?: string }>) => {
       queryClient.invalidateQueries({
         queryKey: ["club-partners"],
       });
-      if (currentMethod == "delete") {
-        toast.success("Club partner deleted successfully");
-      } else if (currentMethod == "create") {
-        toast.success("Club partner created successfully");
-      } else if (currentMethod == "edit") {
-        toast.success("Club partner updated successfully");
-      } else if (currentMethod == "changeStatus") {
-        toast.success("Club partner status updated successfully");
-      }
-
+      toast.success(res.data.message || "Operation successful");
       if (setOpen) setOpen(false);
     },
-    onError: (e: AxiosError<{ message: string }>) => {
+    onError: (e: AxiosError<{ message?: string }>) => {
       console.error(e);
       toast.error(e?.response?.data?.message || "An error occurred");
     },

@@ -407,9 +407,10 @@ export async function editCAApplicationStatus(
       }
     }
 
+    let emailSentError = false;
     // send the CA application approval mail
     if (status === "approved") {
-      await sendEmail(
+      const emailSent = await sendEmail(
         caApplication.email,
         `CA Application Approved for ${event.eventName}`,
         caApplicationConfirmationDraft({
@@ -419,8 +420,11 @@ export async function editCAApplicationStatus(
           code: caCode.toString().toUpperCase(),
         }),
       );
+      if (!emailSent) {
+        emailSentError = true;
+      }
     } else if (status === "rejected") {
-      await sendEmail(
+      const emailSent = await sendEmail(
         caApplication.email,
         `CA Application Rejected for ${event.eventName}`,
         caApplicationRejectionDraft({
@@ -429,6 +433,9 @@ export async function editCAApplicationStatus(
           reason: req.body.rejectionReason || "N/A",
         }),
       );
+      if (!emailSent) {
+        emailSentError = true;
+      }
     }
 
     caApplication.status = status;
@@ -440,7 +447,12 @@ export async function editCAApplicationStatus(
     }
     await caApplication.save();
 
-    res.status(200).json({ message: "CA application updated and email sent" });
+    res
+      .status(200)
+      .json({
+        message: "CA application updated and email sent",
+        emailSentError,
+      });
     logger.info(`CA application changed to ${status}`, {
       eventSlug,
       applicationId,

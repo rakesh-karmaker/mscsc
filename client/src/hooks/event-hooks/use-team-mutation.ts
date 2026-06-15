@@ -5,7 +5,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
-export default function useTeamMutation(previousModels: {
+export default function useTeamMutation(previousModels?: {
   applications: string[];
   registrations: string[];
   teams: string[];
@@ -60,28 +60,26 @@ export default function useTeamMutation(previousModels: {
         queryClient.invalidateQueries({ queryKey: ["event"] });
       }
 
-      previousModels.teams.forEach((id) => {
+      previousModels?.teams.forEach((id) => {
         queryClient.invalidateQueries({
           queryKey: [`team-${eventSlug}-${id}`],
         });
       });
 
-      previousModels.registrations.forEach((id) => {
+      previousModels?.registrations.forEach((id) => {
         queryClient.invalidateQueries({
           queryKey: [`registration-${eventSlug}-${id}`],
         });
       });
 
-      previousModels.applications.forEach((id) => {
+      previousModels?.applications.forEach((id) => {
         queryClient.invalidateQueries({
           queryKey: [`application-${eventSlug}-${id}`],
         });
       });
 
       if (res.data.emailSentError) {
-        toast.error(
-          "Failed to send email to some team members. Check the logs for more details.",
-        );
+        toast.error("Error sending email. Check log");
       }
     },
     onError: (err: AxiosError<{ message?: string }>) => {

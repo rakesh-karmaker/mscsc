@@ -3,6 +3,7 @@ import { getRegistrationById } from "@/lib/api/event/event-registrations";
 import type {
   CaPreviewData,
   EventRegistrationDetails,
+  PaidSoloSegments,
 } from "@/types/event/event-registration-types";
 import capitalize from "@/utils/capitalize";
 import { deSlugify } from "@/utils/de-slugify";
@@ -16,7 +17,7 @@ import LuFacebook from "~icons/lucide/facebook";
 import LuMail from "~icons/lucide/mail";
 import LuPhone from "~icons/lucide/phone";
 import { useParams } from "react-router-dom";
-import TeamDetailsModel from "../team-details/team-details-model";
+import TeamDetailsModel from "../teams-table/team-details-model";
 import ProfilePreview from "../profile-preview";
 import type { EventTeamPreviewData } from "@/types/event/event-team-types";
 import ApplicationDetailsModel from "../ca-table/application-details-model";
@@ -177,6 +178,49 @@ export default function RegistrationDetails({
               ))}
           </div>
         </div>
+
+        {details.paidSoloSegments && (
+          <div className="col-span-2 max-md:col-span-1">
+            <h3 className="text-2xl mb-1.75!">Paid Solo Segments:</h3>
+            <div className="flex flex-col gap-1"></div>
+            {details.paidSoloSegments.length == 0 ? (
+              <p className="text-gray-600 ml-2!">
+                No paid solo segments available for this registration.
+              </p>
+            ) : (
+              <div className="w-full grid grid-cols-2 max-md:grid-cols-1 gap-10 max-md:gap-3">
+                {details.paidSoloSegments.map((segment: PaidSoloSegments) => {
+                  return (
+                    <div key={segment.segmentSlug} className="w-full h-full">
+                      <h4 className="text-lg mb-0.5! flex flex-wrap gap-1 [&>span]:text-xs">
+                        {deSlugify(segment.segmentSlug, false)}{" "}
+                        <RegistrationStatusTags
+                          details={segment}
+                          needAttendanceTag={false}
+                        />
+                      </h4>
+
+                      <div className="ml-2!">
+                        <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
+                          <span>Phone Number: </span>
+                          <span className="font-medium ml-1!">
+                            {segment.transactionPhoneNumber || "N/A"}
+                          </span>
+                        </div>
+                        <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
+                          <span>Transaction ID: </span>
+                          <span className="font-medium ml-1!">
+                            {segment.transactionId || "N/A"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="col-span-2 max-md:col-span-1">
           <h3 className="text-2xl mb-1.75!">Team Details:</h3>

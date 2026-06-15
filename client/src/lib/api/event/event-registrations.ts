@@ -12,7 +12,7 @@ export async function getRegistrations(
     name: params.regName,
     status: params.regStatus,
     category: params.regCategory,
-    segments: params.regSegments,
+    segment: params.regSegment,
     code: params.regCode,
     transactionMethod: params.regTransactionMethod,
   };

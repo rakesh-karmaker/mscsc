@@ -22,6 +22,7 @@ export default function getRegistrationsTableColumns(
     isPaidSegment: boolean;
     fees: number;
   }[],
+  selectedSegmentSlug: string | string[],
 ): ColumnDef<EventRegistrationTableData>[] {
   return [
     {
@@ -96,7 +97,28 @@ export default function getRegistrationsTableColumns(
       ),
       cell: ({ row }) => {
         let colorClasses = "";
-        switch (row.original.status) {
+        let status: string = row.original.status;
+        if (selectedSegmentSlug) {
+          const selectedSegmentSlugStr = Array.isArray(selectedSegmentSlug)
+            ? selectedSegmentSlug[0]
+            : selectedSegmentSlug;
+
+          const segmentInfo = segments.find(
+            (s) => s.segmentSlug === selectedSegmentSlugStr,
+          );
+          if (segmentInfo && segmentInfo.isPaidSegment) {
+            const paidSegment = row.original.paidSoloSegments.find(
+              (ps) => ps.segmentSlug === selectedSegmentSlugStr,
+            );
+            if (paidSegment) {
+              status = paidSegment.status;
+            } else {
+              status = "N/A";
+            }
+          }
+        }
+
+        switch (status) {
           case "pending":
             colorClasses = "bg-yellow-100 text-yellow-800";
             break;
@@ -106,6 +128,9 @@ export default function getRegistrationsTableColumns(
           case "rejected":
             colorClasses = "bg-red-100 text-red-800";
             break;
+          case "N/A":
+            colorClasses = "bg-gray-100 text-gray-800";
+            break;
           default:
             colorClasses = "bg-gray-100 text-gray-800";
         }
@@ -113,7 +138,7 @@ export default function getRegistrationsTableColumns(
           <span
             className={`px-2! py-1! rounded-xs text-xs font-medium ${colorClasses}`}
           >
-            {capitalize(row.original.status)}
+            {capitalize(status)}
           </span>
         );
       },
@@ -156,8 +181,8 @@ export default function getRegistrationsTableColumns(
       size: 130,
     },
     {
-      id: "regSegments",
-      accessorKey: "segments",
+      id: "regSegment",
+      accessorKey: "segment",
       header: ({ column }) => (
         <TableColumnHeader
           tId="registrations"
@@ -173,8 +198,8 @@ export default function getRegistrationsTableColumns(
         </p>
       ),
       meta: {
-        label: "Segments",
-        variant: "multiSelect",
+        label: "Segment",
+        variant: "select",
         options: segments.map((segment) => ({
           label: deSlugify(segment.segmentSlug, false),
           value: segment.segmentSlug,

@@ -15,6 +15,7 @@ import CaApplicationsTable from "@/components/tables/event/ca-table/ca-applicati
 import EventSettings from "@/components/events/event-settings";
 import ClubPartnersTable from "@/components/tables/event/club-partners-table/club-partners-table";
 import SegmentsDistributionChart from "@/components/charts/segments-distribution";
+import TeamsTable from "@/components/tables/event/teams-table/teams-table";
 
 export default function EventDashboard() {
   const eventSlug = useParams().eventSlug || "";
@@ -28,15 +29,22 @@ export default function EventDashboard() {
     queryFn: () => getEventBySlug(eventSlug, true).then((res) => res.data),
   });
 
-  const [tabValue, setTabValue] = useState<"registrations" | "caApplications">(
-    searchParams.get("tab") === "caApplications"
-      ? "caApplications"
+  const [tabValue, setTabValue] = useState<
+    "registrations" | "caApplications" | "teams"
+  >(
+    searchParams.get("tab") === "caApplications" ||
+      searchParams.get("tab") === "registrations" ||
+      searchParams.get("tab") === "teams"
+      ? (searchParams.get("tab") as
+          | "registrations"
+          | "caApplications"
+          | "teams")
       : "registrations",
   );
 
   function handleTabChange(
     _: React.SyntheticEvent,
-    newValue: "registrations" | "caApplications",
+    newValue: "registrations" | "caApplications" | "teams",
   ) {
     setTabValue(newValue);
     setSearchParams({
@@ -111,10 +119,13 @@ export default function EventDashboard() {
                 >
                   <Tab label="Registrations" value={"registrations"} />
                   <Tab label="CA Applications" value={"caApplications"} />
+                  <Tab label="Teams" value={"teams"} />
                 </Tabs>
               </Box>
               {tabValue === "registrations" ? (
                 <RegistrationsTable segments={eventData?.segments || []} />
+              ) : tabValue === "teams" ? (
+                <TeamsTable segments={eventData?.segments || []} />
               ) : (
                 <CaApplicationsTable />
               )}

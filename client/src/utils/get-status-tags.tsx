@@ -1,6 +1,9 @@
 import type { ReactNode } from "react";
 import capitalize from "./capitalize";
-import type { EventRegistrationDetails } from "@/types/event/event-registration-types";
+import type {
+  EventRegistrationDetails,
+  PaidSoloSegments,
+} from "@/types/event/event-registration-types";
 import type {
   EventTeamData,
   EventTeamPreviewData,
@@ -56,8 +59,10 @@ export function TeamStatusTag({
 
 export function RegistrationStatusTags({
   details,
+  needAttendanceTag = true,
 }: {
-  details: EventRegistrationDetails;
+  details: EventRegistrationDetails | PaidSoloSegments;
+  needAttendanceTag?: boolean;
 }): ReactNode {
   function getStatusTag(
     status: "pending" | "validated" | "rejected",
@@ -88,15 +93,17 @@ export function RegistrationStatusTags({
   return (
     <>
       <div className="flex gap-2 flex-wrap">
-        <span
-          className={`px-2! py-1! rounded-xs text-xs font-medium ${
-            details.hasAttended
-              ? "bg-green-100 text-green-800"
-              : "bg-red-100 text-red-800"
-          }`}
-        >
-          {details.hasAttended ? "Attended" : "Not Attended"}
-        </span>
+        {needAttendanceTag && "hasAttended" in details && (
+          <span
+            className={`px-2! py-1! rounded-xs text-xs font-medium ${
+              details.hasAttended
+                ? "bg-green-100 text-green-800"
+                : "bg-red-100 text-red-800"
+            }`}
+          >
+            {details.hasAttended ? "Attended" : "Not Attended"}
+          </span>
+        )}
         {getStatusTag(details.status)}
       </div>
       {details.status === "rejected" && details.rejectionReason && (
