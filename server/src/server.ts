@@ -1,9 +1,9 @@
 import app from "./app.js";
 import config from "./shared/config/config.js";
 import mongoose from "mongoose";
+import logger from "./shared/config/winston.js";
 import https from "https";
 import dns from "node:dns/promises";
-import logger from "./shared/config/winston.js";
 
 // Force DNS change if specified in config
 if (config.forceDNSChange) {

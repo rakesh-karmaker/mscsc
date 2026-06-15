@@ -54,15 +54,42 @@ export async function getAllMembersForTable(
   req: Request,
   res: Response,
 ): Promise<void> {
+  const branches = [
+    "Main Boys",
+    "Main Girls",
+    "Branch - 1",
+    "Branch - 2",
+    "Branch - 3",
+  ] as const;
+  // const positions = ["member", "admin"] as const; TODO: add more positions
+
+  const params = req.query as {
+    page?: string;
+    perPage?: string;
+    name?: string;
+    batch?: string;
+    branch?: (typeof branches)[number][];
+    position?: string[];
+    sort?: string;
+  };
+
   try {
-    const params = req.query;
+    // const params = req.query;
 
     // Parse and validate query parameters
-    const pageNumber = parseInt(params.page as string) || 1;
-    const perPage = parseInt(params.perPage as string) || 12;
-    const skip = (pageNumber - 1) * perPage;
-    const batch =
-      typeof params.batch === "string" ? parseInt(params.batch) : -1;
+    const page = params.page ? parseInt(params.page) : 1;
+    const perPage = params.perPage ? parseInt(params.perPage) : 10;
+    const skip = (page - 1) * perPage;
+    const batchFilter =
+      typeof params.batch === "string"
+        ? {
+            $eq: parseInt(params.batch),
+          }
+        : {};
+    const branchesFilter =
+      Array.isArray(params.branch) && params.branch.length > 0
+        ? { $in: params.branch }
+        : {};
     const branch = Array.isArray(params.branch) ? params.branch : [];
     const positions = Array.isArray(params.position) ? params.position : [];
     const sort: { id: string; desc: boolean } | {} =
@@ -78,8 +105,8 @@ export async function getAllMembersForTable(
     // fetch members based on filters
     const members = await Member.find({
       ...regex,
-      ...(batch !== -1 && { batch }),
-      ...(branch.length > 0 && { branch: { $in: branch } }),
+      ...batchFilter,
+      ...branchesFilter,
       ...(positions.length > 0 &&
         positions.includes("executive") && {
           position: new RegExp(`^(?!.*member).*$`, "i"),
@@ -91,7 +118,7 @@ export async function getAllMembersForTable(
     })
       .sort(
         sort && Object.keys(sort).length > 0 && "id" in sort && "desc" in sort
-          ? { [String(sort.id)]: sort.desc === "true" ? -1 : 1 }
+          ? { [String(sort.id)]: sort.desc.toString() === "true" ? -1 : 1 }
           : { createdAt: -1 },
       )
       .select(
@@ -282,7 +309,7 @@ export async function editMember(req: Request, res: Response): Promise<void> {
       }
 
       updates.position = updates.position?.trim() || previousUser.position;
-      logger.log("Member role or position edited", {
+      logger.info("Member role or position edited", {
         memberId: previousUser?._id,
         memberName: previousUser?.name,
         editor: req.user?._id,
@@ -330,7 +357,7 @@ export async function deleteMember(req: Request, res: Response): Promise<void> {
     }
 
     res.status(200).send({ message: "Member deleted successfully" });
-    logger.log("Member deleted", {
+    logger.info("Member deleted", {
       memberId: member._id,
       memberName: member.name,
       deletedBy: req.user?._id,

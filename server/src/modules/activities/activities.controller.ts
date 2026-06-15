@@ -209,7 +209,7 @@ export async function createActivity(
     console.log("Activity added successfully -", "\n---\n");
 
     res.status(200).send({ message: "Activity added" });
-    logger.log("Activity created", {
+    logger.info("Activity created", {
       activityTitle: body.title,
       activitySlug: slug,
       creator: req.user?._id,
@@ -294,7 +294,7 @@ export async function editActivity(req: Request, res: Response): Promise<void> {
     });
 
     res.status(200).send({ message: "Activity updated" });
-    logger.log("Activity edited", {
+    logger.info("Activity edited", {
       activitySlug: slug,
       editor: req.user?._id,
     });
@@ -336,7 +336,7 @@ export async function deleteActivity(
     activity.gallery.forEach((image) => deleteFile(image.imgId));
 
     res.status(200).send({ message: "Activity deleted" });
-    logger.log("Activity deleted", {
+    logger.info("Activity deleted", {
       activitySlug: slug,
       deletedBy: req.user?._id,
     });

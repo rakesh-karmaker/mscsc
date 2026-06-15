@@ -39,6 +39,7 @@ const EventSchema = new mongoose.Schema<EventSchemaType>(
     fees: { type: String, required: true, default: "N/A" },
 
     isHidden: { type: Boolean, required: true, default: false },
+    isTemplate: { type: Boolean, default: false },
 
     dataUrl: { type: String, required: true },
     dataPublicId: { type: String, required: true },

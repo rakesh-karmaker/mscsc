@@ -1,5 +1,6 @@
 import config from "../config/config.js";
 import axios from "axios";
+import logger from "../config/winston.js";
 
 export async function sendEmail(
   email: string,
@@ -15,13 +16,26 @@ export async function sendEmail(
     });
 
     if (res.status === 200) {
+      logger.info("log", "Email sent successfully", {
+        email: email,
+        subject: subject,
+      });
       console.log("Email sent successfully:", res.data);
     } else {
-      console.log("Error sending email:", res.data);
+      logger.error("Error sending email", {
+        email: email,
+        subject: subject,
+        error: res.data,
+      });
     }
 
-    return;
+    return res.status === 200;
   } catch (err) {
-    console.log("Error sending email - ", new Date(), "\n---\n", err);
+    logger.error("Error sending email", {
+      email: email,
+      subject: subject,
+      error: err,
+    });
+    return false;
   }
 }

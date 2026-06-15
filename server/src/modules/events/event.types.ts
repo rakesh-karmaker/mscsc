@@ -33,6 +33,7 @@ export interface EventSchemaType extends mongoose.Document {
   fees: string;
 
   isHidden: boolean;
+  isTemplate: boolean;
 
   dataUrl: string;
   dataPublicId: string;
@@ -65,6 +66,7 @@ export interface EventRegistrationSchemaType extends mongoose.Document {
     transactionId: string;
     status: "pending" | "validated" | "rejected";
     rejectionReason: string;
+    registrationDate: string;
   }[];
 
   transactionMethod: string;

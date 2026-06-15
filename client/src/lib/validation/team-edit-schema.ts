@@ -7,7 +7,7 @@ export const teamEditSchema = z.object({
     .min(2, "Team name must be at least 2 characters")
     .max(255),
   leaderEmail: z.string().email("Invalid email address").max(255),
-  status: z.enum(["registering", "pending", "approved"]),
+  status: z.enum(["pending", "approved", "rejected"]),
   memberEmails: z.any(),
 });
 

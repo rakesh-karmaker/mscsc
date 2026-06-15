@@ -94,7 +94,7 @@ export async function submitTask(req: Request, res: Response): Promise<void> {
     );
 
     res.status(200).send({ message: "Task submitted successfully" });
-    logger.log("Task submitted", {
+    logger.info("Task submitted", {
       taskId: task._id,
       taskName: task.name,
       submitterId: member._id,
@@ -279,7 +279,7 @@ export async function deleteSubmission(
     }
 
     res.status(200).send({ message: "Submission deleted successfully" });
-    logger.log("Task submission deleted", {
+    logger.info("Task submission deleted", {
       taskId: task._id,
       taskName: task.name,
       submitterName: member?.name,

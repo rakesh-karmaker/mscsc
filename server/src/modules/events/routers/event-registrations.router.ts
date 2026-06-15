@@ -16,6 +16,10 @@ import {
   getRegistrationData,
   loginParticipant,
 } from "../controllers/event-auth.controller.js";
+import {
+  addFreeSoloSegment,
+  addPaidSoloSegment,
+} from "../controllers/segments.controller.js";
 
 const eventRegistrationRouter = Router();
 
@@ -48,7 +52,7 @@ eventRegistrationRouter.post(
 );
 
 eventRegistrationRouter.post(
-  "/:eventSlug/registrations/:registrationId/login",
+  "/:eventSlug/registrations/login",
   loginParticipant,
 );
 
@@ -64,6 +68,17 @@ eventRegistrationRouter.patch(
   isAuthorized,
   isAdmin,
   editRegistration,
+);
+
+eventRegistrationRouter.patch(
+  "/:eventSlug/registrations/add-free-solo-segment",
+  isAuthorized,
+  addFreeSoloSegment,
+);
+eventRegistrationRouter.patch(
+  "/:eventSlug/registrations/add-paid-solo-segment",
+  isAuthorized,
+  addPaidSoloSegment,
 );
 
 // DELETE route for deleting a registration

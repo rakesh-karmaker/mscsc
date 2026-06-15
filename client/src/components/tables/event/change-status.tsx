@@ -18,7 +18,7 @@ export interface ChangeStatusProps {
   documentId: string;
   className?: string;
   insideModel?: boolean;
-  isCa?: boolean;
+  model?: "registration" | "application" | "team";
 }
 
 export default function ChangeStatus({
@@ -28,7 +28,7 @@ export default function ChangeStatus({
   documentId,
   className,
   insideModel,
-  isCa = false,
+  model = "registration",
 }: ChangeStatusProps): ReactNode {
   const [statusPopoverOpen, setStatusPopoverOpen] = useState<boolean>(false);
   const statusIcons = {
@@ -73,7 +73,7 @@ export default function ChangeStatus({
       >
         <div className="w-full h-full flex flex-col bg-primary-bg rounded-md border border-gray-300">
           {Object.keys(statusIcons)
-            .slice(0, isCa ? 1 : 2)
+            .slice(0, model !== "registration" ? 1 : 2)
             .map((status) => (
               <TableBtn
                 key={status}
@@ -91,14 +91,29 @@ export default function ChangeStatus({
               </TableBtn>
             ))}
 
-          <Activity mode={isCa ? "visible" : "hidden"}>
+          <Activity mode={model === "application" ? "visible" : "hidden"}>
             <ApproveStatus
               setOpen={setOpen}
               mutation={mutation}
               documentId={documentId}
               icon={statusIcons["validated" as keyof typeof statusIcons]}
-              isCa={isCa}
             />
+          </Activity>
+
+          <Activity mode={model === "team" ? "visible" : "hidden"}>
+            <TableBtn
+              onClick={() => {
+                mutation.mutate({
+                  method: "changeStatus",
+                  documentId: documentId,
+                  data: { status: "approved" },
+                });
+                handleStatusClose();
+              }}
+            >
+              {statusIcons["validated"]}
+              <p>Approved</p>
+            </TableBtn>
           </Activity>
 
           <RejectStatus
@@ -107,7 +122,7 @@ export default function ChangeStatus({
             documentId={documentId}
             icon={statusIcons["rejected" as keyof typeof statusIcons]}
             id={id}
-            isCa={isCa}
+            model={model}
           />
         </div>
       </Popover>
@@ -120,8 +135,11 @@ function RejectStatus({
   mutation,
   documentId,
   icon,
-  isCa = false,
-}: ChangeStatusProps & { icon: ReactNode; isCa: boolean }): ReactNode {
+  model = "registration",
+}: ChangeStatusProps & {
+  icon: ReactNode;
+  model: "registration" | "application" | "team";
+}): ReactNode {
   const [rejectModelOpen, setRejectModelOpen] = useState<boolean>(false);
 
   const { register, handleSubmit } = useForm({
@@ -155,8 +173,20 @@ function RejectStatus({
       <Modal
         open={rejectModelOpen}
         onClose={() => setRejectModelOpen(false)}
-        aria-labelledby={"Reject Registration"}
-        aria-describedby={"Provide a reason for rejecting this registration"}
+        aria-labelledby={`Reject ${
+          model === "application"
+            ? "Application"
+            : model === "registration"
+              ? "Registration"
+              : "Team"
+        }`}
+        aria-describedby={`Provide a reason for rejecting this ${
+          model === "application"
+            ? "application"
+            : model === "registration"
+              ? "registration"
+              : "team"
+        }`}
         className="flex items-center justify-center h-fit min-h-screen max-sm:overflow-y-auto absolute max-sm:bg-primary-bg border-none! outline-none! focus-visible:outline-none"
         onClick={(e) => {
           e.stopPropagation();
@@ -167,7 +197,12 @@ function RejectStatus({
             <div className="w-full flex flex-col">
               <div className="w-full flex justify-between items-start gap-4">
                 <h2 className="text-2xl font-medium max-xs:text-2xl">
-                  Reject {isCa ? "Application" : "Registration"}
+                  Reject{" "}
+                  {model === "application"
+                    ? "Application"
+                    : model === "registration"
+                      ? "Registration"
+                      : "Team"}
                 </h2>
                 <button
                   onClick={() => setRejectModelOpen(false)}
@@ -178,9 +213,19 @@ function RejectStatus({
               </div>
               <p className="text-gray-600 text-sm mt-3!">
                 Give a reason for rejecting this{" "}
-                {isCa ? "application" : "registration"} to let the member know.
-                This will be sent to the member via email and will be visible in
-                the {isCa ? "application" : "registration"} details.
+                {model === "application"
+                  ? "application"
+                  : model === "registration"
+                    ? "registration"
+                    : "team"}
+                to let the member know. This will be sent to the member via
+                email and will be visible in the{" "}
+                {model === "application"
+                  ? "application"
+                  : model === "registration"
+                    ? "registration"
+                    : "team"}
+                details.
               </p>
               <div className="w-full h-px bg-light-black/10 mt-2! mb-7!"></div>
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -198,7 +243,12 @@ function RejectStatus({
                       e.stopPropagation();
                     }}
                   >
-                    Reject {isCa ? "Application" : "Registration"}
+                    Reject{" "}
+                    {model === "application"
+                      ? "Application"
+                      : model === "registration"
+                        ? "Registration"
+                        : "Team"}
                   </button>
                 </div>
               </form>

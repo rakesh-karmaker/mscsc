@@ -5,21 +5,35 @@ import Event from "../models/event.model.js";
 import EventRegistration from "../models/event-registration.model.js";
 
 import { sendEmail } from "../../../shared/lib/mail-sender.js";
-import { teamRegistrationConfirmationDraft } from "../utils/team-registration-drafts.js";
+import {
+  teamRegistrationConfirmationDraft,
+  teamRegistrationRejectionDraft,
+} from "../utils/team-registration-drafts.js";
 import { deSlugify } from "../utils/de-slugify.js";
 import logger from "../../../shared/config/winston.js";
+import { teamSchema } from "../schemas/team.schema.js";
 
 // get all teams
 export async function getAllTeams(req: Request, res: Response): Promise<void> {
+  const params: { eventSlug?: string; segmentSlug?: string } = req.query;
+  const eventSlug = params.eventSlug;
+  const segmentSlug = params.segmentSlug;
+  if (!eventSlug || !segmentSlug) {
+    res.status(400).json({ message: "Missing eventSlug or segmentSlug" });
+    return;
+  }
+
   try {
-    const { eventId, segmentSlug } = req.query;
-    if (!eventId || !segmentSlug) {
-      res.status(400).json({ message: "Missing eventId or segmentSlug" });
+    const event = await Event.findOne({
+      eventSlug: eventSlug,
+    }).lean();
+    if (!event) {
+      res.status(404).json({ message: "Event not found" });
       return;
     }
 
-    const teams = await EventTeam.find({
-      eventId,
+    const teams = await EventTeam.findOne({
+      eventId: event._id,
       segmentSlug,
     });
 
@@ -29,7 +43,7 @@ export async function getAllTeams(req: Request, res: Response): Promise<void> {
     logger.error("Error fetching teams", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
-      eventId: req.query.eventId,
+      eventSlug: req.query.eventSlug,
       segmentSlug: req.query.segmentSlug,
     });
   }
@@ -57,7 +71,7 @@ export async function getTeamById(req: Request, res: Response): Promise<void> {
     const teamData = await EventTeam.aggregate([
       {
         $match: {
-          _id: new mongoose.Types.ObjectId(teamId),
+          _id: new mongoose.Types.ObjectId(teamId as string),
           eventId: new mongoose.Types.ObjectId(event._id.toString()),
         },
       },
@@ -148,20 +162,45 @@ export async function createSegmentTeam(
   req: Request,
   res: Response,
 ): Promise<void> {
-  try {
-    const { eventId, segmentSlug, teamName, leaderEmail, memberEmails } =
-      req.body;
+  const eventSlug = req.params.eventSlug;
+  const registrationId = req.user?._id;
 
-    if (!eventId || !segmentSlug || !teamName || !leaderEmail) {
-      res.status(400).json({ message: "Missing required fields" });
+  if (!eventSlug || !registrationId) {
+    res.status(400).json({ message: "Missing required fields" });
+    return;
+  }
+
+  const body = req.body;
+
+  try {
+    const { error: validationError } = teamSchema.validate(body);
+    if (validationError) {
+      res.status(400).json({ message: validationError.details[0].message });
+      return;
+    }
+
+    const { segmentSlug, teamName, leaderEmail, memberEmails } = body;
+
+    const event = await Event.findOne({ eventSlug })
+      .select("_id segments")
+      .lean();
+    if (!event) {
+      res.status(404).json({ message: "Event not found" });
+      return;
+    }
+
+    const segment = event.segments.find((s) => s.segmentSlug === segmentSlug);
+    if (!segment) {
+      res.status(400).json({ message: "Segment not found in event" });
       return;
     }
 
     // check if a team already exists for the event and segment
     const existingTeam = await EventTeam.findOne({
-      eventId,
+      eventId: event._id,
       segmentSlug,
       teamName,
+      status: { $in: ["pending", "approved"] },
     });
     if (existingTeam) {
       res.status(400).json({ message: "Team already exists for this segment" });
@@ -170,9 +209,10 @@ export async function createSegmentTeam(
 
     // check if the leader email is already used in another team for the same event and segment
     const existingLeader = await EventTeam.findOne({
-      eventId,
+      eventId: event._id,
       segmentSlug,
       leaderEmail,
+      status: { $in: ["pending", "approved"] },
     });
     if (existingLeader) {
       res.status(400).json({
@@ -182,11 +222,29 @@ export async function createSegmentTeam(
       return;
     }
 
+    // check if member emails are registered for the event
+    if (memberEmails && memberEmails.length > 0) {
+      for (const email of memberEmails) {
+        const registration = await EventRegistration.findOne({
+          eventId: event._id,
+          email: email,
+          status: { $in: ["pending", "validated"] },
+        }).lean();
+        if (!registration) {
+          res.status(404).json({
+            message: `Registration not found for member email: ${email}`,
+          });
+          return;
+        }
+      }
+    }
+
     // check if any member emails or the leader email are already used in another team for the same event and segment
     if (memberEmails && memberEmails.length > 0) {
       const existingMembers = await EventTeam.find({
-        eventId,
+        eventId: event._id,
         segmentSlug,
+        status: { $in: ["pending", "approved"] },
         memberEmails: { $in: [...memberEmails, leaderEmail] },
       });
       if (existingMembers.length > 0) {
@@ -199,23 +257,65 @@ export async function createSegmentTeam(
     }
 
     // create the team
-    const newTeam = new EventTeam({
-      eventId,
+    const newTeam = await EventTeam.create({
+      eventId: event._id,
       segmentSlug,
+      isPaidSegment: segment.isPaidSegment,
+      transactionMethod: segment.isPaidSegment ? body.transactionMethod : "",
+      transactionPhoneNumber: segment.isPaidSegment
+        ? body.transactionPhoneNumber
+        : "",
+      transactionId: segment.isPaidSegment ? body.transactionId : "",
       teamName,
       leaderEmail,
-      memberEmails: memberEmails || [],
-      status: "registering",
+      memberEmails,
     });
-    await newTeam.save();
 
-    res
-      .status(201)
-      .json({ message: "Team created successfully", team: newTeam });
-    logger.log("New team created manually for event segment", {
+    let leaderSegments: string[] = [];
+
+    // add segments to each member's registration and leader's registration
+    const allTeamEmails = [leaderEmail, ...(memberEmails || [])];
+    for (const email of allTeamEmails) {
+      const registration = await EventRegistration.findOne({
+        eventId: event._id,
+        email: email,
+      });
+
+      if (!registration) {
+        res
+          .status(404)
+          .json({ message: `Registration not found for ${email}` });
+        return;
+      }
+
+      registration.segments.push(segmentSlug);
+      await EventRegistration.updateOne(
+        { _id: registration._id },
+        { segments: registration.segments },
+      );
+
+      if (email === leaderEmail) {
+        leaderSegments = registration.segments;
+      }
+    }
+
+    res.status(201).json({
+      teamSegment: {
+        segmentSlug,
+        isPaidSegment: segment.isPaidSegment,
+        transactionMethod: segment.isPaidSegment ? body.transactionMethod : "",
+        teamName,
+        leaderEmail,
+        memberEmails,
+        status: newTeam.status,
+        rejectionReason: newTeam.rejectionReason,
+      },
+      segments: leaderSegments,
+    });
+    logger.info("New team created for event segment", {
       teamId: newTeam._id,
-      eventId,
-      segmentSlug,
+      eventId: event._id,
+      segmentSlug: segment.segmentSlug,
       teamName,
       leaderEmail,
       creator: req.user?._id,
@@ -225,7 +325,7 @@ export async function createSegmentTeam(
     logger.error("Error creating segment team", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
-      eventId: req.body.eventId,
+      eventSlug: req.params.eventSlug,
       segmentSlug: req.body.segmentSlug,
       creator: req.user?._id,
     });
@@ -233,15 +333,15 @@ export async function createSegmentTeam(
 }
 
 // change the team details for a team segment
-export async function updateSegmentTeam(
+export async function updateSegmentTeamStatus(
   req: Request,
   res: Response,
 ): Promise<void> {
   try {
     const { teamId, eventSlug } = req.params;
-    const { teamName, leaderEmail, memberEmails, status } = req.body;
-    if (!teamId || !eventSlug) {
-      res.status(400).json({ message: "Missing team ID or event slug" });
+    const { status, rejectionReason } = req.body;
+    if (!teamId || !eventSlug || !status) {
+      res.status(400).json({ message: "Invalid request body" });
       return;
     }
 
@@ -260,70 +360,13 @@ export async function updateSegmentTeam(
       return;
     }
 
-    // check if new team name is already used by another team for the same event and segment
-    if (teamName && teamName !== team.teamName) {
-      const existingTeam = await EventTeam.findOne({
-        eventId: team.eventId,
-        segmentSlug: team.segmentSlug,
-        teamName,
-      });
-      if (existingTeam) {
-        res
-          .status(400)
-          .json({ message: "Team name is already used for this segment" });
-        return;
-      }
-    }
-
-    // check if new leader email is already used in another team for the same event and segment
-    if (leaderEmail && leaderEmail !== team.leaderEmail) {
-      const existingLeader = await EventTeam.findOne({
-        eventId: team.eventId,
-        segmentSlug: team.segmentSlug,
-        leaderEmail,
-      });
-      if (existingLeader) {
-        res.status(400).json({
-          message:
-            "Leader email is already used in another team for this segment",
-        });
-        return;
-      }
-    }
-
-    // check if any new member emails or the new leader email are already used in another team for the same event and segment
-    if (memberEmails && memberEmails.length > 0) {
-      const existingMembers = await EventTeam.find({
-        _id: { $ne: teamId },
-        eventId: team.eventId,
-        segmentSlug: team.segmentSlug,
-        memberEmails: {
-          $in: [...memberEmails, leaderEmail || team.leaderEmail],
-        },
-      });
-      if (existingMembers.length > 0) {
-        console.log("Existing members found:", existingMembers);
-        res.status(400).json({
-          message:
-            "One or more member emails are already used in another team for this segment",
-        });
-        return;
-      }
-      if (leaderEmail && memberEmails.includes(leaderEmail)) {
-        res.status(400).json({
-          message: "Leader email cannot be included in member emails",
-        });
-        return;
-      }
-    }
-
-    // update the team details
-    if (teamName) team.teamName = teamName;
-    if (leaderEmail) team.leaderEmail = leaderEmail;
-    if (memberEmails) team.memberEmails = memberEmails;
     if (status) team.status = status;
+    if (rejectionReason) team.rejectionReason = rejectionReason;
 
+    let emailSentError = false;
     if (status === "approved") {
+      team.rejectionReason = "";
+
       // if team is approved, update the corresponding event registrations to validated
       const allTeamEmails = [team.leaderEmail, ...(team.memberEmails || [])];
       for (const email of allTeamEmails) {
@@ -332,7 +375,7 @@ export async function updateSegmentTeam(
           email: email,
         }).lean();
 
-        await sendEmail(
+        const emailSent = await sendEmail(
           email,
           "Team Approved for Event Segment",
           teamRegistrationConfirmationDraft({
@@ -345,13 +388,56 @@ export async function updateSegmentTeam(
             memberEmails: team.memberEmails || [],
           }),
         );
+        if (!emailSent) {
+          emailSentError = true;
+        }
+      }
+    }
+
+    if (status === "rejected") {
+      // if team is rejected, update the corresponding event registrations to rejected
+      const allTeamEmails = [team.leaderEmail, ...(team.memberEmails || [])];
+      for (const email of allTeamEmails) {
+        const registration = await EventRegistration.findOne({
+          eventId: team.eventId,
+          email: email,
+        });
+
+        // remove the segment from the registration
+        const index = registration?.segments.indexOf(team.segmentSlug);
+        if (index !== undefined && index > -1) {
+          registration?.segments.splice(index, 1);
+        }
+
+        await registration?.save();
+
+        const emailSent = await sendEmail(
+          email,
+          "Team Rejected for Event Segment",
+          teamRegistrationRejectionDraft({
+            eventName: event.eventName,
+            logoUrl: event.eventLogoUrl,
+            segmentName: deSlugify(team.segmentSlug, false),
+            teamName: team.teamName,
+            leaderEmail: team.leaderEmail,
+            memberEmails: team.memberEmails || [],
+            rejectionReason: rejectionReason,
+          }),
+        );
+        if (!emailSent) {
+          emailSentError = true;
+        }
       }
     }
 
     await team.save();
 
-    res.json({ message: "Team updated successfully", team });
-    logger.log("Team details updated for event segment", {
+    res.json({
+      message: "Team updated successfully",
+      _id: team._id,
+      emailSentError,
+    });
+    logger.info("Team details updated for event segment", {
       teamId: team._id,
       eventId: team.eventId,
       segmentSlug: team.segmentSlug,
@@ -390,7 +476,7 @@ export async function deleteSegmentTeam(
     await EventTeam.findByIdAndDelete(teamId);
 
     res.json({ message: "Team deleted successfully" });
-    logger.log("Team deleted for event segment", {
+    logger.info("Team deleted for event segment", {
       eventId: team.eventId,
       segmentSlug: team.segmentSlug,
       teamName: team.teamName,

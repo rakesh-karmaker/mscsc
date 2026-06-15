@@ -3,7 +3,12 @@ export type NewMemberDataType = {
   email: string;
   contactNumber: string;
   batch: number;
-  branch: string;
+  branch:
+    | "Main Boys"
+    | "Main Girls"
+    | "Branch - 1"
+    | "Branch - 2"
+    | "Branch - 3";
   reason: string;
   socialLink: string;
   reference: string;

@@ -48,7 +48,7 @@ export async function sendOTP(req: Request, res: Response): Promise<void> {
 
     res.status(200).send({ message: "OTP sent", email });
     //log the event
-    logger.log("OTP sent for password reset", {
+    logger.info("OTP sent for password reset", {
       email,
     });
   } catch (err) {

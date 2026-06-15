@@ -128,7 +128,7 @@ export async function getClubPartnerById(
           output: { position: { $documentNumber: {} } },
         },
       },
-      { $match: { _id: new mongoose.Types.ObjectId(partnerId) } },
+      { $match: { _id: new mongoose.Types.ObjectId(partnerId as string) } },
       {
         $project: {
           _id: 1,

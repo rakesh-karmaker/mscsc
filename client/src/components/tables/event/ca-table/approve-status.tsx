@@ -8,10 +8,7 @@ export default function ApproveStatus({
   mutation,
   documentId,
   icon,
-}: Omit<
-  ChangeStatusProps & { icon: ReactNode; isCa: boolean },
-  "id"
->): ReactNode {
+}: Omit<ChangeStatusProps & { icon: ReactNode }, "id">): ReactNode {
   const [approveModelOpen, setApproveModelOpen] = useState<boolean>(false);
 
   return (

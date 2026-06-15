@@ -1,18 +1,18 @@
 import Loader from "@/components/ui/loader/loader";
 import type { EventRegistrationDetails } from "@/types/event/event-registration-types";
-import capitalize from "@/utils/capitalize";
 import { useQuery } from "@tanstack/react-query";
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 import LuCircleX from "~icons/lucide/circle-x";
 import LuEye from "~icons/lucide/eye";
 import { useParams } from "react-router-dom";
 import { getTeamById } from "@/lib/api/event/event-teams";
 import { Tooltip } from "@mui/material";
 import { deSlugify } from "@/utils/de-slugify";
-import TeamEditModel from "./team-edit-model";
 import ProfilePreview from "../profile-preview";
 import RegistrationDetailsModel from "../registrations-table/registration-details-model";
 import type { EventTeamData } from "@/types/event/event-team-types";
+import { TeamStatusTag } from "@/utils/get-status-tags";
+import TeamActions from "./team-actions";
 
 export default function TeamDetails({
   teamId,
@@ -52,32 +52,6 @@ export default function TeamDetails({
 
   const teamData = data.teamData as EventTeamData;
 
-  function getStatusTag(
-    status: "registering" | "pending" | "approved",
-  ): ReactNode {
-    let colorClasses = "";
-    switch (status) {
-      case "registering":
-        colorClasses = "bg-blue-100 text-blue-800";
-        break;
-      case "pending":
-        colorClasses = "bg-yellow-100 text-yellow-800";
-        break;
-      case "approved":
-        colorClasses = "bg-green-100 text-green-800";
-        break;
-      default:
-        colorClasses = "bg-gray-100 text-gray-800";
-    }
-    return (
-      <span
-        className={`text-sm py-1! px-2! rounded ${colorClasses} inline-block`}
-      >
-        {capitalize(status)}
-      </span>
-    );
-  }
-
   return (
     <div className="w-full h-full flex flex-col gap-3">
       <div>
@@ -86,7 +60,7 @@ export default function TeamDetails({
           {deSlugify(teamData.segmentSlug, false)}
         </p>
         <div className="w-full h-full flex flex-wrap gap-1">
-          {getStatusTag(teamData.status)}
+          <TeamStatusTag details={teamData} />
         </div>
       </div>
       <div className="flex flex-col gap-1"></div>
@@ -201,14 +175,11 @@ export default function TeamDetails({
         )}
       </div>
 
-      <div className="mt-2!">
-        <h3 className="text-xl mb-1!">Actions:</h3>
-        <div className="flex flex-col gap-1"></div>
-        <TeamEditModel
-          teamData={teamData}
-          setDetailsModelOpen={setDetailsModelOpen}
-        />
-      </div>
+      <TeamActions
+        details={teamData}
+        setModelOpen={setDetailsModelOpen}
+        previousModels={previousModels}
+      />
     </div>
   );
 }

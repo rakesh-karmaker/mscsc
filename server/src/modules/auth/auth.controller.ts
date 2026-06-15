@@ -9,7 +9,7 @@ import { compareHash, generateHash } from "../../shared/utils/hash.js";
 import { NewMemberDataType } from "./auth.types.js";
 import logger from "../../shared/config/winston.js";
 
-const JWT_EXPIRATION = "30d"; // Token valid for 30 days
+const JWT_EXPIRATION = "1yr"; // Token valid for 1 year
 
 // Register a new member
 export async function register(req: Request, res: Response): Promise<void> {
@@ -71,7 +71,7 @@ export async function register(req: Request, res: Response): Promise<void> {
       new: true,
     };
     const newMember = await Member.create(newMemberData).then((member) =>
-      member.toObject(),
+      member?.toObject(),
     );
 
     const { password, ...memberData } = newMember;
@@ -88,7 +88,7 @@ export async function register(req: Request, res: Response): Promise<void> {
       member: memberData,
     });
 
-    logger.log("info", `New member registered - ${newMember.name}`, {
+    logger.info(`New member registered - ${newMember.name}`, {
       memberId: newMember._id,
       memberName: newMember.name,
     });
@@ -142,7 +142,7 @@ export async function login(req: Request, res: Response): Promise<void> {
       token,
       member: memberData,
     });
-    logger.log("info", `Member logged in - ${member.name}`, {
+    logger.info(`Member logged in - ${member.name}`, {
       memberId: member._id,
       memberName: member.name,
     });

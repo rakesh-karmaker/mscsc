@@ -1,5 +1,4 @@
 import Loader from "@/components/ui/loader/loader";
-import capitalize from "@/utils/capitalize";
 import getCategory from "@/utils/get-category";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -10,13 +9,9 @@ import LuFacebook from "~icons/lucide/facebook";
 import LuHouse from "~icons/lucide/house";
 import LuMail from "~icons/lucide/mail";
 import LuPhone from "~icons/lucide/phone";
-import LuTrash2 from "~icons/lucide/trash-2";
 import IoMdFemale from "~icons/ion/md-female";
 import IoMdMale from "~icons/ion/md-male";
 import { useParams } from "react-router-dom";
-import ChangeStatus from "../change-status";
-import DeleteWarning from "@/components/ui/delete-warning";
-import { TableBtn } from "@/components/ui/btns";
 import ProfilePreview from "../profile-preview";
 import { getCaApplicationById } from "@/lib/api/event/ca-applications";
 import type {
@@ -25,8 +20,8 @@ import type {
 } from "@/types/event/ca-types";
 import RegistrationDetailsModel from "../registrations-table/registration-details-model";
 import { Tooltip } from "@mui/material";
-import useCaApplicationMutation from "@/hooks/event-hooks/use-ca-application-mutation";
-import CaCodeModel from "./ca-code-model";
+import { CAStatusTags } from "@/utils/get-status-tags";
+import ApplicationActions from "./ca-actions";
 
 export default function ApplicationDetails({
   applicationId,
@@ -82,13 +77,13 @@ export default function ApplicationDetails({
       </div>
       <Activity mode={window.innerWidth < 768 ? "hidden" : "visible"}>
         <div className="w-full h-full flex flex-col justify-center items-center">
-          <StatusTags details={details} />
+          <CAStatusTags details={details} />
         </div>
       </Activity>
       <div className="w-full h-full grid grid-cols-2 gap-x-10 gap-y-6 mt-3! max-md:mt-0! max-md:grid-cols-1 max-md:gap-y-5">
         <div className="w-full h-full flex flex-col">
           <Activity mode={window.innerWidth < 768 ? "visible" : "hidden"}>
-            <StatusTags details={details} />
+            <CAStatusTags details={details} />
           </Activity>
           <h3 className="text-2xl mb-1!">{details.name}</h3>
           <div className="flex flex-col gap-px">
@@ -245,156 +240,6 @@ export default function ApplicationDetails({
               )}
             </div>
           )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function StatusTags({ details }: { details: CaApplicationDetails }): ReactNode {
-  function getStatusTag(
-    status: "pending" | "approved" | "rejected",
-  ): ReactNode {
-    let colorClasses = "";
-    switch (status) {
-      case "pending":
-        colorClasses = "bg-yellow-100 text-yellow-800";
-        break;
-      case "approved":
-        colorClasses = "bg-green-100 text-green-800";
-        break;
-      case "rejected":
-        colorClasses = "bg-red-100 text-red-800";
-        break;
-      default:
-        colorClasses = "bg-gray-100 text-gray-800";
-    }
-    return (
-      <>
-        <span
-          className={`text-sm py-1! px-2! rounded bg-gray-100 text-gray-900 inline-block`}
-        >
-          #{details.position}
-        </span>
-        <span
-          className={`text-sm py-1! px-2! rounded ${colorClasses} inline-block`}
-        >
-          {capitalize(status)}
-        </span>
-        <span
-          className={`text-sm py-1! px-2! rounded bg-gray-100 text-gray-900 inline-block`}
-        >
-          {details.caCode ? `Code: ${details.caCode.toUpperCase()}` : "N/A"}
-        </span>
-        <span
-          className={`text-sm py-1! px-2! rounded bg-gray-100 text-gray-900 inline-block`}
-        >
-          Score: {details.score !== undefined ? details.score : "N/A"}
-        </span>
-      </>
-    );
-  }
-
-  return (
-    <>
-      <div className="flex gap-2 flex-wrap">{getStatusTag(details.status)}</div>
-      {details.status === "rejected" && details.rejectionReason && (
-        <div className="w-full bg-red-50 border border-red-200 text-red-800 text-sm p-3! rounded mt-2!">
-          <h4 className="font-medium mb-1!">Rejection Reason:</h4>
-          <p>{details.rejectionReason}</p>
-        </div>
-      )}
-    </>
-  );
-}
-
-function ApplicationActions({
-  details,
-  applicationId,
-  setModelOpen,
-  version,
-}: {
-  details: CaApplicationDetails;
-  applicationId: string;
-  setModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  version: "desktop" | "mobile";
-}): ReactNode {
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const [editModelOpen, setEditModelOpen] = useState(false);
-  const applicationMutation = useCaApplicationMutation();
-
-  return (
-    <div className="col-span-2 max-md:col-span-1">
-      <h3 className="text-2xl mb-1.75!">Application Actions:</h3>
-      <div className="flex flex-col gap-1"></div>
-      <div className="w-full flex flex-wrap items-center gap-4">
-        <ChangeStatus
-          id={`change-status-details-${applicationId}-${version}`}
-          documentId={applicationId}
-          setOpen={() => {}}
-          mutation={applicationMutation}
-          className="max-w-fit bg-highlighted-color text-white hover:bg-secondary-bg/20 hover:text-black border border-highlighted-color/20 transition-all duration-200"
-          insideModel={true}
-          isCa={true}
-        />
-        {details.status === "approved" &&
-          details.caCode &&
-          details.caCode !== "N/A" && (
-            <div>
-              <TableBtn
-                className="max-w-fit bg-gray-500 text-white hover:bg-secondary-bg/20 border hover:text-black border-gray-500/20 transition-all duration-200"
-                aria-label="Delete this data"
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setEditModelOpen(true);
-                }}
-              >
-                <p>Edit CA Code</p>
-              </TableBtn>
-
-              <CaCodeModel
-                setOpen={setModelOpen}
-                mutation={applicationMutation}
-                documentId={details._id}
-                caCodeModelOpen={editModelOpen}
-                setCaCodeModelOpen={setEditModelOpen}
-                defaultCode={details.caCode || ""}
-              />
-            </div>
-          )}
-        <div>
-          <TableBtn
-            className="max-w-fit bg-red-500 text-white hover:bg-secondary-bg/20 border hover:text-black border-red-500/20 transition-all duration-200"
-            aria-label="Delete this data"
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              setDeleteOpen(true);
-            }}
-          >
-            <LuTrash2 className="opacity-70" />
-            <p>Delete </p>
-          </TableBtn>
-          <DeleteWarning
-            slug={details._id}
-            deleteFunc={() => {
-              applicationMutation.mutate({
-                method: "delete",
-                documentId: details._id,
-              });
-              setModelOpen(false);
-            }}
-            open={deleteOpen}
-            setOpen={setDeleteOpen}
-            title="Delete Application"
-          >
-            This will permanently delete this application{" "}
-            <span className="font-semibold">{details.name}</span> from the
-            application's list and remove all of their data from the server. All
-            of their images, links, and other data will be permanently lost.
-          </DeleteWarning>
         </div>
       </div>
     </div>

@@ -36,6 +36,7 @@ const EventRegistrationSchema =
               default: "pending",
             },
             rejectionReason: { type: String, default: "" },
+            registrationDate: { type: String, required: true },
           },
         ],
         default: [],

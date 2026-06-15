@@ -1,9 +1,10 @@
 import { Router } from "express";
 import {
+  createSegmentTeam,
   deleteSegmentTeam,
   getAllTeams,
   getTeamById,
-  updateSegmentTeam,
+  updateSegmentTeamStatus,
 } from "../controllers/teams.controller.js";
 import {
   isAdmin,
@@ -14,17 +15,19 @@ const teamsRouter = Router();
 
 // team routes
 teamsRouter.get("/:eventSlug/teams", isAuthorized, getAllTeams);
-teamsRouter.get("/:eventSlug/teams/:teamId", isAuthorized, getTeamById);
+teamsRouter.get("/:eventSlug/:teamId", isAuthorized, getTeamById);
+
+teamsRouter.post("/:eventSlug/create", isAuthorized, createSegmentTeam);
 
 teamsRouter.patch(
-  "/:eventSlug/teams/:teamId",
+  "/:eventSlug/:teamId/update-status",
   isAuthorized,
   isAdmin,
-  updateSegmentTeam,
+  updateSegmentTeamStatus,
 );
 
 teamsRouter.delete(
-  "/:eventSlug/teams/:teamId",
+  "/:eventSlug/:teamId",
   isAuthorized,
   isAdmin,
   deleteSegmentTeam,

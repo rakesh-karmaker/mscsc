@@ -8,7 +8,11 @@ export async function generateHash(text: string): Promise<string> {
 
 export async function compareHash(
   text: string,
-  hash: string
+  hash: string,
 ): Promise<boolean> {
+  if (!text || !hash) {
+    return false;
+  }
+
   return await bcrypt.compare(text, hash);
 }

@@ -1,7 +1,7 @@
 import { TeamSegmentData } from "../event.types.js";
 import { deSlugify } from "./de-slugify.js";
 import EventTeam from "../models/event-team.model.js";
-import EventRegistration from "../models/event-registration.model.js";
+// import EventRegistration from "../models/event-registration.model.js";
 
 export function normalizeEmail(value: unknown): string {
   return String(value || "")
@@ -38,7 +38,7 @@ export function normalizeTeamSegmentsData(
 }
 
 export async function validateTeamSegmentsData(
-  eventId: unknown,
+  eventId: string,
   userEmail: string,
   teamSegmentsData: Record<string, TeamSegmentData>,
 ): Promise<{ message: string; segmentSlug: string } | null> {
@@ -64,7 +64,11 @@ export async function validateTeamSegmentsData(
     }
 
     const isLeader = teamData.leaderEmail === userEmail;
-    const sharedQuery = {
+    const sharedQuery: {
+      eventId: string;
+      segmentSlug: string;
+      teamName: string;
+    } = {
       eventId,
       segmentSlug,
       teamName: teamData.teamName,
@@ -135,53 +139,53 @@ export async function validateTeamSegmentsData(
   return null;
 }
 
-export async function createOrUpdateEventTeams(
-  eventId: unknown,
-  userEmail: string,
-  teamSegmentsData: Record<string, TeamSegmentData>,
-): Promise<void> {
-  for (const [segmentSlug, teamData] of Object.entries(teamSegmentsData)) {
-    const isLeader = teamData.leaderEmail === userEmail;
+// export async function createOrUpdateEventTeams(
+//   eventId: unknown,
+//   userEmail: string,
+//   teamSegmentsData: Record<string, TeamSegmentData>,
+// ): Promise<void> {
+//   for (const [segmentSlug, teamData] of Object.entries(teamSegmentsData)) {
+//     const isLeader = teamData.leaderEmail === userEmail;
 
-    if (isLeader) {
-      let status: "registering" | "pending" | "approved" = "registering";
-      if (teamData.memberEmails.length > 0) {
-        const members = await EventRegistration.find({
-          eventId,
-          email: { $in: teamData.memberEmails },
-        });
-        if (members.length === teamData.memberEmails.length) {
-          status = "pending";
-        }
-      }
+//     if (isLeader) {
+//       let status: "registering" | "pending" | "approved" = "registering";
+//       if (teamData.memberEmails.length > 0) {
+//         const members = await EventRegistration.find({
+//           eventId,
+//           email: { $in: teamData.memberEmails },
+//         });
+//         if (members.length === teamData.memberEmails.length) {
+//           status = "pending";
+//         }
+//       }
 
-      await EventTeam.create({
-        eventId,
-        segmentSlug,
-        teamName: teamData.teamName,
-        leaderEmail: teamData.leaderEmail,
-        memberEmails: teamData.memberEmails,
-        status,
-      });
-    } else {
-      const members = await EventRegistration.find({
-        eventId,
-        $or: [
-          { email: teamData.leaderEmail },
-          { email: { $in: teamData.memberEmails } },
-        ],
-      });
-      if (members.length === teamData.memberEmails.length + 1) {
-        await EventTeam.findOneAndUpdate(
-          {
-            eventId,
-            segmentSlug,
-            teamName: teamData.teamName,
-            leaderEmail: teamData.leaderEmail,
-          },
-          { status: "pending" },
-        );
-      }
-    }
-  }
-}
+//       await EventTeam.create({
+//         eventId,
+//         segmentSlug,
+//         teamName: teamData.teamName,
+//         leaderEmail: teamData.leaderEmail,
+//         memberEmails: teamData.memberEmails,
+//         status,
+//       });
+//     } else {
+//       const members = await EventRegistration.find({
+//         eventId,
+//         $or: [
+//           { email: teamData.leaderEmail },
+//           { email: { $in: teamData.memberEmails } },
+//         ],
+//       });
+//       if (members.length === teamData.memberEmails.length + 1) {
+//         await EventTeam.findOneAndUpdate(
+//           {
+//             eventId,
+//             segmentSlug,
+//             teamName: teamData.teamName,
+//             leaderEmail: teamData.leaderEmail,
+//           },
+//           { status: "pending" },
+//         );
+//       }
+//     }
+//   }
+// }

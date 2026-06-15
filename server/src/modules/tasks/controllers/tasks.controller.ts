@@ -77,7 +77,7 @@ export async function getTask(req: Request, res: Response): Promise<void> {
     }
 
     /// get the task using aggregation pipeline to filter submissions
-    const task = await getTaskQuery(slug, username || "");
+    const task = await getTaskQuery(slug as string, username || "");
     if (!task) {
       res.status(404).send({ message: "Task not found" });
       return;
@@ -135,7 +135,7 @@ export async function createTask(req: Request, res: Response): Promise<void> {
     await newTask.save();
 
     res.status(200).send({ message: "Task created successfully", slug });
-    logger.log("Task created", {
+    logger.info("Task created", {
       taskId: newTask._id,
       taskName: newTask.name,
       creator: req.user?._id,
@@ -196,7 +196,7 @@ export async function editTask(req: Request, res: Response): Promise<void> {
     res
       .status(200)
       .send({ message: "Task edited successfully", slug: task.slug });
-    logger.log("Task edited", {
+    logger.info("Task edited", {
       taskId: task._id,
       taskName: task.name,
       editor: req.user?._id,
@@ -282,7 +282,7 @@ export async function deleteTask(req: Request, res: Response): Promise<void> {
       .status(200)
       .send({ message: "Task deleted successfully", method: "DELETE" });
 
-    logger.log("Task deleted", {
+    logger.info("Task deleted", {
       taskId: task._id,
       taskName: task.name,
       deletedBy: req.user?._id,

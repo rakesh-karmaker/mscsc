@@ -184,7 +184,7 @@ export async function getCAApplicationById(
           output: { position: { $documentNumber: {} } },
         },
       },
-      { $match: { _id: new mongoose.Types.ObjectId(applicationId) } },
+      { $match: { _id: new mongoose.Types.ObjectId(applicationId as string) } },
       {
         $project: {
           _id: 1,
@@ -333,7 +333,7 @@ export async function applyForCA(req: Request, res: Response): Promise<void> {
       message: "CA application submitted successfully",
     });
     // Log the event
-    logger.log("New CA application submitted", {
+    logger.info("New CA application submitted", {
       eventSlug,
       applicationId: caApplication._id,
     });
@@ -441,7 +441,7 @@ export async function editCAApplicationStatus(
     await caApplication.save();
 
     res.status(200).json({ message: "CA application updated and email sent" });
-    logger.log(`CA application changed to ${status}`, {
+    logger.info(`CA application changed to ${status}`, {
       eventSlug,
       applicationId,
       editor: req.user?._id,
@@ -500,7 +500,7 @@ export async function editCAApplication(
       message: "CA application updated successfully",
       caApplication: newCaApplication,
     });
-    logger.log("CA application edited", {
+    logger.info("CA application edited", {
       applicationId,
       editor: req.user?._id,
     });
@@ -537,7 +537,7 @@ export async function deleteCAApplication(
     await EventCA.findByIdAndDelete(applicationId);
 
     res.status(200).json({ message: "CA application deleted successfully" });
-    logger.log("CA application deleted", {
+    logger.info("CA application deleted", {
       applicationId,
       deletedBy: req.user?._id,
     });

@@ -1,8 +1,7 @@
-import mongoose from "mongoose";
 import winston from "winston";
-import "winston-mongodb";
+import MongoDBTransport from "../lib/mongodb-transport.js";
 
-const { combine, timestamp, printf, errors } = winston.format;
+const { combine, timestamp, printf, errors, json } = winston.format;
 
 const logFormat = printf(({ level, message, timestamp, stack }) => {
   return `${timestamp} [${level.toUpperCase()}]: ${message} ${stack ? `\nStack trace: ${stack}\n` : ""}`;
@@ -19,10 +18,9 @@ const logger = winston.createLogger({
   ),
   transports: [
     new winston.transports.Console(),
-    new winston.transports.MongoDB({
-      db: mongoose.connection.useDb("test") as any,
-      collection: "logs",
-      level: "logs",
+    new MongoDBTransport({
+      level: "info",
+      format: combine(json()),
     }),
   ],
 });

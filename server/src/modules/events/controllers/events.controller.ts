@@ -199,6 +199,7 @@ export async function getEventBySlug(
               paidSoloSegments: registration.paidSoloSegments,
               teamSegmentsData,
               status: registration.status,
+              segments: registration.segments,
             },
           });
           return;
@@ -322,7 +323,7 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
       message: "Event created successfully",
       eventSlug: newEvent.eventSlug,
     });
-    logger.log(
+    logger.info(
       "info",
       `Event created: ${newEvent.eventName} (${newEvent._id})`,
       {
@@ -384,7 +385,7 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
       for (const registration of registrations) {
         if (registration.photoUrl && registration.photoPublicId) {
           registration.photoUrl = urlChanger(
-            eventSlug,
+            eventSlug as string,
             newSlug,
             registration.photoUrl,
           );
@@ -397,7 +398,7 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
       });
       for (const ca of eventCAs) {
         if (ca.photoUrl && ca.photoPublicId) {
-          ca.photoUrl = urlChanger(eventSlug, newSlug, ca.photoUrl);
+          ca.photoUrl = urlChanger(eventSlug as string, newSlug, ca.photoUrl);
         }
         await ca.save();
       }
@@ -408,7 +409,7 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
       for (const partner of clubPartners) {
         if (partner.clubLogoUrl && partner.clubLogoPublicId) {
           partner.clubLogoUrl = urlChanger(
-            eventSlug,
+            eventSlug as string,
             newSlug,
             partner.clubLogoUrl,
           );
@@ -421,7 +422,7 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
       body,
       files,
       newSlug,
-      eventSlug,
+      eventSlug as string,
     );
     if (!eventData) {
       res.status(400).send({ message: "Invalid event data" });
@@ -481,7 +482,7 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
     }
 
     res.status(201).send({ eventSlug: newSlug });
-    logger.log(
+    logger.info(
       "info",
       `Event Updated: ${updatedEvent.eventName} (${updatedEvent._id})`,
       {
@@ -540,7 +541,7 @@ export async function editEventMeta(
     await event.save();
 
     res.status(200).send({ message: "Event meta updated successfully" });
-    logger.log(
+    logger.info(
       "info",
       `Event meta updated: ${event.eventName} (${event._id})`,
       {
@@ -590,7 +591,7 @@ export async function deleteEvent(req: Request, res: Response): Promise<void> {
     }
 
     res.status(200).send({ message: "Event deleted successfully" });
-    logger.log("info", `Event deleted: ${event.eventName} (${event._id})`, {
+    logger.info(`Event deleted: ${event.eventName} (${event._id})`, {
       eventId: event._id,
       eventSlug: event.eventSlug,
       deletedBy: req.user?._id,

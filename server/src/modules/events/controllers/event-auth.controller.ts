@@ -28,7 +28,7 @@ export async function loginParticipant(
   }
 
   try {
-    const event = await Event.findOne({ eventSlug });
+    const event = await Event.findOne({ eventSlug }).select("_id").lean();
     if (!event) {
       res.status(404).json({ message: "Event not found" });
       return;
@@ -37,7 +37,11 @@ export async function loginParticipant(
     const registration = await EventRegistration.findOne({
       eventId: event._id,
       email: normalizeEmail(email),
-    });
+    })
+      .select(
+        "_id name email password photoUrl paidSoloSegments status segments",
+      )
+      .lean();
     if (!registration) {
       res.status(404).json({ message: "Registration not found" });
       return;
@@ -68,7 +72,7 @@ export async function loginParticipant(
     res.status(200).json({
       message: "Login successful",
       token,
-      registrationData: {
+      userData: {
         _id: registration._id,
         name: registration.name,
         email: registration.email,
@@ -76,11 +80,16 @@ export async function loginParticipant(
         paidSoloSegments: registration.paidSoloSegments,
         teamSegmentsData,
         status: registration.status,
+        segments: registration.segments,
       },
     });
   } catch (error) {
     res.status(500).json({ message: "Error logging in participant" });
-    logger.error("Error logging in participant", { error });
+    logger.error("Error logging in participant", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      registrationId: req.params.registrationId,
+    });
   }
 }
 
@@ -122,6 +131,7 @@ export async function getRegistrationData(
         { leaderEmail: registration.email },
         { memberEmails: { $in: [registration.email] } },
       ],
+      status: { $ne: "rejected" }, // exclude rejected teams
     })
       .select(
         "segmentSlug isPaidSegment transactionMethod teamName leaderEmail memberEmails status rejectionReason",

@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
 import { MemberSchemaType } from "../../modules/members/member.types.js";
 
 const SubmissionSchema = new mongoose.Schema({
@@ -54,18 +53,6 @@ const MemberSchema = new mongoose.Schema<MemberSchemaType>(
     isImageHidden: { type: Boolean, default: false },
   },
   { timestamps: true },
-);
-
-MemberSchema.pre(
-  "save",
-  async function (
-    this: MemberSchemaType & mongoose.Document,
-    next: () => void,
-  ) {
-    if (!this.isModified("password")) return next();
-    this.password = await bcrypt.hash(this.password, 10);
-    next();
-  },
 );
 
 export default mongoose.model<MemberSchemaType>("Member", MemberSchema);
