@@ -17,9 +17,7 @@ interface Config {
   event_website_url: string;
 
   // ImageKit
-  imagekitPublicKey: string;
   imagekitPrivateKey: string;
-  imagekitId: string;
 
   // JWT
   jwtSecret: string;
@@ -42,9 +40,7 @@ const config: Config = {
 
   mongoUrl: process.env.MONGO_URL || "",
 
-  imagekitPublicKey: process.env.IMAGEKIT_PUBLIC_KEY || "",
   imagekitPrivateKey: process.env.IMAGEKIT_PRIVATE_KEY || "",
-  imagekitId: process.env.IMAGEKIT_ID || "",
 
   jwtSecret: process.env.JWT_SECRET || "",
 
