@@ -231,7 +231,7 @@ export default function Task({
               setShowModeChange={setShowModeChange}
               {...rest}
             />
-          </>
+          </div>
         )}
       </main>
     </>

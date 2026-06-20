@@ -7,8 +7,7 @@ import FaUsers from "~icons/fa-solid/users";
 import TbCurrencyTaka from "~icons/tabler/currency-taka";
 import PiMedalMilitaryFill from "~icons/ph/medal-military-fill";
 import RiTeamFill from "~icons/ri/team-fill";
-import { useParams, useSearchParams } from "react-router";
-import { useState } from "react";
+import { useParams } from "react-router";
 import { Box, Tab, Tabs } from "@mui/material";
 import RegistrationsTable from "@/components/tables/event/registrations-table/registrations-table";
 import CaApplicationsTable from "@/components/tables/event/ca-table/ca-applications-table";
@@ -16,43 +15,33 @@ import EventSettings from "@/components/events/event-settings";
 import ClubPartnersTable from "@/components/tables/event/club-partners-table/club-partners-table";
 import SegmentsDistributionChart from "@/components/charts/segments-distribution";
 import TeamsTable from "@/components/tables/event/teams-table/teams-table";
+import { useQueryState } from "nuqs";
 
 export default function EventDashboard() {
   const eventSlug = useParams().eventSlug || "";
   if (!eventSlug) {
     throw new Error("Event slug is required");
   }
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [tab, setTab] = useQueryState("tab", {
+    defaultValue: "registrations",
+    parse: (value) =>
+      value === "registrations" ||
+      value === "caApplications" ||
+      value === "teams"
+        ? value
+        : "registrations",
+  });
 
   const { data: eventData } = useQuery({
     queryKey: ["event", eventSlug],
     queryFn: () => getEventBySlug(eventSlug, true).then((res) => res.data),
   });
 
-  const [tabValue, setTabValue] = useState<
-    "registrations" | "caApplications" | "teams"
-  >(
-    searchParams.get("tab") === "caApplications" ||
-      searchParams.get("tab") === "registrations" ||
-      searchParams.get("tab") === "teams"
-      ? (searchParams.get("tab") as
-          | "registrations"
-          | "caApplications"
-          | "teams")
-      : "registrations",
-  );
-
   function handleTabChange(
     _: React.SyntheticEvent,
     newValue: "registrations" | "caApplications" | "teams",
   ) {
-    setTabValue(newValue);
-    setSearchParams({
-      tab: newValue,
-      ...(searchParams.get("clubName") && {
-        clubName: searchParams.get("clubName")!,
-      }),
-    });
+    setTab(newValue);
   }
 
   return (
@@ -108,23 +97,31 @@ export default function EventDashboard() {
                 value={eventData?.teams || 0}
               />
             </div>
+
             <div className="w-full max-w-265 max-xl:max-w-full flex gap-6 flex-wrap p-6! shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] rounded-lg">
-              <Box
-                sx={{ borderBottom: 1, borderColor: "divider", width: "100%" }}
-              >
-                <Tabs
-                  value={tabValue}
-                  onChange={handleTabChange}
-                  aria-label="basic tabs example"
+              <div className="w-full overflow-x-auto">
+                <Box
+                  sx={{
+                    borderBottom: 1,
+                    borderColor: "divider",
+                    width: "100%",
+                    minWidth: "420px",
+                  }}
                 >
-                  <Tab label="Registrations" value={"registrations"} />
-                  <Tab label="CA Applications" value={"caApplications"} />
-                  <Tab label="Teams" value={"teams"} />
-                </Tabs>
-              </Box>
-              {tabValue === "registrations" ? (
+                  <Tabs
+                    value={tab}
+                    onChange={handleTabChange}
+                    aria-label="basic tabs example"
+                  >
+                    <Tab label="Registrations" value={"registrations"} />
+                    <Tab label="CA Applications" value={"caApplications"} />
+                    <Tab label="Teams" value={"teams"} />
+                  </Tabs>
+                </Box>
+              </div>
+              {tab === "registrations" ? (
                 <RegistrationsTable segments={eventData?.segments || []} />
-              ) : tabValue === "teams" ? (
+              ) : tab === "teams" ? (
                 <TeamsTable segments={eventData?.segments || []} />
               ) : (
                 <CaApplicationsTable />

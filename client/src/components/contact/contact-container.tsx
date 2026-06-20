@@ -1,4 +1,4 @@
-import FaEnvelope from "~icons/fa/envelope";
+import FaEnvelope from "~icons/fa-solid/envelope";
 import FaFacebook from "~icons/fa/facebook";
 import FaPhoneAlt from "~icons/fa/phone";
 import type { ReactNode } from "react";

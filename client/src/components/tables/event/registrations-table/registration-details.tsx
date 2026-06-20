@@ -82,7 +82,7 @@ export default function RegistrationDetails({
           <RegistrationStatusTags details={details} />
         </div>
       </Activity>
-      <div className="w-full h-full grid grid-cols-2 gap-x-10 gap-y-6 mt-3! max-md:mt-0! max-md:grid-cols-1 max-md:gap-y-5">
+      <div className="w-full h-full grid grid-cols-2 gap-x-10 gap-y-6 mt-3! max-md:mt-0! max-md:flex max-md:flex-col max-md:gap-7">
         <div className="w-full h-full flex flex-col">
           <Activity mode={window.innerWidth < 768 ? "visible" : "hidden"}>
             <RegistrationStatusTags details={details} />
@@ -189,7 +189,7 @@ export default function RegistrationDetails({
                 No paid solo segments available for this registration.
               </p>
             ) : (
-              <div className="w-full grid grid-cols-2 max-md:grid-cols-1 gap-10 max-md:gap-3">
+              <div className="w-full grid grid-cols-2 max-md:grid-cols-1 gap-10 max-md:gap-5">
                 {details.paidSoloSegments.map((segment: PaidSoloSegment) => {
                   return (
                     <SoloPaidSegment
@@ -212,7 +212,7 @@ export default function RegistrationDetails({
               No team data available for this registration.
             </p>
           ) : (
-            <div className="w-full grid grid-cols-2 max-md:grid-cols-1 gap-10 max-md:gap-3">
+            <div className="w-full grid grid-cols-2 max-md:grid-cols-1 gap-10 max-md:gap-5">
               {teamData.map((team: EventTeamPreviewData) => {
                 return (
                   <div key={team._id} className="w-full h-full">
@@ -280,11 +280,14 @@ export default function RegistrationDetails({
                       }}
                     >
                       <Tooltip
-                        title="View Registration Details"
+                        title="View Application Details"
                         placement="top"
                         arrow
                       >
-                        <LuEye className="w-5 h-5" />
+                        <div className="max-xs:flex gap-2 items-center">
+                          <LuEye className="w-5 h-5" />
+                          <p className="xs:hidden">View Details</p>
+                        </div>
                       </Tooltip>
                     </ApplicationDetailsModel>
                   </ProfilePreview>

@@ -1,6 +1,6 @@
 import { footerLinks } from "@/services/data/data";
 import type { ReactNode } from "react";
-import FaEnvelope from "~icons/fa/envelope";
+import FaEnvelope from "~icons/fa-solid/envelope";
 import FaPhoneAlt from "~icons/fa/phone";
 import { Link, NavLink, useLocation } from "react-router-dom";
 

@@ -70,7 +70,7 @@ export default function SegmentsDistributionChart({
     (1650 > window.innerWidth && window.innerWidth > 1530) ||
     (950 > window.innerWidth && window.innerWidth > 880) ||
     window.innerWidth < 400
-      ? 120
+      ? 140
       : 200;
 
   return (
@@ -87,7 +87,7 @@ export default function SegmentsDistributionChart({
                 value: item.value,
                 label: deSlugify(item.label, false),
               })),
-              innerRadius: 65,
+              innerRadius: window.innerWidth < 400 ? "65%" : "73%",
             },
           ]}
           slotProps={{
@@ -99,12 +99,14 @@ export default function SegmentsDistributionChart({
           width={size}
           height={size}
         >
-          <PieCenterLabel offsetY={-10}>
+          <PieCenterLabel offsetY={window.innerWidth > 400 ? -10 : 0}>
             {Object.keys(data.segmentCounts).length < 10
               ? `0${Object.keys(data.segmentCounts).length}`
               : Object.keys(data.segmentCounts).length}
           </PieCenterLabel>
-          <PieSubLabel offsetY={13}>Segments</PieSubLabel>
+          {window.innerWidth > 400 && (
+            <PieSubLabel offsetY={13}>Segments</PieSubLabel>
+          )}
         </PieChart>
       </div>
     </div>

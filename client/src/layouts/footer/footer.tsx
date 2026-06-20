@@ -22,8 +22,17 @@ export default function Footer(): ReactNode {
 
       <div className="line"></div>
 
-      <p className="copyright">
-        © {new Date().getFullYear()} MSCSC || All Rights Reserved
+      <p className="text-sm text-gray-500 text-center">
+        © {new Date().getFullYear()} MSCSC || All Rights Reserved || Developed
+        by{" "}
+        <a
+          href="https://rakesh-karmaker.netlify.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline text-gray-600"
+        >
+          Rakesh Karmaker
+        </a>
       </p>
     </footer>
   );

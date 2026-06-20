@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useState, type ReactNode } from "react";
-import FaBars from "~icons/fa/bars";
+import FaBars from "~icons/fa-solid/bars";
 import LuX from "~icons/lucide/x";
 import Welcome from "./welcome";
 import AdminSidebarLinks from "./admin-sidebar-links";
@@ -69,7 +69,7 @@ export default function AdminSidebar({
               />
             </nav>
 
-            <p>
+            <p className="max-lg:text-sm pb-3!">
               © {new Date().getFullYear()} MSCSC ||{" "}
               <a
                 href="https://rakesh-karmaker.netlify.app/"

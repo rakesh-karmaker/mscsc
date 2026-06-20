@@ -30,7 +30,7 @@ export default function getTeamsTableColumns(
       cell: ({ row }) => (
         <div className="w-full h-full flex gap-2 items-center">
           <div className="flex flex-col">
-            <p className="font-medium text-lg  max-sm:text-sm flex flex-wrap">
+            <p className="font-medium text-lg flex flex-wrap">
               {row.original.teamName &&
               row.original.teamName.split(" ").length > 1 ? (
                 row.original.teamName.split(" ").map((part, index) => (
@@ -234,6 +234,7 @@ export default function getTeamsTableColumns(
           </TableActionColumn>
         );
       },
+      size: 40,
     },
   ];
 }
