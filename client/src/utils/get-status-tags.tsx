@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import capitalize from "./capitalize";
 import type {
   EventRegistrationDetails,
-  PaidSoloSegments,
+  PaidSoloSegment,
 } from "@/types/event/event-registration-types";
 import type {
   EventTeamData,
@@ -61,7 +61,7 @@ export function RegistrationStatusTags({
   details,
   needAttendanceTag = true,
 }: {
-  details: EventRegistrationDetails | PaidSoloSegments;
+  details: EventRegistrationDetails | PaidSoloSegment;
   needAttendanceTag?: boolean;
 }): ReactNode {
   function getStatusTag(

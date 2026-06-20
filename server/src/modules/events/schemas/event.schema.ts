@@ -49,7 +49,7 @@ export const eventFormSchema = Joi.object({
 
   videoData: Joi.object({
     url: Joi.string().required(),
-    videoPublicId: Joi.string().required(),
+    hasAudio: Joi.boolean().optional(),
   }).optional(),
 
   aboutData: Joi.object({

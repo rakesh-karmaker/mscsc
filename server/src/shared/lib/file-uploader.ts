@@ -1,7 +1,7 @@
 import sharp from "sharp";
 import imagekit from "../config/imagekit.js";
-import getDate from "../utils/get-date.js";
 import { toFile } from "@imagekit/nodejs";
+import logger from "../config/winston.js";
 
 // Upload image to ImageKit and return the URL and image ID
 export async function uploadImage(
@@ -38,14 +38,17 @@ export async function uploadImage(
       throw new Error("Invalid response from ImageKit");
     }
 
-    console.log("Image uploaded successfully - ", getDate(), "\n---\n", {
+    logger.info(`Image uploaded successfully - ${uploadedImage.url}`, {
       url: uploadedImage.url,
       imgId: uploadedImage.fileId,
     });
 
     return { url: uploadedImage.url, imgId: uploadedImage.fileId };
   } catch (err) {
-    console.log("Error uploading image - ", getDate(), "\n---\n", err);
+    logger.error("Error uploading image - ", {
+      error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
+    });
     throw new Error("Image upload failed");
   }
 }
@@ -90,18 +93,16 @@ export async function uploadMultipleImages(
       imgId: image.imgId as string,
     }));
 
-    console.log(
-      "Multiple images uploaded successfully - ",
-      getDate(),
-      "\n---\n",
-      {
-        gallery,
-      },
-    );
+    logger.info(`Multiple images uploaded successfully - `, {
+      gallery,
+    });
 
     return gallery;
   } catch (err) {
-    console.log("Error uploading images - ", getDate(), "\n---\n", err);
+    logger.error("Error uploading images - ", {
+      error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
+    });
     throw new Error("Image upload failed");
   }
 }
@@ -122,9 +123,17 @@ export async function uploadVideo(
       throw new Error("Invalid response from ImageKit");
     }
 
+    logger.info(`Video uploaded successfully - ${uploadedVideo.url}`, {
+      url: uploadedVideo.url,
+      videoId: uploadedVideo.fileId,
+    });
+
     return { url: uploadedVideo.url, videoId: uploadedVideo.fileId };
   } catch (err) {
-    console.log("Error uploading video - ", getDate(), "\n---\n", err);
+    logger.error("Error uploading video - ", {
+      error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
+    });
     throw new Error("Video upload failed");
   }
 }
@@ -147,14 +156,17 @@ export async function uploadJsonFile(
       throw new Error("Invalid response from ImageKit");
     }
 
-    console.log("JSON file uploaded successfully - ", getDate(), "\n---\n", {
+    logger.info(`JSON file uploaded successfully - ${uploadedFile.url}`, {
       url: uploadedFile.url,
       jsonPublicId: uploadedFile.fileId,
     });
 
     return { url: uploadedFile.url, jsonPublicId: uploadedFile.fileId };
   } catch (err) {
-    console.log("Error uploading JSON file - ", getDate(), "\n---\n", err);
+    logger.error("Error uploading JSON file - ", {
+      error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
+    });
     throw new Error("JSON file upload failed");
   }
 }
@@ -171,9 +183,17 @@ export async function renameFolder(
       newFolderName: newFolderName,
     });
 
-    console.log("Folder renamed successfully -", getDate(), "\n---\n");
+    logger.info(`Folder renamed successfully - ${newFolderName}`, {
+      oldFolderPath,
+      newFolderName,
+    });
   } catch (err) {
-    console.log("Error renaming folder - ", getDate(), "\n---\n", err);
+    logger.error("Error renaming folder - ", {
+      error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
+      oldFolderPath,
+      newFolderName,
+    });
     throw new Error("Failed to rename folder.");
   }
 }
@@ -183,13 +203,21 @@ export async function deleteFile(fileId: string) {
   try {
     // Delete the file from ImageKit
     await imagekit.files.delete(fileId);
-    console.log("File deleted successfully -", getDate(), "\n---\n");
+    logger.info("File deleted successfully", {
+      fileId,
+    });
   } catch (err: any) {
     // If the error is a 404, it means the file was not found in ImageKit, which can happen if it was already deleted. We can log this and continue without throwing an error.
     if (err?.status && err.status?.toString() === "404") {
-      console.log("File not found in ImageKit - ", getDate(), "\n---\n", err);
+      logger.info("File not found in ImageKit", {
+        fileId,
+      });
     } else {
-      console.log("Error deleting file - ", getDate(), "\n---\n", err);
+      logger.error("Error deleting file", {
+        error: err instanceof Error ? err.message : String(err),
+        stack: err instanceof Error ? err.stack : undefined,
+        fileId,
+      });
       throw new Error("Failed to delete file.");
     }
   }
@@ -201,9 +229,15 @@ export async function deleteFolder(folderPath: string) {
     await imagekit.folders.delete({
       folderPath: folderPath,
     });
-    console.log("Folder deleted successfully -", getDate(), "\n---\n");
+    logger.info("Folder deleted successfully", {
+      folderPath,
+    });
   } catch (err) {
-    console.log("Error deleting folder - ", getDate(), "\n---\n", err);
+    logger.error("Error deleting folder - ", {
+      error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
+      folderPath,
+    });
     throw new Error("Failed to delete folder.");
   }
 }

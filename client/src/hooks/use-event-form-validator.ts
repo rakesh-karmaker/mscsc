@@ -78,14 +78,10 @@ export default function useEventFormValidator({
   // validate each section's data based on the selected sections
   const sections: string[] = data.sections || [];
 
-  if (
-    sections.includes("video") &&
-    (!data || !data.videoFile || !data.videoFile.length) &&
-    mode === "add"
-  ) {
-    setError("videoFile", {
+  if (sections.includes("video") && !data.videoData?.url && mode === "add") {
+    setError("videoData.url", {
       type: "manual",
-      message: "Video file is required",
+      message: "Video URL is required",
     });
     isValid = false;
   }

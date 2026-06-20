@@ -40,10 +40,6 @@ const fileFields: { name: string; maxCount: number }[] = [
     maxCount: 1,
   },
   {
-    name: "videoFile",
-    maxCount: 1,
-  },
-  {
     name: "aboutImage",
     maxCount: 1,
   },

@@ -1,4 +1,5 @@
 import {
+  changePaidSoloSegmentStatus,
   changeRegistrationStatus,
   deleteRegistration,
   editRegistration,
@@ -29,6 +30,7 @@ export default function useRegistrationMutation() {
         | {
             status: "pending" | "validated" | "rejected";
             rejectionReason?: string;
+            segmentSlug?: string;
           }
         | {
             hasAttended: boolean;
@@ -39,6 +41,16 @@ export default function useRegistrationMutation() {
     }) => {
       setCurrentMethod(method);
       if (method === "changeStatus" && data && "status" in data) {
+        if (data.segmentSlug) {
+          return changePaidSoloSegmentStatus(
+            eventSlug,
+            documentId,
+            data.segmentSlug,
+            data.status,
+            data.rejectionReason,
+          );
+        }
+
         return changeRegistrationStatus(
           eventSlug,
           documentId,

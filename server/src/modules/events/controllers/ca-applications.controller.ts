@@ -8,7 +8,7 @@ import { sendEmail } from "../../../shared/lib/mail-sender.js";
 import {
   caApplicationConfirmationDraft,
   caApplicationRejectionDraft,
-} from "../utils/ca-application-drafts.js";
+} from "../utils/drafts/ca-application-drafts.js";
 import logger from "../../../shared/config/winston.js";
 import mongoose from "mongoose";
 
@@ -447,12 +447,10 @@ export async function editCAApplicationStatus(
     }
     await caApplication.save();
 
-    res
-      .status(200)
-      .json({
-        message: "CA application updated and email sent",
-        emailSentError,
-      });
+    res.status(200).json({
+      message: "CA application updated and email sent",
+      emailSentError,
+    });
     logger.info(`CA application changed to ${status}`, {
       eventSlug,
       applicationId,

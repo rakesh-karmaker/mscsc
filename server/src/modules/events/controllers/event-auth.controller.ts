@@ -125,6 +125,11 @@ export async function getRegistrationData(
       return;
     }
 
+    // filter out rejected segments from paidSoloSegments
+    registration.paidSoloSegments = registration.paidSoloSegments.filter(
+      (s) => s.status !== "rejected",
+    );
+
     const teamSegmentsData = await EventTeam.find({
       eventId: event._id,
       $or: [

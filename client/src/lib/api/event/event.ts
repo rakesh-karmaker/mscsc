@@ -14,6 +14,7 @@ export async function getEventBySlug(eventSlug: string, details = false) {
   return api.get(`/event/${eventSlug}/details`, {
     headers: {
       details: details.toString(),
+      edit: "true", // to get the data in a format suitable for filling the edit form
     },
   });
 }
@@ -36,7 +37,6 @@ export async function addEvent(data: EventFormDataType) {
       key === "bkashQrCode" ||
       key === "nagadQrCode" ||
       key === "rocketQrCode" ||
-      key === "videoFile" ||
       key === "aboutImage"
     ) {
       const file = data[key as keyof typeof data] as File;
@@ -79,7 +79,6 @@ export async function editEvent(eventSlug: string, data: EventFormDataType) {
       key === "bkashQrCode" ||
       key === "nagadQrCode" ||
       key === "rocketQrCode" ||
-      key === "videoFile" ||
       key === "aboutImage"
     ) {
       const file = data[key as keyof typeof data] as File;

@@ -121,20 +121,10 @@ export async function buildEventData(
 
   // 2. Video
   if (sections.includes("video")) {
-    if (files.videoFile?.length > 0) {
-      if (isEdit && body.videoFile?.videoPublicId) {
-        await deleteFile(body.videoFile.videoPublicId);
-      }
-      const { url, videoId } = await uploadVideo(
-        files.videoFile[0],
-        `events/${eventSlug}`,
-      );
-      eventData.videoData = { url, videoPublicId: videoId, hasAudio: false };
-    } else if (isEdit && body.videoData) {
+    if (body.videoData) {
       eventData.videoData = {
-        url: urlChanger(oldSlug!, eventSlug, body.videoData.url),
-        videoPublicId: body.videoData.videoPublicId,
-        hasAudio: false,
+        url: body.videoData.url?.trim(),
+        hasAudio: body.videoData.hasAudio || false,
       };
     }
   }

@@ -1,15 +1,17 @@
 import { type ReactNode } from "react";
 import FormLayout from "../form-layout";
-import FileInput from "@/components/ui/file-input";
+import { TextField } from "@mui/material";
 
 type VideoSectionFieldsProps = {
   register: any;
   errors: { [key: string]: any };
+  isSectionSelected: boolean;
 };
 
 export default function VideoSectionFields({
   register,
   errors,
+  isSectionSelected,
 }: VideoSectionFieldsProps): ReactNode {
   return (
     <FormLayout
@@ -23,15 +25,16 @@ export default function VideoSectionFields({
       }
       id="video-section"
     >
-      <FileInput
-        register={register}
-        name="videoFile"
-        errors={errors}
-        labelText="Upload Video File"
-        accept="video/*"
-      >
-        Upload Video
-      </FileInput>
+      <TextField
+        fullWidth
+        variant="outlined"
+        {...register("videoData.url", {
+          required: isSectionSelected ? "Video URL is required" : false,
+        })}
+        label="Video URL"
+        error={Boolean(errors.videoData?.url)}
+        helperText={errors.videoData?.url?.message as string}
+      />
     </FormLayout>
   );
 }

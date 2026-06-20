@@ -18,7 +18,8 @@ export interface ChangeStatusProps {
   documentId: string;
   className?: string;
   insideModel?: boolean;
-  model?: "registration" | "application" | "team";
+  model?: "registration" | "application" | "team" | "segment";
+  segmentSlug?: string;
 }
 
 export default function ChangeStatus({
@@ -29,6 +30,7 @@ export default function ChangeStatus({
   className,
   insideModel,
   model = "registration",
+  segmentSlug,
 }: ChangeStatusProps): ReactNode {
   const [statusPopoverOpen, setStatusPopoverOpen] = useState<boolean>(false);
   const statusIcons = {
@@ -73,7 +75,7 @@ export default function ChangeStatus({
       >
         <div className="w-full h-full flex flex-col bg-primary-bg rounded-md border border-gray-300">
           {Object.keys(statusIcons)
-            .slice(0, model !== "registration" ? 1 : 2)
+            .slice(0, model !== "registration" && model !== "segment" ? 1 : 2)
             .map((status) => (
               <TableBtn
                 key={status}
@@ -81,7 +83,10 @@ export default function ChangeStatus({
                   mutation.mutate({
                     method: "changeStatus",
                     documentId: documentId,
-                    data: { status },
+                    data: {
+                      status,
+                      ...(model == "segment" ? { segmentSlug } : {}),
+                    },
                   });
                   handleStatusClose();
                 }}
@@ -123,6 +128,7 @@ export default function ChangeStatus({
             icon={statusIcons["rejected" as keyof typeof statusIcons]}
             id={id}
             model={model}
+            segmentSlug={segmentSlug}
           />
         </div>
       </Popover>
@@ -136,9 +142,11 @@ function RejectStatus({
   documentId,
   icon,
   model = "registration",
+  segmentSlug,
 }: ChangeStatusProps & {
   icon: ReactNode;
-  model: "registration" | "application" | "team";
+  model: "registration" | "application" | "team" | "segment";
+  segmentSlug?: string;
 }): ReactNode {
   const [rejectModelOpen, setRejectModelOpen] = useState<boolean>(false);
 
@@ -152,7 +160,11 @@ function RejectStatus({
     mutation.mutate({
       method: "changeStatus",
       documentId: documentId,
-      data: { status: "rejected", rejectionReason: data.reason },
+      data: {
+        status: "rejected",
+        rejectionReason: data.reason,
+        ...(model == "segment" ? { segmentSlug } : {}),
+      },
     });
     setRejectModelOpen(false);
     setOpen(false);
@@ -178,15 +190,11 @@ function RejectStatus({
             ? "Application"
             : model === "registration"
               ? "Registration"
-              : "Team"
+              : model === "team"
+                ? "Team"
+                : "Segment Registration"
         }`}
-        aria-describedby={`Provide a reason for rejecting this ${
-          model === "application"
-            ? "application"
-            : model === "registration"
-              ? "registration"
-              : "team"
-        }`}
+        aria-describedby={`Provide a reason for rejecting this ${model}`}
         className="flex items-center justify-center h-fit min-h-screen max-sm:overflow-y-auto absolute max-sm:bg-primary-bg border-none! outline-none! focus-visible:outline-none"
         onClick={(e) => {
           e.stopPropagation();
@@ -202,7 +210,9 @@ function RejectStatus({
                     ? "Application"
                     : model === "registration"
                       ? "Registration"
-                      : "Team"}
+                      : model === "team"
+                        ? "Team"
+                        : "Segment Registration"}
                 </h2>
                 <button
                   onClick={() => setRejectModelOpen(false)}
@@ -217,15 +227,29 @@ function RejectStatus({
                   ? "application"
                   : model === "registration"
                     ? "registration"
-                    : "team"}
+                    : model === "team"
+                      ? "team"
+                      : "segment registration"}{" "}
                 to let the member know. This will be sent to the member via
                 email and will be visible in the{" "}
                 {model === "application"
                   ? "application"
                   : model === "registration"
                     ? "registration"
-                    : "team"}
+                    : model === "team"
+                      ? "team"
+                      : "segment registration"}
                 details.
+                {model === "segment" || model === "team" ? (
+                  <>
+                    <br />
+                    <span className="flex pt-2! text-sm text-red-500/90">
+                      This action cannot be undone and will remove the{" "}
+                      {model === "segment" ? "segment" : "team"} from the{" "}
+                      {model === "segment" ? "registration" : "event"}.
+                    </span>
+                  </>
+                ) : null}
               </p>
               <div className="w-full h-px bg-light-black/10 mt-2! mb-7!"></div>
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -248,7 +272,9 @@ function RejectStatus({
                       ? "Application"
                       : model === "registration"
                         ? "Registration"
-                        : "Team"}
+                        : model === "team"
+                          ? "Team"
+                          : "Segment"}
                   </button>
                 </div>
               </form>

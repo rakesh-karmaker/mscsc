@@ -90,7 +90,7 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
   if (filteredData.sections.includes("video") && data.videoData) {
     filteredData.videoData = {
       url: data.videoData.url,
-      videoPublicId: data.videoData.videoPublicId,
+      hasAudio: data.videoData.hasAudio || false,
     };
   }
 

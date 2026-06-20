@@ -151,7 +151,8 @@ export async function getEventBySlug(
     // if the request includes a valid registration token, include the registration data in the response
     if (
       req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer ")
+      req.headers.authorization.startsWith("Bearer ") &&
+      req.headers.edit !== "true"
     ) {
       const token = req.headers.authorization.split(" ")[1];
       // Verify token

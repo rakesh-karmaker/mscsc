@@ -9,7 +9,7 @@ import { sendEmail } from "../../../shared/lib/mail-sender.js";
 import {
   eventConfirmationDraft,
   eventRejectionDraft,
-} from "../utils/registration-drafts.js";
+} from "../utils/drafts/registration-drafts.js";
 import { normalizeEmail } from "../utils/event-registration.helpers.js";
 import getGradeRange from "../utils/get-grade-range.js";
 import EventTeam from "../models/event-team.model.js";
@@ -186,7 +186,6 @@ export async function registerForEvent(
   let publicId = "";
   let registrationId = "";
   let eventId = "";
-  let reference = "";
 
   try {
     const eventSlug = req.params.eventSlug;
@@ -262,8 +261,6 @@ export async function registerForEvent(
       reference?: string;
       clubReference?: string;
     };
-
-    reference = cleanedBody.reference || "";
 
     const existingRegistration = await EventRegistration.findOne({
       eventId: event._id,
@@ -370,7 +367,6 @@ export async function registerForEvent(
       },
     );
   } catch (error) {
-    console.log(error);
     if (publicId) {
       deleteFile(publicId);
     }
@@ -379,16 +375,6 @@ export async function registerForEvent(
       await Event.findByIdAndUpdate(eventId, {
         $inc: { participantCount: -1 },
       });
-    }
-
-    if (reference && reference !== "N/A") {
-      await EventCA.findOneAndUpdate(
-        {
-          eventId,
-          caCode: reference,
-        },
-        { $inc: { score: -1 } },
-      );
     }
 
     res.status(500).json({
@@ -424,7 +410,9 @@ export async function changeRegistrationStatus(
       return;
     }
 
-    const event = await Event.findOne({ eventSlug });
+    const event = await Event.findOne({ eventSlug })
+      .select("_id eventName eventLogoUrl")
+      .lean();
     if (!event) {
       res.status(404).json({ message: "Event not found" });
       return;
@@ -649,6 +637,29 @@ export async function deleteRegistration(
     }
 
     deleteFile(registration.photoPublicId);
+
+    if (registration.status === "validated") {
+      if (registration.reference && registration.reference !== "N/A") {
+        await EventCA.findOneAndUpdate(
+          {
+            caCode: registration.reference,
+            eventId: event._id,
+            status: "approved",
+          },
+          { $inc: { score: -1 } },
+        );
+      }
+      if (registration.clubReference && registration.clubReference !== "N/A") {
+        await ClubPartner.findOneAndUpdate(
+          {
+            code: registration.clubReference,
+            eventId: event._id,
+            status: "active",
+          },
+          { $inc: { score: -1 } },
+        );
+      }
+    }
 
     await registration.deleteOne();
 

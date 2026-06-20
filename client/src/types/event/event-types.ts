@@ -110,7 +110,7 @@ export type EventFormDataType = {
   heroData?: HeroDataType;
   videoData?: {
     url: string;
-    videoPublicId: string;
+    hasAudio?: boolean;
   };
   aboutData?: AboutDataType;
   segmentsData?: SegmentType[];
@@ -126,7 +126,6 @@ export type EventFormDataType = {
   bkashQrCode?: File;
   nagadQrCode?: File;
   rocketQrCode?: File;
-  videoFile?: File;
   aboutImage?: File;
   spLogos?: File[];
   segmentTMethodQrs?: File[];
@@ -168,7 +167,7 @@ export interface FilteredEventDataType {
   heroData?: HeroDataType;
   videoData?: {
     url: string;
-    videoPublicId: string;
+    hasAudio: boolean;
   };
   aboutData?: AboutDataType;
   segmentsData?: Omit<SegmentType, "segmentSlug">[];

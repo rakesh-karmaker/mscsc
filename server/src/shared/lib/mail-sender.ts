@@ -16,7 +16,7 @@ export async function sendEmail(
     });
 
     if (res.status === 200) {
-      logger.info("log", "Email sent successfully", {
+      logger.info("Email sent successfully", {
         email: email,
         subject: subject,
       });

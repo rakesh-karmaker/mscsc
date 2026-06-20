@@ -138,13 +138,10 @@ export default function useFilterEventForm({
   }
 
   if (sections.includes("video")) {
-    if (data.videoFile && data.videoFile.length > 0) {
-      filteredData.videoFile = data.videoFile[0];
-    }
     if (data.videoData?.url) {
       filteredData.videoData = {
         url: data.videoData.url,
-        videoPublicId: data.videoData.videoPublicId,
+        hasAudio: data.videoData.hasAudio || false,
       };
     }
   }

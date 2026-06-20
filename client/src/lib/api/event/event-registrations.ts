@@ -59,6 +59,22 @@ export async function editRegistration(
   );
 }
 
+export async function changePaidSoloSegmentStatus(
+  eventSlug: string,
+  registrationId: string,
+  segmentSlug: string,
+  status: "validated" | "rejected" | "pending",
+  rejectionReason?: string,
+) {
+  return api.patch(
+    `/event-registrations/${eventSlug}/${registrationId}/${segmentSlug}/change-paid-solo-segment-status`,
+    {
+      status,
+      rejectionReason,
+    },
+  );
+}
+
 export async function deleteRegistration(
   eventSlug: string,
   registrationId: string,

@@ -8,7 +8,7 @@ import { sendEmail } from "../../../shared/lib/mail-sender.js";
 import {
   teamRegistrationConfirmationDraft,
   teamRegistrationRejectionDraft,
-} from "../utils/team-registration-drafts.js";
+} from "../utils/drafts/team-registration-drafts.js";
 import { deSlugify } from "../utils/de-slugify.js";
 import logger from "../../../shared/config/winston.js";
 import { teamSchema } from "../schemas/team.schema.js";

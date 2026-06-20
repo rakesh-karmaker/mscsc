@@ -1,6 +1,6 @@
 import type { ExtendedColumnSort } from "../table-types";
 
-export type PaidSoloSegments = {
+export type PaidSoloSegment = {
   segmentSlug: string;
   fees: number;
   transactionMethod: string;
@@ -22,7 +22,7 @@ export interface EventRegistrationDetails {
   institution: string;
   grade: string;
   segments: string[];
-  paidSoloSegments: PaidSoloSegments[];
+  paidSoloSegments: PaidSoloSegment[];
   transactionMethod: "bkash" | "nagad" | "rocket" | "Other";
   transactionPhoneNumber: string;
   transactionId: string;
@@ -50,7 +50,7 @@ export type EventRegistrationTableData = Pick<
   | "transactionMethod"
   | "registrationDate"
 > & {
-  paidSoloSegments: Pick<PaidSoloSegments, "segmentSlug" | "status">[];
+  paidSoloSegments: Pick<PaidSoloSegment, "segmentSlug" | "status">[];
 };
 
 export type EventRegistrationsSearchParams = {

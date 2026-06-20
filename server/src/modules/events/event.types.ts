@@ -222,7 +222,6 @@ type HeroDataType = {
 type VideoDataType = {
   hasAudio: boolean;
   url: string;
-  videoPublicId: string;
 };
 
 export type AboutDataType = {

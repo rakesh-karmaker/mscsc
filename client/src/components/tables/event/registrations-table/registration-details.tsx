@@ -3,7 +3,7 @@ import { getRegistrationById } from "@/lib/api/event/event-registrations";
 import type {
   CaPreviewData,
   EventRegistrationDetails,
-  PaidSoloSegments,
+  PaidSoloSegment,
 } from "@/types/event/event-registration-types";
 import capitalize from "@/utils/capitalize";
 import { deSlugify } from "@/utils/de-slugify";
@@ -24,6 +24,7 @@ import ApplicationDetailsModel from "../ca-table/application-details-model";
 import { Tooltip } from "@mui/material";
 import RegistrationActions from "./registration-actions";
 import { RegistrationStatusTags, TeamStatusTag } from "@/utils/get-status-tags";
+import SoloPaidSegment from "./solo-paid-segment";
 
 export default function RegistrationDetails({
   registrationId,
@@ -189,32 +190,13 @@ export default function RegistrationDetails({
               </p>
             ) : (
               <div className="w-full grid grid-cols-2 max-md:grid-cols-1 gap-10 max-md:gap-3">
-                {details.paidSoloSegments.map((segment: PaidSoloSegments) => {
+                {details.paidSoloSegments.map((segment: PaidSoloSegment) => {
                   return (
-                    <div key={segment.segmentSlug} className="w-full h-full">
-                      <h4 className="text-lg mb-0.5! flex flex-wrap gap-1 [&>span]:text-xs">
-                        {deSlugify(segment.segmentSlug, false)}{" "}
-                        <RegistrationStatusTags
-                          details={segment}
-                          needAttendanceTag={false}
-                        />
-                      </h4>
-
-                      <div className="ml-2!">
-                        <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
-                          <span>Phone Number: </span>
-                          <span className="font-medium ml-1!">
-                            {segment.transactionPhoneNumber || "N/A"}
-                          </span>
-                        </div>
-                        <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
-                          <span>Transaction ID: </span>
-                          <span className="font-medium ml-1!">
-                            {segment.transactionId || "N/A"}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                    <SoloPaidSegment
+                      key={segment.segmentSlug}
+                      segment={segment}
+                      registrationId={registrationId}
+                    />
                   );
                 })}
               </div>

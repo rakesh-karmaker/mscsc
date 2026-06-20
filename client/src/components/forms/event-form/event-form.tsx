@@ -226,7 +226,11 @@ export default function EventForm({
 
         {/* website video section form fields */}
         {currentField === "video" && (
-          <VideoSectionFields register={register} errors={errors} />
+          <VideoSectionFields
+            register={register}
+            errors={errors}
+            isSectionSelected={selectedSections.includes("video")}
+          />
         )}
 
         {/* website about section form fields */}

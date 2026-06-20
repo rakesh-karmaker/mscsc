@@ -19,6 +19,7 @@ import {
 import {
   addFreeSoloSegment,
   addPaidSoloSegment,
+  changePaidSoloSegmentStatus,
 } from "../controllers/segments.controller.js";
 
 const eventRegistrationRouter = Router();
@@ -79,6 +80,11 @@ eventRegistrationRouter.patch(
   "/:eventSlug/registrations/add-paid-solo-segment",
   isAuthorized,
   addPaidSoloSegment,
+);
+eventRegistrationRouter.patch(
+  "/:eventSlug/:registrationId/:segmentSlug/change-paid-solo-segment-status",
+  isAuthorized,
+  changePaidSoloSegmentStatus,
 );
 
 // DELETE route for deleting a registration

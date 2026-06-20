@@ -5,7 +5,7 @@ const LogSchema = new mongoose.Schema<LogSchemaType>(
   {
     level: {
       type: String,
-      enum: ["info", "warning", "error"],
+      enum: ["info", "warn", "error"],
       required: true,
     },
     message: { type: String, required: true },
