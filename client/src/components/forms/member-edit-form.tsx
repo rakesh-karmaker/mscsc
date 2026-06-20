@@ -1,4 +1,4 @@
-import type { MemberPreview } from "@/types/member-types";
+import type { MemberTableData } from "@/types/member-types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   useState,
@@ -17,6 +17,7 @@ import {
 import { Checkbox, FormControlLabel, TextField } from "@mui/material";
 import { deleteMember, editMember } from "@/lib/api/member";
 import DeleteWarning from "@/components/ui/delete-warning";
+import { useUser } from "@/contexts/user-context";
 
 export type MemberMutationProps = {
   method: string;
@@ -31,10 +32,11 @@ export default function MemberEditForm({
   member,
   setIsOpen,
 }: {
-  member: MemberPreview;
+  member: MemberTableData;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }): ReactNode {
   const queryClient = useQueryClient();
+  const { user } = useUser();
 
   const [open, setOpen] = useState(false);
 
@@ -57,8 +59,7 @@ export default function MemberEditForm({
     mutationFn: (props: MemberMutationProps) => {
       const { method, ...data } = props;
       if (method == "edit") {
-        console.log("Editing member with data:", data);
-        return editMember(data);
+        return editMember(data, true);
       } else {
         return deleteMember({ slug: data.slug });
       }
@@ -70,8 +71,10 @@ export default function MemberEditForm({
       toast.error("Failed to edit member");
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["members"] });
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["all-members"] });
+      if (user && member._id === user._id) {
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+      }
       setIsOpen(false);
     },
   });
@@ -142,7 +145,7 @@ export default function MemberEditForm({
         <div className="edit-dialog-actions flex flex-wrap gap-2.5">
           <button
             type="submit"
-            className="primary-button !text-[1.1em] !py-[10px] !px-[20px] !w-fit !h-fit"
+            className="primary-button text-[1.1em]! py-2.5! px-5! w-fit! h-fit!"
             onClick={(e) => {
               e.stopPropagation();
             }}
@@ -151,7 +154,7 @@ export default function MemberEditForm({
           </button>
 
           <button
-            className="danger-button primary-button !text-[1.1em] !py-[10px] !px-[20px] !w-fit !h-fit"
+            className="danger-button primary-button text-[1.1em]! py-2.5! px-5! w-fit! h-fit!"
             aria-label="Delete this data"
             type="button"
             onClick={(e) => {

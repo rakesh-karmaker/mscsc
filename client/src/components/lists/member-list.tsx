@@ -3,11 +3,18 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import type { MemberPreview } from "@/types/member-types";
+import type { AdminDashboardMemberPreview } from "@/types/member-types";
 import DeleteWarning from "../ui/delete-warning";
 import ListLayout from "./list-layout";
+import dayjs from "dayjs";
 
-export default function MemberList({ members }: { members: MemberPreview[] }) {
+export default function MemberList({
+  members,
+  loading,
+}: {
+  members: AdminDashboardMemberPreview[];
+  loading: boolean;
+}) {
   const queryClient = useQueryClient();
   const memberMutation = useMutation({
     mutationFn: (data: { slug: string; isDelete: boolean; new?: boolean }) => {
@@ -20,6 +27,7 @@ export default function MemberList({ members }: { members: MemberPreview[] }) {
     },
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: ["members"] });
+      queryClient.invalidateQueries({ queryKey: ["adminDashboardData"] });
       toast.success(res?.data?.message);
     },
     onError: (err) => {
@@ -32,20 +40,12 @@ export default function MemberList({ members }: { members: MemberPreview[] }) {
     memberMutation.mutate({ slug: slug, isDelete: true });
   };
 
-  const onNewClick = (slug: string) => {
-    memberMutation.mutate({ new: false, slug: slug, isDelete: false });
-  };
-
   return (
-    <ListLayout title="Member List">
+    <ListLayout title="Member List" isLoading={loading}>
       {members?.slice(0, 6).map((member) => {
         return (
           <li key={member._id}>
-            <MemberListItem
-              member={member}
-              onDelete={onDelete}
-              onNewClick={onNewClick}
-            />
+            <MemberListItem member={member} onDelete={onDelete} />
           </li>
         );
       })}
@@ -56,23 +56,18 @@ export default function MemberList({ members }: { members: MemberPreview[] }) {
 function MemberListItem({
   member,
   onDelete,
-  onNewClick,
 }: {
-  member: MemberPreview;
+  member: AdminDashboardMemberPreview;
   onDelete: (slug: string) => void;
-  onNewClick: (slug: string) => void;
 }) {
   const [open, setOpen] = useState(false);
+  const hasRegistered7DaysAgo =
+    dayjs().diff(dayjs(member.createdAt), "day") <= 7;
 
   return (
     <>
       <NavLink
-        className={member.new ? "new" : ""}
-        onClick={() => {
-          if (member.new) {
-            onNewClick(member.slug);
-          }
-        }}
+        className={hasRegistered7DaysAgo ? "new" : ""}
         to={`/member/${member.slug}`}
       >
         <div className="member-short-info">
@@ -86,7 +81,7 @@ function MemberListItem({
         </div>
 
         <button
-          className="danger-button primary-button !text-[1em] !py-[7px] !px-[15px] !w-fit !h-fit"
+          className="danger-button primary-button text-[1em]! py-1.75! px-3.75! w-fit! h-fit!"
           aria-label="Delete this data"
           type="button"
           onClick={(e) => {

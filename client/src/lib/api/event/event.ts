@@ -1,0 +1,123 @@
+import { api } from "@/config/axios";
+import type { EventFormDataType } from "@/types/event/event-types";
+import axios from "axios";
+
+export async function getAllEvents() {
+  return api.get("/event/all", {
+    headers: {
+      shorten: "true",
+    },
+  });
+}
+
+export async function getEventBySlug(eventSlug: string, details = false) {
+  return api.get(`/event/${eventSlug}/details`, {
+    headers: {
+      details: details.toString(),
+      edit: "true", // to get the data in a format suitable for filling the edit form
+    },
+  });
+}
+
+export async function getJSONData(
+  url: string,
+  extraData: { [key: string]: string | boolean | number } = {},
+) {
+  const response = await axios.get(url);
+  return { ...response.data, ...extraData };
+}
+
+export async function addEvent(data: EventFormDataType) {
+  const formData = new FormData();
+  for (const key in data) {
+    if (
+      key === "eventLogo" ||
+      key === "eventFavicon" ||
+      key === "eventBanner" ||
+      key === "bkashQrCode" ||
+      key === "nagadQrCode" ||
+      key === "rocketQrCode" ||
+      key === "aboutImage"
+    ) {
+      const file = data[key as keyof typeof data] as File;
+      if (file) {
+        formData.append(key, file);
+      }
+    } else if (key === "segmentTMethodQrs") {
+      const files = data[key as keyof typeof data] as File[];
+      if (files && files.length > 0) {
+        files.forEach((file) => {
+          formData.append(`segmentTMethodQrs`, file);
+        });
+      }
+    } else if (key === "spLogos") {
+      const files = data[key as keyof typeof data] as File[];
+      if (files && files.length > 0) {
+        files.forEach((file) => {
+          formData.append(`spLogos`, file);
+        });
+      }
+    } else {
+      formData.append(key, JSON.stringify(data[key as keyof typeof data]));
+    }
+  }
+
+  return api.post("/event/create", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
+
+export async function editEvent(eventSlug: string, data: EventFormDataType) {
+  const formData = new FormData();
+  for (const key in data) {
+    if (
+      key === "eventLogo" ||
+      key === "eventFavicon" ||
+      key === "eventBanner" ||
+      key === "bkashQrCode" ||
+      key === "nagadQrCode" ||
+      key === "rocketQrCode" ||
+      key === "aboutImage"
+    ) {
+      const file = data[key as keyof typeof data] as File;
+      if (file) {
+        formData.append(key, file);
+      }
+    } else if (key === "segmentTMethodQrs") {
+      const files = data[key as keyof typeof data] as File[];
+      if (files && files.length > 0) {
+        files.forEach((file) => {
+          formData.append(`segmentTMethodQrs`, file);
+        });
+      }
+    } else if (key === "spLogos") {
+      const files = data[key as keyof typeof data] as File[];
+      if (files && files.length > 0) {
+        files.forEach((file) => {
+          formData.append(`spLogos`, file);
+        });
+      }
+    } else {
+      formData.append(key, JSON.stringify(data[key as keyof typeof data]));
+    }
+  }
+
+  return api.put(`/event/edit/${eventSlug}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
+
+export async function editEventMeta(
+  eventSlug: string,
+  data: { [key: string]: boolean },
+) {
+  return api.patch(`/event/meta/edit/${eventSlug}`, data);
+}
+
+export async function deleteEvent(eventSlug: string) {
+  return api.delete(`/event/delete/${eventSlug}`);
+}

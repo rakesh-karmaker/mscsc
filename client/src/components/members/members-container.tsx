@@ -1,6 +1,6 @@
 import Empty from "@/components/ui/empty/empty";
 import type { MemberPreview } from "@/types/member-types";
-import type { Dispatch, ReactNode, SetStateAction } from "react";
+import type { ReactNode } from "react";
 import MemberCard from "./member-card/member-card";
 import PaginationContainer from "@/components/ui/pagination-container/pagination-container";
 
@@ -9,25 +9,18 @@ export default function MembersContainer({
   length,
   page,
   setPage,
-  ...props
 }: {
   members: MemberPreview[];
   length: number;
   page: number;
-  setPage: Dispatch<SetStateAction<number>>;
+  setPage: (newPage: number) => void;
 }): ReactNode {
   if (length === 0) return <Empty />;
   return (
     <>
       <div className="members-container">
         {members?.map((member) => {
-          return (
-            <MemberCard
-              key={member._id + member.slug}
-              member={member}
-              {...props}
-            />
-          );
+          return <MemberCard key={member._id + member.slug} member={member} />;
         })}
       </div>
       <PaginationContainer

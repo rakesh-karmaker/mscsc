@@ -1,0 +1,143 @@
+import { Popover } from "@mui/material";
+import { type Column, type Table } from "@tanstack/react-table";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import LuCheck from "~icons/lucide/check";
+import LuSettings2 from "~icons/lucide/settings-2";
+import ColumnInput, { ColumnLists, EmptyResults } from "./column-input";
+
+interface TableViewOptionsProps<
+  TData,
+> extends React.HTMLAttributes<HTMLButtonElement> {
+  table: Table<TData>;
+  disabled?: boolean;
+  tId: string;
+}
+
+export default function TableViewOptions<TData>({
+  table,
+  disabled,
+  tId,
+  ...rest
+}: TableViewOptionsProps<TData>): ReactNode {
+  const [open, setOpen] = useState<boolean>(false);
+
+  const id = `popover-view-options-${tId}`;
+  const columns = useMemo(() => {
+    return table
+      .getAllColumns()
+      .filter(
+        (column) =>
+          typeof column.accessorFn !== "undefined" && column.getCanHide(),
+      );
+  }, [table]);
+
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [filteredColumns, setFilteredColumns] =
+    useState<Column<TData, unknown>[]>(columns);
+
+  useEffect(() => {
+    if (searchValue === "") {
+      setFilteredColumns(columns);
+      return;
+    }
+    const filtered = columns.filter((column: Column<TData, unknown>) => {
+      if (typeof column.columnDef.meta?.label === "string") {
+        return column.columnDef.meta.label
+          .toLowerCase()
+          .includes(searchValue.toLowerCase());
+      }
+      return false;
+    });
+    setFilteredColumns(filtered);
+  }, [searchValue, columns]);
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        id={id}
+        className="flex gap-1.5 items-center px-3! py-1! h-10 rounded-sm border border-black/20 hover:bg-lightest-black/20! transition-colors cursor-pointer"
+        aria-describedby={id}
+        onClick={() => setOpen(!open)}
+        {...rest}
+      >
+        <LuSettings2 />
+        View
+      </button>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={document.getElementById(id)}
+        onClose={() => setOpen(false)}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        PaperProps={{
+          style: {
+            boxShadow: "rgba(149, 157, 165, 0.1) 0px 8px 24px",
+            marginTop: "4px",
+          },
+        }}
+      >
+        <div className="w-full h-full flex flex-col bg-primary-bg rounded-md border border-gray-300">
+          <ColumnInput
+            placeholder="Search columns..."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            className="max-w-45"
+          />
+          <ColumnLists>
+            {filteredColumns.length > 0 ? (
+              <div className="flex flex-col p-1!">
+                {filteredColumns.map((column) => (
+                  <TableViewItem
+                    key={column.id}
+                    checked={column.getIsVisible()}
+                    onClick={() => column.toggleVisibility()}
+                  >
+                    {column.columnDef.meta?.label ?? column.id}
+                  </TableViewItem>
+                ))}
+              </div>
+            ) : (
+              <EmptyResults />
+            )}
+          </ColumnLists>
+        </div>
+      </Popover>
+    </div>
+  );
+}
+
+function TableViewItem({
+  checked,
+  onClick,
+  children,
+}: {
+  checked: boolean;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      className="w-full h-full flex justify-between rounded-sm items-center px-2.5! py-1.75! hover:bg-[#f5f5f5] transition-all cursor-pointer"
+      type="button"
+      onClick={onClick}
+    >
+      <div className="w-full h-full flex gap-1 items-center">{children}</div>
+      <p
+        className="text-green-500 transition-opacity"
+        style={{
+          opacity: checked ? "100%" : "0%",
+        }}
+      >
+        <LuCheck />
+      </p>
+    </button>
+  );
+}

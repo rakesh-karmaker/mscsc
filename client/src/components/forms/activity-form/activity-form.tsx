@@ -27,7 +27,7 @@ import {
 import type { AxiosError } from "axios";
 import FormHeading from "@/components/ui/form-heading/from-heading";
 import { DateTimePicker } from "@/components/ui/date-time-picker";
-import FileInput from "@/components/ui/file-input/file-input";
+import FileInput from "@/components/ui/file-input";
 import RichTextEditor from "@/lib/rich-text-editor/rich-text-editor";
 import FormSubmitBtn from "@/components/ui/form-submit-btn";
 import DeleteWarning from "@/components/ui/delete-warning";
@@ -100,6 +100,10 @@ export default function ActivityForm(props: ActivityFormProps) {
       } else {
         navigate("/admin/activities");
       }
+    },
+    onError: (err: AxiosError<{ message: string }>) => {
+      console.log(err);
+      toast.error(err?.response?.data?.message || "An error occurred");
     },
     onError: (err: AxiosError<{ message: string }>) => {
       console.log(err);
@@ -220,17 +224,21 @@ export default function ActivityForm(props: ActivityFormProps) {
               {props?.defaultValues ? "Update" : "Add"} Activity
             </FormSubmitBtn>
 
-            {props?.defaultValues && (
-              <button
-                className="danger-button primary-button"
-                aria-label="Delete this data"
-                type="button"
-                onClick={(_) => {
-                  setOpen(true);
-                }}
-              >
-                Delete Activity
-              </button>
+              {props?.defaultValues && (
+                <button
+                  className="danger-button primary-button"
+                  aria-label="Delete this data"
+                  type="button"
+                  onClick={(_) => {
+                    setOpen(true);
+                  }}
+                >
+                  Delete Activity
+                </button>
+              )}
+            </div>
+            {errors.root?.message && (
+              <p style={{ color: "red" }}>{String(errors.root?.message)}</p>
             )}
           </div>
         </form>

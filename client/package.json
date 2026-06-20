@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dnd-kit/react": "^0.4.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@gsap/react": "^2.1.2",
@@ -19,26 +20,32 @@
     "@mui/x-date-pickers": "^8.23.0",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-query": "^5.90.16",
+    "@tanstack/react-table": "^8.21.3",
     "axios": "^1.13.2",
+    "clsx": "^2.1.1",
     "dayjs": "^1.11.19",
     "katex": "^0.16.27",
+    "nuqs": "^2.8.9",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-helmet-async": "^2.0.5",
     "react-hook-form": "^7.70.0",
     "react-hot-toast": "^2.6.0",
-    "react-icons": "^5.5.0",
     "react-lazy-load-image-component": "^1.6.3",
     "react-router-dom": "^7.11.0",
     "recharts": "^3.6.0",
     "swiper": "^12.0.3",
+    "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.1.18",
-    "uuid": "^13.0.0",
+    "uuid": "^14.0.0",
     "yet-another-react-lightbox": "^3.28.0",
     "zod": "^4.3.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@iconify/json": "^2.2.481",
+    "@svgr/core": "^8.1.0",
+    "@svgr/plugin-jsx": "^8.1.0",
     "@types/node": "^24.10.4",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
@@ -50,6 +57,7 @@
     "globals": "^16.5.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.51.0",
+    "unplugin-icons": "^23.0.1",
     "vite": "^7.3.0"
   }
 }

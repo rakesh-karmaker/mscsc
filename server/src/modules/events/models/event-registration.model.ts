@@ -1,0 +1,71 @@
+import mongoose from "mongoose";
+import { EventRegistrationSchemaType } from "../event.types.js";
+
+const EventRegistrationSchema =
+  new mongoose.Schema<EventRegistrationSchemaType>(
+    {
+      eventId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Event",
+        required: true,
+      },
+      name: { type: String, required: true },
+      email: { type: String, required: true },
+      password: { type: String, required: true },
+      phoneNumber: { type: String, required: true },
+      facebookUrl: { type: String, required: true },
+      photoUrl: { type: String, required: true },
+      photoPublicId: { type: String, required: true },
+
+      institution: { type: String, required: true },
+      grade: { type: String, required: true },
+
+      segments: { type: [String], required: true },
+      paidSoloSegments: {
+        type: [
+          {
+            segmentSlug: { type: String, required: true },
+            fees: { type: Number, required: true },
+            transactionMethod: { type: String, required: true },
+            transactionPhoneNumber: { type: String, required: true },
+            transactionId: { type: String, required: true },
+            status: {
+              type: String,
+              enum: ["pending", "validated", "rejected"],
+              required: true,
+              default: "pending",
+            },
+            rejectionReason: { type: String, default: "" },
+            registrationDate: { type: String, required: true },
+          },
+        ],
+        default: [],
+      },
+
+      transactionMethod: { type: String, required: true },
+      transactionPhoneNumber: { type: String, required: true },
+      transactionId: { type: String, required: true },
+
+      reference: { type: String, default: "N/A" },
+      clubReference: { type: String, default: "N/A" },
+
+      registrationDate: { type: String, required: true },
+      status: {
+        type: String,
+        enum: ["pending", "validated", "rejected"],
+        required: true,
+        default: "pending",
+      },
+      rejectionReason: { type: String, default: "" },
+      code: { type: String, required: true },
+      hasAttended: { type: Boolean, required: true, default: false },
+    },
+    {
+      timestamps: true,
+    },
+  );
+
+export default mongoose.model<EventRegistrationSchemaType>(
+  "EventRegistration",
+  EventRegistrationSchema,
+);

@@ -1,0 +1,223 @@
+import type { Option } from "@/types/table-types";
+import type { Column } from "@tanstack/react-table";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
+import LuPlus from "~icons/lucide/plus";
+import LuX from "~icons/lucide/x";
+import FilterBadge from "./filter-badge";
+import { Checkbox, Popover, Tooltip } from "@mui/material";
+import ColumnInput, { EmptyResults, ColumnLists } from "./column-input";
+
+interface TableMultiSelectProps<TData, TValue> {
+  column?: Column<TData, TValue>;
+  title?: string;
+  options: Option[];
+  multiple?: boolean;
+  tId: string;
+}
+
+export default function TableMultiSelect<TData, TValue>({
+  column,
+  title,
+  options,
+  multiple,
+  tId,
+}: TableMultiSelectProps<TData, TValue>): ReactNode {
+  const [open, setOpen] = useState(false);
+
+  const columnFilterValue = column?.getFilterValue();
+  const selectedValues = new Set(
+    Array.isArray(columnFilterValue) ? columnFilterValue : [],
+  );
+
+  const onItemSelect = useCallback(
+    (option: Option, isSelected: boolean) => {
+      if (!column) return;
+
+      if (multiple) {
+        const newSelectedValues = new Set(selectedValues);
+        if (isSelected) {
+          newSelectedValues.delete(option.value);
+        } else {
+          newSelectedValues.add(option.value);
+        }
+        const filterValues = Array.from(newSelectedValues);
+        column.setFilterValue(filterValues.length ? filterValues : undefined);
+      } else {
+        column.setFilterValue(isSelected ? undefined : [option.value]);
+        setOpen(false);
+      }
+    },
+    [column, multiple, selectedValues],
+  );
+
+  const onReset = useCallback(
+    (event?: React.MouseEvent) => {
+      event?.stopPropagation();
+      column?.setFilterValue(undefined);
+    },
+    [column],
+  );
+
+  const id = `popover-multi-select-${column?.id}-${tId}`;
+
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [filteredOptions, setFilteredOptions] = useState<Option[]>(options);
+
+  useEffect(() => {
+    if (searchValue === "") {
+      setFilteredOptions(options);
+      return;
+    }
+    const filtered = options.filter((option) => {
+      if (option.label.toLowerCase().includes(searchValue.toLowerCase())) {
+        return true;
+      }
+      return false;
+    });
+    setFilteredOptions(filtered);
+  }, [searchValue, options]);
+
+  return (
+    <div>
+      <button
+        type="button"
+        id={id}
+        className="flex gap-1.5 items-center px-3! py-1! h-10 rounded-sm border border-dashed border-black/20 hover:bg-lightest-black/20! transition-colors cursor-pointer"
+        aria-describedby={id}
+        onClick={() => setOpen(!open)}
+      >
+        {selectedValues?.size > 0 ? (
+          <Tooltip
+            title={"Clear " + title + " filter"}
+            placement="bottom"
+            arrow
+          >
+            <div
+              aria-label={`Clear ${title} filter`}
+              onClick={onReset}
+              className="rounded-sm opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            >
+              <LuX />
+            </div>
+          </Tooltip>
+        ) : (
+          <LuPlus />
+        )}
+        {title}
+        {selectedValues?.size > 0 && (
+          <div className="w-full ml-3! pl-3! relative before:w-px before:h-full before:bg-white before:absolute before:left-0 before:top-0 flex gap-1">
+            <FilterBadge className="lg:hidden">
+              {selectedValues.size}
+            </FilterBadge>
+            <div className="hidden items-center gap-1.5 lg:flex">
+              {selectedValues.size > 2 ? (
+                <FilterBadge className="px-1.5! py-1! h-full font-normal text-xs rounded-sx border border-black/20">
+                  {selectedValues.size} selected
+                </FilterBadge>
+              ) : (
+                options
+                  .filter((option) => selectedValues.has(option.value))
+                  .map((option) => (
+                    <FilterBadge
+                      key={option.value}
+                      className="px-1.5! py-1! h-full font-normal text-xs rounded-sx border border-black/20"
+                    >
+                      {option.label}
+                    </FilterBadge>
+                  ))
+              )}
+            </div>
+          </div>
+        )}
+      </button>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={document.getElementById(id)}
+        onClose={() => setOpen(false)}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        PaperProps={{
+          style: {
+            boxShadow: "rgba(149, 157, 165, 0.1) 0px 8px 24px",
+            marginTop: "4px",
+          },
+        }}
+      >
+        <div className="w-full h-full flex flex-col bg-primary-bg rounded-md border border-gray-300">
+          <ColumnInput
+            placeholder={`Search ${title}...`}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            className="max-w-45"
+          />
+          <ColumnLists>
+            {filteredOptions.length > 0 ? (
+              <div className="flex flex-col p-1!">
+                {filteredOptions.map((option) => {
+                  const isSelected = selectedValues.has(option.value);
+                  return (
+                    <OptionItem
+                      key={option.value}
+                      option={option}
+                      isSelected={isSelected}
+                      onSelect={onItemSelect}
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <EmptyResults />
+            )}
+          </ColumnLists>
+
+          {selectedValues.size > 0 && (
+            <div className="p-2! border-t border-gray-300">
+              <button
+                className="w-full h-full flex text-center justify-center rounded-sm items-center px-1! py-1! hover:bg-[#f5f5f5] transition-all cursor-pointer"
+                onClick={onReset}
+              >
+                Clear filters
+              </button>
+            </div>
+          )}
+        </div>
+      </Popover>
+    </div>
+  );
+}
+
+function OptionItem({
+  option,
+  isSelected,
+  onSelect,
+}: {
+  option: Option;
+  isSelected: boolean;
+  onSelect: (option: Option, isSelected: boolean) => void;
+}): ReactNode {
+  return (
+    <button
+      className="w-full h-full flex justify-between rounded-sm items-center px-1! py-0.5! hover:bg-[#f5f5f5] transition-all cursor-pointer"
+      type="button"
+      onClick={() => onSelect(option, isSelected)}
+    >
+      <div className="w-full h-full flex gap-px items-center">
+        <Checkbox
+          checked={isSelected}
+          onChange={() => onSelect(option, isSelected)}
+          readOnly
+          size="small"
+        />
+        <p className="text-sm">{option.label}</p>
+      </div>
+      {option.count && <p className="ml-auto! text-xs">{option.count}</p>}
+    </button>
+  );
+}

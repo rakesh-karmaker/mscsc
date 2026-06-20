@@ -4,8 +4,8 @@ import { useState, useEffect, type ReactNode } from "react";
 import AboutProfile from "@/components/profile/about-profile/about-profile";
 import { useQuery } from "@tanstack/react-query";
 import { getMember } from "@/lib/api/member";
-import { HiPencil } from "react-icons/hi2";
-import { FaEye } from "react-icons/fa";
+import HiPencil from "~icons/hugeicons/pencil-edit-01";
+import FaEye from "~icons/fa-solid/eye";
 import Loader from "@/components/ui/loader/loader";
 import ProfileDetails from "@/components/profile/profile-details/profile-details";
 import Timeline from "@/components/profile/timeline";
@@ -86,7 +86,9 @@ export default function Profile(): ReactNode {
               src={
                 (profileData.isImageHidden || !profileData.isImageVerified) &&
                 !isExecutive
-                  ? "/executive-members/placeholderpfp.webp"
+                  ? isOwner
+                    ? profileData.image
+                    : "/executive-members/placeholderpfp.webp"
                   : profileData.image
               }
               alt={profileData.name}

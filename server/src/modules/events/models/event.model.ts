@@ -1,0 +1,52 @@
+import mongoose from "mongoose";
+import { EventSchemaType } from "../event.types.js";
+
+const EventSchema = new mongoose.Schema<EventSchemaType>(
+  {
+    eventSlug: { type: String, unique: true, required: true },
+    eventName: { type: String, required: true },
+
+    eventLogoUrl: { type: String, required: true },
+    eventLogoPublicId: { type: String, required: true },
+
+    eventFaviconUrl: { type: String, required: true },
+    eventFaviconPublicId: { type: String, required: true },
+
+    eventBannerUrl: { type: String, required: true },
+    eventBannerPublicId: { type: String, required: true },
+
+    registrationDeadline: { type: String, required: true },
+    caApplicationDeadline: { type: String, required: true },
+
+    hideRegistrationForm: { type: Boolean, required: true, default: true },
+    hideCAForm: { type: Boolean, required: true, default: true },
+
+    eventDescription: { type: String, required: true },
+    eventLocation: { type: String, required: true },
+    eventDate: { type: String, required: true },
+    participantCount: { type: Number, required: true },
+    segments: {
+      type: [
+        {
+          segmentSlug: { type: String, required: true },
+          isTeamSegment: { type: Boolean, required: true, default: false },
+          isPaidSegment: { type: Boolean, required: true, default: false },
+          fees: { type: Number, required: true, default: 0 },
+        },
+      ],
+      required: true,
+    },
+    fees: { type: String, required: true, default: "N/A" },
+
+    isHidden: { type: Boolean, required: true, default: false },
+    isTemplate: { type: Boolean, default: false },
+
+    dataUrl: { type: String, required: true },
+    dataPublicId: { type: String, required: true },
+  },
+  {
+    timestamps: true,
+  },
+);
+
+export default mongoose.model<EventSchemaType>("Event", EventSchema);

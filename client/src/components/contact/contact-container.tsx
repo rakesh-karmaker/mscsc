@@ -1,4 +1,6 @@
-import { FaEnvelope, FaFacebook, FaPhoneAlt } from "react-icons/fa";
+import FaEnvelope from "~icons/fa/envelope";
+import FaFacebook from "~icons/fa/facebook";
+import FaPhoneAlt from "~icons/fa/phone";
 import type { ReactNode } from "react";
 import ContactInfo from "./contact-info";
 import ContactForm from "@/components/forms/contact-form/contact-form";

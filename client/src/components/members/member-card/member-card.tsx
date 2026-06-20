@@ -3,20 +3,13 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useUser } from "@/contexts/user-context";
 import type { MemberPreview } from "@/types/member-types";
-import { FaLock, FaUserTie } from "react-icons/fa";
-import { FaUser } from "react-icons/fa6";
-import MemberEditDialog from "../member-edit-dialog";
+import FaLock from "~icons/fa/lock";
+import FaUserTie from "~icons/fa-solid/user-tie";
+import FaUser from "~icons/fa6-solid/user";
 
 import "./member-card.css";
 
-export default function MemberCard({
-  member,
-  ...props
-}: {
-  member: MemberPreview;
-  showExecutives?: boolean;
-  isAdmin?: boolean;
-}) {
+export default function MemberCard({ member }: { member: MemberPreview }) {
   const navigate = useNavigate();
   const { slug, name, branch, batch, image, isImageHidden, isImageVerified } =
     member;
@@ -50,16 +43,9 @@ export default function MemberCard({
       </div>
       <div className="member-info">
         <h3>{name}</h3>
-        {props?.showExecutives ? (
-          <p>{props?.showExecutives && member.position}</p>
-        ) : (
-          <>
-            <p>{branch}</p>
-            <p>{batch}</p>
-          </>
-        )}
+        <p>{branch}</p>
+        <p>{batch}</p>
       </div>
-      {props?.isAdmin && <MemberEditDialog member={member} />}
     </div>
   );
 }

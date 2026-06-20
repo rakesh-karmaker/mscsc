@@ -1,32 +1,25 @@
 import { api } from "@/config/axios";
 import type { ContactSchemaType } from "../validation/contact-schema";
+import type { MessagesSearchParams } from "@/types/message-types";
 
-export async function getAllMessages(
-  page: number,
-  limit: number,
-  search: string
-) {
-  return api.get(`/message/get-message`, {
-    params: {
-      page: page,
-      limit: limit,
-      name: search,
-    },
+export async function getMessages(params?: MessagesSearchParams) {
+  return api.get(`/messages/messages`, {
+    params,
   });
 }
 
 export async function sendMessage(data: ContactSchemaType) {
-  return api.post("/message/send-message", data);
+  return api.post("/messages/send-message", data);
 }
 
 export async function markMessageAsRead(messageId: string) {
-  return api.patch("/message/mark-message-as-read", {
+  return api.patch("/messages/mark-message-as-read", {
     id: messageId,
   });
 }
 
 export async function deleteMessage(messageId: string) {
-  return api.delete("/message/delete-message", {
+  return api.delete("/messages/delete-message", {
     params: { id: messageId },
   });
 }

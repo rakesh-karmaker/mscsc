@@ -2,13 +2,12 @@ import { Link } from "react-router-dom";
 import type { User } from "@/types/user-types";
 import formatDate from "@/utils/format-date";
 import Empty from "@/components/ui/empty/empty";
-import {
-  FaCalendarAlt,
-  FaCertificate,
-  FaMedal,
-  FaProjectDiagram,
-} from "react-icons/fa";
-import { FaArrowRight, FaChalkboardUser } from "react-icons/fa6";
+import FaCalendarAlt from "~icons/fa-solid/calendar-alt";
+import FaCertificate from "~icons/fa/certificate";
+import FaMedal from "~icons/fa-solid/medal";
+import FaProjectDiagram from "~icons/fa-solid/project-diagram";
+import FaArrowRight from "~icons/fa6-solid/arrow-right";
+import FaChalkboardUser from "~icons/fa6-solid/chalkboard-user";
 
 export default function Timeline({
   timelineData,
@@ -39,11 +38,11 @@ export default function Timeline({
   };
 
   return (
-    <div className="w-full !mt-5 grid grid-cols-3 gap-7.5 max-2xl:grid-cols-2 max-xl:grid-cols-1">
+    <div className="w-full mt-5! grid grid-cols-3 gap-7.5 max-2xl:grid-cols-2 max-xl:grid-cols-1">
       {sortedTimelineData.map((item) => {
         return (
           <div
-            className="[box-shadow:rgba(149,157,165,0.2)_0px_8px_24px] relative !p-5 flex flex-col gap-3 rounded-lg justify-between"
+            className="[box-shadow:rgba(149,157,165,0.2)_0px_8px_24px] relative p-5! flex flex-col gap-3 rounded-lg justify-between"
             key={item.title}
           >
             <div className="flex flex-col gap-3">
@@ -70,7 +69,7 @@ export default function Timeline({
             {item.link && item.link.trim() !== "" ? (
               <Link
                 to={item.link}
-                className="primary-button flex gap-1 items-center !px-[16px] !py-[8px] !text-sm w-fit !h-fit"
+                className="primary-button flex gap-1 items-center px-4! py-2! text-sm! w-fit! h-fit!"
                 aria-label={`Learn more about ${item.title}`}
               >
                 Learn More <FaArrowRight />

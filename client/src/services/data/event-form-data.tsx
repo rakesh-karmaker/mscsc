@@ -1,0 +1,34 @@
+import type { ReactNode } from "react";
+
+export const sectionsData: {
+  title: string;
+  description: ReactNode;
+  sectionOptions: string[];
+} = {
+  title: "Sections",
+  description: <p className="w-full  h-full">Sections for the event.</p>,
+  sectionOptions: [
+    "hero",
+    "video",
+    "about",
+    "segments",
+    "experiences",
+    "schedule",
+    "sp",
+    "faqs",
+    "contact",
+  ],
+};
+
+export const sectionsTitle: { [section: string]: string } = {
+  basic: "Create New Event",
+  hero: "Website Hero Section",
+  video: "Website Video Section",
+  about: "About the Event Section",
+  segments: "Event Segments Section",
+  experiences: "Experiences Section",
+  schedule: "Event Schedule Section",
+  sp: "Sponsors & Partners Section",
+  faqs: "FAQs Section",
+  final: "Finalize Event Creation",
+};

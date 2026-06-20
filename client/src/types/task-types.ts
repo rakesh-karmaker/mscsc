@@ -59,3 +59,9 @@ export type TaskPreview = Pick<
   | "second"
   | "third"
 > & { submissionCount: number };
+
+export type TasksParams = {
+  page: number;
+  search: string;
+  category: "article writing" | "poster design" | "";
+};

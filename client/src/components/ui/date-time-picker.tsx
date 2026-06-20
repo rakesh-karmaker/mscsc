@@ -11,29 +11,58 @@ export const DateTimePicker = React.forwardRef(
       value,
       onChange,
       label,
-    }: { value: Dayjs; onChange: (date: Dayjs | null) => void; label: string },
-    ref: React.Ref<HTMLDivElement>
+      timeField = true,
+      errMessage,
+    }: {
+      value: Dayjs;
+      onChange: (date: Dayjs | null) => void;
+      label: string;
+      timeField?: boolean;
+      errMessage?: string;
+    },
+    ref: React.Ref<HTMLDivElement>,
   ) => {
     return (
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        {window.innerWidth < 700 ? (
-          <MobileDateTimePicker
-            label={label}
-            value={value}
-            onChange={onChange}
-            ref={ref}
-            sx={{ width: "100%" }}
-          />
-        ) : (
-          <DesktopDateTimePicker
-            label={label}
-            value={value}
-            onChange={onChange}
-            ref={ref}
-            sx={{ width: "100%" }}
-          />
-        )}
-      </LocalizationProvider>
+      <div className="w-full h-full flex flex-col gap-2">
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          {window.innerWidth < 700 ? (
+            <MobileDateTimePicker
+              label={label}
+              value={value}
+              onChange={onChange}
+              ref={ref}
+              sx={{ width: "100%" }}
+              viewRenderers={
+                timeField
+                  ? {}
+                  : {
+                      hours: null,
+                      minutes: null,
+                      seconds: null,
+                    }
+              }
+            />
+          ) : (
+            <DesktopDateTimePicker
+              label={label}
+              value={value}
+              onChange={onChange}
+              ref={ref}
+              sx={{ width: "100%" }}
+              viewRenderers={
+                timeField
+                  ? {}
+                  : {
+                      hours: null,
+                      minutes: null,
+                      seconds: null,
+                    }
+              }
+            />
+          )}
+        </LocalizationProvider>
+        {errMessage && <p className="text-red-600 text-sm">{errMessage}</p>}
+      </div>
     );
-  }
+  },
 );

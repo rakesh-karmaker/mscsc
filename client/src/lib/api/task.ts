@@ -1,24 +1,20 @@
 import { api } from "@/config/axios";
 import type { TaskSchemaType } from "../validation/task-schema";
+import type { TasksParams } from "@/types/task-types";
 
-export async function getAllTasks(
-  page: number,
-  limit: number,
-  search: string,
-  category: string
-) {
-  return api.get(`/task`, {
+export async function getAllTasks(limit: number, params: TasksParams) {
+  const { search, ...rest } = params;
+  return api.get(`/tasks`, {
     params: {
-      page: page,
       limit: limit,
       name: search,
-      category: category,
+      ...rest,
     },
   });
 }
 
 export async function getTask(slug: string, username: string | undefined) {
-  return api.get(`/task/${slug}`, {
+  return api.get(`/tasks/${slug}`, {
     params: {
       username: username,
     },
@@ -26,7 +22,7 @@ export async function getTask(slug: string, username: string | undefined) {
 }
 
 export async function getTopSubmitters() {
-  return api.get("/member/top-submitters");
+  return api.get("/members/top-submitters");
 }
 
 export async function addTask(
@@ -34,14 +30,14 @@ export async function addTask(
     instructions: string;
     deadline: string;
     imageRequired: string;
-  }
+  },
 ) {
   const formData = new FormData();
   for (const key in data) {
     formData.append(key, data[key as keyof typeof data]);
   }
 
-  return api.post("/task/create", formData);
+  return api.post("/tasks/create", formData);
 }
 
 export async function editTask(
@@ -49,17 +45,17 @@ export async function editTask(
     instructions: string;
     deadline: string;
     imageRequired: string;
-  } & { slug: string }
+  } & { slug: string },
 ) {
   const formData = new FormData();
   for (const key in data) {
     formData.append(key, data[key as keyof typeof data]);
   }
-  return api.patch("/task/edit-task", formData);
+  return api.patch("/tasks/edit-task", formData);
 }
 
 export async function deleteTask(slug: string) {
-  return api.delete("/task/delete-task", { data: { slug: slug } });
+  return api.delete("/tasks/delete-task", { data: { slug: slug } });
 }
 
 export async function submitTask(data: {
@@ -74,7 +70,7 @@ export async function submitTask(data: {
   formData.append("answer", data.answer);
   formData.append("poster", data.poster);
 
-  return api.post("/task/submit", formData, {
+  return api.post("/tasks/submit", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -94,7 +90,7 @@ export async function editSubmission(data: {
   if (data?.poster) {
     formData.append("poster", data.poster);
   }
-  return api.patch("/task/edit-submission", formData, {
+  return api.patch("/tasks/edit-submission", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -102,7 +98,7 @@ export async function editSubmission(data: {
 }
 
 export async function deleteSubmission(slug: string, username: string) {
-  return api.delete("/task/delete-submission", {
+  return api.delete("/tasks/delete-submission", {
     data: { slug: slug, username: username },
   });
 }
@@ -110,9 +106,9 @@ export async function deleteSubmission(slug: string, username: string) {
 export async function makeWinner(
   position: string,
   slug: string,
-  username: string
+  username: string,
 ) {
-  return api.put("/task/make-winner", {
+  return api.put("/tasks/make-winner", {
     slug: slug,
     username: username,
     position: position,
@@ -120,7 +116,7 @@ export async function makeWinner(
 }
 
 export async function deleteWinner(slug: string, username: string) {
-  return api.delete("/task/delete-winner", {
+  return api.delete("/tasks/delete-winner", {
     data: { slug: slug, username: username },
   });
 }

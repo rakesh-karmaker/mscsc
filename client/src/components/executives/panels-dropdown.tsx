@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { FaAngleDown } from "react-icons/fa6";
+import FaAngleDown from "~icons/fa6-solid/angle-down";
 
 export function PanelsDropdown({
   onClick,
@@ -13,7 +13,7 @@ export function PanelsDropdown({
       aria-label="Toggle years dropdown"
       type="button"
     >
-      <FaAngleDown className="!mt-0.5 transition-all duration-200" />
+      <FaAngleDown className="mt-0.5! transition-all duration-200" />
     </button>
   );
 }
@@ -21,7 +21,7 @@ export function PanelsDropdown({
 export function panelsDropdownClick(years: string[]): void {
   const yearsDropdownButton = document.querySelector(".year-dropdown");
   const yearsDropdown = document.querySelector(
-    ".executive-panel-container > aside"
+    ".executive-panel-container > aside",
   ) as HTMLElement;
 
   if (!yearsDropdownButton || !yearsDropdown) return;
@@ -32,6 +32,6 @@ export function panelsDropdownClick(years: string[]): void {
     : "40px";
   yearsDropdown.setAttribute(
     "dropdown-active",
-    yearsDropdownButton.classList.contains("active").toString()
+    yearsDropdownButton.classList.contains("active").toString(),
   );
 }

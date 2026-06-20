@@ -1,6 +1,6 @@
 import type { Event } from "@/types/activity-types";
 import type { ReactNode } from "react";
-import { FaArrowRight } from "react-icons/fa6";
+import FaArrowRight from "~icons/fa6-solid/arrow-right";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { NavLink } from "react-router-dom";
 

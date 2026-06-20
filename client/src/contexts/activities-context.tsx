@@ -1,41 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, type ReactNode } from "react";
 import useErrorNavigator from "@/hooks/use-error-navigator";
 import { getAllActivities } from "@/lib/api/activities";
 import type { ActivitiesContextType } from "@/types/context-types";
+import useActivitiesParams from "@/hooks/context-params-hooks/use-activities-params";
 
 const ActivitiesContext = createContext<ActivitiesContextType | null>(null);
 
 export function ActivitiesProvider({ children }: { children: ReactNode }) {
-  const [tag, setTag] = useState("");
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
+  const [params, setParams] = useActivitiesParams();
 
   useEffect(() => {
-    setTag("");
-  }, [search]);
+    window.scrollTo(0, 0);
+  }, [params]);
 
-  const { data, error, isError, isLoading, refetch } = useQuery({
-    queryKey: ["activities", page, tag, search],
+  const { data, error, isError, isLoading } = useQuery({
+    queryKey: ["activities", params],
     queryFn: () => {
-      return getAllActivities(page, 12, tag, search);
+      return getAllActivities(12, params);
     },
     staleTime: 1000 * 60 * 15, // 15 minutes
   });
-
-  useEffect(() => {
-    setPage(1);
-  }, [tag, search]);
-
-  useEffect(() => {
-    refetch();
-  }, [page, search, tag, refetch]);
 
   useErrorNavigator(isError, error);
 
@@ -47,13 +32,9 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
       value={{
         activities,
         length,
-        tag,
-        setTag,
-        search,
-        setSearch,
-        page,
-        setPage,
         isLoading,
+        params,
+        setParams,
       }}
     >
       {children}

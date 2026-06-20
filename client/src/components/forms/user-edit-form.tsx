@@ -12,10 +12,9 @@ import {
   type EditUserSchemaType,
 } from "@/lib/validation/edit-user-schema";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
-import useErrorNavigator from "@/hooks/use-error-navigator";
 import type { AxiosError } from "axios";
 import SelectInput from "../ui/select-input";
-import FileInput from "../ui/file-input/file-input";
+import FileInput from "../ui/file-input";
 import HideImage from "./hide-image";
 import FormSubmitBtn from "../ui/form-submit-btn";
 
@@ -45,7 +44,7 @@ export default function UserEditForm({
       branch: user?.branch,
       reason: user?.reason,
       socialLink: user?.socialLink,
-      batch: user?.batch,
+      batch: user?.batch.toString(),
       hideImage: user?.isImageHidden ? true : false,
     },
     mode: "onChange",
@@ -81,8 +80,6 @@ export default function UserEditForm({
         setError("email", {
           message: err.response?.data.message || "Email already exists",
         });
-      } else {
-        useErrorNavigator(true, err);
       }
       setError("root", {
         message: err.response?.data.message || "An error occurred",
@@ -175,8 +172,13 @@ export default function UserEditForm({
         </SelectInput>
       </Stack>
 
-      <FileInput register={register} name="image" errors={errors}>
-        Edit your photo:
+      <FileInput
+        register={register}
+        name="image"
+        errors={errors}
+        labelText="Edit your photo:"
+      >
+        Add Photo
       </FileInput>
 
       <TextField

@@ -1,28 +1,42 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, type NavigateFunction } from "react-router-dom";
+
+export type ErrorWithStatus = (Error & { status?: number }) | null;
+
+export function navigateError(
+  navigate: NavigateFunction,
+  error: ErrorWithStatus,
+) {
+  const status = error?.status;
+
+  if (status === 400) {
+    navigate("/400", { replace: true });
+    return;
+  }
+
+  if (status === 401) {
+    navigate("/401", { replace: true });
+    return;
+  }
+
+  if (status === 404) {
+    navigate("/404", { replace: true });
+    return;
+  }
+
+  if (status === 500 || status === null || status === undefined) {
+    navigate("/500", { replace: true });
+  }
+}
 
 export default function useErrorNavigator(
   isError: boolean,
-  error: (Error & { status?: number }) | null
+  error: ErrorWithStatus,
 ) {
   const navigate = useNavigate();
   useEffect(() => {
     if (isError) {
-      if (error?.status === 400) {
-        navigate("/400", { replace: true });
-      }
-      if (error?.status === 401) {
-        navigate("/401", { replace: true });
-      }
-      if (error?.status === 404) {
-        navigate("/404", { replace: true });
-      }
-      if (error?.status === 500) {
-        navigate("/500", { replace: true });
-      }
-      if (error?.status === null || error?.status === undefined) {
-        navigate("/500", { replace: true });
-      }
+      navigateError(navigate, error);
     }
-  }, [isError, error]);
+  }, [isError, error, navigate]);
 }

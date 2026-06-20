@@ -3,7 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
-import useErrorNavigator from "@/hooks/use-error-navigator";
 import { Stack, TextField } from "@mui/material";
 import FormSubmitBtn from "@/components/ui/form-submit-btn";
 import {
@@ -11,7 +10,6 @@ import {
   type ContactSchemaType,
 } from "@/lib/validation/contact-schema";
 import { sendMessage } from "@/lib/api/message";
-
 import "./contact-form.css";
 
 export default function ContactForm() {
@@ -31,8 +29,7 @@ export default function ContactForm() {
     },
     onError: (err) => {
       console.log(err);
-      toast.error("Failed to send message");
-      useErrorNavigator(true, err);
+      toast.error("Failed to send message - Please try again later");
     },
   });
 

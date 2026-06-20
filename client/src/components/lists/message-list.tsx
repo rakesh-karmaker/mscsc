@@ -2,12 +2,18 @@ import { deleteMessage, markMessageAsRead } from "@/lib/api/message";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import type { MessageType } from "@/types/message-types";
+import type { MessageTableData, MessageType } from "@/types/message-types";
 import ListLayout from "./list-layout";
 import Empty from "../ui/empty/empty";
 import MessageBox from "../message-box";
 
-export default function MessageList({ messages }: { messages: MessageType[] }) {
+export default function MessageList({
+  messages,
+  loading,
+}: {
+  messages: MessageType[];
+  loading: boolean;
+}) {
   const queryClient = useQueryClient();
 
   const messageMutation = useMutation({
@@ -23,6 +29,7 @@ export default function MessageList({ messages }: { messages: MessageType[] }) {
     },
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: ["messages"] });
+      queryClient.invalidateQueries({ queryKey: ["adminDashboardData"] });
       toast.success(res?.data?.message);
     },
     onError: (err) => {
@@ -35,8 +42,8 @@ export default function MessageList({ messages }: { messages: MessageType[] }) {
     messageMutation.mutate({ _id: _id, method: "delete" });
   }
 
-  const [currentMessage, setCurrentMessage] = useState<MessageType | null>(
-    null
+  const [currentMessage, setCurrentMessage] = useState<MessageTableData | null>(
+    null,
   );
 
   function messageClick(_id: string, isNew: boolean) {
@@ -48,7 +55,7 @@ export default function MessageList({ messages }: { messages: MessageType[] }) {
   }
 
   return (
-    <ListLayout title="Message List">
+    <ListLayout title="Message List" isLoading={loading}>
       {!messages || messages?.length == 0 ? (
         <Empty />
       ) : (
@@ -88,7 +95,7 @@ function MessagesListItem({
         <p className="message-email line-clamp-2">{message.email}</p>
       </div>
       <button
-        className="danger-button primary-button !text-[1em] !py-[7px] !px-[15px] !w-fit !h-fit"
+        className="danger-button primary-button text-[1em]! py-1.75! px-3.75! w-fit! h-fit!"
         onClick={(e) => {
           e.stopPropagation();
           e.preventDefault();

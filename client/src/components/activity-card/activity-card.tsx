@@ -3,10 +3,11 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import type { ActivityPreview } from "@/types/activity-types";
 import type { Dispatch, SetStateAction } from "react";
-import { FaCalendarAlt } from "react-icons/fa";
 import formatDate from "@/utils/format-date";
-import { FaArrowRight, FaChalkboardUser } from "react-icons/fa6";
-import { HiPencil } from "react-icons/hi2";
+import FaCalendarAlt from "~icons/fa-solid/calendar-alt";
+import FaChalkboardUser from "~icons/fa6-solid/chalkboard-user";
+import FaArrowRight from "~icons/fa-solid/arrow-right";
+import HiPencil from "~icons/heroicons/pencil-solid";
 
 import "./activity-card.css";
 

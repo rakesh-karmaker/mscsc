@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import type { TaskPreview } from "@/types/task-types";
-import type { Dispatch, ReactNode, SetStateAction } from "react";
+import type { ReactNode } from "react";
 import Empty from "@/components/ui/empty/empty";
 import PaginationContainer from "@/components/ui/pagination-container/pagination-container";
 import TaskTags from "@/components/ui/task-tags/task-tags";
@@ -14,7 +14,7 @@ type TaskListProps = {
   submissions?: string[];
   username?: string;
   admin?: boolean;
-  setPage: Dispatch<SetStateAction<number>>;
+  setPage: (newPage: number) => void;
 };
 
 export default function TaskList({

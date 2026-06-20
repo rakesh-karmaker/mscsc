@@ -1,30 +1,29 @@
 import { api } from "@/config/axios";
 import type { ActivitySchemaType } from "../validation/activity-schema";
+import type { ActivitiesParams } from "@/types/activity-types";
 
 export async function getAllActivities(
-  page: number,
   limit: number,
-  tag: string,
-  search: string,
+  params: ActivitiesParams,
 ) {
-  return api.get(`/activity`, {
+  const { search, ...rest } = params;
+  return api.get(`/activities`, {
     params: {
       limit: limit,
-      page: page,
-      tag: tag,
       title: search,
+      ...rest,
     },
   });
 }
 
 export async function getActivity(slug: string, isEdit = false) {
-  return api.get(`/activity/${slug}`, {
+  return api.get(`/activities/${slug}`, {
     params: { isEdit: isEdit },
   });
 }
 
 export async function getHomeActivities() {
-  return api.get("/activity/get-home-activities");
+  return api.get("/activities/get-home-activities");
 }
 
 export async function addActivity(data: ActivitySchemaType) {
@@ -48,8 +47,7 @@ export async function addActivity(data: ActivitySchemaType) {
     }
     formData.append(key, data[key as keyof typeof data]);
   }
-
-  return api.post("/activity", formData, {
+  return api.post("/activities", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -79,7 +77,7 @@ export async function editActivity(
     }
     formData.append(key, data[key as keyof typeof data]);
   }
-  return api.patch("/activity", formData, {
+  return api.patch("/activities", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -87,5 +85,5 @@ export async function editActivity(
 }
 
 export async function deleteActivity(slug: string) {
-  return api.delete("/activity", { data: { slug: slug } });
+  return api.delete("/activities", { data: { slug: slug } });
 }

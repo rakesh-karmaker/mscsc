@@ -10,12 +10,12 @@ import {
   registerSchema,
   type RegisterSchemaType,
 } from "@/lib/validation/register-schema";
-import useErrorNavigator from "@/hooks/use-error-navigator";
+import { navigateError } from "@/hooks/use-error-navigator";
 import Consent from "./consent";
 import SelectInput from "@/components/ui/select-input";
 import type { AxiosError } from "axios";
 import FormSubmitBtn from "@/components/ui/form-submit-btn";
-import FileInput from "@/components/ui/file-input/file-input";
+import FileInput from "@/components/ui/file-input";
 
 import "./user-form.css";
 
@@ -58,7 +58,7 @@ export default function RegistrationForm() {
           message: err.response.data.message,
         });
       } else {
-        useErrorNavigator(true, err);
+        navigateError(navigate, err);
       }
       setError("root", {
         message: err.response?.data.message,
@@ -154,8 +154,13 @@ export default function RegistrationForm() {
         </SelectInput>
       </Stack>
 
-      <FileInput register={register} name="image" errors={errors}>
-        Give us your formal photo:
+      <FileInput
+        register={register}
+        name="image"
+        errors={errors}
+        labelText="Give us your formal photo:"
+      >
+        Add Photo
       </FileInput>
 
       <TextField
@@ -179,7 +184,7 @@ export default function RegistrationForm() {
           fullWidth
           error={!!errors.socialLink}
           helperText={errors.socialLink?.message}
-          placeholder="Enter your facebook profile link"
+          placeholder="eg. https://www.facebook.com/yourprofile"
         />
 
         <TextField

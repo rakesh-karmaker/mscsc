@@ -1,0 +1,114 @@
+import { type ReactNode } from "react";
+import FormLayout from "../form-layout";
+import { Stack, TextField } from "@mui/material";
+import FileInput from "@/components/ui/file-input";
+
+type AboutSectionFieldsProps = {
+  register: any;
+  errors: { [key: string]: any };
+  isSectionSelected: boolean;
+};
+
+export default function AboutSectionFields({
+  register,
+  errors,
+  isSectionSelected,
+}: AboutSectionFieldsProps): ReactNode {
+  return (
+    <FormLayout
+      title={"About Section"}
+      description={
+        <p className="w-full  h-full">
+          The about section provides detailed information about the event,
+          including its purpose, agenda, speakers, and other relevant details.
+        </p>
+      }
+      id="about-section"
+    >
+      <div className="flex flex-col gap-4">
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={2}
+          sx={{ width: "100%" }}
+        >
+          <TextField
+            fullWidth
+            variant="outlined"
+            {...register("aboutData.title", {
+              required: isSectionSelected ? "About title is required" : false,
+              maxLength: {
+                value: 60,
+                message: "Title cannot exceed 60 characters",
+              },
+            })}
+            label="About Title"
+            error={Boolean(errors.aboutData?.title)}
+            helperText={errors.aboutData?.title?.message as string}
+          />
+
+          <TextField
+            fullWidth
+            variant="outlined"
+            {...register("aboutData.prizeCount", {
+              required: isSectionSelected ? "Prize count is required" : false,
+              valueAsNumber: true,
+              min: {
+                value: 0,
+                message: "Prize count cannot be negative",
+              },
+            })}
+            label="Number of Prizes"
+            error={Boolean(errors.aboutData?.prizeCount)}
+            helperText={errors.aboutData?.prizeCount?.message as string}
+            sx={{ maxWidth: "300px" }}
+          />
+        </Stack>
+
+        <TextField
+          fullWidth
+          variant="outlined"
+          {...register("aboutData.heading", {
+            required: isSectionSelected ? "About heading is required" : false,
+          })}
+          label="About Heading"
+          error={Boolean(errors.aboutData?.heading)}
+          helperText={errors.aboutData?.heading?.message as string}
+        />
+
+        <TextField
+          fullWidth
+          variant="outlined"
+          {...register("aboutData.text", {
+            required: isSectionSelected ? "About text is required" : false,
+          })}
+          multiline
+          minRows={5}
+          label="About Text"
+          error={Boolean(errors.aboutData?.text)}
+          helperText={errors.aboutData?.text?.message as string}
+        />
+
+        <FormLayout
+          title={"About Section Image"}
+          description={
+            <p className="w-full  h-full">
+              The about image visually represents the event and enhances the
+              overall design of the about section.
+            </p>
+          }
+          textSize="xl"
+          id="about-section-image"
+        >
+          <FileInput
+            register={register}
+            name="aboutImageFile"
+            errors={errors}
+            labelText="Add about image (optional)"
+          >
+            Upload Image
+          </FileInput>
+        </FormLayout>
+      </div>
+    </FormLayout>
+  );
+}

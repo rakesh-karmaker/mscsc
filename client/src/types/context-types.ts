@@ -1,9 +1,7 @@
-import type { ActivityPreview } from "./activity-types";
+import type { ActivitiesParams, ActivityPreview } from "./activity-types";
 import type { User } from "./user-types";
-import type { MemberPreview } from "./member-types";
-import type { TaskPreview } from "./task-types";
-import type { Dispatch, SetStateAction } from "react";
-import type { MessageType } from "./message-types";
+import type { MemberPreview, MembersParams } from "./member-types";
+import type { TaskPreview, TasksParams } from "./task-types";
 
 export type UserContextType = {
   user: User | null;
@@ -19,60 +17,28 @@ export type MembersContextType = {
   } | null;
   members: MemberPreview[] | null;
   isLoading: boolean;
-  search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
-  page: number;
-  setPage: Dispatch<SetStateAction<number>>;
-  role: string;
-  setRole: Dispatch<SetStateAction<string>>;
-  branch: string;
-  setBranch: Dispatch<SetStateAction<string>>;
   length: number;
-  position: string;
-  setPosition: Dispatch<SetStateAction<string>>;
+  params: MembersParams;
+  setParams: (newParams: Partial<MembersParams>) => void;
 };
 
 export type ActivitiesContextType = {
   activities: ActivityPreview[];
-  length: number;
-  tag: string;
-  setTag: Dispatch<SetStateAction<string>>;
-  search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
-  page: number;
-  setPage: Dispatch<SetStateAction<number>>;
   isLoading: boolean;
+  length: number;
+  params: ActivitiesParams;
+  setParams: (newParams: Partial<ActivitiesParams>) => void;
 };
 
 export type TasksContextType = {
   tasks: TaskPreview[] | null;
   length: number;
-  page: number;
-  setPage: Dispatch<SetStateAction<number>>;
-  search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
-  category: string;
-  setCategory: Dispatch<SetStateAction<string>>;
   isLoading: boolean;
   response: {
     results: TaskPreview[];
     selectedLength: number;
     totalLength: number;
   } | null;
-  refetch: () => void;
-};
-
-export type MessagesContextType = {
-  messages: MessageType[] | null;
-  isLoading: boolean;
-  search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
-  page: number;
-  setPage: Dispatch<SetStateAction<number>>;
-  length: number;
-  response: {
-    results: MessageType[];
-    selectedLength: number;
-    totalLength: number;
-  } | null;
+  params: TasksParams;
+  setParams: (newParams: Partial<TasksParams>) => void;
 };

@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import { FaRegFaceFrownOpen } from "react-icons/fa6";
+import FaRegFaceFrownOpen from "~icons/fa6-regular/face-frown-open";
 
 import "./empty.css";
 

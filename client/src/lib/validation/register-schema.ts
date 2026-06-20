@@ -78,6 +78,7 @@ export const registerSchema = z.object({
     }),
   socialLink: z
     .string({ required_error: "Enter your facebook link" })
+    .url({ message: "Invalid URL format" })
     .refine((value) => value !== null && value.trim() !== "", {
       message: "Social link is required",
     }),
