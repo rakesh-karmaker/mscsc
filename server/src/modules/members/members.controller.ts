@@ -81,9 +81,11 @@ export async function getAllMembersForTable(
     const perPage = params.perPage ? parseInt(params.perPage) : 10;
     const skip = (page - 1) * perPage;
     const batchFilter =
-      typeof params.batch === "string"
+      typeof params.batch === "string" &&
+      params.batch !== "" &&
+      parseInt(params.batch) > 0
         ? {
-            $eq: parseInt(params.batch),
+            batch: parseInt(params.batch),
           }
         : {};
     const branchesFilter =
@@ -138,6 +140,7 @@ export async function getAllMembersForTable(
       .send({ subject: "root", message: "Server error", error: errorMessage });
     logger.error("Error fetching members for table", {
       error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }

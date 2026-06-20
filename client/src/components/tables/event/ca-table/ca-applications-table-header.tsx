@@ -251,7 +251,7 @@ export default function getCaApplicationTableColumns(): ColumnDef<CaApplicationT
                 id={`status-popover-${row.id}`}
                 mutation={caApplicationMutation}
                 setOpen={setOpen}
-                isCa={true}
+                model="application"
               />
 
               <a

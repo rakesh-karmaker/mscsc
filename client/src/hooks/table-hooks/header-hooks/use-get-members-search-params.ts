@@ -19,7 +19,7 @@ export default function useGetMembersSearchParams(): MembersSearchParams {
       { id: "createdAt", desc: true },
     ]),
     name: parseAsString.withDefault(""),
-    batch: parseAsInteger.withDefault(-1),
+    batch: parseAsString.withDefault(""),
     branch: parseAsArrayOf(
       parseAsStringEnum([
         "Main Boys",
