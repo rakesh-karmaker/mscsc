@@ -53,7 +53,7 @@ export async function submitTask(req: Request, res: Response): Promise<void> {
       name: member.name,
       email: member.email,
       branch: member.branch,
-      batch: member.batch.toString(),
+      batch: member.batch,
       image: member.image,
       submissionDate: new Date().toISOString(),
       answer,

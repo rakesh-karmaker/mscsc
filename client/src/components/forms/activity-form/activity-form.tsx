@@ -105,10 +105,6 @@ export default function ActivityForm(props: ActivityFormProps) {
       console.log(err);
       toast.error(err?.response?.data?.message || "An error occurred");
     },
-    onError: (err: AxiosError<{ message: string }>) => {
-      console.log(err);
-      toast.error(err?.response?.data?.message || "An error occurred");
-    },
   });
 
   const onSubmit = async (data: ActivitySchemaType) => {
@@ -224,23 +220,22 @@ export default function ActivityForm(props: ActivityFormProps) {
               {props?.defaultValues ? "Update" : "Add"} Activity
             </FormSubmitBtn>
 
-              {props?.defaultValues && (
-                <button
-                  className="danger-button primary-button"
-                  aria-label="Delete this data"
-                  type="button"
-                  onClick={(_) => {
-                    setOpen(true);
-                  }}
-                >
-                  Delete Activity
-                </button>
-              )}
-            </div>
-            {errors.root?.message && (
-              <p style={{ color: "red" }}>{String(errors.root?.message)}</p>
+            {props?.defaultValues && (
+              <button
+                className="danger-button primary-button"
+                aria-label="Delete this data"
+                type="button"
+                onClick={(_) => {
+                  setOpen(true);
+                }}
+              >
+                Delete Activity
+              </button>
             )}
           </div>
+          {errors.root?.message && (
+            <p style={{ color: "red" }}>{String(errors.root?.message)}</p>
+          )}
         </form>
       </div>
 
