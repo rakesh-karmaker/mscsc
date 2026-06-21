@@ -36,8 +36,8 @@ setInterval(
       console.error(`Got error: ${e.message}`);
     });
   },
-  2 * 60 * 1000,
-); // every 2 minutes
+  5 * 60 * 1000,
+); // every 5 minutes
 
 app.listen(config.port, () => {
   console.log(`Server running on port ${config.port}`);
