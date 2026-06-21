@@ -51,25 +51,30 @@ export default function SubmissionActions({
     },
   ];
 
+  const submission = task.submissions.find((sub) => sub.slug === username);
+
   return (
     <>
       <TaskSidebarCard title={"Submission Actions"}>
         <p>
-          Click on the position buttons to give the submitter a position and
-          click on the delete button to delete the submission
+          Click on the position buttons to give the submitter a position, click
+          again to remove it, and click on the delete button to delete the
+          submission
         </p>
         <div className="task-actions">
           {positionActions.map((position) => {
             return (
               <button
-                key={position.key + task.slug + username}
+                key={position.key + task.slug + submission?.slug}
                 className={
                   "primary-button" +
-                  (task[position.key] === username ? " danger" : "") +
+                  (task[position.key] === submission?.memberId
+                    ? " danger"
+                    : "") +
                   (taskMutation.isPending ? " disabled" : "")
                 }
                 onClick={() =>
-                  task[position.key] === username
+                  task[position.key] === submission?.memberId
                     ? deletePosition(task?.slug, username)
                     : setPosition(position.key, task?.slug, username)
                 }

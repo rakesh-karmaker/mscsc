@@ -8,6 +8,8 @@ import { useTable } from "@/hooks/table-hooks/use-table";
 import { Table } from "../../table/table";
 import TableToolbar from "../../table/table-toolbar";
 import { TablePagination } from "../../table/table-pagination";
+import { useUser } from "@/contexts/user-context";
+import { ROLES } from "@/utils/require-minimum-role";
 
 export default function RegistrationsTable({
   segments,
@@ -20,11 +22,13 @@ export default function RegistrationsTable({
   }[];
 }): ReactNode {
   const eventSlug = useParams().eventSlug!;
+  const { user } = useUser();
 
   const params = useGetRegistrationsSearchParams();
   const columns = getRegistrationsTableColumns(
     segments,
     params.regSegment || "",
+    user?.role || ROLES.MEMBER,
   );
 
   const { data, isLoading } = useQuery({

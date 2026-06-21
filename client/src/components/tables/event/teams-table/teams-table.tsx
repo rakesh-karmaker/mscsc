@@ -8,6 +8,8 @@ import { useTable } from "@/hooks/table-hooks/use-table";
 import { Table } from "../../table/table";
 import { TablePagination } from "../../table/table-pagination";
 import TableToolbar from "../../table/table-toolbar";
+import { useUser } from "@/contexts/user-context";
+import { ROLES } from "@/utils/require-minimum-role";
 
 export default function TeamsTable({
   segments,
@@ -20,8 +22,9 @@ export default function TeamsTable({
   }[];
 }): ReactNode {
   const eventSlug = useParams().eventSlug!;
+  const { user } = useUser();
 
-  const columns = getTeamsTableColumns(segments);
+  const columns = getTeamsTableColumns(segments, user?.role || ROLES.MEMBER);
   const params = useGetTeamsSearchParams();
 
   const { data, isLoading } = useQuery({

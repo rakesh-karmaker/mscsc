@@ -1,13 +1,13 @@
-export default function getPosition(task: any, username: string) {
+export default function getPosition(task: any, userId: string) {
   if (!task.first && !task.second && !task.third) {
     return null;
   }
-  switch (username) {
-    case task.first:
+  switch (userId) {
+    case task.first?.toString():
       return "first";
-    case task.second:
+    case task.second?.toString():
       return "second";
-    case task.third:
+    case task.third?.toString():
       return "third";
     default:
       return null;

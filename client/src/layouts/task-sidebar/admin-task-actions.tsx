@@ -7,12 +7,14 @@ import type { Task } from "@/types/task-types";
 import type { AxiosError, AxiosResponse } from "axios";
 import TaskActions from "./task-actions";
 import SubmissionActions from "./submission-actions";
+import type { Role } from "@/utils/require-minimum-role";
 
 type AdminTaskActionsProps = {
   task: Task;
   username: string;
   deleteFunc: (slug: string) => void;
   queryClient: QueryClient;
+  role: Role;
 };
 
 export default function AdminTaskActions({
@@ -20,6 +22,7 @@ export default function AdminTaskActions({
   username,
   deleteFunc,
   queryClient,
+  role,
   ...rest
 }: AdminTaskActionsProps): ReactNode {
   const navigate = useNavigate();
@@ -68,6 +71,11 @@ export default function AdminTaskActions({
       deleteFunc={deleteFunc}
     />
   ) : (
-    <TaskActions task={task} taskMutation={taskMutation} {...rest} />
+    <TaskActions
+      task={task}
+      taskMutation={taskMutation}
+      {...rest}
+      role={role}
+    />
   );
 }

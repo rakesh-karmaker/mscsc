@@ -11,11 +11,17 @@ import TableToolbar from "../../table/table-toolbar";
 import { TableBtn } from "@/components/ui/btns";
 import LuPlus from "~icons/lucide/plus";
 import ClubPartnerFormModel from "@/components/forms/club-partner-form/club-partner-form-model";
+import { useUser } from "@/contexts/user-context";
+import { requireMinimumRole, ROLES } from "@/utils/require-minimum-role";
 
 export default function ClubPartnersTable(): ReactNode {
   const eventSlug = useParams().eventSlug!;
+  const { user } = useUser();
 
-  const columns = getClubPartnersTableColumns(eventSlug);
+  const columns = getClubPartnersTableColumns(
+    eventSlug,
+    user?.role || ROLES.MEMBER,
+  );
   const params = useGetClubPartnersSearchParams();
 
   const [pageIndex, setPageIndex] = useState<number>(0);
@@ -79,20 +85,24 @@ export default function ClubPartnersTable(): ReactNode {
       >
         <TableToolbar table={table} tId="clubPartners" viewOptions={false}>
           <>
-            <TableBtn
-              onClick={() => setModelOpenState(true)}
-              className={
-                "max-w-fit bg-highlighted-color gap-1 text-white hover:bg-secondary-bg/20 hover:text-black border border-highlighted-color/20 transition-all duration-200"
-              }
-            >
-              <LuPlus />
-              <p>Add</p>
-            </TableBtn>
-            <ClubPartnerFormModel
-              setOpen={() => {}}
-              setClubPartnerModelOpen={setModelOpenState}
-              clubPartnerModelOpen={modelOpen}
-            />
+            {requireMinimumRole(user?.role || ROLES.MEMBER, ROLES.EDITOR) && (
+              <>
+                <TableBtn
+                  onClick={() => setModelOpenState(true)}
+                  className={
+                    "max-w-fit bg-highlighted-color gap-1 text-white hover:bg-secondary-bg/20 hover:text-black border border-highlighted-color/20 transition-all duration-200"
+                  }
+                >
+                  <LuPlus />
+                  <p>Add</p>
+                </TableBtn>
+                <ClubPartnerFormModel
+                  setOpen={() => {}}
+                  setClubPartnerModelOpen={setModelOpenState}
+                  clubPartnerModelOpen={modelOpen}
+                />
+              </>
+            )}
           </>
         </TableToolbar>
       </Table>

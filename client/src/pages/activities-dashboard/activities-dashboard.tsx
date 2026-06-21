@@ -64,7 +64,10 @@ export default function ActivitiesDashboard() {
             method={"edit"}
           />
         ) : (
-          <Activities admin={true} setSelectedActivity={setSelectedActivity} />
+          <Activities
+            isDashboard={true}
+            setSelectedActivity={setSelectedActivity}
+          />
         )}
       </div>
     </>

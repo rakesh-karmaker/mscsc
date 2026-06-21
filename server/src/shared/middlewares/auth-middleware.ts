@@ -3,12 +3,14 @@ import jwt from "jsonwebtoken";
 import getDate from "../utils/get-date.js";
 import Member from "../models/member.model.js";
 import config from "../config/config.js";
+import { Role, ROLE_WEIGHTS } from "../utils/roles.js";
 
 declare global {
   namespace Express {
     interface Request {
       user?: {
         _id: string;
+        role?: Role;
       };
       requestDetails?: {
         includeRegistrations?: boolean;
@@ -56,23 +58,44 @@ export async function isAuthorized(
   }
 }
 
-// Verify if user is admin
-export async function isAdmin(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): Promise<void> {
-  // Fetch member from DB
-  const member = await Member.findById(req.user?._id ?? "").select("role");
-  if (!member) {
-    res.status(404).send({ message: "Member not found" });
-    return;
-  }
+export function requireMinimumRole(minimumRequiredRole: Role) {
+  return async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      // 1. Ensure user is authenticated first
+      if (!req.user?._id) {
+        res.status(401).send({ message: "Unauthorized" });
+        return;
+      }
 
-  // Check if member is admin
-  if (!member.role || member.role !== "admin") {
-    res.status(401).send({ message: "Access Denied" });
-    return;
-  }
-  next();
+      // 2. Fetch current member role from DB (Keeps it secure and real-time)
+      const member = await Member.findById(req.user._id).select("role");
+      if (!member || !member.role) {
+        res.status(404).send({ message: "Member role not found" });
+        return;
+      }
+
+      const userRole = member.role as Role;
+      req.user.role = userRole;
+
+      // 3. Compare hierarchy weights
+      const userWeight = ROLE_WEIGHTS[userRole] || 0;
+      const requiredWeight = ROLE_WEIGHTS[minimumRequiredRole];
+
+      if (userWeight < requiredWeight) {
+        res
+          .status(403)
+          .send({ message: "Access Denied: Insufficient Permissions" });
+        return;
+      }
+
+      next();
+    } catch (error) {
+      console.error("Role verification error:", error);
+      res.status(500).send({ message: "Internal Server Error" });
+    }
+  };
 }

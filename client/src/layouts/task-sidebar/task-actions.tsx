@@ -9,6 +9,11 @@ import {
   type ReactNode,
   type SetStateAction,
 } from "react";
+import {
+  requireMinimumRole,
+  ROLES,
+  type Role,
+} from "@/utils/require-minimum-role";
 
 type TaskActionsProps = {
   task: Task;
@@ -19,12 +24,14 @@ type TaskActionsProps = {
     unknown
   >;
   setSelectedTask?: Dispatch<SetStateAction<Task | null>>;
+  role: Role;
 };
 
 // task actions to edit the task and delete the task
 export default function TaskActions({
   task,
   taskMutation,
+  role,
   ...rest
 }: TaskActionsProps): ReactNode {
   const [open, setOpen] = useState(false);
@@ -52,16 +59,18 @@ export default function TaskActions({
             Edit Task
           </button>
 
-          <button
-            className="danger-button primary-button"
-            aria-label="Delete this data"
-            type="button"
-            onClick={() => {
-              setOpen(true);
-            }}
-          >
-            Delete Task
-          </button>
+          {requireMinimumRole(role, ROLES.ADMIN) && (
+            <button
+              className="danger-button primary-button"
+              aria-label="Delete this data"
+              type="button"
+              onClick={() => {
+                setOpen(true);
+              }}
+            >
+              Delete Task
+            </button>
+          )}
         </div>
       </TaskSidebarCard>
 

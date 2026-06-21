@@ -11,8 +11,15 @@ import DeleteWarning from "@/components/ui/delete-warning";
 import type { CaApplicationTableData } from "@/types/event/ca-types";
 import useCaApplicationMutation from "@/hooks/event-hooks/use-ca-application-mutation";
 import ApplicationDetailsModel from "./application-details-model";
+import {
+  requireMinimumRole,
+  ROLES,
+  type Role,
+} from "@/utils/require-minimum-role";
 
-export default function getCaApplicationTableColumns(): ColumnDef<CaApplicationTableData>[] {
+export default function getCaApplicationTableColumns(
+  role: Role,
+): ColumnDef<CaApplicationTableData>[] {
   return [
     {
       id: "position",
@@ -246,13 +253,25 @@ export default function getCaApplicationTableColumns(): ColumnDef<CaApplicationT
             }}
           >
             <div className="max-h-65 scroll-py-1 overflow-y-auto overflow-x-hidden flex flex-col p-1!">
-              <ChangeStatus
-                documentId={row.original._id}
-                id={`status-popover-${row.id}`}
-                mutation={caApplicationMutation}
+              <ApplicationDetailsModel
+                applicationId={row.original._id}
                 setOpen={setOpen}
-                model="application"
+                previousModels={{
+                  applications: [row.original._id],
+                  registrations: [],
+                  teams: [],
+                }}
               />
+
+              {requireMinimumRole(role, ROLES.EDITOR) && (
+                <ChangeStatus
+                  documentId={row.original._id}
+                  id={`status-popover-${row.id}`}
+                  mutation={caApplicationMutation}
+                  setOpen={setOpen}
+                  model="application"
+                />
+              )}
 
               <a
                 href={row.original.facebookUrl}
@@ -265,40 +284,32 @@ export default function getCaApplicationTableColumns(): ColumnDef<CaApplicationT
                 <p>Facebook</p>
               </a>
 
-              <ApplicationDetailsModel
-                applicationId={row.original._id}
-                setOpen={setOpen}
-                previousModels={{
-                  applications: [row.original._id],
-                  registrations: [],
-                  teams: [],
-                }}
-              />
-
-              <div className="border-t border-gray-300">
-                <TableBtn onClick={() => setDeleteOpen(true)}>
-                  <LuTrash2 className="opacity-70" />
-                  <p>Delete </p>
-                </TableBtn>
-                <DeleteWarning
-                  slug={row.original._id}
-                  deleteFunc={() => {
-                    caApplicationMutation.mutate({
-                      method: "delete",
-                      documentId: row.original._id,
-                    });
-                  }}
-                  open={deleteOpen}
-                  setOpen={setDeleteOpen}
-                  title="Delete Application"
-                >
-                  This will permanently delete this Application{" "}
-                  <span className="font-semibold">{row.original.name}</span>{" "}
-                  from the Application's list and remove all of their data from
-                  the server. All of their images, links, and other data will be
-                  permanently lost.
-                </DeleteWarning>
-              </div>
+              {requireMinimumRole(role, ROLES.ADMIN) && (
+                <div className="border-t border-gray-300">
+                  <TableBtn onClick={() => setDeleteOpen(true)}>
+                    <LuTrash2 className="opacity-70" />
+                    <p>Delete </p>
+                  </TableBtn>
+                  <DeleteWarning
+                    slug={row.original._id}
+                    deleteFunc={() => {
+                      caApplicationMutation.mutate({
+                        method: "delete",
+                        documentId: row.original._id,
+                      });
+                    }}
+                    open={deleteOpen}
+                    setOpen={setDeleteOpen}
+                    title="Delete Application"
+                  >
+                    This will permanently delete this Application{" "}
+                    <span className="font-semibold">{row.original.name}</span>{" "}
+                    from the Application's list and remove all of their data
+                    from the server. All of their images, links, and other data
+                    will be permanently lost.
+                  </DeleteWarning>
+                </div>
+              )}
             </div>
           </TableActionColumn>
         );

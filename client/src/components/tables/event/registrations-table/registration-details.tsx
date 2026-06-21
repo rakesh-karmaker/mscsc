@@ -25,6 +25,8 @@ import { Tooltip } from "@mui/material";
 import RegistrationActions from "./registration-actions";
 import { RegistrationStatusTags, TeamStatusTag } from "@/utils/get-status-tags";
 import SoloPaidSegment from "./solo-paid-segment";
+import { useUser } from "@/contexts/user-context";
+import { ROLES } from "@/utils/require-minimum-role";
 
 export default function RegistrationDetails({
   registrationId,
@@ -40,6 +42,7 @@ export default function RegistrationDetails({
   setModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }): ReactNode {
   const eventSlug = useParams().eventSlug!;
+  const { user } = useUser();
 
   const { data: registrationData, isLoading } = useQuery({
     queryKey: [`registration-${eventSlug}-${registrationId}`],
@@ -161,6 +164,7 @@ export default function RegistrationDetails({
             registrationId={registrationId}
             setModelOpen={setModelOpen}
             version="desktop"
+            role={user?.role || ROLES.MEMBER}
           />
         </Activity>
 
@@ -193,9 +197,10 @@ export default function RegistrationDetails({
                 {details.paidSoloSegments.map((segment: PaidSoloSegment) => {
                   return (
                     <SoloPaidSegment
-                      key={segment.segmentSlug}
+                      key={`${segment.segmentSlug}-${segment.transactionId}-${segment.status}-${segment.registrationDate}`}
                       segment={segment}
                       registrationId={registrationId}
+                      role={user?.role || ROLES.MEMBER}
                     />
                   );
                 })}
@@ -314,6 +319,7 @@ export default function RegistrationDetails({
             registrationId={registrationId}
             setModelOpen={setModelOpen}
             version="mobile"
+            role={user?.role || ROLES.MEMBER}
           />
         </Activity>
       </div>

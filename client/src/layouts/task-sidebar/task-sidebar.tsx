@@ -11,6 +11,11 @@ import Counter from "@/components/ui/counter/counter";
 import Submissions from "./task-submissions";
 import AdminTaskActions from "./admin-task-actions";
 import SubmitCard from "./submit-card";
+import {
+  requireMinimumRole,
+  ROLES,
+  type Role,
+} from "@/utils/require-minimum-role";
 
 import "../tasks-sidebar/tasks-sidebar.css";
 
@@ -22,9 +27,10 @@ type TaskSidebarProps = {
   mode: "preview" | "edit";
   isSubmitting: boolean;
   username: string | null;
-  admin?: boolean;
+  isDashboard?: boolean;
   canSubmit: boolean;
   setShowModeChange: Dispatch<SetStateAction<boolean>>;
+  role: Role;
 };
 
 export default function TaskSidebar({
@@ -35,9 +41,10 @@ export default function TaskSidebar({
   mode,
   isSubmitting,
   username,
-  admin,
+  isDashboard,
   canSubmit,
   setShowModeChange,
+  role,
   ...rest
 }: TaskSidebarProps): ReactNode {
   const navigate = useNavigate();
@@ -55,7 +62,7 @@ export default function TaskSidebar({
       queryClient.invalidateQueries({ queryKey: ["task"] });
       toast.success(res?.data?.message);
       setShowModeChange(false);
-      admin && navigate("/admin/task/" + task?.slug);
+      isDashboard && navigate("/admin/task/" + task?.slug);
     },
     onError: (err: AxiosError<{ message: string }>) => {
       console.log(err);
@@ -85,7 +92,7 @@ export default function TaskSidebar({
         />
       ) : null}
 
-      {mode === "edit" && !admin && !username && (
+      {mode === "edit" && !isDashboard && !username && (
         <TaskSidebarCard title={"Login to submit"}>
           <p>
             You need to login to your account to be able to submit the task.
@@ -96,12 +103,13 @@ export default function TaskSidebar({
         </TaskSidebarCard>
       )}
 
-      {admin && (
+      {isDashboard && requireMinimumRole(role, ROLES.EDITOR) && (
         <AdminTaskActions
           task={task}
           username={username || ""}
           deleteFunc={deleteFunc}
           queryClient={queryClient}
+          role={role}
           {...rest}
         />
       )}
@@ -110,7 +118,7 @@ export default function TaskSidebar({
         <Counter date={task.deadline} />
       </TaskSidebarCard>
 
-      <Submissions task={task} admin={admin} />
+      <Submissions task={task} isDashboard={isDashboard} />
     </aside>
   );
 }

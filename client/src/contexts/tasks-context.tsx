@@ -24,7 +24,7 @@ export function TasksProvider({ children }: { children: ReactNode }) {
 
   const response = data?.data;
   const tasks = data?.data?.results;
-  const length = data?.data?.selectedLength || 0;
+  const length = data?.data?.totalLength || 0;
 
   return (
     <TasksContext.Provider

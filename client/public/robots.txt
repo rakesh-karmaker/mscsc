@@ -1,6 +1,5 @@
-user-agent: *
-Disallow: /member/:id
-Disallow: /admin
-Allow: /public/
+User-agent: *
+Disallow: /admin/
+Disallow: /auth/
 
 Sitemap: https://mscsc.netlify.app/sitemap.xml

@@ -22,7 +22,9 @@ import type { Activity, ActivityPreview } from "@/types/activity-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   activitySchema,
+  editActivitySchema,
   type ActivitySchemaType,
+  type EditActivitySchemaType,
 } from "@/lib/validation/activity-schema";
 import type { AxiosError } from "axios";
 import FormHeading from "@/components/ui/form-heading/from-heading";
@@ -63,8 +65,10 @@ export default function ActivityForm(props: ActivityFormProps) {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<ActivitySchemaType>({
-    resolver: zodResolver(activitySchema),
+  } = useForm<ActivitySchemaType | EditActivitySchemaType>({
+    resolver: zodResolver(
+      Boolean(props?.defaultValues) ? editActivitySchema : activitySchema,
+    ),
     defaultValues,
   });
 
@@ -72,6 +76,10 @@ export default function ActivityForm(props: ActivityFormProps) {
     mutationFn: (
       data:
         | (ActivitySchemaType & {
+            method: "add" | "edit" | "delete";
+            slug?: string;
+          })
+        | (EditActivitySchemaType & {
             method: "add" | "edit" | "delete";
             slug?: string;
           })
@@ -107,7 +115,9 @@ export default function ActivityForm(props: ActivityFormProps) {
     },
   });
 
-  const onSubmit = async (data: ActivitySchemaType) => {
+  const onSubmit = async (
+    data: ActivitySchemaType | EditActivitySchemaType,
+  ) => {
     activityMutation.mutate({
       method: props?.method,
       slug: props?.defaultValues?.slug || "",

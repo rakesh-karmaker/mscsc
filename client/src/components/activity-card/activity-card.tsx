@@ -8,20 +8,27 @@ import FaCalendarAlt from "~icons/fa-solid/calendar-alt";
 import FaChalkboardUser from "~icons/fa6-solid/chalkboard-user";
 import FaArrowRight from "~icons/fa-solid/arrow-right";
 import HiPencil from "~icons/heroicons/pencil-solid";
+import {
+  requireMinimumRole,
+  ROLES,
+  type Role,
+} from "@/utils/require-minimum-role";
 
 import "./activity-card.css";
 
 type ActivityCardProps = {
   data: ActivityPreview;
   selectedTag: string;
-  admin?: boolean;
   setSelectedActivity?: Dispatch<SetStateAction<ActivityPreview | null>>;
+  role: Role;
+  isDashboard: boolean;
 };
 
 export default function ActivityCard({
   data,
   selectedTag,
-  admin,
+  role,
+  isDashboard,
   ...rest
 }: ActivityCardProps) {
   const { tag, date, coverImageUrl, title, summary, slug } = data;
@@ -53,7 +60,7 @@ export default function ActivityCard({
             Learn More <FaArrowRight />
           </NavLink>
 
-          {admin && (
+          {isDashboard && requireMinimumRole(role, ROLES.EDITOR) && (
             <button
               className="secondary-button primary-button flex gap-1 items-center"
               aria-label="Edit this activity"

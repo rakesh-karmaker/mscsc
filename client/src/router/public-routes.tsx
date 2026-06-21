@@ -147,7 +147,7 @@ export const publicRoutes = {
       path: "/task/:taskName",
       element: (
         <Suspense fallback={<Loader />}>
-          <TaskPage />
+          <TaskPage isDashboard={false} />
         </Suspense>
       ),
       errorElement: (

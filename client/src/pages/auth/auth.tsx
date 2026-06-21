@@ -32,6 +32,7 @@ export default function Auth({ method }: { method: "Login" | "Register" }) {
           rel="canonical"
           href={`https://mscsc.netlify.app/auth/${method.toLowerCase()}`}
         />
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       {/* page content */}

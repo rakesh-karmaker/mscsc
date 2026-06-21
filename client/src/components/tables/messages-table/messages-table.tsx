@@ -8,6 +8,8 @@ import { getMessages } from "@/lib/api/message";
 import useGetMessagesSearchParams from "@/hooks/table-hooks/header-hooks/use-get-messages-search-params";
 import type { MessageTableData } from "@/types/message-types";
 import { TablePagination } from "../table/table-pagination";
+import { useUser } from "@/contexts/user-context";
+import { ROLES } from "@/utils/require-minimum-role";
 
 export default function MessagesTable({
   onViewClick,
@@ -16,7 +18,13 @@ export default function MessagesTable({
   onViewClick: (message: MessageTableData) => void;
   onDelete: (id: string) => void;
 }): ReactNode {
-  const columns = getMessagesTableColumns({ onViewClick, onDelete });
+  const { user } = useUser();
+
+  const columns = getMessagesTableColumns({
+    onViewClick,
+    onDelete,
+    userRole: user?.role || ROLES.MEMBER,
+  });
   const params = useGetMessagesSearchParams();
 
   const { data, isLoading } = useQuery({

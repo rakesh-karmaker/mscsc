@@ -6,6 +6,13 @@ import type { MessageTableData, MessageType } from "@/types/message-types";
 import ListLayout from "./list-layout";
 import Empty from "../ui/empty/empty";
 import MessageBox from "../message-box";
+import type { AxiosError, AxiosResponse } from "axios";
+import { useUser } from "@/contexts/user-context";
+import {
+  requireMinimumRole,
+  ROLES,
+  type Role,
+} from "@/utils/require-minimum-role";
 
 export default function MessageList({
   messages,
@@ -15,6 +22,7 @@ export default function MessageList({
   loading: boolean;
 }) {
   const queryClient = useQueryClient();
+  const { user } = useUser();
 
   const messageMutation = useMutation({
     mutationFn: (data: { _id: string; method: "mark" | "delete" }) => {
@@ -27,14 +35,14 @@ export default function MessageList({
       // Always return a rejected Promise for unexpected cases
       return Promise.reject(new Error("Invalid method"));
     },
-    onSuccess: (res) => {
+    onSuccess: (res: AxiosResponse<{ message?: string }>) => {
       queryClient.invalidateQueries({ queryKey: ["messages"] });
       queryClient.invalidateQueries({ queryKey: ["adminDashboardData"] });
-      toast.success(res?.data?.message);
+      toast.success(res?.data?.message || "Operation successful!");
     },
-    onError: (err) => {
+    onError: (err: AxiosError<{ message?: string }>) => {
       console.log(err);
-      toast.error("Operation failed!");
+      toast.error(err?.response?.data?.message || "Operation failed!");
     },
   });
 
@@ -47,6 +55,10 @@ export default function MessageList({
   );
 
   function messageClick(_id: string, isNew: boolean) {
+    if (!user || !requireMinimumRole(user.role, ROLES.OBSERVER)) {
+      return;
+    }
+
     if (isNew === true) {
       messageMutation.mutate({ _id: _id, method: "mark" });
     }
@@ -66,6 +78,7 @@ export default function MessageList({
                 message={message}
                 messageClick={messageClick}
                 messageDelete={messageDelete}
+                role={user?.role || ROLES.MEMBER}
               />
             </li>
           );
@@ -80,10 +93,12 @@ function MessagesListItem({
   message,
   messageClick,
   messageDelete,
+  role,
 }: {
   message: MessageType;
   messageClick: (_id: string, isNew: boolean) => void;
   messageDelete: (_id: string) => void;
+  role: Role;
 }) {
   return (
     <div
@@ -94,16 +109,18 @@ function MessagesListItem({
         <p className="message-subject line-clamp-2">{message.subject}</p>
         <p className="message-email line-clamp-2">{message.email}</p>
       </div>
-      <button
-        className="danger-button primary-button text-[1em]! py-1.75! px-3.75! w-fit! h-fit!"
-        onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          messageDelete(message._id);
-        }}
-      >
-        Delete
-      </button>
+      {requireMinimumRole(role, ROLES.EDITOR) && (
+        <button
+          className="danger-button primary-button text-[1em]! py-1.75! px-3.75! w-fit! h-fit!"
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            messageDelete(message._id);
+          }}
+        >
+          Delete
+        </button>
+      )}
     </div>
   );
 }

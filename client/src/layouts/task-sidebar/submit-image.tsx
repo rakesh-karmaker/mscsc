@@ -14,7 +14,7 @@ export default function SubmitImage({
   didSubmit,
   imageRequired,
 }: SubmitImageProps): ReactNode {
-  const MAX_FILE_SIZE = 1024 * 1024 * 2;
+  const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5MB
   const [file, setFile] = useState<File | null>(null);
 
   return (

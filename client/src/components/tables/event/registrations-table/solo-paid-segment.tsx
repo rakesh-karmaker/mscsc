@@ -4,15 +4,22 @@ import { deSlugify } from "@/utils/de-slugify";
 import { RegistrationStatusTags } from "@/utils/get-status-tags";
 import type { ReactNode } from "react";
 import ChangeStatus from "../change-status";
+import {
+  requireMinimumRole,
+  ROLES,
+  type Role,
+} from "@/utils/require-minimum-role";
 
 interface SoloPaidSegmentProps {
   segment: PaidSoloSegment;
   registrationId: string;
+  role: Role;
 }
 
 export default function SoloPaidSegment({
   segment,
   registrationId,
+  role,
 }: SoloPaidSegmentProps): ReactNode {
   const registrationMutation = useRegistrationMutation();
 
@@ -37,18 +44,22 @@ export default function SoloPaidSegment({
           </span>
         </div>
 
-        {segment.status !== "rejected" ? (
-          <ChangeStatus
-            id={`change-status-${segment.segmentSlug}`}
-            setOpen={() => {}}
-            mutation={registrationMutation}
-            documentId={registrationId}
-            model="segment"
-            segmentSlug={segment.segmentSlug}
-            insideModel={true}
-            className="max-w-fit gap-1.5 mt-1! text-sm bg-highlighted-color text-white hover:bg-secondary-bg/20 hover:text-black border border-highlighted-color/20 transition-all duration-200"
-          />
-        ) : null}
+        {requireMinimumRole(role, ROLES.EDITOR) && (
+          <>
+            {segment.status !== "rejected" ? (
+              <ChangeStatus
+                id={`change-status-${segment.segmentSlug}`}
+                setOpen={() => {}}
+                mutation={registrationMutation}
+                documentId={registrationId}
+                model="segment"
+                segmentSlug={segment.segmentSlug}
+                insideModel={true}
+                className="max-w-fit gap-1.5 mt-1! text-sm bg-highlighted-color text-white hover:bg-secondary-bg/20 hover:text-black border border-highlighted-color/20 transition-all duration-200"
+              />
+            ) : null}
+          </>
+        )}
       </div>
     </div>
   );

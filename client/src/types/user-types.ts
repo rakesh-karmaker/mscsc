@@ -1,3 +1,5 @@
+import type { Role } from "@/utils/require-minimum-role";
+
 export interface User {
   _id: string;
   name: string;
@@ -14,7 +16,7 @@ export interface User {
   image: string;
   reason: string; // AKA Description
   socialLink: string;
-  role: "admin" | "member";
+  role: Role;
   position: string;
   timeline: TimelineType[];
   createdAt: string;

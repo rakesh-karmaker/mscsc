@@ -40,5 +40,11 @@ export const activitySchema = z.object({
   content: z.string().min(1, "Content is required"),
 });
 
+export const editActivitySchema = activitySchema.extend({
+  activityImage: z.any().optional(),
+  date: z.any().optional(),
+});
+
 // Infer the TypeScript type from the Zod schema
 export type ActivitySchemaType = z.infer<typeof activitySchema>;
+export type EditActivitySchemaType = z.infer<typeof editActivitySchema>;

@@ -3,6 +3,7 @@ import type {
   MembersSearchParams,
   MemberTableData,
 } from "@/types/member-types";
+import { ROLES } from "@/utils/require-minimum-role";
 import {
   parseAsArrayOf,
   parseAsInteger,
@@ -29,8 +30,14 @@ export default function useGetMembersSearchParams(): MembersSearchParams {
         "Branch - 3",
       ]),
     ).withDefault([]),
-    position: parseAsArrayOf(
-      parseAsStringEnum(["member", "executive", "admin"]),
+    role: parseAsArrayOf(
+      parseAsStringEnum([
+        ROLES.MEMBER,
+        ROLES.EXECUTIVE,
+        ROLES.OBSERVER,
+        ROLES.EDITOR,
+        ROLES.ADMIN,
+      ]),
     ).withDefault([]),
   });
 

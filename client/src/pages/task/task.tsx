@@ -12,7 +12,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { editSubmission, getTask, submitTask } from "@/lib/api/task";
-import type { Submission, Task as TaskType } from "@/types/task-types";
+import type { Submission, Task, Task as TaskType } from "@/types/task-types";
 import type { AxiosError } from "axios";
 import Loader from "@/components/ui/loader/loader";
 import TaskHeader from "@/components/task/task-header";
@@ -21,15 +21,16 @@ import type { User } from "@/types/user-types";
 import TaskSubmissionPreview from "@/components/task/task-submission-preview/task-submission-preview";
 import TaskSubmissionForm from "@/components/task/task-submission-form";
 import TaskSidebar from "@/layouts/task-sidebar/task-sidebar";
+import { Helmet } from "react-helmet-async";
+import { ROLES } from "@/utils/require-minimum-role";
 
 import "./task.css";
-import { Helmet } from "react-helmet-async";
 
 export default function Task({
-  admin,
+  isDashboard = false,
   ...rest
 }: {
-  admin?: boolean;
+  isDashboard?: boolean;
   setSelectedTask?: Dispatch<SetStateAction<TaskType | null>>;
 }) {
   const queryClient = useQueryClient();
@@ -38,7 +39,7 @@ export default function Task({
   // get the data from the url
   const link = useLocation();
   const url = new URLSearchParams(link.search);
-  const username = url.get("user") || (!admin ? user?.slug : undefined);
+  const username = url.get("user") || (!isDashboard ? user?.slug : undefined);
   const { taskName } = useParams();
 
   // init all the necessary states
@@ -54,13 +55,10 @@ export default function Task({
     refetchOnWindowFocus: false,
     retry: 0,
   });
-  if (
-    (isError && error) ||
-    (user && username !== user.slug && user?.position === "member" && !admin)
-  ) {
+  if (isError && error) {
     throw Error("Task not found");
   }
-  const task = data?.data;
+  const task = data?.data as Task;
 
   useEffect(() => {
     if (!(isVerifying || isLoading)) {
@@ -76,7 +74,7 @@ export default function Task({
         setCanSubmit,
         setMode,
         setShowModeChange,
-        admin,
+        isDashboard,
       );
     }
   }, [isVerifying, isLoading, username]);
@@ -91,7 +89,7 @@ export default function Task({
   } = useForm<{ content: string; poster: FileList }>({
     defaultValues: {
       content:
-        task?.submissions?.find((s: Submission) => s.username === username)
+        task?.submissions?.find((s: Submission) => s.slug === username)
           ?.answer || "",
       poster: undefined as unknown as FileList, // or leave undefined if not required initially
     },
@@ -105,7 +103,7 @@ export default function Task({
       answer: string;
       poster: File;
     }) => {
-      if (task?.submissions?.find((s: Submission) => s.username === username)) {
+      if (task?.submissions?.find((s: Submission) => s.slug === username)) {
         return editSubmission(data);
       } else {
         return submitTask(data);
@@ -131,7 +129,7 @@ export default function Task({
     const answer = data?.content;
     const poster = data?.poster;
     const previousAnswer = task?.submissions?.find(
-      (s: Submission) => s.username === username,
+      (s: Submission) => s.slug === username,
     )?.answer;
     if (!answer && !previousAnswer) {
       toast.error("Nothing to submit");
@@ -189,7 +187,7 @@ export default function Task({
               {mode === "preview" ? (
                 <TaskSubmissionPreview
                   submission={task?.submissions?.find(
-                    (s: Submission) => s.username === username,
+                    (s: Submission) => s.slug === username,
                   )}
                   task={task}
                 />
@@ -212,8 +210,12 @@ export default function Task({
                     user?.submissions.map((s) => s.taskId.toString()) || []
                   }
                   taskSubmissionCount={task?.submissions?.length || 0}
-                  username={username || ""}
-                  admin={admin}
+                  userId={
+                    task?.submissions?.find(
+                      (s: Submission) => s.slug === username,
+                    )?.memberId
+                  }
+                  isDashboard={isDashboard}
                 />
               </div>
             </div>
@@ -226,9 +228,10 @@ export default function Task({
               mode={mode}
               isSubmitting={taskMutation.isPending}
               username={username || ""}
-              admin={admin}
+              isDashboard={isDashboard}
               canSubmit={canSubmit}
               setShowModeChange={setShowModeChange}
+              role={user?.role || ROLES.MEMBER}
               {...rest}
             />
           </div>
@@ -257,7 +260,7 @@ const changeStates = (
   // check if the submission exists
   if (
     username &&
-    !task?.submissions?.map((s) => s.username).includes(username) &&
+    !task?.submissions?.map((s) => s.slug).includes(username) &&
     !isOwner
   ) {
     throw Error("Submission not found");
@@ -286,7 +289,7 @@ const changeStates = (
     }
 
     // check if the owner has already submitted
-    const submission = task?.submissions?.find((s) => s.username === username);
+    const submission = task?.submissions?.find((s) => s.slug === username);
     if (submission) {
       setMode("preview");
     } else {

@@ -8,11 +8,14 @@ import { useTable } from "@/hooks/table-hooks/use-table";
 import { Table } from "../../table/table";
 import TableToolbar from "../../table/table-toolbar";
 import { TablePagination } from "../../table/table-pagination";
+import { useUser } from "@/contexts/user-context";
+import { ROLES } from "@/utils/require-minimum-role";
 
 export default function CaApplicationsTable(): ReactNode {
   const eventSlug = useParams().eventSlug!;
+  const { user } = useUser();
 
-  const columns = getCaApplicationTableColumns();
+  const columns = getCaApplicationTableColumns(user?.role || ROLES.MEMBER);
   const params = useGetCaApplicationSearchParams();
 
   const { data, isLoading } = useQuery({

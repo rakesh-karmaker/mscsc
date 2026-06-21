@@ -1,3 +1,4 @@
+import type { Role } from "@/utils/require-minimum-role";
 import type { ExtendedColumnSort } from "./table-types";
 import type { User } from "./user-types";
 
@@ -32,7 +33,7 @@ export type MemberEditTypes = {
   isImageVerified?: boolean | undefined;
   isImageHidden?: boolean | undefined;
   position?: string | undefined;
-  role?: string | undefined;
+  role?: Role | undefined;
 };
 
 export type MemberTableData = Omit<
@@ -47,5 +48,5 @@ export type MembersSearchParams = {
   name: string;
   batch: string;
   branch: string[];
-  position: string[];
+  role: string[];
 };

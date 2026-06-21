@@ -10,8 +10,15 @@ import MemberEditDialog from "@/components/members/member-edit-dialog";
 import TableActionColumn from "../table/table-action-column";
 import dayjs from "dayjs";
 import { Tooltip } from "@mui/material";
+import {
+  requireMinimumRole,
+  ROLES,
+  type Role,
+} from "@/utils/require-minimum-role";
 
-export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
+export default function getMembersTableColumns(
+  role: Role,
+): ColumnDef<MemberTableData>[] {
   return [
     {
       id: "name",
@@ -24,13 +31,13 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
         />
       ),
       cell: ({ row }) => (
-        <div className="w-full h-full flex gap-2 items-center">
+        <div className="w-full h-full flex gap-2 items-center min-w-fit">
           <img
             src={row.original.image}
             alt={row.original.name}
             className="w-11 h-11 rounded-full object-cover"
           />
-          <div className="flex flex-col">
+          <div className="w-full flex flex-col">
             <p className="font-medium  max-sm:text-sm flex flex-wrap">
               {row.original.name && row.original.name.split(" ").length > 1
                 ? row.original.name.split(" ").map((part, index) => (
@@ -40,7 +47,7 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
                   ))
                 : null}
             </p>
-            <p className="text-xs text-gray-500 max-w-62.5">
+            <p className="text-xs text-gray-500 max-w-56.5 truncate">
               {row.original.email}
             </p>
           </div>
@@ -52,7 +59,7 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
         variant: "text",
       },
       enableColumnFilter: true,
-      size: 270,
+      size: 300,
     },
     {
       id: "contactNumber",
@@ -104,41 +111,58 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
       size: 130,
     },
     {
-      id: "position",
-      accessorKey: "position",
+      id: "role",
+      accessorKey: "role",
       header: ({ column }) => (
-        <TableColumnHeader
-          tId="members-table"
-          column={column}
-          label="Position"
-        />
+        <TableColumnHeader tId="members-table" column={column} label="Role" />
       ),
-      cell: ({ row }) => (
-        <div className="flex gap-1">
-          <Tooltip title={row.original.position}>
-            <span
-              className={`px-2! py-1! rounded-xs text-xs font-medium max-w-[20ch] truncate ${
-                row.original.position === "admin"
-                  ? "bg-red-100 text-red-800"
-                  : "bg-green-100 text-green-800"
-              }`}
-            >
-              {capitalize(row.original.position)}{" "}
-            </span>
-          </Tooltip>
-          {row.original.role !== "member" && (
-            <span className="px-2! py-1! rounded-xs text-xs font-medium bg-blue-100 text-blue-800">
-              {capitalize(row.original.role)}
-            </span>
-          )}
-        </div>
-      ),
+      cell: ({ row }) => {
+        function getRoleColor(role: Role) {
+          switch (role) {
+            case "admin":
+              return "bg-red-100 text-red-800";
+            case "editor":
+              return "bg-yellow-100 text-yellow-800";
+            case "observer":
+              return "bg-gray-100 text-gray-800";
+            case "executive":
+              return "bg-blue-100 text-blue-800";
+            default:
+              return "bg-green-100 text-green-800";
+          }
+        }
+
+        return (
+          <div className="flex gap-1">
+            {row.original.role !== ROLES.MEMBER && (
+              <span
+                className={`px-2! py-1! rounded-xs text-xs font-medium ${getRoleColor(row.original.role)}`}
+              >
+                {capitalize(row.original.role)}
+              </span>
+            )}
+            <Tooltip title={row.original.position}>
+              <span
+                className={`px-2! py-1! rounded-xs text-xs font-medium max-w-[20ch] truncate bg-green-100 text-green-800`}
+              >
+                {capitalize(row.original.position)}{" "}
+              </span>
+            </Tooltip>
+          </div>
+        );
+      },
       meta: {
-        label: "Position",
-        variant: "select",
-        options: ["member", "executive", "admin"].map((position) => ({
-          label: capitalize(position),
-          value: position,
+        label: "Role",
+        variant: "multiSelect",
+        options: [
+          ROLES.MEMBER,
+          ROLES.EXECUTIVE,
+          ROLES.OBSERVER,
+          ROLES.EDITOR,
+          ROLES.ADMIN,
+        ].map((role) => ({
+          label: capitalize(role),
+          value: role,
         })),
       },
       enableColumnFilter: true,
@@ -209,7 +233,9 @@ export default function getMembersTableColumns(): ColumnDef<MemberTableData>[] {
                 <p>Facebook</p>
               </Link>
             </div>
-            <MemberEditDialog member={row.original} />
+            {requireMinimumRole(role, ROLES.EDITOR) && (
+              <MemberEditDialog member={row.original} />
+            )}
           </TableActionColumn>
         );
       },

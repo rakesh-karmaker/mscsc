@@ -14,6 +14,8 @@ import { toast } from "react-hot-toast";
 import { EVENT_WEBSITE_URL } from "@/config/constants";
 import { TableBtn } from "@/components/ui/btns";
 import type { AxiosError } from "axios";
+import { useUser } from "@/contexts/user-context";
+import { requireMinimumRole, ROLES } from "@/utils/require-minimum-role";
 
 interface EventSettingsProps {
   data: {
@@ -27,6 +29,7 @@ export default function EventSettings({ data }: EventSettingsProps): ReactNode {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const eventSlug = useParams().eventSlug || "";
+  const { user } = useUser();
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -100,120 +103,127 @@ export default function EventSettings({ data }: EventSettingsProps): ReactNode {
         >
           <LuEye />
         </a>
-        <NavLink
-          className="p-3! flex font-lg rounded-md bg-secondary-bg hover:opacity-70 transition-opacity cursor-pointer"
-          aria-describedby="Edit"
-          to={`/admin/edit-event/${eventSlug}`}
-        >
-          <LuSquarePen />
-        </NavLink>
+        {requireMinimumRole(user?.role || ROLES.MEMBER, ROLES.EDITOR) && (
+          <>
+            <NavLink
+              className="p-3! flex font-lg rounded-md bg-secondary-bg hover:opacity-70 transition-opacity cursor-pointer"
+              aria-describedby="Edit"
+              to={`/admin/edit-event/${eventSlug}`}
+            >
+              <LuSquarePen />
+            </NavLink>
 
-        <div className="w-fit flex items-center justify-center">
-          <button
-            id={settingsId}
-            className={
-              "p-3! flex font-lg rounded-md bg-secondary-bg hover:opacity-70 transition-opacity cursor-pointer"
-            }
-            aria-describedby={settingsId}
-            onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-          >
-            <LuSettings />
-          </button>
-          <Popover
-            id={settingsId}
-            open={isSettingsOpen}
-            anchorEl={document.getElementById(settingsId)}
-            onClose={() => setIsSettingsOpen(false)}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            PaperProps={{
-              style: {
-                boxShadow: "rgba(149, 157, 165, 0.1) 0px 8px 24px",
-                marginTop: "4px",
-              },
-            }}
-          >
-            <div className="w-full h-full flex flex-col bg-primary-bg rounded-md border border-gray-300">
-              <div className="max-h-65 scroll-py-1 overflow-y-auto overflow-x-hidden flex flex-col p-1!">
-                <TableBtn
-                  onClick={() => {
-                    toggleSetting(
-                      "hideRegistrationForm",
-                      !data.hideRegistrationForm,
-                    );
-                  }}
-                >
-                  {data.hideRegistrationForm ? (
-                    <LuEye className="opacity-70" />
-                  ) : (
-                    <LuEyeOff className="opacity-70" />
-                  )}
-                  <p>
-                    {data.hideRegistrationForm ? "Show" : "Hide"} Registration
-                    Form
-                  </p>
-                </TableBtn>
-                <TableBtn
-                  onClick={() => {
-                    toggleSetting("hideCAForm", !data.hideCAForm);
-                  }}
-                >
-                  {data.hideCAForm ? (
-                    <LuEye className="opacity-70" />
-                  ) : (
-                    <LuEyeOff className="opacity-70" />
-                  )}
-                  <p>{data.hideCAForm ? "Show" : "Hide"} CA Form</p>
-                </TableBtn>
-                <TableBtn
-                  onClick={() => {
-                    toggleSetting("isHidden", !data.isHidden);
-                  }}
-                >
-                  {data.isHidden ? (
-                    <LuEye className="opacity-70" />
-                  ) : (
-                    <LuEyeOff className="opacity-70" />
-                  )}
-                  <p>{data.isHidden ? "Show" : "Hide"} Event</p>
-                </TableBtn>
-              </div>
+            <div className="w-fit flex items-center justify-center">
+              <button
+                id={settingsId}
+                className={
+                  "p-3! flex font-lg rounded-md bg-secondary-bg hover:opacity-70 transition-opacity cursor-pointer"
+                }
+                aria-describedby={settingsId}
+                onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+              >
+                <LuSettings />
+              </button>
+              <Popover
+                id={settingsId}
+                open={isSettingsOpen}
+                anchorEl={document.getElementById(settingsId)}
+                onClose={() => setIsSettingsOpen(false)}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                PaperProps={{
+                  style: {
+                    boxShadow: "rgba(149, 157, 165, 0.1) 0px 8px 24px",
+                    marginTop: "4px",
+                  },
+                }}
+              >
+                <div className="w-full h-full flex flex-col bg-primary-bg rounded-md border border-gray-300">
+                  <div className="max-h-65 scroll-py-1 overflow-y-auto overflow-x-hidden flex flex-col p-1!">
+                    <TableBtn
+                      onClick={() => {
+                        toggleSetting(
+                          "hideRegistrationForm",
+                          !data.hideRegistrationForm,
+                        );
+                      }}
+                    >
+                      {data.hideRegistrationForm ? (
+                        <LuEye className="opacity-70" />
+                      ) : (
+                        <LuEyeOff className="opacity-70" />
+                      )}
+                      <p>
+                        {data.hideRegistrationForm ? "Show" : "Hide"}{" "}
+                        Registration Form
+                      </p>
+                    </TableBtn>
+                    <TableBtn
+                      onClick={() => {
+                        toggleSetting("hideCAForm", !data.hideCAForm);
+                      }}
+                    >
+                      {data.hideCAForm ? (
+                        <LuEye className="opacity-70" />
+                      ) : (
+                        <LuEyeOff className="opacity-70" />
+                      )}
+                      <p>{data.hideCAForm ? "Show" : "Hide"} CA Form</p>
+                    </TableBtn>
+                    <TableBtn
+                      onClick={() => {
+                        toggleSetting("isHidden", !data.isHidden);
+                      }}
+                    >
+                      {data.isHidden ? (
+                        <LuEye className="opacity-70" />
+                      ) : (
+                        <LuEyeOff className="opacity-70" />
+                      )}
+                      <p>{data.isHidden ? "Show" : "Hide"} Event</p>
+                    </TableBtn>
+                  </div>
+                </div>
+              </Popover>
             </div>
-          </Popover>
-        </div>
+          </>
+        )}
 
-        <div>
-          <button
-            className="p-3! font-lg rounded-md bg-red text-white hover:opacity-70 transition-opacity cursor-pointer"
-            aria-describedby="Delete"
-            onClick={() => setIsDeleteOpen((prev) => !prev)}
-            id="delete-popover"
-          >
-            <LuTrash2 />
-          </button>
-          <DeleteWarning
-            slug="delete-event"
-            title="Delete Event"
-            deleteFunc={() =>
-              eventMutation.mutate({
-                method: "delete",
-                slug: eventSlug,
-              })
-            }
-            open={isDeleteOpen}
-            setOpen={setIsDeleteOpen}
-          >
-            Are you sure you want to delete this event? This action cannot be
-            undone. All the data related to this event, including registrations,
-            teams, and CA applications, will be permanently deleted.
-          </DeleteWarning>
-        </div>
+        {requireMinimumRole(user?.role || ROLES.MEMBER, ROLES.ADMIN) && (
+          <div>
+            <button
+              className="p-3! font-lg rounded-md bg-red text-white hover:opacity-70 transition-opacity cursor-pointer"
+              aria-describedby="Delete"
+              onClick={() => setIsDeleteOpen((prev) => !prev)}
+              id="delete-popover"
+            >
+              <LuTrash2 />
+            </button>
+            <DeleteWarning
+              slug="delete-event"
+              title="Delete Event"
+              deleteFunc={() =>
+                eventMutation.mutate({
+                  method: "delete",
+                  slug: eventSlug,
+                })
+              }
+              open={isDeleteOpen}
+              setOpen={setIsDeleteOpen}
+            >
+              Are you sure you want to delete this event? This action cannot be
+              undone. All the data related to this event, including
+              registrations, teams, and CA applications, will be permanently
+              deleted.
+            </DeleteWarning>
+          </div>
+        )}
       </div>
     </div>
   );

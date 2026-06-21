@@ -6,13 +6,14 @@ import TaskSubmitter from "@/components/ui/task-submitter";
 import Empty from "@/components/ui/empty/empty";
 import filterSubmission from "@/utils/filter-submission";
 import DayAgo from "@/utils/day-ago";
+import { requireMinimumRole, ROLES } from "@/utils/require-minimum-role";
 
 export default function Submissions({
   task,
-  admin,
+  isDashboard,
 }: {
   task: Task;
-  admin?: boolean;
+  isDashboard?: boolean;
 }) {
   const [expanded, setExpanded] = useState(false);
   const { user, isVerifying } = useUser();
@@ -30,7 +31,7 @@ export default function Submissions({
 
   if (
     isVerifying ||
-    (user && user.position === "member" && !admin) ||
+    (user && !requireMinimumRole(user.role, ROLES.EXECUTIVE) && !isDashboard) ||
     (!isVerifying && !user)
   )
     return null;
@@ -44,14 +45,15 @@ export default function Submissions({
               ?.slice(0, expanded ? task?.submissions?.length : 8)
               .map((submission) => {
                 return (
-                  <li key={submission.username}>
+                  <li key={submission.slug}>
                     <TaskSubmitter
                       submitter={submission}
-                      url={`${admin ? "/admin" : ""}/task/${task?.slug}?user=${
-                        submission.username
+                      url={`${isDashboard ? "/admin" : ""}/task/${task?.slug}?user=${
+                        submission.slug
                       }`}
                       value={<DayAgo date={submission.submissionDate} />}
                       task={task}
+                      role={user?.role || ROLES.MEMBER}
                     />
                   </li>
                 );

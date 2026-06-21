@@ -46,7 +46,7 @@ export default function TaskDashboard(): ReactNode {
           />
         ) : (
           <div className="admin-task-container">
-            <Task admin={true} setSelectedTask={setSelectedTask} />
+            <Task isDashboard={true} setSelectedTask={setSelectedTask} />
           </div>
         )}
       </div>

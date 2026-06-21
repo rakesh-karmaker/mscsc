@@ -7,29 +7,40 @@ import {
   updateSegmentTeamStatus,
 } from "../controllers/teams.controller.js";
 import {
-  isAdmin,
+  requireMinimumRole,
   isAuthorized,
 } from "../../../shared/middlewares/auth-middleware.js";
+import { ROLES } from "../../../shared/utils/roles.js";
 
 const teamsRouter = Router();
 
 // team routes
-teamsRouter.get("/:eventSlug/", isAuthorized, getAllTeams);
-teamsRouter.get("/:eventSlug/:teamId", isAuthorized, getTeamById);
+teamsRouter.get(
+  "/:eventSlug/",
+  isAuthorized,
+  requireMinimumRole(ROLES.OBSERVER),
+  getAllTeams,
+);
+teamsRouter.get(
+  "/:eventSlug/:teamId",
+  isAuthorized,
+  requireMinimumRole(ROLES.OBSERVER),
+  getTeamById,
+);
 
 teamsRouter.post("/:eventSlug/create", isAuthorized, createSegmentTeam);
 
 teamsRouter.patch(
   "/:eventSlug/:teamId/update-status",
   isAuthorized,
-  isAdmin,
+  requireMinimumRole(ROLES.EDITOR),
   updateSegmentTeamStatus,
 );
 
 teamsRouter.delete(
   "/:eventSlug/:teamId",
   isAuthorized,
-  isAdmin,
+  requireMinimumRole(ROLES.ADMIN),
   deleteSegmentTeam,
 );
 

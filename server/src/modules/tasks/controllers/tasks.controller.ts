@@ -1,5 +1,4 @@
-import e, { Request, Response } from "express";
-import paginateResults from "../../../shared/lib/paginate-results.js";
+import { Request, Response } from "express";
 import Task from "../task.model.js";
 import { getTaskQuery } from "../task.queries.js";
 import Member from "../../../shared/models/member.model.js";
@@ -7,6 +6,7 @@ import generateSlug from "../../../shared/utils/generate-slug.js";
 import { taskSchema } from "../task.schema.js";
 import { deleteFile } from "../../../shared/lib/file-uploader.js";
 import logger from "../../../shared/config/winston.js";
+import mongoose from "mongoose";
 
 // get all tasks
 export async function getAllTasks(req: Request, res: Response): Promise<void> {
@@ -25,36 +25,38 @@ export async function getAllTasks(req: Request, res: Response): Promise<void> {
     ),
   };
 
-  // Pagination and sorting options
-  const sorted = {
-    sort: { createdAt: -1 as 1 | -1 },
-    select:
-      "_id name slug summary deadline category submissions first second third", // Select only necessary fields
-  };
-
   try {
-    // Get paginated results
-    const paginatedTasks = await paginateResults(req, Task, regex, sorted);
+    const tasks = await Task.aggregate([
+      { $match: { name: regex.name, category: regex.category } },
+      { $addFields: { submissionCount: { $size: "$submissions" } } },
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          slug: 1,
+          summary: 1,
+          deadline: 1,
+          category: 1,
+          first: 1,
+          second: 1,
+          third: 1,
+          submissionCount: 1,
+        },
+      },
+    ]);
 
-    // reformat the tasks and remove the submissions data to reduce the response size
-    const tasks = {
-      ...paginatedTasks,
-      results: paginatedTasks.results.map((task) => {
-        if (!task) {
-          return {};
-        }
-        // If task has toObject, use it; otherwise, assume it's already a plain object
-        const taskObj =
-          typeof task.toObject === "function" ? task.toObject() : task;
-        const { submissions, ...result } = taskObj;
-        return {
-          ...result,
-          submissionCount: submissions?.length || 0,
-        };
-      }),
-    };
+    const totalLength = tasks.length;
+    const results = tasks.slice(
+      parseInt(params.page || "1") * 10 - 10,
+      parseInt(params.page || "1") * 10,
+    );
 
-    res.status(200).send(tasks);
+    res.status(200).send({ results: results, totalLength: totalLength });
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
@@ -62,22 +64,31 @@ export async function getAllTasks(req: Request, res: Response): Promise<void> {
       .send({ subject: "root", message: "Server error", error: errorMessage });
     logger.error("Error fetching tasks", {
       error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }
 
 // get task by slug
 export async function getTask(req: Request, res: Response): Promise<void> {
+  const { slug } = req.params;
+  const username = req.query.username as string | undefined;
+  if (!slug || (username !== undefined && username.trim() === "")) {
+    res.status(400).send({ message: "Invalid request" });
+    return;
+  }
   try {
-    const { slug } = req.params;
-    const username = req.query.username as string | undefined;
-    if (!slug || (username !== undefined && username.trim() === "")) {
-      res.status(400).send({ message: "Invalid request" });
+    const member = await Member.findOne({ slug: username }).select("_id");
+    if (username && !member) {
+      res.status(404).send({ message: "User not found" });
       return;
     }
 
     /// get the task using aggregation pipeline to filter submissions
-    const task = await getTaskQuery(slug as string, username || "");
+    const task = await getTaskQuery(
+      slug as string,
+      member?._id.toString() || "",
+    );
     if (!task) {
       res.status(404).send({ message: "Task not found" });
       return;
@@ -85,18 +96,39 @@ export async function getTask(req: Request, res: Response): Promise<void> {
 
     // add all the submitters info
     // TODO: Optimize this to use aggregation pipeline to reduce the number of queries
-    const submitters = task.submissions.map((s: any) => s.username);
-    const members = await Member.find({ slug: { $in: submitters } });
-    task.submissions.forEach((s: any) => {
-      const member = members.find((m) => m.slug === s.username);
-      if (member) {
-        s.name = member.name;
-        s.image = member.image;
-        s.branch = member.branch;
-        s.batch = member.batch;
-        s.isImageHidden = member.isImageHidden ?? true; // default to true if undefined
-      }
-    });
+    const submitters = task.submissions.map((s: any) => s.memberId);
+    const members = await Member.find({ _id: { $in: submitters } })
+      .select("name image slug branch batch isImageHidden isImageVerified")
+      .lean();
+    task.submissions.forEach(
+      (s: {
+        memberId: mongoose.Types.ObjectId;
+        submissionDate: string;
+
+        answer?: string;
+        poster?: string | null;
+        name?: string;
+        slug?: string;
+        image?: string;
+        branch?: string;
+        batch?: string;
+        isImageHidden?: boolean;
+        isImageVerified?: boolean;
+      }) => {
+        const member = members.find(
+          (m) => m._id.toString() === s.memberId.toString(),
+        );
+        if (member) {
+          s.name = member.name;
+          s.slug = member.slug;
+          s.image = member.image;
+          s.branch = member.branch;
+          s.batch = member.batch.toString();
+          s.isImageHidden = member.isImageHidden ?? true; // default to true if undefined
+          s.isImageVerified = member.isImageVerified ?? false; // default to false if undefined
+        }
+      },
+    );
 
     res.status(200).send(task);
   } catch (err) {
@@ -106,6 +138,7 @@ export async function getTask(req: Request, res: Response): Promise<void> {
       .send({ subject: "root", message: "Server error", error: errorMessage });
     logger.error("Error fetching task", {
       error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }
@@ -148,6 +181,7 @@ export async function createTask(req: Request, res: Response): Promise<void> {
     logger.error("Error creating task", {
       taskId: req.user?._id,
       error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }
@@ -209,6 +243,7 @@ export async function editTask(req: Request, res: Response): Promise<void> {
     logger.error("Error editing task", {
       taskId: req.user?._id,
       error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
       editor: req.user?._id,
     });
   }
@@ -244,7 +279,7 @@ export async function deleteTask(req: Request, res: Response): Promise<void> {
     // delete all submissions from the members' profile
     for (let i = 0; i < submissions.length; i++) {
       await Member.findOneAndUpdate(
-        { slug: submissions[i].username },
+        { _id: submissions[i].memberId },
         {
           $pull: { submissions: { taskId: task._id } }, // remove the task from the submissions array
         },
@@ -261,10 +296,10 @@ export async function deleteTask(req: Request, res: Response): Promise<void> {
           if (!winners[i]) {
             continue;
           }
-          const winner = await Member.findOne({ slug: winners[i] });
+          const winner = await Member.findOne({ _id: winners[i] });
           if (winner) {
             await Member.findOneAndUpdate(
-              { slug: winners[i] },
+              { _id: winners[i] },
               {
                 $pull: {
                   timeline: {
@@ -295,6 +330,7 @@ export async function deleteTask(req: Request, res: Response): Promise<void> {
     logger.error("Error deleting task", {
       taskId: req.user?._id,
       error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
       deletedBy: req.user?._id,
     });
   }

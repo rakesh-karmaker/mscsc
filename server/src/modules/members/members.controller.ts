@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import Member from "../../shared/models/member.model.js";
-import { GetAllMembersRegexType } from "./member.types.js";
 import paginateResults from "../../shared/lib/paginate-results.js";
 import { deleteFile, uploadImage } from "../../shared/lib/file-uploader.js";
 import { generateHash } from "../../shared/utils/hash.js";
@@ -19,7 +18,7 @@ export async function getAllMembers(
   };
 
   // Create regex for filtering
-  const regex: GetAllMembersRegexType = {
+  const regex: { name: RegExp; branch: RegExp } = {
     name: new RegExp(typeof params.name === "string" ? params.name : "", "i"),
     branch: new RegExp(
       typeof params.branch === "string" ? params.branch : "",
@@ -61,62 +60,57 @@ export async function getAllMembersForTable(
     "Branch - 2",
     "Branch - 3",
   ] as const;
-  // const positions = ["member", "admin"] as const; TODO: add more positions
+  const roles = ["member", "executive", "observer", "editor", "admin"] as const;
 
   const params = req.query as {
     page?: string;
     perPage?: string;
+    sort?: string;
     name?: string;
     batch?: string;
     branch?: (typeof branches)[number][];
-    position?: string[];
-    sort?: string;
+    role?: (typeof roles)[number][];
+  };
+
+  // Parse and validate query parameters
+  const page = params.page ? parseInt(params.page) : 1;
+  const perPage = params.perPage ? parseInt(params.perPage) : 10;
+  const skip = (page - 1) * perPage;
+  const batchFilter =
+    typeof params.batch === "string" &&
+    params.batch !== "" &&
+    parseInt(params.batch) > 0
+      ? {
+          batch: parseInt(params.batch),
+        }
+      : {};
+  const branchesFilter =
+    Array.isArray(params.branch) && params.branch.length > 0
+      ? { branch: { $in: params.branch } }
+      : {};
+  const rolesFilter =
+    Array.isArray(params.role) && params.role.length > 0
+      ? {
+          role: {
+            $in: params.role,
+          },
+        }
+      : {};
+  const sort: { id: string; desc: boolean } | {} =
+    Array.isArray(params.sort) && params.sort.length > 0 ? params.sort[0] : {};
+
+  // Create regex for filtering
+  const regex: { name: RegExp } = {
+    name: new RegExp(typeof params.name === "string" ? params.name : "", "i"),
   };
 
   try {
-    // const params = req.query;
-
-    // Parse and validate query parameters
-    const page = params.page ? parseInt(params.page) : 1;
-    const perPage = params.perPage ? parseInt(params.perPage) : 10;
-    const skip = (page - 1) * perPage;
-    const batchFilter =
-      typeof params.batch === "string" &&
-      params.batch !== "" &&
-      parseInt(params.batch) > 0
-        ? {
-            batch: parseInt(params.batch),
-          }
-        : {};
-    const branchesFilter =
-      Array.isArray(params.branch) && params.branch.length > 0
-        ? { $in: params.branch }
-        : {};
-    const branch = Array.isArray(params.branch) ? params.branch : [];
-    const positions = Array.isArray(params.position) ? params.position : [];
-    const sort: { id: string; desc: boolean } | {} =
-      Array.isArray(params.sort) && params.sort.length > 0
-        ? params.sort[0]
-        : {};
-
-    // Create regex for filtering
-    const regex: Pick<GetAllMembersRegexType, "name"> = {
-      name: new RegExp(typeof params.name === "string" ? params.name : "", "i"),
-    };
-
     // fetch members based on filters
     const members = await Member.find({
       ...regex,
       ...batchFilter,
       ...branchesFilter,
-      ...(positions.length > 0 &&
-        positions.includes("executive") && {
-          position: new RegExp(`^(?!.*member).*$`, "i"),
-        }),
-      ...(positions.length > 0 &&
-        (positions.includes("member") || positions.includes("admin")) && {
-          role: { $in: positions },
-        }),
+      ...rolesFilter,
     })
       .sort(
         sort && Object.keys(sort).length > 0 && "id" in sort && "desc" in sort
@@ -178,38 +172,41 @@ export async function getTopSubmitters(
   res: Response,
 ): Promise<void> {
   try {
-    const members = await Member.find();
-    const topSubmitters = members
-      .map((member) => ({
-        _id: member._id,
-        name: member.name,
-        branch: member.branch,
-        batch: member.batch,
-        slug: member.slug,
-        image: member.image,
-        submissionCount: member.submissions ? member.submissions.length : 0,
-        isImageHidden: member.isImageHidden,
-      }))
-      .sort((a, b) => b.submissionCount - a.submissionCount)
-      .slice(0, 10); // Get top 10
+    const results = await Member.aggregate([
+      {
+        $addFields: {
+          submissionCount: { $size: "$submissions" },
+        },
+      },
+      {
+        $sort: { submissionCount: -1 },
+      },
+      {
+        $limit: 10,
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          slug: 1,
+          branch: 1,
+          batch: 1,
+          image: 1,
+          submissionCount: 1,
+          isImageHidden: 1,
+          isImageVerified: 1,
+        },
+      },
+    ]);
 
-    if (!topSubmitters || topSubmitters.length === 0) {
+    if (!results || results.length === 0) {
       res.status(404).send({ message: "No submitters found" });
       return;
     }
 
-    res.status(200).send(
-      topSubmitters.map((member) => ({
-        _id: member._id,
-        name: member.name,
-        slug: member.slug,
-        branch: member.branch,
-        batch: member.batch,
-        image: member.image,
-        submissionCount: member.submissionCount,
-        isImageHidden: member.isImageHidden,
-      })),
-    );
+    res.status(200).send({
+      topSubmitters: results,
+    });
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
@@ -217,6 +214,7 @@ export async function getTopSubmitters(
       .send({ subject: "root", message: "Server error", error: errorMessage });
     logger.error("Error fetching top submitters", {
       error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }

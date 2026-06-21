@@ -1,6 +1,6 @@
 import Task from "./task.model.js";
 
-export async function getTaskQuery(slug: string, username: string) {
+export async function getTaskQuery(slug: string, memberId: string) {
   // Find the task and filter the submissions
   const task = await Task.aggregate([
     { $match: { slug } },
@@ -23,10 +23,12 @@ export async function getTaskQuery(slug: string, username: string) {
             input: "$submissions",
             as: "sub",
             in: {
-              username: "$$sub.username",
+              memberId: "$$sub.memberId",
               poster: {
                 $cond: {
-                  if: { $eq: ["$$sub.username", username] },
+                  if: {
+                    $eq: [{ $toString: "$$sub.memberId" }, memberId],
+                  },
                   then: "$$sub.poster",
                   else: "$$REMOVE",
                 },
@@ -34,7 +36,9 @@ export async function getTaskQuery(slug: string, username: string) {
               submissionDate: "$$sub.submissionDate",
               answer: {
                 $cond: {
-                  if: { $eq: ["$$sub.username", username] },
+                  if: {
+                    $eq: [{ $toString: "$$sub.memberId" }, memberId],
+                  },
                   then: "$$sub.answer",
                   else: "$$REMOVE",
                 },

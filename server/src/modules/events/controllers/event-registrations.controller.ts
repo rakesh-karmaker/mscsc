@@ -139,7 +139,7 @@ export async function getRegistrationById(
     const registration = await EventRegistration.findById(registrationId)
       .lean()
       .select(
-        "_id eventId name email phoneNumber facebookUrl photoUrl institution grade segments transactionMethod transactionPhoneNumber transactionId registrationDate status rejectionReason code reference clubReference paidSoloSegments",
+        "_id eventId name email phoneNumber facebookUrl photoUrl institution grade segments transactionMethod transactionPhoneNumber transactionId registrationDate status rejectionReason code reference clubReference paidSoloSegments hasAttended",
       );
     if (!registration) {
       res.status(404).json({ message: "Registration not found" });
@@ -533,7 +533,7 @@ export async function changeRegistrationStatus(
     await registration.save();
 
     res.status(200).json({
-      message: "Registration status changed and email sent",
+      message: "Registration status changed successfully",
       emailSentError,
     });
     logger.info(
@@ -587,7 +587,7 @@ export async function editRegistration(
         },
       },
       { new: true },
-    ); // added { new: true } to the updated document
+    );
 
     res
       .status(200)

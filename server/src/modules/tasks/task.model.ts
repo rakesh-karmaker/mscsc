@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { TaskSchemaType } from "./task.types.js";
 
 const SubmissionSchema = new mongoose.Schema({
-  username: { type: String },
+  memberId: { type: mongoose.Schema.Types.ObjectId, ref: "Member" },
   answer: { type: String },
   poster: { type: String, default: null },
   posterId: { type: String, default: null },
@@ -16,9 +16,21 @@ const TaskSchema = new mongoose.Schema<TaskSchemaType>(
     summary: { type: String, required: true },
     instructions: { type: String, required: true },
     deadline: { type: Date, required: true },
-    first: { type: String, default: null },
-    second: { type: String, default: null },
-    third: { type: String, default: null },
+    first: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Member",
+      default: null,
+    },
+    second: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Member",
+      default: null,
+    },
+    third: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Member",
+      default: null,
+    },
     imageRequired: { type: Boolean, default: false },
     category: {
       type: String,

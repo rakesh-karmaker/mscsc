@@ -6,13 +6,20 @@ import TableActionColumn from "../table/table-action-column";
 import LuEye from "~icons/lucide/eye";
 import LuTrash from "~icons/lucide/trash";
 import dayjs from "dayjs";
+import {
+  requireMinimumRole,
+  ROLES,
+  type Role,
+} from "@/utils/require-minimum-role";
 
 export default function getMessagesTableColumns({
   onViewClick,
   onDelete,
+  userRole,
 }: {
   onViewClick: (message: MessageTableData) => void;
   onDelete: (id: string) => void;
+  userRole: Role;
 }): ColumnDef<MessageTableData>[] {
   return [
     {
@@ -127,16 +134,18 @@ export default function getMessagesTableColumns({
                 <p>View Message</p>
               </button>
 
-              <button
-                className="w-full h-full flex gap-2 rounded-sm items-center px-2.5! py-1.5! hover:bg-[#f5f5f5] transition-all cursor-pointer"
-                onClick={() => {
-                  setOpen(false);
-                  onDelete(row.original._id);
-                }}
-              >
-                <LuTrash className="opacity-70" />
-                <p>Delete Message</p>
-              </button>
+              {requireMinimumRole(userRole, ROLES.EDITOR) && (
+                <button
+                  className="w-full h-full flex gap-2 rounded-sm items-center px-2.5! py-1.5! hover:bg-[#f5f5f5] transition-all cursor-pointer"
+                  onClick={() => {
+                    setOpen(false);
+                    onDelete(row.original._id);
+                  }}
+                >
+                  <LuTrash className="opacity-70" />
+                  <p>Delete Message</p>
+                </button>
+              )}
             </div>
           </TableActionColumn>
         );

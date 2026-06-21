@@ -1,4 +1,4 @@
-import { deleteMember, editMember } from "@/lib/api/member";
+import { deleteMember } from "@/lib/api/member";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { NavLink } from "react-router-dom";
@@ -7,6 +7,13 @@ import type { AdminDashboardMemberPreview } from "@/types/member-types";
 import DeleteWarning from "../ui/delete-warning";
 import ListLayout from "./list-layout";
 import dayjs from "dayjs";
+import { useUser } from "@/contexts/user-context";
+import {
+  requireMinimumRole,
+  ROLES,
+  type Role,
+} from "@/utils/require-minimum-role";
+import type { AxiosError, AxiosResponse } from "axios";
 
 export default function MemberList({
   members,
@@ -15,24 +22,26 @@ export default function MemberList({
   members: AdminDashboardMemberPreview[];
   loading: boolean;
 }) {
+  const { user } = useUser();
+
   const queryClient = useQueryClient();
   const memberMutation = useMutation({
     mutationFn: (data: { slug: string; isDelete: boolean; new?: boolean }) => {
       const { isDelete, ...rest } = data;
       if (isDelete) {
         return deleteMember(rest);
-      } else {
-        return editMember({ slug: data.slug, new: false });
       }
+
+      return Promise.reject(new Error("Invalid method"));
     },
-    onSuccess: (res) => {
+    onSuccess: (res: AxiosResponse<{ message?: string }>) => {
       queryClient.invalidateQueries({ queryKey: ["members"] });
       queryClient.invalidateQueries({ queryKey: ["adminDashboardData"] });
-      toast.success(res?.data?.message);
+      toast.success(res?.data?.message || "Operation successful!");
     },
-    onError: (err) => {
+    onError: (err: AxiosError<{ message?: string }>) => {
       console.log(err);
-      toast.error("Operation failed!");
+      toast.error(err?.response?.data?.message || "Operation failed!");
     },
   });
 
@@ -45,7 +54,11 @@ export default function MemberList({
       {members?.slice(0, 6).map((member) => {
         return (
           <li key={member._id}>
-            <MemberListItem member={member} onDelete={onDelete} />
+            <MemberListItem
+              member={member}
+              onDelete={onDelete}
+              role={user?.role || ROLES.MEMBER}
+            />
           </li>
         );
       })}
@@ -56,9 +69,11 @@ export default function MemberList({
 function MemberListItem({
   member,
   onDelete,
+  role,
 }: {
   member: AdminDashboardMemberPreview;
   onDelete: (slug: string) => void;
+  role: Role;
 }) {
   const [open, setOpen] = useState(false);
   const hasRegistered7DaysAgo =
@@ -71,7 +86,14 @@ function MemberListItem({
         to={`/member/${member.slug}`}
       >
         <div className="member-short-info">
-          <img src={member.image} alt={member.name} />
+          <img
+            src={
+              requireMinimumRole(role, ROLES.OBSERVER)
+                ? member.image
+                : "/executive-members/placeholderpfp.webp"
+            }
+            alt={member.name}
+          />
           <div className="info">
             <p className="member-name">{member.name}</p>
             <p className="member-branch-batch">
@@ -80,18 +102,20 @@ function MemberListItem({
           </div>
         </div>
 
-        <button
-          className="danger-button primary-button text-[1em]! py-1.75! px-3.75! w-fit! h-fit!"
-          aria-label="Delete this data"
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            setOpen(true);
-          }}
-        >
-          Delete
-        </button>
+        {requireMinimumRole(role, ROLES.ADMIN) && (
+          <button
+            className="danger-button primary-button text-[1em]! py-1.75! px-3.75! w-fit! h-fit!"
+            aria-label="Delete this data"
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setOpen(true);
+            }}
+          >
+            Delete
+          </button>
+        )}
       </NavLink>
 
       <DeleteWarning

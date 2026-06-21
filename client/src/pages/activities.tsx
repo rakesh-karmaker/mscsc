@@ -7,16 +7,19 @@ import ActivitiesNavbar from "@/layouts/activities-navbar/activities-navbar";
 import ActivityCard from "@/components/activity-card/activity-card";
 import type { ActivityPreview } from "@/types/activity-types";
 import { Helmet } from "react-helmet-async";
+import { useUser } from "@/contexts/user-context";
+import { ROLES } from "@/utils/require-minimum-role";
 
 export default function Activities({
-  admin,
+  isDashboard = false,
   ...rest
 }: {
-  admin?: boolean;
+  isDashboard?: boolean;
   setSelectedActivity?: Dispatch<SetStateAction<ActivityPreview | null>>;
 }) {
   const { activities, length, isLoading, params, setParams } = useActivities();
   const { tag, page } = params;
+  const { user } = useUser();
 
   const elementsPerPage = 12;
 
@@ -44,7 +47,7 @@ export default function Activities({
       {/* page content */}
       <main
         className={`page-activities w-full min-h-screen max-w-max-width ${
-          admin
+          isDashboard
             ? ""
             : "pt-[calc(var(--nav-height)+3rem)]! pb-25! max-[1000px]:pt-[calc(var(--nav-height)+2rem)]!"
         } flex flex-col max-[1000px]:gap-10`}
@@ -62,7 +65,8 @@ export default function Activities({
                   key={activity._id}
                   data={activity}
                   selectedTag={tag}
-                  admin={admin}
+                  role={user?.role || ROLES.MEMBER}
+                  isDashboard={isDashboard}
                   {...rest}
                 />
               );

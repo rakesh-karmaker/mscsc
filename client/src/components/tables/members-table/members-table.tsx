@@ -7,9 +7,13 @@ import { Table } from "../table/table";
 import TableToolbar from "../table/table-toolbar";
 import useGetMembersSearchParams from "@/hooks/table-hooks/header-hooks/use-get-members-search-params";
 import { TablePagination } from "../table/table-pagination";
+import { useUser } from "@/contexts/user-context";
+import { ROLES } from "@/utils/require-minimum-role";
 
 export default function MembersTable(): ReactNode {
-  const columns = getMembersTableColumns();
+  const { user } = useUser();
+
+  const columns = getMembersTableColumns(user?.role || ROLES.MEMBER);
   const params = useGetMembersSearchParams();
 
   const { data, isLoading } = useQuery({

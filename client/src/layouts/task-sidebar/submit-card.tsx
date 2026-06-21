@@ -25,7 +25,7 @@ export default function SubmitCard({
   username,
 }: SubmitCardProps): ReactNode {
   const didSubmit = task?.submissions?.find(
-    (s: Submission) => s.username === username
+    (s: Submission) => s.slug === username,
   );
 
   const [open, setOpen] = useState(false);

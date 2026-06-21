@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
-  isAdmin,
+  requireMinimumRole,
   isAuthorized,
 } from "../../../shared/middlewares/auth-middleware.js";
 import upload from "../../../shared/middlewares/multer.js";
@@ -12,6 +12,7 @@ import {
   getAllCAApplications,
   getCAApplicationById,
 } from "../controllers/ca-applications.controller.js";
+import { ROLES } from "../../../shared/utils/roles.js";
 
 const caApplicationsRouter = Router();
 
@@ -21,13 +22,13 @@ const caApplicationsRouter = Router();
 caApplicationsRouter.get(
   "/:eventSlug",
   isAuthorized,
-  isAdmin,
+  requireMinimumRole(ROLES.OBSERVER),
   getAllCAApplications,
 );
 caApplicationsRouter.get(
   "/:eventSlug/:applicationId",
   isAuthorized,
-  isAdmin,
+  requireMinimumRole(ROLES.OBSERVER),
   getCAApplicationById,
 );
 
@@ -42,13 +43,13 @@ caApplicationsRouter.post(
 caApplicationsRouter.patch(
   "/:eventSlug/:applicationId/status",
   isAuthorized,
-  isAdmin,
+  requireMinimumRole(ROLES.EDITOR),
   editCAApplicationStatus,
 );
 caApplicationsRouter.patch(
   "/:eventSlug/:applicationId/edit",
   isAuthorized,
-  isAdmin,
+  requireMinimumRole(ROLES.EDITOR),
   editCAApplication,
 );
 
@@ -56,7 +57,7 @@ caApplicationsRouter.patch(
 caApplicationsRouter.delete(
   "/:eventSlug/:applicationId",
   isAuthorized,
-  isAdmin,
+  requireMinimumRole(ROLES.ADMIN),
   deleteCAApplication,
 );
 

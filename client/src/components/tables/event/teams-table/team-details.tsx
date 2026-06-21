@@ -14,6 +14,8 @@ import type { EventTeamData } from "@/types/event/event-team-types";
 import { TeamStatusTag } from "@/utils/get-status-tags";
 import TeamActions from "./team-actions";
 import capitalize from "@/utils/capitalize";
+import { useUser } from "@/contexts/user-context";
+import { ROLES } from "@/utils/require-minimum-role";
 
 export default function TeamDetails({
   teamId,
@@ -29,6 +31,7 @@ export default function TeamDetails({
   setDetailsModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }): ReactNode {
   const eventSlug = useParams().eventSlug!;
+  const { user } = useUser();
 
   const { data, isLoading } = useQuery({
     queryKey: [`team-${eventSlug}-${teamId}`],
@@ -205,6 +208,7 @@ export default function TeamDetails({
         details={teamData}
         setModelOpen={setDetailsModelOpen}
         previousModels={previousModels}
+        role={user?.role || ROLES.MEMBER}
       />
     </div>
   );

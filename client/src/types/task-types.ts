@@ -2,7 +2,7 @@ export interface Task {
   _id: string;
   name: string;
   slug: string;
-  category: string;
+  category: "article writing" | "poster design";
   summary: string;
   instructions: string;
   deadline: string; // ISO date string
@@ -15,15 +15,18 @@ export interface Task {
 }
 
 export type Submission = {
-  username: string;
-  name: string;
-  image: string;
+  memberId: string;
+  submissionDate: string; // ISO date string
+
+  name?: string;
+  slug?: string;
+  image?: string;
   poster?: string;
   answer?: string;
-  branch: string;
-  batch: string;
-  isImageHidden: boolean;
-  submissionDate: string; // ISO date string
+  branch?: string;
+  batch?: string;
+  isImageHidden?: boolean;
+  isImageVerified?: boolean;
 };
 
 export type TopSubmitter = {
@@ -34,16 +37,19 @@ export type TopSubmitter = {
   batch: string;
   image: string;
   submissionCount: number;
-  isImageHidden: boolean;
+  isImageHidden?: boolean;
+  isImageVerified?: boolean;
 };
 
 export type TaskSubmitterType = {
-  username: string;
+  memberId: string;
   name: string;
+  slug: string;
   branch: string;
   batch: string;
   image: string;
-  isImageHidden: boolean;
+  isImageHidden?: boolean;
+  isImageVerified?: boolean;
   submissionDate: string; // ISO date string
 };
 

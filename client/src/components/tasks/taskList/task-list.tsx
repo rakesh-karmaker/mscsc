@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import Empty from "@/components/ui/empty/empty";
 import PaginationContainer from "@/components/ui/pagination-container/pagination-container";
 import TaskTags from "@/components/ui/task-tags/task-tags";
+import { useUser } from "@/contexts/user-context";
 
 import "./task-list.css";
 
@@ -12,8 +13,7 @@ type TaskListProps = {
   length: number;
   page: number;
   submissions?: string[];
-  username?: string;
-  admin?: boolean;
+  isDashboard?: boolean;
   setPage: (newPage: number) => void;
 };
 
@@ -23,11 +23,11 @@ export default function TaskList({
   page,
   setPage,
   submissions,
-  username,
-  admin,
+  isDashboard,
 }: TaskListProps): ReactNode {
   // check if there are tasks to display
   if (tasks?.length === 0) return <Empty />;
+  const { user } = useUser();
 
   return (
     <div className="task-container">
@@ -36,8 +36,8 @@ export default function TaskList({
           return (
             <li key={task._id}>
               <NavLink
-                to={`${admin ? "/admin" : ""}/task/${task.slug}${
-                  !admin && username ? `?user=${username}` : ""
+                to={`${isDashboard ? "/admin" : ""}/task/${task.slug}${
+                  !isDashboard && user?.slug ? `?user=${user.slug}` : ""
                 }`}
                 className="task"
               >
@@ -54,8 +54,8 @@ export default function TaskList({
                     task={task}
                     taskSubmissionCount={task.submissionCount}
                     userSubmissions={submissions}
-                    username={username}
-                    admin={admin}
+                    userId={user?._id}
+                    isDashboard={isDashboard}
                   />
                 </div>
               </NavLink>
@@ -67,7 +67,7 @@ export default function TaskList({
         length={length}
         currentPage={page}
         setPage={setPage}
-        elementsPerPage={18}
+        elementsPerPage={10}
       />
     </div>
   );

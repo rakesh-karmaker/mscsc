@@ -4,6 +4,7 @@ import FaBars from "~icons/fa-solid/bars";
 import LuX from "~icons/lucide/x";
 import Welcome from "./welcome";
 import AdminSidebarLinks from "./admin-sidebar-links";
+import type { Role } from "@/utils/require-minimum-role";
 
 import "./admin-sidebar.css";
 
@@ -12,6 +13,7 @@ export default function AdminSidebar({
   image,
   events,
   isEventsFetching,
+  role,
 }: {
   name: string;
   image: string;
@@ -20,6 +22,7 @@ export default function AdminSidebar({
     eventSlug: string;
   }[];
   isEventsFetching: boolean;
+  role: Role;
 }): ReactNode {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -66,6 +69,7 @@ export default function AdminSidebar({
                 setIsSidebarOpen={setIsSidebarOpen}
                 events={events}
                 isEventsFetching={isEventsFetching}
+                role={role}
               />
             </nav>
 

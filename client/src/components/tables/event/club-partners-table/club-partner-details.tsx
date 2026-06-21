@@ -23,6 +23,12 @@ import type {
 import RegistrationDetailsModel from "../registrations-table/registration-details-model";
 import useClubPartnerMutation from "@/hooks/event-hooks/use-club-partner-mutation";
 import ClubPartnerFormModel from "@/components/forms/club-partner-form/club-partner-form-model";
+import { useUser } from "@/contexts/user-context";
+import {
+  requireMinimumRole,
+  ROLES,
+  type Role,
+} from "@/utils/require-minimum-role";
 
 export default function ClubPartnerDetails({
   clubPartnerId,
@@ -38,6 +44,7 @@ export default function ClubPartnerDetails({
   setModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }): ReactNode {
   const eventSlug = useParams().eventSlug!;
+  const { user } = useUser();
 
   const [loadAllRegistrations, setLoadAllRegistrations] = useState(false);
 
@@ -160,6 +167,7 @@ export default function ClubPartnerDetails({
             details={details}
             clubPartnerId={details._id}
             setModelOpen={setModelOpen}
+            role={user?.role || ROLES.MEMBER}
           />
         </Activity>
 
@@ -274,14 +282,20 @@ function ClubPartnerActions({
   details,
   clubPartnerId,
   setModelOpen,
+  role,
 }: {
   details: ClubPartnerData;
   clubPartnerId: string;
   setModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  role: Role;
 }): ReactNode {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [modelOpen, setModelOpenState] = useState(false);
   const clubPartnerMutation = useClubPartnerMutation();
+
+  if (!requireMinimumRole(role, ROLES.EDITOR)) {
+    return null;
+  }
 
   return (
     <div>
@@ -318,39 +332,42 @@ function ClubPartnerActions({
             }}
           />
         </>
-        <div>
-          <TableBtn
-            className="max-w-fit bg-red-500 text-white hover:bg-secondary-bg/20 border hover:text-black border-red-500/20 transition-all duration-200"
-            aria-label="Delete this data"
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              setDeleteOpen(true);
-            }}
-          >
-            <LuTrash2 className="opacity-70" />
-            <p>Delete </p>
-          </TableBtn>
-          <DeleteWarning
-            slug={details._id}
-            deleteFunc={() => {
-              clubPartnerMutation.mutate({
-                method: "delete",
-                clubPartnerId: details._id,
-              });
-              setModelOpen(false);
-            }}
-            open={deleteOpen}
-            setOpen={setDeleteOpen}
-            title="Delete Club Partner"
-          >
-            This will permanently delete this club partner{" "}
-            <span className="font-semibold">{details.clubName}</span> from the
-            club partners' list and remove all of their data from the server.
-            All of their images, links, and other data will be permanently lost.
-          </DeleteWarning>
-        </div>
+        {requireMinimumRole(role, ROLES.ADMIN) && (
+          <div>
+            <TableBtn
+              className="max-w-fit bg-red-500 text-white hover:bg-secondary-bg/20 border hover:text-black border-red-500/20 transition-all duration-200"
+              aria-label="Delete this data"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                setDeleteOpen(true);
+              }}
+            >
+              <LuTrash2 className="opacity-70" />
+              <p>Delete </p>
+            </TableBtn>
+            <DeleteWarning
+              slug={details._id}
+              deleteFunc={() => {
+                clubPartnerMutation.mutate({
+                  method: "delete",
+                  clubPartnerId: details._id,
+                });
+                setModelOpen(false);
+              }}
+              open={deleteOpen}
+              setOpen={setDeleteOpen}
+              title="Delete Club Partner"
+            >
+              This will permanently delete this club partner{" "}
+              <span className="font-semibold">{details.clubName}</span> from the
+              club partners' list and remove all of their data from the server.
+              All of their images, links, and other data will be permanently
+              lost.
+            </DeleteWarning>
+          </div>
+        )}
       </div>
     </div>
   );

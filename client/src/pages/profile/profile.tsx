@@ -13,6 +13,7 @@ import TimelineForm from "@/components/forms/timeline-form/timeline-form";
 import type { User } from "@/types/user-types";
 import UserEditForm from "@/components/forms/user-edit-form";
 import { Helmet } from "react-helmet-async";
+import { requireMinimumRole, ROLES } from "@/utils/require-minimum-role";
 
 import "./profile.css";
 
@@ -20,7 +21,6 @@ export default function Profile(): ReactNode {
   const { username } = useParams();
   const { user } = useUser();
   const isOwner = user?.slug === username;
-  const isExecutive = user && user?.position !== "member" ? true : false;
   const [isEditing, setIsEditing] = useState(false);
   useEffect(() => {
     setIsEditing(false);
@@ -84,12 +84,11 @@ export default function Profile(): ReactNode {
           <div className="profile-left">
             <img
               src={
-                (profileData.isImageHidden || !profileData.isImageVerified) &&
-                !isExecutive
-                  ? isOwner
-                    ? profileData.image
-                    : "/executive-members/placeholderpfp.webp"
-                  : profileData.image
+                requireMinimumRole(user?.role, ROLES.OBSERVER) || isOwner
+                  ? profileData.image
+                  : profileData.isImageHidden || !profileData.isImageVerified
+                    ? "/executive-members/placeholderpfp.webp"
+                    : profileData.image
               }
               alt={profileData.name}
               rel="preload"

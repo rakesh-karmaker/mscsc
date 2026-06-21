@@ -21,7 +21,7 @@ export default function TasksDashboard() {
         </AdminDashboardHeader>
 
         <div className="admin-tasks-container">
-          <Tasks admin={true} />
+          <Tasks isDashboard={true} />
         </div>
       </div>
     </>

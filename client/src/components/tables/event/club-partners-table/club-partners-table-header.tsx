@@ -14,9 +14,15 @@ import ChangeClubPartnerStatus from "./change-club-partner-status";
 import ClubPartnerModel from "./club-partner-model";
 import toast from "react-hot-toast";
 import { EVENT_WEBSITE_URL } from "@/config/constants";
+import {
+  requireMinimumRole,
+  ROLES,
+  type Role,
+} from "@/utils/require-minimum-role";
 
 export default function getClubPartnersTableColumns(
   eventSlug: string,
+  role: Role,
 ): ColumnDef<ClubPartnerTableData>[] {
   return [
     {
@@ -113,12 +119,14 @@ export default function getClubPartnersTableColumns(
                 }}
               />
 
-              <ChangeClubPartnerStatus
-                id={`change-status-details-${row.original._id}`}
-                documentId={row.original._id}
-                setOpen={() => {}}
-                mutation={clubPartnerMutation}
-              />
+              {requireMinimumRole(role, ROLES.EDITOR) && (
+                <ChangeClubPartnerStatus
+                  id={`change-status-details-${row.original._id}`}
+                  documentId={row.original._id}
+                  setOpen={() => {}}
+                  mutation={clubPartnerMutation}
+                />
+              )}
 
               <TableBtn
                 onClick={() => {
@@ -133,31 +141,35 @@ export default function getClubPartnersTableColumns(
                 <p>Copy Url</p>
               </TableBtn>
 
-              <div className="border-t border-gray-300">
-                <TableBtn onClick={() => setDeleteOpen(true)}>
-                  <LuTrash2 className="opacity-70" />
-                  <p>Delete</p>
-                </TableBtn>
-                <DeleteWarning
-                  slug={row.original._id}
-                  deleteFunc={() => {
-                    clubPartnerMutation.mutate({
-                      method: "delete",
-                      clubPartnerId: row.original._id,
-                    });
-                    setOpen(false);
-                  }}
-                  open={deleteOpen}
-                  setOpen={setDeleteOpen}
-                  title="Delete Club Partner"
-                >
-                  This will permanently delete this club partner{" "}
-                  <span className="font-semibold">{row.original.clubName}</span>{" "}
-                  from the club partners' list and remove all of their data from
-                  the server. All of their images, links, and other data will be
-                  permanently lost.
-                </DeleteWarning>
-              </div>
+              {requireMinimumRole(role, ROLES.ADMIN) && (
+                <div className="border-t border-gray-300">
+                  <TableBtn onClick={() => setDeleteOpen(true)}>
+                    <LuTrash2 className="opacity-70" />
+                    <p>Delete</p>
+                  </TableBtn>
+                  <DeleteWarning
+                    slug={row.original._id}
+                    deleteFunc={() => {
+                      clubPartnerMutation.mutate({
+                        method: "delete",
+                        clubPartnerId: row.original._id,
+                      });
+                      setOpen(false);
+                    }}
+                    open={deleteOpen}
+                    setOpen={setDeleteOpen}
+                    title="Delete Club Partner"
+                  >
+                    This will permanently delete this club partner{" "}
+                    <span className="font-semibold">
+                      {row.original.clubName}
+                    </span>{" "}
+                    from the club partners' list and remove all of their data
+                    from the server. All of their images, links, and other data
+                    will be permanently lost.
+                  </DeleteWarning>
+                </div>
+              )}
             </div>
           </TableActionColumn>
         );

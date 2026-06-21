@@ -44,10 +44,17 @@ const MemberSchema = new mongoose.Schema<MemberSchemaType>(
         },
       ],
     },
+
     submissions: [SubmissionSchema],
     reference: { type: String, required: true },
-    role: { type: String, enum: ["member", "admin"], default: "member" },
+
+    role: {
+      type: String,
+      enum: ["member", "executive", "observer", "editor", "admin"],
+      default: "member",
+    },
     position: { type: String, default: "member" },
+
     new: { type: Boolean, default: true },
     isImageVerified: { type: Boolean, default: false },
     isImageHidden: { type: Boolean, default: false },

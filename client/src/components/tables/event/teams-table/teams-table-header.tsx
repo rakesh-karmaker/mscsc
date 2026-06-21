@@ -11,6 +11,11 @@ import TeamDetailsModel from "./team-details-model";
 import { TableBtn } from "@/components/ui/btns";
 import DeleteWarning from "@/components/ui/delete-warning";
 import LuTrash2 from "~icons/lucide/trash-2";
+import {
+  requireMinimumRole,
+  ROLES,
+  type Role,
+} from "@/utils/require-minimum-role";
 
 export default function getTeamsTableColumns(
   segments: {
@@ -19,6 +24,7 @@ export default function getTeamsTableColumns(
     isPaidSegment: boolean;
     fees: number;
   }[],
+  role: Role,
 ): ColumnDef<EventTeamTableData>[] {
   return [
     {
@@ -187,14 +193,6 @@ export default function getTeamsTableColumns(
             }}
           >
             <div className="max-h-65 scroll-py-1 overflow-y-auto overflow-x-hidden flex flex-col p-1!">
-              <ChangeStatus
-                id={`change-status-details-${row.original._id}`}
-                documentId={row.original._id}
-                setOpen={() => {}}
-                model="team"
-                mutation={teamMutation}
-              />
-
               <TeamDetailsModel
                 teamId={row.original._id}
                 setOpen={setOpen}
@@ -205,31 +203,45 @@ export default function getTeamsTableColumns(
                 }}
               />
 
-              <div className="border-t border-gray-300">
-                <TableBtn onClick={() => setDeleteOpen(true)}>
-                  <LuTrash2 className="opacity-70" />
-                  <p>Delete </p>
-                </TableBtn>
-                <DeleteWarning
-                  slug={row.original._id}
-                  deleteFunc={() => {
-                    teamMutation.mutate({
-                      method: "delete",
-                      documentId: row.original._id,
-                    });
-                    setOpen(false);
-                  }}
-                  open={deleteOpen}
-                  setOpen={setDeleteOpen}
-                  title="Delete Team"
-                >
-                  This will permanently delete this team{" "}
-                  <span className="font-semibold">{row.original.teamName}</span>{" "}
-                  from the team's list and remove all of their data from the
-                  server. All of their images, links, and other data will be
-                  permanently lost.
-                </DeleteWarning>
-              </div>
+              {requireMinimumRole(role, ROLES.EDITOR) && (
+                <ChangeStatus
+                  id={`change-status-details-${row.original._id}`}
+                  documentId={row.original._id}
+                  setOpen={() => {}}
+                  model="team"
+                  mutation={teamMutation}
+                />
+              )}
+
+              {requireMinimumRole(role, ROLES.ADMIN) && (
+                <div className="border-t border-gray-300">
+                  <TableBtn onClick={() => setDeleteOpen(true)}>
+                    <LuTrash2 className="opacity-70" />
+                    <p>Delete </p>
+                  </TableBtn>
+                  <DeleteWarning
+                    slug={row.original._id}
+                    deleteFunc={() => {
+                      teamMutation.mutate({
+                        method: "delete",
+                        documentId: row.original._id,
+                      });
+                      setOpen(false);
+                    }}
+                    open={deleteOpen}
+                    setOpen={setDeleteOpen}
+                    title="Delete Team"
+                  >
+                    This will permanently delete this team{" "}
+                    <span className="font-semibold">
+                      {row.original.teamName}
+                    </span>{" "}
+                    from the team's list and remove all of their data from the
+                    server. All of their images, links, and other data will be
+                    permanently lost.
+                  </DeleteWarning>
+                </div>
+              )}
             </div>
           </TableActionColumn>
         );

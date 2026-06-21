@@ -5,7 +5,7 @@ import { useUser } from "@/contexts/user-context";
 import type { MemberPreview } from "@/types/member-types";
 import FaLock from "~icons/fa/lock";
 import FaUserTie from "~icons/fa-solid/user-tie";
-import FaUser from "~icons/fa6-solid/user";
+import { requireMinimumRole, ROLES } from "@/utils/require-minimum-role";
 
 import "./member-card.css";
 
@@ -14,26 +14,24 @@ export default function MemberCard({ member }: { member: MemberPreview }) {
   const { slug, name, branch, batch, image, isImageHidden, isImageVerified } =
     member;
   const { user } = useUser();
-  const isExecutive = user && user?.position != "member" ? true : false;
 
   return (
     <div onClick={() => navigate(`/member/${slug}`)} className="member-card">
-      {isExecutive && !isImageVerified ? (
+      {requireMinimumRole(user?.role, ROLES.OBSERVER) && !isImageVerified ? (
         <div className="lock-icon">
           <FaLock />
         </div>
       ) : null}
       <div className="role-icon">
-        {member.position !== "member" ? (
+        {requireMinimumRole(member.role, ROLES.EXECUTIVE) ? (
           <FaUserTie className="admin" />
-        ) : (
-          <FaUser />
-        )}
+        ) : null}
       </div>
       <div className="member-image-container">
         <LazyLoadImage
           src={
-            (isImageHidden || !isImageVerified) && !isExecutive
+            (isImageHidden || !isImageVerified) &&
+            !requireMinimumRole(user?.role, ROLES.OBSERVER)
               ? "/executive-members/placeholderpfp.webp"
               : image
           }

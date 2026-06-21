@@ -1,4 +1,4 @@
-import e, { Router } from "express";
+import { Router } from "express";
 import {
   deleteRegistration,
   editRegistration,
@@ -8,7 +8,7 @@ import {
   changeRegistrationStatus,
 } from "../controllers/event-registrations.controller.js";
 import {
-  isAdmin,
+  requireMinimumRole,
   isAuthorized,
 } from "../../../shared/middlewares/auth-middleware.js";
 import upload from "../../../shared/middlewares/multer.js";
@@ -21,6 +21,7 @@ import {
   addPaidSoloSegment,
   changePaidSoloSegmentStatus,
 } from "../controllers/segments.controller.js";
+import { ROLES } from "../../../shared/utils/roles.js";
 
 const eventRegistrationRouter = Router();
 
@@ -30,7 +31,7 @@ const eventRegistrationRouter = Router();
 eventRegistrationRouter.get(
   "/:eventSlug/registrations",
   isAuthorized,
-  isAdmin,
+  requireMinimumRole(ROLES.OBSERVER),
   getAllEventRegistrations,
 );
 
@@ -42,6 +43,8 @@ eventRegistrationRouter.get(
 
 eventRegistrationRouter.get(
   "/:eventSlug/registrations/:registrationId",
+  isAuthorized,
+  requireMinimumRole(ROLES.OBSERVER),
   getRegistrationById,
 );
 
@@ -61,13 +64,13 @@ eventRegistrationRouter.post(
 eventRegistrationRouter.patch(
   "/:eventSlug/registrations/:registrationId/status",
   isAuthorized,
-  isAdmin,
+  requireMinimumRole(ROLES.EDITOR),
   changeRegistrationStatus,
 );
 eventRegistrationRouter.patch(
   "/:eventSlug/registrations/:registrationId/edit",
   isAuthorized,
-  isAdmin,
+  requireMinimumRole(ROLES.EDITOR),
   editRegistration,
 );
 
@@ -91,7 +94,7 @@ eventRegistrationRouter.patch(
 eventRegistrationRouter.delete(
   "/:eventSlug/registrations/:registrationId",
   isAuthorized,
-  isAdmin,
+  requireMinimumRole(ROLES.ADMIN),
   deleteRegistration,
 );
 

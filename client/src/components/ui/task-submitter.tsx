@@ -1,31 +1,52 @@
-import type { Task, TaskSubmitterType } from "@/types/task-types";
+import type { Submission, Task } from "@/types/task-types";
 import getPosition from "@/utils/get-position";
 import type { ReactNode } from "react";
 import FaCrown from "~icons/fa-solid/crown";
 import { NavLink } from "react-router-dom";
+import {
+  requireMinimumRole,
+  ROLES,
+  type Role,
+} from "@/utils/require-minimum-role";
 
 type TaskSubmitterProps = {
-  submitter: TaskSubmitterType;
+  submitter: Submission;
   value: number | ReactNode;
   url: string;
   task?: Task;
+  role: Role;
 };
 
 export default function TaskSubmitter({
   submitter,
   value,
   url,
+  role,
   ...rest
 }: TaskSubmitterProps) {
-  const { name, branch, batch, image, username, isImageHidden } = submitter;
+  const {
+    name,
+    branch,
+    batch,
+    image,
+    memberId,
+    isImageHidden,
+    isImageVerified,
+  } = submitter;
 
-  const position = rest?.task && getPosition(rest?.task, username);
+  const position = rest?.task && getPosition(rest?.task, memberId || "");
 
   return (
     <NavLink to={url} className={"top-submitter"}>
       <div className="member-info">
         <img
-          src={isImageHidden ? "/executive-members/placeholderpfp.webp" : image}
+          src={
+            requireMinimumRole(role, ROLES.OBSERVER)
+              ? image
+              : isImageHidden || !isImageVerified
+                ? "/executive-members/placeholderpfp.webp"
+                : image
+          }
           alt={name}
         />
         <div>

@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import {
-  isAdmin,
+  requireMinimumRole,
   isAuthorized,
 } from "../../../shared/middlewares/auth-middleware.js";
 import upload from "../../../shared/middlewares/multer.js";
@@ -12,6 +12,7 @@ import {
   getEventBySlug,
   editEventMeta,
 } from "../controllers/events.controller.js";
+import { ROLES } from "../../../shared/utils/roles.js";
 
 const eventRouter = express.Router();
 const fileFields: { name: string; maxCount: number }[] = [
@@ -56,11 +57,16 @@ const fileFields: { name: string; maxCount: number }[] = [
 // event routes
 eventRouter.get("/all", getAllEvents);
 eventRouter.get("/:eventSlug", getEventBySlug);
-eventRouter.get("/:eventSlug/details", isAuthorized, isAdmin, getEventBySlug);
+eventRouter.get(
+  "/:eventSlug/details",
+  isAuthorized,
+  requireMinimumRole(ROLES.OBSERVER),
+  getEventBySlug,
+);
 eventRouter.get(
   "/with-registrations/:eventSlug",
   isAuthorized,
-  isAdmin,
+  requireMinimumRole(ROLES.OBSERVER),
   (req: Request, _: Response, next: NextFunction) => {
     req.requestDetails = { includeRegistrations: true };
     next();
@@ -71,7 +77,7 @@ eventRouter.get(
 eventRouter.post(
   "/create",
   isAuthorized,
-  isAdmin,
+  requireMinimumRole(ROLES.ADMIN),
   upload.fields(fileFields),
   createEvent,
 );
@@ -79,7 +85,7 @@ eventRouter.post(
 eventRouter.put(
   "/edit/:eventSlug",
   isAuthorized,
-  isAdmin,
+  requireMinimumRole(ROLES.EDITOR),
   upload.fields(fileFields),
   editEvent,
 );
@@ -87,10 +93,15 @@ eventRouter.put(
 eventRouter.patch(
   "/meta/edit/:eventSlug",
   isAuthorized,
-  isAdmin,
+  requireMinimumRole(ROLES.EDITOR),
   editEventMeta,
 );
 
-eventRouter.delete("/delete/:eventSlug", isAuthorized, isAdmin, deleteEvent);
+eventRouter.delete(
+  "/delete/:eventSlug",
+  isAuthorized,
+  requireMinimumRole(ROLES.ADMIN),
+  deleteEvent,
+);
 
 export default eventRouter;

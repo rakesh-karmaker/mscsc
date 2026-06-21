@@ -5,14 +5,16 @@ import type { TaskSubmitterType, TopSubmitter } from "@/types/task-types";
 import TaskSidebarCard from "../ui/task-sidebar-card";
 import Loader from "../ui/loader/loader";
 import TaskSubmitter from "../ui/task-submitter";
+import type { Role } from "@/utils/require-minimum-role";
 
-export default function TopTaskSubmitters() {
+export default function TopTaskSubmitters({ role }: { role: Role }) {
   const { data, isLoading, error, isError } = useQuery({
     queryKey: ["topSubmitters"],
-    queryFn: getTopSubmitters,
+    queryFn: () => getTopSubmitters().then((res) => res.data),
   });
 
   useErrorNavigator(isError, error);
+  const topSubmitters: TopSubmitter[] = data?.topSubmitters || [];
 
   return (
     <TaskSidebarCard title={"Top Submitters"}>
@@ -20,14 +22,16 @@ export default function TopTaskSubmitters() {
         <Loader />
       ) : (
         <ul className="top-submitters">
-          {data?.data.map((topSubmitter: TopSubmitter) => {
+          {topSubmitters.map((topSubmitter: TopSubmitter) => {
             const submitter: TaskSubmitterType = {
+              memberId: topSubmitter._id,
               name: topSubmitter.name,
-              username: topSubmitter.slug,
+              slug: topSubmitter.slug,
               branch: topSubmitter.branch,
               batch: topSubmitter.batch,
               image: topSubmitter.image,
               isImageHidden: topSubmitter.isImageHidden,
+              isImageVerified: topSubmitter.isImageVerified,
               submissionDate: "", // Not needed here
             };
 
@@ -37,6 +41,7 @@ export default function TopTaskSubmitters() {
                   submitter={submitter}
                   url={`/member/${topSubmitter.slug}`}
                   value={topSubmitter.submissionCount}
+                  role={role}
                 />
               </li>
             );

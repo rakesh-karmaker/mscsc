@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
 import type { User } from "@/types/user-types";
+import capitalize from "@/utils/capitalize";
+import { requireMinimumRole, ROLES } from "@/utils/require-minimum-role";
 
 import "./profile-details.css";
 
@@ -17,11 +19,11 @@ export default function ProfileDetails({
       <div className="user-name-position">
         <div className="user-name-container">
           <h1 className="user-name">{name}</h1>
-          <p className="user-position">{position}</p>
+          <p className="user-position">{capitalize(position)}</p>
         </div>
-        {role === "admin" && isOwner && (
+        {requireMinimumRole(role, ROLES.EXECUTIVE) && isOwner && (
           <NavLink to="/admin/dashboard" className="primary-button">
-            Admin Panel
+            {capitalize(role)} Panel
           </NavLink>
         )}
       </div>

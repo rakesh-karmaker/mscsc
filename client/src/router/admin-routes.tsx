@@ -33,11 +33,12 @@ import { TasksProvider } from "@/contexts/tasks-context";
 
 // Layouts
 import AdminLayout from "@/layouts/admin-layout";
+import { ROLES } from "@/utils/require-minimum-role";
 
 export const adminRoutes = {
   path: "/admin",
   element: (
-    <ProtectedRoute>
+    <ProtectedRoute requiredRole={ROLES.EXECUTIVE}>
       <AdminLayout />
     </ProtectedRoute>
   ),
@@ -59,9 +60,11 @@ export const adminRoutes = {
     {
       path: "/admin/members",
       element: (
-        <Suspense fallback={<Loader />}>
-          <MembersDashboard />
-        </Suspense>
+        <ProtectedRoute requiredRole={ROLES.OBSERVER}>
+          <Suspense fallback={<Loader />}>
+            <MembersDashboard />
+          </Suspense>
+        </ProtectedRoute>
       ),
     },
 
@@ -69,19 +72,23 @@ export const adminRoutes = {
     {
       path: "/admin/activities",
       element: (
-        <Suspense fallback={<Loader />}>
-          <ActivitiesProvider>
-            <ActivitiesDashboard />
-          </ActivitiesProvider>
-        </Suspense>
+        <ProtectedRoute requiredRole={ROLES.EXECUTIVE}>
+          <Suspense fallback={<Loader />}>
+            <ActivitiesProvider>
+              <ActivitiesDashboard />
+            </ActivitiesProvider>
+          </Suspense>
+        </ProtectedRoute>
       ),
     },
     {
       path: "/admin/add-activity",
       element: (
-        <Suspense fallback={<Loader />}>
-          <ActivityForm method={"add"} />
-        </Suspense>
+        <ProtectedRoute requiredRole={ROLES.EDITOR}>
+          <Suspense fallback={<Loader />}>
+            <ActivityForm method={"add"} />
+          </Suspense>
+        </ProtectedRoute>
       ),
     },
 
@@ -89,27 +96,33 @@ export const adminRoutes = {
     {
       path: "/admin/tasks",
       element: (
-        <Suspense fallback={<Loader />}>
-          <TasksProvider>
-            <TasksDashBoard />
-          </TasksProvider>
-        </Suspense>
+        <ProtectedRoute requiredRole={ROLES.EXECUTIVE}>
+          <Suspense fallback={<Loader />}>
+            <TasksProvider>
+              <TasksDashBoard />
+            </TasksProvider>
+          </Suspense>
+        </ProtectedRoute>
       ),
     },
     {
       path: "/admin/add-task",
       element: (
-        <Suspense fallback={<Loader />}>
-          <TaskForm method={"add"} />
-        </Suspense>
+        <ProtectedRoute requiredRole={ROLES.EDITOR}>
+          <Suspense fallback={<Loader />}>
+            <TaskForm method={"add"} />
+          </Suspense>
+        </ProtectedRoute>
       ),
     },
     {
       path: "/admin/task/:taskName",
       element: (
-        <Suspense fallback={<Loader />}>
-          <TaskDashboard />
-        </Suspense>
+        <ProtectedRoute requiredRole={ROLES.EXECUTIVE}>
+          <Suspense fallback={<Loader />}>
+            <TaskDashboard />
+          </Suspense>
+        </ProtectedRoute>
       ),
       errorElement: (
         <Suspense fallback={<Loader />}>
@@ -122,9 +135,11 @@ export const adminRoutes = {
     {
       path: "/admin/messages",
       element: (
-        <Suspense fallback={<Loader />}>
-          <MessagesDashboard />
-        </Suspense>
+        <ProtectedRoute requiredRole={ROLES.OBSERVER}>
+          <Suspense fallback={<Loader />}>
+            <MessagesDashboard />
+          </Suspense>
+        </ProtectedRoute>
       ),
     },
 
@@ -132,17 +147,21 @@ export const adminRoutes = {
     {
       path: "/admin/add-event",
       element: (
-        <Suspense fallback={<Loader />}>
-          <AddEvent />
-        </Suspense>
+        <ProtectedRoute requiredRole={ROLES.EDITOR}>
+          <Suspense fallback={<Loader />}>
+            <AddEvent />
+          </Suspense>
+        </ProtectedRoute>
       ),
     },
     {
       path: "/admin/event/:eventSlug",
       element: (
-        <Suspense fallback={<Loader />}>
-          <EventDashboard />
-        </Suspense>
+        <ProtectedRoute requiredRole={ROLES.OBSERVER}>
+          <Suspense fallback={<Loader />}>
+            <EventDashboard />
+          </Suspense>
+        </ProtectedRoute>
       ),
       errorElement: (
         <Suspense fallback={<Loader />}>
@@ -153,9 +172,11 @@ export const adminRoutes = {
     {
       path: "/admin/edit-event/:eventSlug",
       element: (
-        <Suspense fallback={<Loader />}>
-          <EditEvent />
-        </Suspense>
+        <ProtectedRoute requiredRole={ROLES.EDITOR}>
+          <Suspense fallback={<Loader />}>
+            <EditEvent />
+          </Suspense>
+        </ProtectedRoute>
       ),
       errorElement: (
         <Suspense fallback={<Loader />}>

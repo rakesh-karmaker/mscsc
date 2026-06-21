@@ -18,6 +18,11 @@ import { Checkbox, FormControlLabel, TextField } from "@mui/material";
 import { deleteMember, editMember } from "@/lib/api/member";
 import DeleteWarning from "@/components/ui/delete-warning";
 import { useUser } from "@/contexts/user-context";
+import {
+  requireMinimumRole,
+  ROLES,
+  type Role,
+} from "@/utils/require-minimum-role";
 
 export type MemberMutationProps = {
   method: string;
@@ -25,7 +30,7 @@ export type MemberMutationProps = {
   isImageVerified?: boolean;
   isImageHidden?: boolean;
   position?: string;
-  role?: string;
+  role?: Role;
 };
 
 export default function MemberEditForm({
@@ -113,23 +118,39 @@ export default function MemberEditForm({
             helperText={errors.position?.message}
           />
 
-          <SelectInput
-            name="role"
-            control={control}
-            errors={errors}
-            dataList={[
-              {
-                value: "member",
-                label: "Member",
-              },
-              {
-                value: "admin",
-                label: "Admin",
-              },
-            ]}
-          >
-            Set Role
-          </SelectInput>
+          {requireMinimumRole(
+            user?.role,
+            member.role == ROLES.ADMIN ? ROLES.ADMIN : ROLES.EDITOR,
+          ) && (
+            <SelectInput
+              name="role"
+              control={control}
+              errors={errors}
+              dataList={[
+                ...(requireMinimumRole(user?.role, ROLES.ADMIN)
+                  ? [{ value: "admin", label: "Admin" }]
+                  : []),
+                {
+                  value: "editor",
+                  label: "Editor",
+                },
+                {
+                  value: "observer",
+                  label: "Observer",
+                },
+                {
+                  value: "executive",
+                  label: "Executive",
+                },
+                {
+                  value: "member",
+                  label: "Member",
+                },
+              ]}
+            >
+              Set Role
+            </SelectInput>
+          )}
         </div>
 
         <FormControlLabel

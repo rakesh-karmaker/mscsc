@@ -2,24 +2,26 @@ import { Request, Response } from "express";
 import Task from "../task.model.js";
 import Member from "../../../shared/models/member.model.js";
 import { deleteFile, uploadImage } from "../../../shared/lib/file-uploader.js";
-import { SubmissionType, SubmissionUpdateType } from "../task.types.js";
+import { Submission } from "../task.types.js";
 import getPosition from "../utils/get-position.js";
-
 import logger from "../../../shared/config/winston.js";
+import { requireMinimumRole, ROLES } from "../../../shared/utils/roles.js";
 
 // submit a task
 export async function submitTask(req: Request, res: Response): Promise<void> {
+  const { slug, username, answer } = req.body;
+
+  // validate the request
+  if (!slug || !answer || !username) {
+    res.status(400).send({ message: "Invalid request" });
+    return;
+  }
+
   try {
-    const { slug, username, answer } = req.body;
-
-    // validate the request
-    if (!slug || !answer || !username) {
-      res.status(400).send({ message: "Invalid request" });
-      return;
-    }
-
     // check if the submission exists
-    const task = await Task.findOne({ slug });
+    const task = await Task.findOne({ slug }).select(
+      "submissions deadline name _id",
+    );
     if (!task) {
       res.status(404).send({ message: "Task not found" });
       return;
@@ -33,29 +35,28 @@ export async function submitTask(req: Request, res: Response): Promise<void> {
       return;
     }
 
+    const member = await Member.findOne({ slug: username }).select(
+      "_id submissions",
+    );
+    if (!member) {
+      res.status(404).send({ message: "Member not found" });
+      return;
+    }
+
     // check if the submission exists
     const previousSubmission = task.submissions.find(
-      (s) => s.username === username,
+      (s) => s.memberId.toString() === member._id.toString(),
     );
     if (previousSubmission) {
       res.status(400).send({ message: "Submission already exists" });
       return;
     }
 
-    // get the member data
-    const member = await Member.findOne({ slug: username });
-    if (!member) {
-      res.status(404).send({ message: "Member not found" });
-      return;
-    }
-    const submission: SubmissionType = {
-      username,
-      name: member.name,
-      email: member.email,
-      branch: member.branch,
-      batch: member.batch,
-      image: member.image,
+    const submission: Submission = {
+      memberId: member._id,
       submissionDate: new Date().toISOString(),
+      poster: null,
+      posterId: null,
       answer,
     };
 
@@ -73,25 +74,19 @@ export async function submitTask(req: Request, res: Response): Promise<void> {
       const { url, imgId } = await uploadImage(
         req.file,
         false, // don't crop the image
-        `tasks/${slug}`,
+        `tasks`,
       );
       submission.poster = url;
       submission.posterId = imgId;
     }
 
     // update the task
-    await Task.findOneAndUpdate(
-      { slug },
-      { $push: { submissions: submission } },
-      { new: true },
-    );
+    task.submissions.push(submission);
+    await task.save();
 
     // add the submission into the member's profile
-    await Member.findOneAndUpdate(
-      { slug: username },
-      { $push: { submissions: { taskId: task._id } } },
-      { new: true },
-    );
+    member.submissions.push({ taskId: task._id });
+    await member.save();
 
     res.status(200).send({ message: "Task submitted successfully" });
     logger.info("Task submitted", {
@@ -108,6 +103,7 @@ export async function submitTask(req: Request, res: Response): Promise<void> {
       taskId: req.body.slug,
       submitterId: req.body.username,
       error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }
@@ -117,27 +113,21 @@ export async function editSubmission(
   req: Request,
   res: Response,
 ): Promise<void> {
+  const { slug, username, answer } = req.body;
+  const file = req?.file;
+
+  // validate the request
+  if (!slug || !username) {
+    res.status(400).send({ message: "Invalid request" });
+    return;
+  }
   try {
-    const { slug, username, answer } = req.body;
-    const file = req?.file;
-
-    // validate the request
-    if (!slug || !username || !answer) {
-      res.status(400).send({ message: "Invalid request" });
-      return;
-    }
-
     // check if the submission exists
-    const task = await Task.findOne({ slug });
+    const task = await Task.findOne({ slug }).select(
+      "submissions deadline name _id",
+    );
     if (!task) {
       res.status(404).send({ message: "Task not found" });
-      return;
-    }
-    const previousSubmission = task.submissions.find(
-      (s) => s.username === username,
-    );
-    if (!previousSubmission) {
-      res.status(404).send({ message: "Submission not found" });
       return;
     }
 
@@ -149,17 +139,31 @@ export async function editSubmission(
       return;
     }
 
+    const member = await Member.findOne({ slug: username }).select(
+      "_id submissions",
+    );
+    if (!member) {
+      res.status(404).send({ message: "Member not found" });
+      return;
+    }
+
+    const previousSubmission: Submission | undefined = task.submissions.find(
+      (s) => s.memberId.toString() === member._id.toString(),
+    );
+    if (!previousSubmission) {
+      res.status(404).send({ message: "Submission not found" });
+      return;
+    }
+
     // update the submission
-    const updates: SubmissionUpdateType = {
-      "submissions.$.answer":
-        answer === "undefined" ||
-        answer === undefined ||
-        answer === "" ||
-        !answer
-          ? previousSubmission.answer
-          : answer,
-      "submissions.$.submissionDate": new Date().toISOString(),
-    };
+    if (
+      answer !== "undefined" &&
+      answer !== undefined &&
+      answer !== "" &&
+      answer
+    ) {
+      previousSubmission.answer = answer;
+    }
 
     // if file exists, upload the image and delete the previous one
     if (file) {
@@ -168,19 +172,22 @@ export async function editSubmission(
         deleteFile(previousSubmission.posterId);
       }
       // upload the poster
-      const { url, imgId } = await uploadImage(file, false, `tasks/${slug}`);
+      const { url, imgId } = await uploadImage(file, false, `tasks`);
 
       // add the poster
-      updates["submissions.$.poster"] = url;
-      updates["submissions.$.posterId"] = imgId;
+      previousSubmission.poster = url;
+      previousSubmission.posterId = imgId;
     }
 
     // update the submission
-    await Task.findOneAndUpdate(
-      { slug, "submissions.username": username },
-      { $set: updates },
-      { new: true },
-    );
+    task.submissions = task.submissions.map((s) => {
+      if (s.memberId.toString() === member._id.toString()) {
+        return previousSubmission;
+      }
+      return s;
+    });
+
+    await task.save();
 
     res.status(200).send({ message: "Submission edited successfully" });
   } catch (err) {
@@ -192,6 +199,7 @@ export async function editSubmission(
       taskId: req.body.slug,
       submitterId: req.body.username,
       error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }
@@ -201,20 +209,35 @@ export async function deleteSubmission(
   req: Request,
   res: Response,
 ): Promise<void> {
-  try {
-    const { slug, username } = req.body;
+  const { slug, username } = req.body;
 
-    // validate the request
-    if (!slug || !username) {
-      res.status(400).send({ message: "Invalid request" });
+  // validate the request
+  if (!slug || !username) {
+    res.status(400).send({ message: "Invalid request" });
+    return;
+  }
+  try {
+    const member = await Member.findOne({ slug: username }).select(
+      "_id submissions timeline",
+    );
+    if (!member) {
+      res.status(404).send({ message: "Member not found" });
+      return;
+    }
+
+    const isOwner = req.user?._id.toString() === member._id.toString();
+    if (!isOwner && !requireMinimumRole(req.user?.role, ROLES.OBSERVER)) {
+      res
+        .status(403)
+        .send({ message: "Access Denied: Insufficient Permissions" });
       return;
     }
 
     // check if the submission exists
     const task = await Task.findOne({
       slug,
-      "submissions.username": username,
-    });
+      "submissions.memberId": member._id.toString(),
+    }).select("submissions first second third _id");
     if (!task) {
       res.status(404).send({ message: "Submission not found" });
       return;
@@ -222,7 +245,7 @@ export async function deleteSubmission(
 
     // find the previous submission
     const previousSubmission = task.submissions.find(
-      (s) => s.username === username,
+      (s) => s.memberId.toString() === member._id.toString(),
     );
     if (!previousSubmission) {
       res.status(404).send({ message: "Submission not found" });
@@ -235,48 +258,30 @@ export async function deleteSubmission(
     }
 
     // update the task
-    const updatedTask = await Task.findOneAndUpdate(
-      { slug, "submissions.username": username },
-      {
-        $pull: { submissions: { username } },
-      },
+    task.submissions = task.submissions.filter(
+      (s) => s.memberId.toString() !== member._id.toString(),
     );
 
-    if (!updatedTask) {
-      res.status(404).send({ message: "Submission not found" });
-      return;
-    }
-
     // delete submission from the member's profile
-    const member = await Member.findOne({ slug: username });
-    if (member) {
-      await Member.findOneAndUpdate(
-        { slug: username },
-        { $pull: { submissions: { taskId: updatedTask._id } } },
-        { new: true },
-      );
-    }
+    member.submissions = member.submissions.filter(
+      (s) => s.taskId.toString() !== task._id.toString(),
+    );
 
     // get the position
-    const position = getPosition(updatedTask, username);
+    const position = getPosition(task, member._id.toString());
 
     // delete if a winner
     if (position !== null) {
-      await Member.findOneAndUpdate(
-        { slug: updatedTask[position] },
-        {
-          $pull: {
-            timeline: {
-              taskId: updatedTask._id,
-            },
-          },
-        },
+      member.timeline = member.timeline.filter(
+        (t) => t.taskId?.toString() !== task._id.toString(),
       );
 
       // update the task
-      updatedTask[position] = undefined;
-      await updatedTask.save();
+      task[position] = null;
     }
+
+    await member.save();
+    await task.save();
 
     res.status(200).send({ message: "Submission deleted successfully" });
     logger.info("Task submission deleted", {
@@ -294,6 +299,7 @@ export async function deleteSubmission(
       taskId: req.body.slug,
       submitterId: req.body.username,
       error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
       deletedBy: req.user?._id,
     });
   }
@@ -301,32 +307,41 @@ export async function deleteSubmission(
 
 // make a submission a winner
 export async function makeWinner(req: Request, res: Response): Promise<void> {
-  try {
-    const { slug, username, position } = req.body;
+  const { slug, username, position } = req.body;
 
-    // validate the request
-    if (
-      !slug ||
-      !username ||
-      !position ||
-      !["first", "second", "third"].includes(position)
-    ) {
-      res.status(400).send({ message: "Invalid request" });
+  // validate the request
+  if (
+    !slug ||
+    !username ||
+    !position ||
+    !["first", "second", "third"].includes(position)
+  ) {
+    res.status(400).send({ message: "Invalid request" });
+    return;
+  }
+  try {
+    const member = await Member.findOne({ slug: username }).select(
+      "_id submissions timeline",
+    );
+    if (!member) {
+      res.status(404).send({ message: "Member not found" });
       return;
     }
 
     // find the task and submission
     const task = await Task.findOne({
       slug,
-      "submissions.username": username,
-    });
+      "submissions.memberId": member._id.toString(),
+    }).select("submissions first second third name summary createdAt slug _id");
     if (!task) {
       res.status(404).send({ message: "Submission not found" });
       return;
     }
 
     // check if the member already has the same positioned member
-    if (task[position as keyof typeof task] === username) {
+    if (
+      task[position as keyof typeof task]?.toString() === member._id.toString()
+    ) {
       res
         .status(400)
         .send({ message: "Member has already won the same position" });
@@ -342,33 +357,17 @@ export async function makeWinner(req: Request, res: Response): Promise<void> {
     }
 
     // check if the member has any previous position if so then delete it
-    const previousPosition = getPosition(task, username);
+    const previousPosition = getPosition(task, member._id.toString());
     if (previousPosition !== null) {
       // delete the old winner's timeline
-      await Member.findOneAndUpdate(
-        { slug: task[previousPosition] },
-        {
-          $pull: {
-            timeline: {
-              taskId: task._id,
-            },
-          },
-        },
+      member.timeline = member.timeline.filter(
+        (t) => t.taskId?.toString() !== task._id.toString(),
       );
-      task[previousPosition] = undefined;
-      await task.save();
+      task[previousPosition] = null;
     }
 
     // update the task
-    const updatedTask = await Task.findOneAndUpdate(
-      { slug },
-      { $set: { [position]: username } },
-      { new: true },
-    );
-    if (!updatedTask) {
-      res.status(404).send({ message: "Task not found" });
-      return;
-    }
+    task[position as "first" | "second" | "third"] = member._id;
 
     const title = (position: string) => {
       switch (position) {
@@ -384,27 +383,17 @@ export async function makeWinner(req: Request, res: Response): Promise<void> {
     };
 
     // update the timeline
-    const updatedTimeline = await Member.findOneAndUpdate(
-      { slug: username },
-      {
-        $push: {
-          timeline: {
-            taskId: updatedTask._id,
-            title: `${title(position)} at ${updatedTask.name}`,
-            date: updatedTask.createdAt,
-            tag: "Competition",
-            description: updatedTask.summary,
-            link: `/task/${updatedTask.slug}?user=${username}`,
-          },
-        },
-      },
-      { new: true },
-    );
+    member.timeline.push({
+      taskId: task._id,
+      title: `${title(position)} at ${task.name}`,
+      date: task.createdAt,
+      tag: "Competition",
+      description: task.summary,
+      link: `/task/${task.slug}?user=${username}`,
+    });
 
-    if (!updatedTimeline) {
-      res.status(404).send({ message: "Member not found" });
-      return;
-    }
+    await member.save();
+    await task.save();
 
     res.status(200).send({ message: "Changed position successfully" });
   } catch (err) {
@@ -416,32 +405,40 @@ export async function makeWinner(req: Request, res: Response): Promise<void> {
       taskId: req.body.slug,
       submitterId: req.body.username,
       error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }
 
 // remove a winner from a position
 export async function removeWinner(req: Request, res: Response): Promise<void> {
-  try {
-    const { slug, username } = req.body;
+  const { slug, username } = req.body;
 
-    // validate the request
-    if (!slug || !username) {
-      res.status(400).send({ message: "Invalid request" });
+  // validate the request
+  if (!slug || !username) {
+    res.status(400).send({ message: "Invalid request" });
+    return;
+  }
+  try {
+    const member = await Member.findOne({ slug: username }).select(
+      "_id timeline",
+    );
+    if (!member) {
+      res.status(404).send({ message: "Member not found" });
       return;
     }
 
     // find task
     const task = await Task.findOne({
       slug,
-      "submissions.username": username,
-    });
+      "submissions.memberId": member._id.toString(),
+    }).select("submissions first second third _id");
     if (!task) {
       res.status(404).send({ message: "Submission not found" });
       return;
     }
 
-    const position = getPosition(task, username);
+    const position = getPosition(task, member._id.toString());
 
     // check if the member is a winner
     if (position === null) {
@@ -449,29 +446,16 @@ export async function removeWinner(req: Request, res: Response): Promise<void> {
       return;
     } else if (position !== null) {
       // delete the old winner's timeline
-      await Member.findOneAndUpdate(
-        { slug: task[position] },
-        {
-          $pull: {
-            timeline: {
-              taskId: task._id,
-            },
-          },
-        },
+      member.timeline = member.timeline.filter(
+        (t) => t.taskId?.toString() !== task._id.toString(),
       );
     }
 
     // update the task
-    const updatedTask = await Task.findOneAndUpdate(
-      { slug },
-      { $set: { [position]: null } },
-      { new: true },
-    );
+    task[position as "first" | "second" | "third"] = null;
 
-    if (!updatedTask) {
-      res.status(404).send({ message: "Task not found" });
-      return;
-    }
+    await member.save();
+    await task.save();
 
     res.status(200).send({ message: "Position changed successfully" });
   } catch (err) {
@@ -483,6 +467,7 @@ export async function removeWinner(req: Request, res: Response): Promise<void> {
       taskId: req.body.slug,
       submitterId: req.body.username,
       error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }

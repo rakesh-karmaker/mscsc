@@ -36,7 +36,6 @@ export type TasksContextType = {
   isLoading: boolean;
   response: {
     results: TaskPreview[];
-    selectedLength: number;
     totalLength: number;
   } | null;
   params: TasksParams;

@@ -1,38 +1,32 @@
-export type TaskSchemaType = {
-  _id: string;
+import mongoose from "mongoose";
+
+export type Submission = {
+  memberId: mongoose.Types.ObjectId;
+  answer: string;
+  poster: string | null;
+  posterId: string | null;
+  submissionDate: string;
+};
+
+export interface TaskSchemaType extends mongoose.Document {
+  _id: mongoose.Types.ObjectId;
+
   name: string;
   slug: string;
   summary: string;
   instructions: string;
   deadline: Date;
-  first?: string;
-  second?: string;
-  third?: string;
+  first: mongoose.Types.ObjectId | null;
+  second: mongoose.Types.ObjectId | null;
+  third: mongoose.Types.ObjectId | null;
   imageRequired: boolean;
   category: "article writing" | "poster design";
-  submissions: {
-    username: string;
-    answer: string;
-    poster: string | null;
-    posterId: string | null;
-    submissionDate: Date;
-  }[];
-  createdAt: Date;
-  updatedAt: Date;
-};
 
-export type SubmissionType = {
-  username: string;
-  name: string;
-  email: string;
-  branch: string;
-  batch: number;
-  image: string;
-  submissionDate: string;
-  answer: string;
-  poster?: string;
-  posterId?: string;
-};
+  submissions: Submission[];
+
+  createdAt: string;
+  updatedAt: string;
+}
 
 export type SubmissionUpdateType = {
   [key: string]: string | undefined;

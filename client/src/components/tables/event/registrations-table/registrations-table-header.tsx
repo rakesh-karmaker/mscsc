@@ -14,6 +14,11 @@ import RegistrationDetailsModel from "./registration-details-model";
 import DeleteWarning from "@/components/ui/delete-warning";
 import useRegistrationMutation from "@/hooks/event-hooks/use-registration-mutation";
 import { deSlugify } from "@/utils/de-slugify";
+import {
+  requireMinimumRole,
+  ROLES,
+  type Role,
+} from "@/utils/require-minimum-role";
 
 export default function getRegistrationsTableColumns(
   segments: {
@@ -23,6 +28,7 @@ export default function getRegistrationsTableColumns(
     fees: number;
   }[],
   selectedSegmentSlug: string | string[],
+  role: Role,
 ): ColumnDef<EventRegistrationTableData>[] {
   return [
     {
@@ -358,34 +364,39 @@ export default function getRegistrationsTableColumns(
             }}
           >
             <div className="max-h-65 scroll-py-1 overflow-y-auto overflow-x-hidden flex flex-col p-1!">
-              <ChangeStatus
-                documentId={row.original._id}
-                id={`status-popover-${row.id}`}
-                mutation={registrationMutation}
-                setOpen={setOpen}
-              />
+              {requireMinimumRole(role, ROLES.EDITOR) && (
+                <>
+                  <ChangeStatus
+                    documentId={row.original._id}
+                    id={`status-popover-${row.id}`}
+                    mutation={registrationMutation}
+                    setOpen={setOpen}
+                  />
 
-              <TableBtn
-                onClick={() => {
-                  registrationMutation.mutate({
-                    method: "toggleAttendance",
-                    documentId: row.original._id,
-                    data: { hasAttended: !row.original.hasAttended },
-                  });
-                  setOpen(false);
-                }}
-              >
-                {" "}
-                {row.original.hasAttended ? (
-                  <LuCircleX className="opacity-70" />
-                ) : (
-                  <LuCircleCheck className="opacity-70" />
-                )}
-                <p>
-                  Mark as{" "}
-                  {row.original.hasAttended ? "Not Attended" : "Attended"}
-                </p>
-              </TableBtn>
+                  <TableBtn
+                    onClick={() => {
+                      registrationMutation.mutate({
+                        method: "toggleAttendance",
+                        documentId: row.original._id,
+                        data: { hasAttended: !row.original.hasAttended },
+                      });
+                      setOpen(false);
+                    }}
+                  >
+                    {" "}
+                    {row.original.hasAttended ? (
+                      <LuCircleX className="opacity-70" />
+                    ) : (
+                      <LuCircleCheck className="opacity-70" />
+                    )}
+                    <p>
+                      Mark as{" "}
+                      {row.original.hasAttended ? "Not Attended" : "Attended"}
+                    </p>
+                  </TableBtn>
+                </>
+              )}
+
               <RegistrationDetailsModel
                 registrationId={row.original._id}
                 setOpen={setOpen}
@@ -395,31 +406,32 @@ export default function getRegistrationsTableColumns(
                   teams: [],
                 }}
               />
-
-              <div className="border-t border-gray-300">
-                <TableBtn onClick={() => setDeleteOpen(true)}>
-                  <LuTrash2 className="opacity-70" />
-                  <p>Delete </p>
-                </TableBtn>
-                <DeleteWarning
-                  slug={row.original._id}
-                  deleteFunc={() => {
-                    registrationMutation.mutate({
-                      method: "delete",
-                      documentId: row.original._id,
-                    });
-                  }}
-                  open={deleteOpen}
-                  setOpen={setDeleteOpen}
-                  title="Delete Registration"
-                >
-                  This will permanently delete this registration{" "}
-                  <span className="font-semibold">{row.original.name}</span>{" "}
-                  from the registration's list and remove all of their data from
-                  the server. All of their images, links, and other data will be
-                  permanently lost.
-                </DeleteWarning>
-              </div>
+              {requireMinimumRole(role, ROLES.ADMIN) && (
+                <div className="border-t border-gray-300">
+                  <TableBtn onClick={() => setDeleteOpen(true)}>
+                    <LuTrash2 className="opacity-70" />
+                    <p>Delete </p>
+                  </TableBtn>
+                  <DeleteWarning
+                    slug={row.original._id}
+                    deleteFunc={() => {
+                      registrationMutation.mutate({
+                        method: "delete",
+                        documentId: row.original._id,
+                      });
+                    }}
+                    open={deleteOpen}
+                    setOpen={setDeleteOpen}
+                    title="Delete Registration"
+                  >
+                    This will permanently delete this registration{" "}
+                    <span className="font-semibold">{row.original.name}</span>{" "}
+                    from the registration's list and remove all of their data
+                    from the server. All of their images, links, and other data
+                    will be permanently lost.
+                  </DeleteWarning>
+                </div>
+              )}
             </div>
           </TableActionColumn>
         );

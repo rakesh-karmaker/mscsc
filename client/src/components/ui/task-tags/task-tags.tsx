@@ -15,27 +15,27 @@ type TaskTagsProps = {
   task: TaskPreview | Task;
   taskSubmissionCount: number;
   userSubmissions?: string[];
-  username?: string;
-  admin?: boolean;
+  userId?: string;
+  isDashboard?: boolean;
 };
 
 export default function TaskTags({
   task,
   taskSubmissionCount,
   userSubmissions,
-  username,
-  admin,
+  userId,
+  isDashboard,
 }: TaskTagsProps): ReactNode {
   const categoryIcons: Record<string, ReactNode> = {
     "article writing": <FaNewspaper />,
     "poster design": <FaPenNib />,
   };
 
-  const position = getPosition(task, username ?? "");
+  const position = getPosition(task, userId ?? "");
 
   return (
     <>
-      {userSubmissions?.includes(task._id.toString()) && !admin ? (
+      {userSubmissions?.includes(task._id.toString()) && !isDashboard ? (
         <p className="task-icons flex items-center gap-1">
           {position ? (
             <>

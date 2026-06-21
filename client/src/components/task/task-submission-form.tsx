@@ -23,7 +23,7 @@ export default function TaskSubmissionForm({
   handleSubmit,
   canSubmit,
 }: TaskSubmissionFormProps): ReactNode {
-  const submission = task?.submissions?.find((s) => s.username === username);
+  const submission = task?.submissions?.find((s) => s.slug === username);
 
   return (
     <>

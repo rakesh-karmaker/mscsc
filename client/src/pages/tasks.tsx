@@ -7,7 +7,7 @@ import TasksSidebar from "@/layouts/tasks-sidebar/tasks-sidebar";
 import { Helmet } from "react-helmet-async";
 import { useDebouncedCallback } from "@/hooks/table-hooks/use-debounced-callback";
 
-export default function Tasks({ admin }: { admin?: boolean }) {
+export default function Tasks({ isDashboard }: { isDashboard?: boolean }) {
   // check if the user is logged in
   const { user, isVerifying } = useUser();
   const submissions = user?.submissions.map((s) => s.taskId.toString());
@@ -35,7 +35,7 @@ export default function Tasks({ admin }: { admin?: boolean }) {
       {/* page content */}
       <main
         className={`w-full ${
-          admin
+          isDashboard
             ? "w-full pt-5!"
             : "max-w-350 min-h-[calc(100svh-var(--nav-height))] pt-[calc(var(--nav-height)+3rem)]! pb-25! max-[1000px]:pt-[calc(var(--nav-height)+2rem)]!"
         } h-full flex flex-row!  justify-between items-start! gap-4 max-[1500px]:max-w-max-width max-[1000px]:flex-col! max-[1000px]:gap-10`}
@@ -70,12 +70,11 @@ export default function Tasks({ admin }: { admin?: boolean }) {
                     setParams({ ...params, page: newPage })
                   }
                   submissions={submissions}
-                  username={user?.slug}
-                  admin={admin}
+                  isDashboard={isDashboard}
                 />
               )}
             </div>
-            <TasksSidebar admin={admin} />
+            <TasksSidebar isDashboard={isDashboard} />
           </>
         )}
       </main>

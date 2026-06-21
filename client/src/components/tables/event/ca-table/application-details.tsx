@@ -22,6 +22,8 @@ import RegistrationDetailsModel from "../registrations-table/registration-detail
 import { Tooltip } from "@mui/material";
 import { CAStatusTags } from "@/utils/get-status-tags";
 import ApplicationActions from "./ca-actions";
+import { useUser } from "@/contexts/user-context";
+import { ROLES } from "@/utils/require-minimum-role";
 
 export default function ApplicationDetails({
   applicationId,
@@ -37,6 +39,7 @@ export default function ApplicationDetails({
   setModelOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }): ReactNode {
   const eventSlug = useParams().eventSlug!;
+  const { user } = useUser();
 
   const [loadAllRegistrations, setLoadAllRegistrations] = useState(false);
 
@@ -183,6 +186,7 @@ export default function ApplicationDetails({
           applicationId={applicationId}
           setModelOpen={setModelOpen}
           version="mobile"
+          role={user?.role || ROLES.MEMBER}
         />
 
         <div className="col-span-2 max-md:col-span-1">
