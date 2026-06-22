@@ -1,0 +1,32 @@
+# Monipur School & College Science Club (MSCSC)
+
+> Official platform for MSCSC (https://mscsc.netlify.app/), a student-led community of Monipur School & College, cultivating interest in science, computational engineering, and technology.
+
+This document guides AI agents, LLMs, and RAG systems through our platform structure, public routes, system design parameters, and technical architecture.
+
+## Core Site Map & Public Pages
+
+- [Home Page](https://mscsc.netlify.app/) or [/home](https://mscsc.netlify.app/home): Hub featuring club events, articles, announcements, upcoming science fairs, and high-priority updates.
+- [About Us](https://mscsc.netlify.app/about): Overview of our history, mission framework, and academic science club objectives.
+- [Activities](https://mscsc.netlify.app/activities): Interactive log of science exhibitions, departmental workshops, club articles, event highlights and achievements.
+- [Executives](https://mscsc.netlify.app/executives): Listing of executive committee panels, advisory faculty, and institutional leaders.
+- [Contact Us](https://mscsc.netlify.app/contact): Official channels, direct messaging schemas, and external institutional networks.
+
+## Authenticated Member Platform
+
+- [Members Hub](https://mscsc.netlify.app/members): Directory for student profiles, batch and branch groupings, and collaborative listings.
+- [Task Management](https://mscsc.netlify.app/tasks): Central dashboard where assigned club articles, poster design duties are verified and submitted.
+
+## System Policy Documents
+
+- [Privacy Policy](https://mscsc.netlify.app/privacy-policy): Compliance statements covering local user data storage, analytics routing, and browser state.
+- [Terms of Service](https://mscsc.netlify.app/terms-of-service): Authorized system usage boundaries, code of conduct rules, and membership platform obligations.
+
+## Technical Architecture Abstract & Meta Info
+
+The platform operates on an unified Full-Stack TypeScript ecosystem optimized for performance and precise database typing.
+- **Client Application:** Written in React 19 and TypeScript 5 via Vite 7, styled through TailwindCSS 4, utilizing TanStack Query for remote state synchronization and React Hook Form with Zod for strong type validation. Includes interactive analytical UI via Recharts and LaTeX formatting capabilities powered by KaTeX.
+- **Server Application:** Modular RESTful Express framework handling token-based authorization (JWT), image scaling optimizations through Sharp, automated file indexing via ImageKit, and structural schema serialization using Mongoose alongside a MongoDB cluster.
+- **Deployment & Hosting:** The client is deployed on Netlify, while the server is hosted on Render, ensuring scalable and efficient delivery of content and services.
+- **Security & Compliance:** Implements robust authentication protocols, secure data handling practices, and adheres to privacy regulations to protect user information and maintain trust.
+- **Owners & Maintainers:** The platform is developed and maintained by Rakesh Karmaker, who serves as the primary developer and administrator.

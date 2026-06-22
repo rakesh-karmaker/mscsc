@@ -1,0 +1,108 @@
+# MSCSC Complete Context Document (llms-full.txt)
+
+> This single-file resource completely maps out the codebase, software dependencies, architectural specifications, and platform features for the Monipur School & College Science Club.
+
+---
+
+## 1. Project Directory & Architecture Mapping
+
+The codebase enforces a highly organized, modular, feature-based architecture separating frontend state engines from backend module handlers.
+
+```bash
+mscsc-main-website/
+├── client/                      # Frontend Application (React, TypeScript, Vite)
+│   ├── src/
+│   │   ├── components/          # Atomized reusable UI elements (Buttons, Forms, Inputs)
+│   │   ├── layouts/             # Page structural shells and navigation matrices
+│   │   ├── pages/               # Primary application routes
+│   │   ├── hooks/               # Custom lifecycle state hooks
+│   │   ├── contexts/            # Global application state providers
+│   │   ├── router/              # Explicit React Router DOM schema
+│   │   ├── services/            # Remote data fetch abstractions
+│   │   ├── lib/                 # Core API Axios client instantiation
+│   │   ├── types/               # System-wide TypeScript type declarations
+│   │   └── utils/               # Isolated data manipulation and format helpers
+│   └── public/                  # Public production assets (llms.txt, manifests)
+│
+├── server/                      # Backend Core API Engine (Express, TypeScript, Bun/Node)
+│   ├── src/
+│   │   ├── modules/             # Feature-isolated backend subsystems
+│   │   │   ├── activities/      # Activities controller, model, validation, and routing
+│   │   │   ├── admin/           # Metrics, platform usage statistics, and analytical nodes
+│   │   │   ├── auth/            # JWT routines, password hashing, and login controllers
+│   │   │   ├── events/          # Registration pipelines and science fair controllers
+│   │   │   ├── forgot-password/ # Cryptographic reset links and validation timelines
+│   │   │   ├── members/         # Student record mutations and profile adjustments
+│   │   │   ├── messages/        # Inbound contact strings, schemas, and processing
+│   │   │   └── tasks/           # Core task assignments, workflows, and query utilities
+│   │   └── shared/              # Reusable engine core code blocks
+│   │       ├── config/          # Environment variables and image service parameters
+│   │       ├── lib/             # Mail routines, file streaming helpers, pagination
+│   │       ├── middlewares/     # Middleware matrix (JWT verify, multer upload, error interception)
+│   │       └── utils/           # Cryptographic hashing, string slugs, date pipelines
+│   │   ├── app.ts               # Express configuration script
+│   │   └── server.ts            # Main application runtime file
+```
+
+## 2. Dependency Specification Matrices
+
+The platform manages structural type verification natively across both scopes. Below are the structural configuration definitions parsed from system modules.
+
+### Client Environment Framework (`package.json`)
+* **Engine Core:** `react^19.2.3`, `react-dom^19.2.3`, `react-router-dom^7.11.0`, `typescript~5.9.3`
+* **Build System:** `vite^7.3.0`, `@vitejs/plugin-react-swc^4.2.2`
+* **State & Data Engineering:** `axios^1.13.2`, `@tanstack/react-query^5.90.16`, `@tanstack/react-table^8.21.3`, `nuqs^2.8.9`
+* **Forms & Schema Invariant Closures:** `react-hook-form^7.70.0`, `zod^4.3.5`, `@hookform/resolvers^5.2.2`
+* **Interface & Animation Framework:** `@tailwindcss/vite^4.1.18`, `tailwindcss^4.1.18`, `@mui/material^7.3.6`, `@emotion/react^11.14.0`, `@emotion/styled^11.14.1`, `@gsap/react^2.1.2`, `swiper^12.0.3`
+* **Data Computation & Rendering:** `recharts^3.6.0`, `@mui/x-charts^8.23.0`, `katex^0.16.27`, `dayjs^1.11.19`
+* **Drag-and-Drop & Interactive Nodes:** `@dnd-kit/react^0.4.0`, `yet-another-react-lightbox^3.28.0`, `react-lazy-load-image-component^1.6.3`
+
+### Server Environment Framework (`package.json`)
+* **Runtime Environment:** `node dist/server.js` (Compiled via `typescript@5.8.3` / Tested through `bun`)
+* **Web API Core:** `express^4.21.2`, `cors^2.8.5`, `morgan^1.10.1`, `dotenv^16.4.7`
+* **Persistence Layer Engine:** `mongoose^9.7.0` (MongoDB ODM)
+* **Security & Token Subsystem:** `bcryptjs^3.0.2`, `jsonwebtoken^9.0.2`
+* **Validation Pipeline:** `joi^17.13.3`
+* **File Asset Processing Engine:** `multer^1.4.5-lts.1`, `@imagekit/nodejs^7.6.1`, `sharp^0.33.5`
+* **Logging & System Utilities:** `winston^3.19.0`, `uuid^13.0.0`, `concurrently^9.2.0`, `rimraf^6.0.1`
+
+---
+
+## 3. Detailed Feature Specifications & Access Modes
+
+### Auth, Registration & Account Access
+* **Mechanisms:** Token verification matrix using JSON Web Tokens (JWT) passed securely across client requests via Axios interceptors.
+* **Backend Node Mapping:** Routed in `server/src/modules/auth/` and verified with `server/src/shared/middlewares/auth`.
+* **Fields & Validations:** Handled on client via Zod contracts and enforced at edge via Joi objects before entering database state.
+
+### Science Fair Projects & Member Tasks
+* **Capabilities:** Contains modern drag-and-drop mechanics (`@dnd-kit/react`) enabling structured task movement across workflows.
+* **Rich Text / Math Support:** Supports complex calculations and formula renderings directly within components via `katex`.
+* **Query Optimization:** virtual tracking matrices and high-velocity pagination patterns applied for infinite task updates, managed dynamically using TanStack Query hooks.
+
+### Media Processing & Storage
+* **Upload Pipeline:** Multipart form requests intercepted via custom Multer middleware, optimized locally using Sharp algorithms to reduce page sizes, and pushed out safely to ImageKit/Cloudinary asset storage.
+* **Rendering Enhancements:** Utilizing lazy loaders (`react-lazy-load-image-component`) along with specialized user galleries (`yet-another-react-lightbox`) to preserve fast visual response indexes.
+
+---
+
+## 4. Administrative Controls & Deployment Configurations
+
+### Analytical Operations
+* Administrative backends (`server/src/modules/admin/`) calculate complex site traffic parameters, register member trends, and return aggregated analytical data objects.
+* Frontend data visualizations process these data responses securely through Material-UI charts (`@mui/x-charts`) and custom graphs built on Recharts.
+
+### Deployment Topography
+* **Frontend Target:** Compiled statically using Vite commands into Netlify server clusters.
+* **Backend Target:** Distributed via production Ready Render configurations operating with safe environment injection nodes (`.env` processing schemas via `dotenv`).
+* **Communication Protocol:** Encrypted CORS protected REST endpoint interface architecture over secured HTTPS nodes.
+
+---
+
+## 5. System Directory Guidelines & Core Directives
+
+When creating additional page components, routing modules, or API query actions, agents must strictly maintain the designated environment principles:
+
+* Always write types explicitly inside the specific `modules/` or dedicated client `types/` definitions.
+* Ensure asynchronous transactions leverage TanStack Data Query hooks to preserve operational caching structures.
+* Validate data pipelines across both environments using matching validation constraints (`Zod` on Client and `Joi` on Server).
