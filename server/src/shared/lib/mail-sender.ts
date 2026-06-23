@@ -16,11 +16,10 @@ export async function sendEmail(
     });
 
     if (res.status === 200) {
-      logger.info("Email sent successfully", {
+      logger.info(`Email sent successfully to ${email}`, {
         email: email,
         subject: subject,
       });
-      console.log("Email sent successfully:", res.data);
     } else {
       logger.error("Error sending email", {
         email: email,
@@ -34,7 +33,8 @@ export async function sendEmail(
     logger.error("Error sending email", {
       email: email,
       subject: subject,
-      error: err,
+      error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
     });
     return false;
   }

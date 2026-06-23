@@ -93,13 +93,14 @@ export async function register(req: Request, res: Response): Promise<void> {
       memberName: newMember.name,
     });
   } catch (err) {
-    logger.error("Error registering member", {
-      error: err instanceof Error ? err.message : String(err),
-    });
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    logger.error("Error registering member", {
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
+    });
   }
 }
 
@@ -147,13 +148,14 @@ export async function login(req: Request, res: Response): Promise<void> {
       memberName: member.name,
     });
   } catch (err) {
-    logger.error("Error logging in member", {
-      error: err instanceof Error ? err.message : String(err),
-    });
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    logger.error("Error logging in member", {
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
+    });
   }
 }
 
@@ -179,6 +181,7 @@ export async function verifyUser(req: Request, res: Response): Promise<void> {
       .send({ subject: "root", message: "Server error", error: errorMessage });
     logger.error("Error verifying user", {
       error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }

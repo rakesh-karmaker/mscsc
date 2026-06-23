@@ -1,5 +1,6 @@
 import { Request } from "express";
 import { Model, Document } from "mongoose";
+import logger from "../config/winston.js";
 
 interface PaginateOptions {
   sort?: Record<string, 1 | -1>;
@@ -18,12 +19,12 @@ export default async function paginateResults<T extends Document>(
   req: Request,
   model: Model<any>,
   regex: Record<string, RegExp>,
-  options: PaginateOptions = {}
+  options: PaginateOptions = {},
 ): Promise<PaginateResultsType<T>> {
   const page = Math.max(1, parseInt(req.query.page as string) || 1);
   const limit = Math.min(
     100,
-    Math.max(1, parseInt(req.query.limit as string) || 10)
+    Math.max(1, parseInt(req.query.limit as string) || 10),
   ); // Default 10, max 100
   const skip = (page - 1) * limit;
 
@@ -104,6 +105,10 @@ export default async function paginateResults<T extends Document>(
       results,
     };
   } catch (err) {
+    logger.error("Error in paginateResults", {
+      error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack : undefined,
+    });
     throw new Error(err instanceof Error ? err.message : "Pagination error");
   }
 }

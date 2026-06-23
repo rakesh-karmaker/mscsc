@@ -39,13 +39,14 @@ export async function getAllMembers(
     members.adminLength = await Member.countDocuments({ role: "admin" });
     res.status(200).send(members);
   } catch (err) {
-    logger.error("Error fetching members", {
-      error: err instanceof Error ? err.message : String(err),
-    });
     const errorMessage = err instanceof Error ? err.message : String(err);
     res
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
+    logger.error("Error fetching members", {
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
+    });
   }
 }
 
@@ -133,7 +134,7 @@ export async function getAllMembersForTable(
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
     logger.error("Error fetching members for table", {
-      error: err instanceof Error ? err.message : String(err),
+      error: errorMessage,
       stack: err instanceof Error ? err.stack : undefined,
     });
   }
@@ -161,7 +162,8 @@ export async function getMember(req: Request, res: Response): Promise<void> {
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
     logger.error("Error fetching member", {
-      error: err instanceof Error ? err.message : String(err),
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }
@@ -213,7 +215,7 @@ export async function getTopSubmitters(
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
     logger.error("Error fetching top submitters", {
-      error: err instanceof Error ? err.message : String(err),
+      error: errorMessage,
       stack: err instanceof Error ? err.stack : undefined,
     });
   }
@@ -252,11 +254,15 @@ export async function editMember(req: Request, res: Response): Promise<void> {
       // Authorization: only the user themselves or an admin can edit
       if (previousUser._id.toString() != req.user?._id.toString()) {
         const adminData = await Member.findById(req.user?._id);
-        console.log(`Mismatched id - ${adminData?.name} - ${req.user?._id}`);
         if (!adminData || adminData?.role !== "admin") {
           res.status(401).send({ message: "Access Denied" });
           return;
         }
+        logger.info("Admin editing member details", {
+          memberId: previousUser?._id,
+          memberName: previousUser?.name,
+          editor: req.user?._id,
+        });
       }
 
       // Update User Timeline
@@ -330,7 +336,8 @@ export async function editMember(req: Request, res: Response): Promise<void> {
       .send({ subject: "root", message: "Server error", error: errorMessage });
     logger.error("Error editing member", {
       memberId: req.user?._id,
-      error: err instanceof Error ? err.message : String(err),
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
       editor: req.user?._id,
     });
   }
@@ -370,7 +377,8 @@ export async function deleteMember(req: Request, res: Response): Promise<void> {
       .send({ subject: "root", message: "Server error", error: errorMessage });
     logger.error("Error deleting member", {
       memberId: req.user?._id,
-      error: err instanceof Error ? err.message : String(err),
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
       deletedBy: req.user?._id,
     });
   }

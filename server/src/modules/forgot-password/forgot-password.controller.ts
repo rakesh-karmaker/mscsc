@@ -59,6 +59,7 @@ export async function sendOTP(req: Request, res: Response): Promise<void> {
     logger.error("Error sending OTP", {
       email: req.body.email,
       error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }
@@ -105,7 +106,8 @@ export async function verifyOTP(req: Request, res: Response): Promise<void> {
       .send({ subject: "root", message: "Server error", error: errorMessage });
     logger.error("Error verifying OTP", {
       email: req.body.email,
-      error: err instanceof Error ? err.message : String(err),
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }
@@ -158,7 +160,8 @@ export async function resetPassword(
       .send({ subject: "root", message: "Server error", error: errorMessage });
     logger.error("Error resetting password", {
       email: req.body.email,
-      error: err instanceof Error ? err.message : String(err),
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }

@@ -210,7 +210,6 @@ export async function createActivity(
 
     // Create the activity
     await Activity.create(body);
-    console.log("Activity added successfully -", "\n---\n");
 
     res.status(200).send({ message: "Activity added" });
     logger.info("Activity created", {

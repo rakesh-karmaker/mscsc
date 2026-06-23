@@ -17,12 +17,6 @@ export async function addFreeSoloSegment(
   const registrationId = req.user?._id;
   const { segmentSlug } = req.body;
 
-  console.log("Adding free solo segment", {
-    eventSlug,
-    registrationId,
-    segmentSlug,
-  });
-
   if (!eventSlug || !registrationId || !segmentSlug) {
     res.status(400).json({
       message: "Event slug, registration ID, and segment slug are required",

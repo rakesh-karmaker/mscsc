@@ -54,7 +54,8 @@ export async function getAllMessages(
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
     logger.error("Error fetching messages", {
-      error: err instanceof Error ? err.message : String(err),
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }
@@ -86,7 +87,8 @@ export async function sendMessage(req: Request, res: Response): Promise<void> {
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
     logger.error("Error sending message from contact form", {
-      error: err instanceof Error ? err.message : String(err),
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }
@@ -115,7 +117,8 @@ export async function markMessageAsRead(
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
     logger.error("Error marking message as read", {
-      error: err instanceof Error ? err.message : String(err),
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }
@@ -152,7 +155,8 @@ export async function deleteMessage(
       .status(500)
       .send({ subject: "root", message: "Server error", error: errorMessage });
     logger.error("Error deleting message", {
-      error: err instanceof Error ? err.message : String(err),
+      error: errorMessage,
+      stack: err instanceof Error ? err.stack : undefined,
     });
   }
 }

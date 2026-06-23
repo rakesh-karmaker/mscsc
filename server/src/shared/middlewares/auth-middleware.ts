@@ -4,6 +4,7 @@ import getDate from "../utils/get-date.js";
 import Member from "../models/member.model.js";
 import config from "../config/config.js";
 import { Role, ROLE_WEIGHTS } from "../utils/roles.js";
+import logger from "../config/winston.js";
 
 declare global {
   namespace Express {
@@ -46,13 +47,15 @@ export async function isAuthorized(
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : String(err);
     if (errorMessage === "jwt expired") {
-      console.log(
-        "Authorization error - Token Expired - ",
-        getDate(),
-        "\n---\n",
-      );
+      logger.error("Authorization error - Token Expired", {
+        error: errorMessage,
+        stack: err instanceof Error ? err.stack : undefined,
+      });
     } else {
-      console.log("Authorization error - ", getDate(), "\n---\n");
+      logger.error("Authorization error - Invalid Token", {
+        error: errorMessage,
+        stack: err instanceof Error ? err.stack : undefined,
+      });
     }
     res.status(400).send({ message: "Invalid Token" });
   }
@@ -94,8 +97,11 @@ export function requireMinimumRole(minimumRequiredRole: Role) {
 
       next();
     } catch (error) {
-      console.error("Role verification error:", error);
       res.status(500).send({ message: "Internal Server Error" });
+      logger.error("Role verification error:", {
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+      });
     }
   };
 }

@@ -152,6 +152,10 @@ export async function getRegistrationData(
     });
   } catch (error) {
     res.status(500).json({ message: "Error fetching registration data" });
-    logger.error("Error fetching registration data", { error });
+    logger.error("Error fetching registration data", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      registrationId: req.params.registrationId,
+    });
   }
 }
