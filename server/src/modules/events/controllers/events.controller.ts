@@ -28,7 +28,14 @@ import config from "../../../shared/config/config.js";
 // get all events
 export async function getAllEvents(req: Request, res: Response): Promise<void> {
   try {
-    const events = await Event.find()
+    const events = await Event.find({
+      isTemplate: { $ne: true },
+      ...(req.headers.shorten === "true"
+        ? {}
+        : {
+            isHidden: { $ne: true },
+          }),
+    })
       .select(
         req.headers.shorten === "true"
           ? "eventName eventSlug"

@@ -195,13 +195,17 @@ export async function createActivity(
       res.status(400).send({ message: "Activity image not provided" });
       return;
     }
-    const { url, imgId } = await uploadImage(activityImageFile, true);
+    const { url, imgId } = await uploadImage(
+      activityImageFile,
+      false,
+      "activities",
+    );
     body.coverImageUrl = url;
     body.coverImageId = imgId;
 
     // Upload gallery images if provided
     if (files?.gallery) {
-      body.gallery = await uploadMultipleImages(files.gallery);
+      body.gallery = await uploadMultipleImages(files.gallery, "activities");
     }
 
     // Create the activity
@@ -269,7 +273,8 @@ export async function editActivity(req: Request, res: Response): Promise<void> {
         deleteFile(previousActivity.coverImageId);
         const { url, imgId } = await uploadImage(
           req.files.activityImage[0],
-          true,
+          false,
+          "activities",
         );
         updates.coverImageUrl = url;
         updates.coverImageId = imgId;
@@ -283,7 +288,10 @@ export async function editActivity(req: Request, res: Response): Promise<void> {
         "gallery" in req.files
       ) {
         previousActivity.gallery.forEach((image) => deleteFile(image.imgId));
-        const gallery = await uploadMultipleImages(req.files.gallery);
+        const gallery = await uploadMultipleImages(
+          req.files.gallery,
+          "activities",
+        );
         updates.gallery = gallery;
       }
     }
