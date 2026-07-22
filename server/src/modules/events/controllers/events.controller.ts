@@ -479,8 +479,6 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
           : [],
         fees: eventData.fees || "N/A",
 
-        isHidden: true,
-
         dataUrl: jsonUrl,
         dataPublicId: jsonPublicId,
       },
