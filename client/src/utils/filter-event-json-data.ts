@@ -38,6 +38,12 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
     };
   }
 
+  if (!filteredData.isInnerRegistration && data.formData) {
+    filteredData.formData = {
+      registrationDeadline: data.formData?.registrationDeadline || "",
+    };
+  }
+
   if (filteredData.isInnerRegistration && data.formData) {
     filteredData.formData = {
       title: data.formData.title,

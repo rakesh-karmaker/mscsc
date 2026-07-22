@@ -10,18 +10,17 @@ import type {
   SpType,
 } from "@/types/event/event-types";
 import generateSlug from "@/utils/generate-slug";
+import generateUID from "@/utils/generate-uid";
 import dayjs from "dayjs";
 
 type useFilterEventFormProps = {
   data: any;
   sections: string[];
-  mode: "add" | "edit";
 };
 
 export default function useFilterEventForm({
   data,
   sections,
-  mode,
 }: useFilterEventFormProps): {
   filteredData: EventFormDataType;
 } {
@@ -285,34 +284,31 @@ export default function useFilterEventForm({
 
   if (sections.includes("sp")) {
     const spData: SpType[] = [];
+    const spLogos: File[] = [];
     data.spData.forEach((sp: SpType & { logoFile: File[] }) => {
+      const logoPublicId = sp.logoPublicId || generateUID();
+
       if (sp.logoUrl && sp.logoPublicId) {
         spData.push({
           name: sp.name,
           websiteUrl: sp.websiteUrl,
           logoUrl: sp.logoUrl,
-          logoPublicId: sp.logoPublicId,
+          logoPublicId,
         });
       } else {
         spData.push({
           name: sp.name,
           websiteUrl: sp.websiteUrl,
+          logoPublicId,
         });
       }
-    });
 
-    const spLogos: File[] = [];
-    data.spData.forEach((sp: SpType & { logoFile: File[] }) => {
       if (sp.logoFile && sp.logoFile.length > 0) {
-        if (mode === "add") {
-          spLogos.push(sp.logoFile[0]);
-        } else {
-          spLogos.push(
-            new File([sp.logoFile[0]], sp.logoPublicId || "sp-logo.jpg", {
-              type: sp.logoFile[0].type,
-            }),
-          );
-        }
+        spLogos.push(
+          new File([sp.logoFile[0]], logoPublicId, {
+            type: sp.logoFile[0].type,
+          }),
+        );
       }
     });
 

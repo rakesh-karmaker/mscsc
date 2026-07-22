@@ -4,11 +4,7 @@ import {
   SegmentType,
   SpType,
 } from "../event.types.js";
-import {
-  uploadImage,
-  uploadVideo,
-  deleteFile,
-} from "../../../shared/lib/file-uploader.js";
+import { uploadImage, deleteFile } from "../../../shared/lib/file-uploader.js";
 import urlChanger from "../utils/url-changer.js";
 
 export async function buildEventData(
@@ -252,7 +248,7 @@ export async function buildEventData(
 
       for (const sp of body.spData) {
         if (sp.logoPublicId && newSPLogos[sp.logoPublicId]) {
-          await deleteFile(sp.logoPublicId);
+          if (isEdit && sp.logoUrl) await deleteFile(sp.logoPublicId);
 
           const { url, imgId } = await uploadImage(
             newSPLogos[sp.logoPublicId],

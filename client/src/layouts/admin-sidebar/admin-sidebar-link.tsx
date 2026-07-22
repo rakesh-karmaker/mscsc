@@ -1,4 +1,5 @@
 import type { AdminSidebarLinkDataType } from "@/services/data/admin-sidebar-data";
+import { Tooltip } from "@mui/material";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 import { NavLink } from "react-router-dom";
 
@@ -21,7 +22,9 @@ export default function AdminSidebarLink({
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
         {data.icon}
-        <span>{data.name}</span>
+        <Tooltip title={data.name} placement="right" arrow>
+          <span className="truncate max-w-[15ch]">{data.name}</span>
+        </Tooltip>
       </NavLink>
     </li>
   );

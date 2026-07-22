@@ -282,7 +282,7 @@ export default function useEventFormValidator({
   }
 
   // filter the data
-  const { filteredData } = useFilterEventForm({ data, sections, mode });
+  const { filteredData } = useFilterEventForm({ data, sections });
 
   return { filteredData, isValid };
 }

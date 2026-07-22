@@ -148,10 +148,10 @@ export interface FilteredEventDataType {
     applicationDeadline: string;
     details: string;
   };
-  formData?: {
-    title: string;
-    fees: string;
-    details: string;
+  formData: {
+    title?: string;
+    fees?: string;
+    details?: string;
     registrationDeadline: string;
     transactionPlatforms?: string[];
     transactionMethods?: {
