@@ -36,6 +36,7 @@ export async function getAllEvents(req: Request, res: Response): Promise<void> {
             isHidden: { $ne: true },
           }),
     })
+      .sort({ eventDate: -1 })
       .select(
         req.headers.shorten === "true"
           ? "eventName eventSlug"

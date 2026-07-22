@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request } from "express";
 import { errorHandler } from "./shared/middlewares/error-handler.js";
 import cors from "cors";
 import config from "./shared/config/config.js";
@@ -16,6 +16,7 @@ import logger from "./shared/config/winston.js";
 import morgan from "morgan";
 import clubPartnersRouter from "./modules/events/routers/club-partners.router.js";
 import membersRouter from "./modules/members/members.router.js";
+import healthRouter from "./modules/health/health.router.js";
 
 const app = express();
 
@@ -41,6 +42,8 @@ const stream = {
 app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms", {
     stream: stream,
+    skip: (req: Request, _) =>
+      req.url === "/api/health" || req.url === "/api/health/" || req.url == "/",
   }),
 );
 
@@ -66,5 +69,7 @@ app.use("/api/event-registrations", eventRegistrationRouter);
 app.use("/api/ca-applications", caApplicationsRouter);
 app.use("/api/teams", teamsRouter);
 app.use("/api/club-partners", clubPartnersRouter);
+
+app.use("/api/health", healthRouter);
 
 export default app;

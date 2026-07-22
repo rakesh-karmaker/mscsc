@@ -25,7 +25,7 @@ setInterval(
     const options = {
       hostname: config.serverUrl.replace(/^https?:\/\//, ""), // Remove protocol if present
       port: 443,
-      path: "/",
+      path: "/api/health",
       method: "GET",
       headers: {
         Origin: config.serverUrl,
