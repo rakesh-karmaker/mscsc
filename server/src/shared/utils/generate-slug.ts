@@ -32,8 +32,10 @@ export function generateSlugFromTitle(
   return (
     title
       .toLowerCase()
-      .replace(/[^a-z0-9&-_ ]/g, "")
-      .replace(/\s+/g, "-") +
+      .replace(/\./g, "-") // Convert dots to hyphens (e.g., "2.0" -> "2-0")
+      .replace(/[^a-z0-9&-_ ]/g, "") // Strip remaining unwanted characters
+      .replace(/\s+/g, "-") // Convert spaces to hyphens
+      .replace(/-+/g, "-") +
     (addAdditionalText ? "-" + Math.floor(Math.random() * 1000) : "")
   );
 }
