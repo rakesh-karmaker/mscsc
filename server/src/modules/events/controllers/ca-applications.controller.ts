@@ -493,18 +493,12 @@ export async function editCAApplication(
       );
     }
 
-    const newCaApplication = await EventCA.findByIdAndUpdate(
-      applicationId,
-      {
-        $set: {
-          status:
-            body.status !== undefined ? body.status : caApplication.status,
-          caCode:
-            body.caCode !== undefined ? body.caCode : caApplication.caCode,
-        },
+    const newCaApplication = await EventCA.findByIdAndUpdate(applicationId, {
+      $set: {
+        status: body.status !== undefined ? body.status : caApplication.status,
+        caCode: body.caCode !== undefined ? body.caCode : caApplication.caCode,
       },
-      { new: true },
-    );
+    });
 
     res.status(200).json({
       message: "CA application updated successfully",

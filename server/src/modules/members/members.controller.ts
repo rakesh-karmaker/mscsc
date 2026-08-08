@@ -271,7 +271,6 @@ export async function editMember(req: Request, res: Response): Promise<void> {
         const updatedMember = await Member.findOneAndUpdate(
           { slug },
           { timeline: timeline },
-          { new: true },
         ).select("-password");
 
         // return updated member
@@ -323,10 +322,13 @@ export async function editMember(req: Request, res: Response): Promise<void> {
       });
     }
 
-    const user = await Member.findOneAndUpdate({ slug }, updates, {
-      isImageVerified: false, // Reset image verification on edit
-      new: true,
-    }).select("-password");
+    const user = await Member.findOneAndUpdate(
+      { slug },
+      {
+        ...updates,
+        isImageVerified: false, // Reset image verification on edit
+      },
+    ).select("-password");
 
     res.status(200).send({ message: "Edit successful", user });
   } catch (err) {

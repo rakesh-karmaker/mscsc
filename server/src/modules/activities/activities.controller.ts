@@ -296,9 +296,7 @@ export async function editActivity(req: Request, res: Response): Promise<void> {
     }
 
     // Update the activity
-    await Activity.findOneAndUpdate({ slug }, updates, {
-      new: true,
-    });
+    await Activity.findOneAndUpdate({ slug }, updates);
 
     res.status(200).send({ message: "Activity updated" });
     logger.info("Activity edited", {

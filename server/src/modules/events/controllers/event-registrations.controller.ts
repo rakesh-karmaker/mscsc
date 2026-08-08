@@ -436,7 +436,6 @@ export async function changeRegistrationStatus(
             status: "approved",
           },
           { $inc: { score: 1 } },
-          { new: true },
         );
         if (!caApplication) {
           logger.warn("Invalid CA code provided during registration", {
@@ -456,7 +455,6 @@ export async function changeRegistrationStatus(
             status: "active",
           },
           { $inc: { score: 1 } },
-          { new: true },
         );
         if (!clubPartner) {
           logger.warn("Invalid club code provided during registration", {
@@ -586,7 +584,6 @@ export async function editRegistration(
               : registration.hasAttended,
         },
       },
-      { new: true },
     );
 
     res
