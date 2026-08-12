@@ -49,11 +49,11 @@ export default function ImageViewer({
       on={{
         click: () => {
           const thumbnails = thumbnailsRef.current as unknown as {
-            isVisible: () => boolean;
+            visible: boolean;
             hide: () => void;
             show: () => void;
           };
-          if (thumbnails?.isVisible()) {
+          if (thumbnails?.visible) {
             thumbnails.hide();
           } else {
             thumbnails?.show();

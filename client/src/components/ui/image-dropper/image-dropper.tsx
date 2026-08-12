@@ -24,7 +24,7 @@ export default function ImageDropper({
     e.stopPropagation();
     if (e?.type === "input") {
       const droppedFiles = (e.target as HTMLInputElement).files;
-      register.onChange({
+      register(name).onChange({
         target: {
           name: name,
           value: droppedFiles,
@@ -33,7 +33,7 @@ export default function ImageDropper({
       setFiles(droppedFiles?.length || 0);
     } else if ("dataTransfer" in e) {
       const droppedFiles = e.dataTransfer.files;
-      register.onChange({
+      register(name).onChange({
         target: {
           name: name,
           value: droppedFiles,

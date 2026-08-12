@@ -179,6 +179,7 @@ export async function createActivity(
     }
 
     body.title = body.title.trim();
+    body.date = new Date(body.date).toISOString(); // Convert date to ISO string
 
     // generate the activity slug
     const slug = await generateSlug(body.title, Activity);
@@ -294,6 +295,8 @@ export async function editActivity(req: Request, res: Response): Promise<void> {
         updates.gallery = gallery;
       }
     }
+
+    if (updates.date) updates.date = new Date(updates.date).toISOString(); // Convert date to ISO string
 
     // Update the activity
     await Activity.findOneAndUpdate({ slug }, updates);

@@ -41,7 +41,7 @@ export default function ActivitiesNavbar(): ReactNode {
         <menu>
           {Object.keys(icons).map((name) => {
             return (
-              <li>
+              <li key={name}>
                 <button
                   className={
                     "activities-nav-link" + (tag === name ? " active" : "")
