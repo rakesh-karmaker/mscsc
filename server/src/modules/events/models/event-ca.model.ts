@@ -24,6 +24,8 @@ const EventCASchema = new mongoose.Schema<EventCASchemaType>(
     hasPreviousExperience: { type: Boolean, required: true },
     previousExperienceDetails: { type: String, default: "" },
 
+    canGet: { type: Number, required: true },
+
     applicationDate: { type: String, required: true },
     status: {
       type: String,

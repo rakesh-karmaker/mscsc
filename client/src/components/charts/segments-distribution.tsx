@@ -66,6 +66,8 @@ export default function SegmentsDistributionChart({
     ([label, value]) => ({ label, value }),
   );
 
+  console.log(segmentDistribution);
+
   const size =
     (1650 > window.innerWidth && window.innerWidth > 1530) ||
     (950 > window.innerWidth && window.innerWidth > 880) ||
@@ -79,35 +81,41 @@ export default function SegmentsDistributionChart({
         <h2 className="font-medium px-5 mb-2">Segment Distribution</h2>
       </div>
       <div className="flex justify-center items-center h-full max-sm:[&>div]:flex! max-sm:[&>div]:flex-col-reverse">
-        <PieChart
-          series={[
-            {
-              data: segmentDistribution.map((item) => ({
-                id: item.label,
-                value: item.value,
-                label: deSlugify(item.label, false),
-              })),
-              innerRadius: window.innerWidth < 400 ? "65%" : "73%",
-            },
-          ]}
-          slotProps={{
-            legend: {
-              className:
-                "gap-1.5! [&>li>div>span]:truncate [&>li>div>span]:max-w-[30ch] [&>li>div>span]:text-xs/[1rem]",
-            },
-          }}
-          width={size}
-          height={size}
-        >
-          <PieCenterLabel offsetY={window.innerWidth > 400 ? -10 : 0}>
-            {Object.keys(data.segmentCounts).length < 10
-              ? `0${Object.keys(data.segmentCounts).length}`
-              : Object.keys(data.segmentCounts).length}
-          </PieCenterLabel>
-          {window.innerWidth > 400 && (
-            <PieSubLabel offsetY={13}>Segments</PieSubLabel>
-          )}
-        </PieChart>
+        {segmentDistribution.length === 0 ? (
+          <p className="text-gray-800 flex justify-center items-center text-center h-full min-h-30">
+            No segment data available
+          </p>
+        ) : (
+          <PieChart
+            series={[
+              {
+                data: segmentDistribution.map((item) => ({
+                  id: item.label,
+                  value: item.value,
+                  label: deSlugify(item.label, false),
+                })),
+                innerRadius: window.innerWidth < 400 ? "65%" : "73%",
+              },
+            ]}
+            slotProps={{
+              legend: {
+                className:
+                  "gap-1.5! [&>li>div>span]:truncate [&>li>div>span]:max-w-[30ch] [&>li>div>span]:text-xs/[1rem]",
+              },
+            }}
+            width={size}
+            height={size}
+          >
+            <PieCenterLabel offsetY={window.innerWidth > 400 ? -10 : 0}>
+              {Object.keys(data.segmentCounts).length < 10
+                ? `0${Object.keys(data.segmentCounts).length}`
+                : Object.keys(data.segmentCounts).length}
+            </PieCenterLabel>
+            {window.innerWidth > 400 && (
+              <PieSubLabel offsetY={13}>Segments</PieSubLabel>
+            )}
+          </PieChart>
+        )}
       </div>
     </div>
   );

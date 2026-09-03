@@ -11,6 +11,7 @@ import LuMail from "~icons/lucide/mail";
 import LuPhone from "~icons/lucide/phone";
 import IoMdFemale from "~icons/ion/md-female";
 import IoMdMale from "~icons/ion/md-male";
+import Plus from "~icons/lucide/circle-plus";
 import { useParams } from "react-router-dom";
 import ProfilePreview from "../profile-preview";
 import { getCaApplicationById } from "@/lib/api/event/ca-applications";
@@ -108,6 +109,11 @@ export default function ApplicationDetails({
             <div className="w-full text-[0.97rem] flex gap-1 items-center text-gray-700">
               <LuPhone className="opacity-70 text-sm" />
               <span>{details.phoneNumber}</span>
+            </div>
+
+            <div className="w-full text-[0.97rem] flex gap-1 items-center text-gray-700">
+              <Plus className="opacity-70 text-sm" />
+              <span>{details.canGet}</span>
             </div>
 
             <div className="w-full text-[0.97rem] flex gap-1 items-center text-gray-700">

@@ -107,6 +107,8 @@ export interface EventCASchemaType extends mongoose.Document {
   hasPreviousExperience: boolean;
   previousExperienceDetails: string;
 
+  canGet: Number;
+
   applicationDate: string;
   status: "pending" | "approved" | "rejected";
   rejectionReason: string;

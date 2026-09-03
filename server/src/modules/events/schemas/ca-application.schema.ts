@@ -16,4 +16,5 @@ export const caApplicationSchema = Joi.object({
     then: Joi.string().required(),
     otherwise: Joi.string().optional(),
   }),
+  canGet: Joi.number().integer().positive().required(),
 });

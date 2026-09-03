@@ -128,6 +128,7 @@ export async function getAllCAApplications(
           hasPreviousExperience: 1,
           status: 1,
           caCode: 1,
+          canGet: 1,
           score: 1,
           position: 1,
         },
@@ -206,6 +207,7 @@ export async function getCAApplicationById(
           rejectionReason: 1,
           score: 1,
           position: 1,
+          canGet: 1,
         },
       },
     ]);
@@ -323,9 +325,10 @@ export async function applyForCA(req: Request, res: Response): Promise<void> {
       gender: body.gender,
       institution: body.institution,
       grade: body.grade,
+      description: body.description,
       hasPreviousExperience: body.hasPreviousExperience === "yes",
       previousExperienceDetails: body.previousExperienceDetails || "",
-      description: body.description,
+      canGet: body.canGet,
       applicationDate: new Date().toISOString(),
     });
 

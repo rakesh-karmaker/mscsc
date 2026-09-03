@@ -162,6 +162,29 @@ export default function getCaApplicationTableColumns(
       size: 100,
     },
     {
+      id: "canGet",
+      accessorKey: "canGet",
+      header: ({ column }) => (
+        <TableColumnHeader
+          tId="ca-applications"
+          column={column}
+          label="Can Get"
+        />
+      ),
+      cell: ({ row }) => (
+        <span
+          className={`px-2! py-1! rounded-xs text-xs font-medium bg-gray-100 text-gray-800`}
+        >
+          {row.original.canGet}
+        </span>
+      ),
+      meta: {
+        label: "Can Get",
+      },
+      enableColumnFilter: true,
+      size: 100,
+    },
+    {
       id: "hasPreviousExperience",
       accessorKey: "hasPreviousExperience",
       header: ({ column }) => (

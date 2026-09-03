@@ -19,6 +19,7 @@ export interface CaApplicationDetails {
   status: "pending" | "approved" | "rejected";
   rejectionReason?: string;
   caCode?: string;
+  canGet: number;
   score: number;
   position: number;
 }
@@ -40,6 +41,7 @@ export type CaApplicationTableData = Pick<
   | "hasPreviousExperience"
   | "status"
   | "caCode"
+  | "canGet"
   | "score"
   | "position"
 >;
