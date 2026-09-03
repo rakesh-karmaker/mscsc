@@ -12,12 +12,6 @@ export function caApplicationConfirmationDraft({
   code,
   name,
 }: CAApplicationConfirmationDraftProps) {
-  console.log("Generating CA application confirmation draft", {
-    eventName,
-    logoUrl,
-    code,
-    name,
-  });
   const year = new Date().getFullYear();
   return `
         <!DOCTYPE html

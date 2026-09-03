@@ -21,7 +21,12 @@ import healthRouter from "./modules/health/health.router.js";
 const app = express();
 
 // Configure CORS to allow only requests from the specified origin
-const allowed = [config.clientUrl, config.serverUrl, config.event_website_url];
+const allowed = [
+  config.clientUrl,
+  config.serverUrl,
+  config.event_website_url,
+  ...config.event_websites.split(","),
+];
 
 const corsOptions = {
   origin: (origin: string | undefined, callback: Function) => {
