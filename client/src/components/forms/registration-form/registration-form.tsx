@@ -45,6 +45,7 @@ export default function RegistrationForm() {
         queryClient.invalidateQueries({ queryKey: ["members"] });
         queryClient.invalidateQueries({ queryKey: ["user"] });
         queryClient.invalidateQueries({ queryKey: ["tasks"] });
+        localStorage.setItem("isNewRegister", "true");
         navigate(`/member/${data?.data?.member?.slug}`, { replace: true });
       } else {
         queryClient.invalidateQueries({ queryKey: ["user"] });

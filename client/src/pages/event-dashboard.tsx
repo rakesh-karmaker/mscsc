@@ -11,7 +11,7 @@ import { useParams } from "react-router";
 import { Box, Tab, Tabs } from "@mui/material";
 import RegistrationsTable from "@/components/tables/event/registrations-table/registrations-table";
 import CaApplicationsTable from "@/components/tables/event/ca-table/ca-applications-table";
-import EventSettings from "@/components/events/event-settings";
+import EventSettings from "@/components/event-settings";
 import ClubPartnersTable from "@/components/tables/event/club-partners-table/club-partners-table";
 import SegmentsDistributionChart from "@/components/charts/segments-distribution";
 import TeamsTable from "@/components/tables/event/teams-table/teams-table";
