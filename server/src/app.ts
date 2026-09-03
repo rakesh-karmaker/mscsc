@@ -30,7 +30,11 @@ const allowed = [
 
 const corsOptions = {
   origin: (origin: string | undefined, callback: Function) => {
-    if (!origin || allowed.includes(origin)) {
+    if (
+      !origin ||
+      allowed.includes(origin) ||
+      origin.endsWith(".netlify.app")
+    ) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
