@@ -238,7 +238,7 @@ function RejectStatus({
                     ? "registration"
                     : model === "team"
                       ? "team"
-                      : "segment registration"}
+                      : "segment registration"}{" "}
                 details.
                 {model === "segment" || model === "team" ? (
                   <>

@@ -660,7 +660,7 @@ export async function deleteRegistration(
 
     await registration.deleteOne();
 
-    event.participantCount = Math.max((event.participantCount || 1) - 1, 0);
+    event.participantCount = Math.max(event.participantCount - 1, 0);
     await event.save();
 
     res.status(200).json({ message: "Registration deleted" });

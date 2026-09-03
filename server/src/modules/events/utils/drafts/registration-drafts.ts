@@ -79,9 +79,12 @@ export function eventConfirmationDraft({
                         <table class="id-c" style="border-spacing: 0;; width: 100%;  height: 100%;">
                             <tr style="width: 100%; height: 100%; text-align: center;">
                                 <td>
-                                    <p style="margin-bottom: 10px; padding: 0; color: #1d4b52;">
-                                        Your registration code is:
-                                    </p>
+                                    <center>
+                                        <p
+                                            style="margin: 10px 0 5px 0; padding: 0 20px; font-size: 16px; max-width: 400px; text-align: center; color: #1d4b52; opacity: 0.8;">
+                                            Your registration code is:
+                                        </p>
+                                    </center>
                                 </td>
                             </tr>
                             <tr>
