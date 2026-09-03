@@ -25,6 +25,7 @@ import { CAStatusTags } from "@/utils/get-status-tags";
 import ApplicationActions from "./ca-actions";
 import { useUser } from "@/contexts/user-context";
 import { ROLES } from "@/utils/require-minimum-role";
+import capitalize from "@/utils/capitalize";
 
 export default function ApplicationDetails({
   applicationId,
@@ -95,38 +96,38 @@ export default function ApplicationDetails({
               href={`mailto:${details.email}`}
               className="w-fit text-[0.97rem] flex gap-1 items-center text-highlighted-color transition-all hover:text-highlighted-color/80"
             >
-              <LuMail className="opacity-70 text-sm" />
+              <LuMail className="opacity-70 text-sm min-w-fit" />
               <span>{details.email}</span>
             </a>
             <a
               href={`${details.facebookUrl}`}
               className="w-fit text-[0.97rem] flex gap-1 items-center text-highlighted-color transition-all hover:text-highlighted-color/80"
             >
-              <LuFacebook className="opacity-70 text-sm" />
+              <LuFacebook className="opacity-70 text-sm min-w-fit" />
               <span>Facebook</span>
             </a>
 
             <div className="w-full text-[0.97rem] flex gap-1 items-center text-gray-700">
-              <LuPhone className="opacity-70 text-sm" />
+              <LuPhone className="opacity-70 text-sm min-w-fit" />
               <span>{details.phoneNumber}</span>
             </div>
 
             <div className="w-full text-[0.97rem] flex gap-1 items-center text-gray-700">
-              <Plus className="opacity-70 text-sm" />
+              <Plus className="opacity-70 text-sm min-w-fit" />
               <span>{details.canGet}</span>
             </div>
 
             <div className="w-full text-[0.97rem] flex gap-1 items-center text-gray-700">
               {details.gender == "male" ? (
-                <IoMdMale className="opacity-70 text-sm" />
+                <IoMdMale className="opacity-70 text-sm min-w-fit" />
               ) : (
-                <IoMdFemale className="opacity-70 text-sm" />
+                <IoMdFemale className="opacity-70 text-sm min-w-fit" />
               )}
               <span>{details.gender == "male" ? "Male" : "Female"}</span>
             </div>
 
             <div className="w-full text-[0.97rem] flex gap-1 items-center text-gray-700">
-              <LuHouse className="opacity-70 text-sm" />
+              <LuHouse className="opacity-70 text-sm min-w-fit" />
               <span>{details.address}</span>
             </div>
 
@@ -147,7 +148,9 @@ export default function ApplicationDetails({
           </div>
           <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
             <span className="min-w-fit">Grade: </span>
-            <span className="font-medium ml-1!">{details.grade}</span>
+            <span className="font-medium ml-1!">
+              {capitalize(details.grade)}
+            </span>
           </div>
           <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
             <span className="min-w-fit">Category: </span>

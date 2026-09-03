@@ -33,6 +33,7 @@ export default function CaApplicationsTable(): ReactNode {
       columnVisibility: {
         phoneNumber: false,
         hasPreviousExperience: false,
+        canGet: false,
       },
     },
     pageCount: data?.selectedCount

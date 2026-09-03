@@ -5,6 +5,10 @@ export const navLinks: { href: string; name: string }[] = [
     name: "Home",
   },
   {
+    href: "https://mscsc-events.netlify.app/home",
+    name: "Events",
+  },
+  {
     href: "/about",
     name: "About Us",
   },
@@ -29,6 +33,10 @@ export const footerLinks: { [key: string]: { title: string; link: string }[] } =
       {
         title: "Home",
         link: "/",
+      },
+      {
+        title: "Events",
+        link: "https://mscsc-events.netlify.app/home",
       },
       {
         title: "About Us",

@@ -149,7 +149,9 @@ export default function RegistrationDetails({
           </div>
           <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
             <span className="min-w-fit">Grade: </span>
-            <span className="font-medium ml-1!">{details.grade}</span>
+            <span className="font-medium ml-1!">
+              {capitalize(details.grade)}
+            </span>
           </div>
           <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
             <span className="min-w-fit">Category: </span>
