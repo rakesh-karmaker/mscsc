@@ -180,6 +180,7 @@ export default function useFilterEventForm({
         details: segment.details || "",
         rules: segment.rules || "",
         maxTeamSize: segment.maxTeamSize?.toString() || "1",
+        category: (segment.category?.length == 4 ? [] : segment.category) || [],
         isPaidSegment: segment.isPaidSegment || false,
         fees: parseFloat(segment.fees) || 0,
         transactionPlatforms: segment.transactionPlatforms || [],

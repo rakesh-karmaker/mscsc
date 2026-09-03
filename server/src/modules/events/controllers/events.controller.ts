@@ -193,7 +193,7 @@ export async function getEventBySlug(
             .lean();
 
           res.status(200).json({
-            message: "Sign in successful",
+            message: "Data fetched successfully",
             eventSlug: event.eventSlug,
             dataUrl: event.dataUrl,
             hideRegistrationForm: event.hideRegistrationForm,
@@ -205,6 +205,7 @@ export async function getEventBySlug(
               name: registration.name,
               email: registration.email,
               photoUrl: registration.photoUrl,
+              grade: registration.grade,
               paidSoloSegments: registration.paidSoloSegments,
               teamSegmentsData,
               status: registration.status,

@@ -21,6 +21,7 @@ const DEFAULT_SEGMENT = {
   rules: "",
   isPaidSegment: false,
   fees: "0",
+  category: [],
 };
 
 type SegmentsSectionFieldsProps = {

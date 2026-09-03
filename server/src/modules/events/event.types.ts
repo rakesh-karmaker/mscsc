@@ -244,6 +244,7 @@ export type SegmentType = {
   details: string;
   rules: string;
   maxTeamSize: string;
+  category: string[];
   isPaidSegment: boolean;
   fees: number;
   transactionMethods?: {

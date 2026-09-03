@@ -128,6 +128,7 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
           details: segment.details,
           rules: segment.rules,
           maxTeamSize: segment.maxTeamSize,
+          category: segment.category || [],
           isPaidSegment: segment.isPaidSegment || false,
           fees: segment.fees || 0,
           transactionPlatforms: Object.keys(segment.transactionMethods || {}),

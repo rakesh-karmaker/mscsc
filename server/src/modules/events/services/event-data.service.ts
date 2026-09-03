@@ -165,6 +165,7 @@ export async function buildEventData(
         details: segment.details,
         rules: segment.rules,
         maxTeamSize: segment.maxTeamSize,
+        category: segment.category || [],
         isPaidSegment: segment.isPaidSegment || false,
         fees:
           typeof segment.fees === "string"

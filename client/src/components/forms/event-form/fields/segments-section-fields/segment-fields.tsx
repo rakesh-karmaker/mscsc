@@ -1,7 +1,7 @@
 import { Activity, useState, type ReactNode } from "react";
 import { useWatch, type Control, type SetValueConfig } from "react-hook-form";
 import FormLayout from "../../form-layout";
-import { Stack, TextField } from "@mui/material";
+import { Checkbox, FormControlLabel, Stack, TextField } from "@mui/material";
 import { icons } from "@/services/data/icons-data";
 import RichTextEditor from "@/lib/rich-text-editor/rich-text-editor";
 import SelectIconField from "@/components/ui/select-icon-field";
@@ -59,6 +59,11 @@ export default function SegmentFields({
       control,
       name: `segmentsData.${index}.isPaidSegment`,
     }) as boolean) || false;
+  const selectedCategory =
+    (useWatch({
+      control,
+      name: `segmentsData.${index}.category`,
+    }) as string[]) || [];
 
   const [isOpen, setIsOpen] = useState<boolean>(title ? false : true);
   const [selectedMethods, setSelectedMethods] = useState<string[]>(
@@ -246,6 +251,77 @@ export default function SegmentFields({
                 defaultValue={"0"}
               />
             </Stack>
+
+            <div className="w-full h-full flex flex-col gap-1.5">
+              <div className="w-full flex flex-wrap gap-4">
+                {["Primary", "Junior", "Secondary", "Higher Secondary"].map(
+                  (category) => (
+                    <div
+                      key={category}
+                      className="flex items-center px-1! py-1! pl-4! rounded-sm border border-primary hover:bg-light-gray/20! transition-colors cursor-pointer"
+                      style={{
+                        background:
+                          selectedCategory.includes(category) ||
+                          selectedCategory.length === 0
+                            ? "color-mix(in oklab, var(--light-highlighted-color) 20%, transparent)"
+                            : "color-mix(in oklab, var(--white) 20%, transparent)",
+                      }}
+                      onClick={() => {
+                        let updatedSegments;
+                        let currentCategories =
+                          selectedCategory.length > 0
+                            ? selectedCategory
+                            : [
+                                "Primary",
+                                "Junior",
+                                "Secondary",
+                                "Higher Secondary",
+                              ];
+
+                        if (currentCategories.includes(category)) {
+                          updatedSegments = currentCategories.filter(
+                            (item) => item !== category,
+                          );
+                        } else {
+                          updatedSegments = [...currentCategories, category];
+                        }
+
+                        setValue(
+                          `segmentsData.${index}.category`,
+                          updatedSegments,
+                        );
+                      }}
+                    >
+                      <div className="pointer-events-none select-none">
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={
+                                selectedCategory.includes(category) ||
+                                selectedCategory.length === 0
+                              }
+                              style={{
+                                color: "var(--primary-color)",
+                              }}
+                            />
+                          }
+                          label={category}
+                          style={{
+                            pointerEvents: "none",
+                            color: "var(--primary-color)",
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ),
+                )}
+              </div>
+              {errors.segmentsData?.[index]?.category && (
+                <p className="text-red-600 text-sm">
+                  {errors.segmentsData?.[index]?.category.message as string}
+                </p>
+              )}
+            </div>
 
             <div className="w-full h-full flex flex-col gap-1.5">
               <RadioField
