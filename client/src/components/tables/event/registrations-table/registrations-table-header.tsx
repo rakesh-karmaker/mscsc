@@ -304,7 +304,7 @@ export default function getRegistrationsTableColumns(
           <span
             className={`px-2! py-1! rounded-xs text-xs font-medium ${colorClasses}`}
           >
-            {capitalize(row.original.transactionMethod)}
+            {capitalize(row.original?.transactionMethod || "N/A")}
           </span>
         );
       },
