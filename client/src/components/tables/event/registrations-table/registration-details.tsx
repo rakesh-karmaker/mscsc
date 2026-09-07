@@ -126,18 +126,20 @@ export default function RegistrationDetails({
           <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
             <span>Transaction Method: </span>
             <span className="font-medium ml-1!">
-              {capitalize(details.transactionMethod)}
+              {capitalize(details?.transactionMethod || "N/A")}
             </span>
           </div>
           <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
             <span>Phone Number: </span>
             <span className="font-medium ml-1!">
-              {details.transactionPhoneNumber}
+              {details?.transactionPhoneNumber || "N/A"}
             </span>
           </div>
           <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
             <span>Transaction ID: </span>
-            <span className="font-medium ml-1!">{details.transactionId}</span>
+            <span className="font-medium ml-1!">
+              {details?.transactionId || "N/A"}
+            </span>
           </div>
         </div>
         <div>
@@ -145,8 +147,20 @@ export default function RegistrationDetails({
           <div className="flex flex-col gap-1"></div>
           <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
             <span className="min-w-fit">Institution Name: </span>
-            <span className="font-medium ml-1!">{details.institution}</span>
+            <span className="font-medium ml-1!">
+              {details?.institution || "N/A"}
+            </span>
           </div>
+
+          {details?.branch && details?.branch !== "N/A" ? (
+            <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
+              <span className="min-w-fit">Branch: </span>
+              <span className="font-medium ml-1!">
+                {details?.branch || "N/A"}
+              </span>
+            </div>
+          ) : null}
+
           <div className="w-full text-[0.97rem] flex flex-wrap text-gray-700">
             <span className="min-w-fit">Grade: </span>
             <span className="font-medium ml-1!">

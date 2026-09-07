@@ -8,6 +8,8 @@ export default function filterEventJSONData(data: any): FilteredEventDataType {
   const filteredData: FilteredEventDataType = {} as FilteredEventDataType;
 
   filteredData.eventName = data.eventName;
+  filteredData.eventShortName = data.eventShortName || "";
+  filteredData.eventType = data.eventType || "inter";
   filteredData.eventDate = data.eventDate;
   filteredData.eventLocation = data.eventLocation;
   filteredData.eventDescription = data.eventDescription;

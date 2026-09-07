@@ -36,8 +36,6 @@ export default function EventForm({
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  console.log("defaultValues", defaultValues);
-
   const [selectedSections, setSelectedSections] = useState<string[]>(
     defaultValues?.sections || [],
   );
@@ -313,6 +311,7 @@ export default function EventForm({
               errors={errors}
               setValue={setValue}
               getValues={getValues}
+              control={control}
             />
 
             {/* website CA Application form fields */}

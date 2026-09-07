@@ -18,6 +18,7 @@ const EventRegistrationSchema =
       photoPublicId: { type: String, required: true },
 
       institution: { type: String, required: true },
+      branch: { type: String, default: "N/A" },
       grade: { type: String, required: true },
 
       segments: { type: [String], required: true },
@@ -42,9 +43,9 @@ const EventRegistrationSchema =
         default: [],
       },
 
-      transactionMethod: { type: String, required: true },
-      transactionPhoneNumber: { type: String, required: true },
-      transactionId: { type: String, required: true },
+      transactionMethod: { type: String },
+      transactionPhoneNumber: { type: String },
+      transactionId: { type: String },
 
       reference: { type: String, default: "N/A" },
       clubReference: { type: String, default: "N/A" },

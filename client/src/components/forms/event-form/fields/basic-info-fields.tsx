@@ -7,6 +7,9 @@ import type { Dayjs } from "dayjs";
 import { DatePicker } from "@/components/ui/date-picker";
 import FileInput from "@/components/ui/file-input";
 import dayjs from "dayjs";
+import SelectIconField from "@/components/ui/select-icon-field";
+import LuSchool from "~icons/lucide/school";
+import FaGlobeAsia from "~icons/fa-solid/globe-asia";
 
 type BasicInfoFieldsProps = {
   register: any;
@@ -100,6 +103,40 @@ export default function BasicInfoFields({
               />
             )}
           />
+        </Stack>
+
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={2}
+          sx={{ width: "100%" }}
+        >
+          <TextField
+            fullWidth
+            variant="outlined"
+            {...register("eventShortName", {
+              required: "Event short name is required",
+            })}
+            label="Event Short Name"
+            error={Boolean(errors.eventShortName)}
+            helperText={errors.eventShortName?.message as string}
+            placeholder="Short name for the event (e.g., 'Explorion')"
+          />
+
+          <SelectIconField
+            id={`eventType`}
+            name={`eventType`}
+            icons={{
+              intra: <LuSchool />,
+              inter: <FaGlobeAsia />,
+              both: <FaGlobeAsia />,
+            }}
+            control={control}
+            hasErrors={Boolean(errors?.eventType)}
+            errorMessage={errors.eventType?.message as string}
+            defaultValue="inter"
+          >
+            Event Type
+          </SelectIconField>
         </Stack>
 
         <TextField

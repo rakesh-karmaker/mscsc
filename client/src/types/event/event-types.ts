@@ -56,6 +56,8 @@ export type FaqType = {
 export type BasicInfoType = {
   template: string;
   eventName: string;
+  eventShortName: string;
+  eventType: "intra" | "inter" | "both";
   eventDate: string;
   eventLocation: string;
   eventDescription: string;
@@ -134,6 +136,8 @@ export type EventFormDataType = {
 
 export interface FilteredEventDataType {
   eventName: string;
+  eventShortName: string;
+  eventType: "intra" | "inter" | "both";
   eventDate: string;
   eventLocation: string;
   eventDescription: string;

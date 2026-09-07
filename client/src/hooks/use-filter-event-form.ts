@@ -29,6 +29,8 @@ export default function useFilterEventForm({
   const basicInfoFields: BasicInfoType = {
     template: "Explorion", // default template change it later if you want
     eventName: data.eventName,
+    eventShortName: data.eventShortName,
+    eventType: data.eventType,
     eventDate: data.eventDate,
     eventLocation: data.eventLocation,
     eventDescription: data.eventDescription,

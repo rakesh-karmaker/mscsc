@@ -5,6 +5,12 @@ const EventSchema = new mongoose.Schema<EventSchemaType>(
   {
     eventSlug: { type: String, unique: true, required: true },
     eventName: { type: String, required: true },
+    eventShortName: { type: String, required: true, default: "N/A" },
+    eventType: {
+      type: String,
+      enum: ["intra", "inter", "both"],
+      required: true,
+    },
 
     eventLogoUrl: { type: String, required: true },
     eventLogoPublicId: { type: String, required: true },

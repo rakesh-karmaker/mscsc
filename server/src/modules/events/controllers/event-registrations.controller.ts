@@ -139,7 +139,7 @@ export async function getRegistrationById(
     const registration = await EventRegistration.findById(registrationId)
       .lean()
       .select(
-        "_id eventId name email phoneNumber facebookUrl photoUrl institution grade segments transactionMethod transactionPhoneNumber transactionId registrationDate status rejectionReason code reference clubReference paidSoloSegments hasAttended",
+        "_id eventId name email phoneNumber facebookUrl photoUrl institution branch grade segments transactionMethod transactionPhoneNumber transactionId registrationDate status rejectionReason code reference clubReference paidSoloSegments hasAttended",
       );
     if (!registration) {
       res.status(404).json({ message: "Registration not found" });
@@ -251,13 +251,14 @@ export async function registerForEvent(
       name: string;
       phoneNumber: string;
       facebookUrl: string;
-      institution: string;
+      institution?: string;
+      branch?: string;
       grade: string;
       category: string;
       segments: string[];
-      transactionMethod: string;
-      transactionPhoneNumber: string;
-      transactionId: string;
+      transactionMethod?: string;
+      transactionPhoneNumber?: string;
+      transactionId?: string;
       reference?: string;
       clubReference?: string;
     };
@@ -300,7 +301,14 @@ export async function registerForEvent(
       facebookUrl: cleanedBody.facebookUrl.trim(),
       photoUrl: url,
       photoPublicId: imgId,
-      institution: cleanedBody.institution.trim(),
+      institution:
+        event.eventType === "intra"
+          ? "Monipur High School"
+          : cleanedBody.institution?.trim(),
+      branch:
+        event.eventType === "intra"
+          ? cleanedBody.branch?.trim() || "N/A"
+          : "N/A",
       grade: cleanedBody.grade.trim(),
       segments: cleanedBody.segments.map((segment) =>
         generateSlugFromTitle(segment, false),

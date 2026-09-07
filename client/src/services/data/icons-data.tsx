@@ -31,6 +31,11 @@ import IoMdRocket from "~icons/ion/md-rocket";
 import LiaAtomSolid from "~icons/la/atom";
 import LuDivide from "~icons/lucide/divide";
 import LuLanguages from "~icons/lucide/languages";
+import LuShapes from "~icons/lucide/shapes";
+import LuCode from "~icons/lucide/code-xml";
+import LuCalculator from "~icons/lucide/calculator";
+import LuMap from "~icons/lucide/map";
+import GoPeople from "~icons/ic/baseline-people-alt";
 import TbMath from "~icons/tabler/math";
 import MdGames from "~icons/ic/baseline-games";
 
@@ -46,8 +51,10 @@ export const generalIcons: { [iconName: string]: ReactNode } = {
   atom: <LiaAtomSolid />,
   brain: <FaBrain />,
   bulb: <HiLightBulb />,
+  calculator: <LuCalculator />,
   chess: <GiChessQueen />,
   clock: <FaClock />,
+  code: <LuCode />,
   cube: <FaCube />,
   debate: <BiSolidConversation />,
   division: <LuDivide />,
@@ -56,13 +63,16 @@ export const generalIcons: { [iconName: string]: ReactNode } = {
   globe: <FaGlobeAsia />,
   it: <FaIt />,
   language: <LuLanguages />,
+  map: <LuMap />,
   math: <TbMath />,
   movie: <IcMovie />,
   paint: <FaPalette />,
   pen: <FaPen />,
+  people: <GoPeople />,
   puzzle: <FaPuzzlePiece />,
   robot: <FaRobot />,
   rocket: <IoMdRocket />,
+  shapes: <LuShapes />,
   speech: <IcAudio />,
   spell: <IcSpell />,
   star: <FaStar />,

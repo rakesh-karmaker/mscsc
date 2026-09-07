@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { type SetValueConfig } from "react-hook-form";
+import { useWatch, type Control, type SetValueConfig } from "react-hook-form";
 import FormLayout from "../../form-layout";
 import RadioField from "@/components/ui/radio-field";
 import { Stack, TextField } from "@mui/material";
@@ -12,6 +12,7 @@ type RegistrationFormFields = {
   errors: { [key: string]: any };
   setValue: (name: string, value: unknown, config?: SetValueConfig) => void;
   getValues: (payload?: string | string[]) => Object;
+  control: Control<any>;
 };
 
 export default function RegistrationFormFields({
@@ -19,10 +20,16 @@ export default function RegistrationFormFields({
   errors,
   setValue,
   getValues,
+  control,
 }: RegistrationFormFields): ReactNode {
   const [hasRegistrationForm, setHasRegistrationForm] = useState<string>(
     getValues("isInnerRegistration") ? "yes" : "no",
   );
+  const fees = useWatch({
+    control,
+    name: "formData.fees",
+  });
+
   const [selectedMethods, setSelectedMethods] = useState<string[]>(
     getValues("formData.transactionMethods")
       ? Object.keys(getValues("formData.transactionMethods") as Object)
@@ -92,6 +99,7 @@ export default function RegistrationFormFields({
               label="Registration Fees"
               error={Boolean(errors.formData?.fees)}
               helperText={errors.formData?.fees?.message as string}
+              placeholder="0 for free registration"
             />
           </Stack>
 
@@ -113,88 +121,101 @@ export default function RegistrationFormFields({
             />
           </FormLayout>
 
-          <FormLayout
-            title="Payment Methods"
-            textSize="lg"
-            fontWeight="medium"
-            description={
-              <p className="w-full  h-full">
-                Specify the payment methods available for registration.
-              </p>
-            }
-            id="payment-methods"
+          <div
+            className="w-full h-fit overflow-hidden grid transition-all duration-200 ease-in-out"
+            style={{
+              gridTemplateRows: fees == "0" ? "0fr" : "1fr",
+            }}
           >
-            <div className="w-full flex flex-col gap-3">
-              {["bkash", "nagad", "rocket"].map((method) => (
-                <div key={method} className="flex flex-col gap-3">
-                  <PaymentMethodCard
-                    platform={method}
-                    isSelected={selectedMethods.includes(method)}
-                    onClick={(platform) => {
-                      let updatedMethods = [...selectedMethods];
-                      if (updatedMethods.includes(platform)) {
-                        updatedMethods = updatedMethods.filter(
-                          (m) => m !== platform,
-                        );
-                      } else {
-                        updatedMethods.push(platform);
-                      }
-                      setValue(`formData.transactionPlatforms`, updatedMethods);
-                      setSelectedMethods(updatedMethods);
-                    }}
-                  />
-
-                  {selectedMethods.includes(method) && (
-                    <Stack
-                      direction={{ xs: "column", sm: "row" }}
-                      spacing={2}
-                      sx={{ width: "100%", marginBottom: "16px" }}
-                    >
-                      <TextField
-                        fullWidth
-                        variant="outlined"
-                        {...register(
-                          `formData.transactionMethods.${method}.number`,
-                          {
-                            required:
-                              selectedMethods.includes(method) &&
-                              hasRegistrationForm === "yes"
-                                ? "Account number is required"
-                                : false,
-                          },
-                        )}
-                        label="Account Number"
-                        error={Boolean(
-                          errors.formData?.transactionMethods?.[method]?.number,
-                        )}
-                        helperText={
-                          errors.formData?.transactionMethods?.[method]?.number
-                            ?.message as string
-                        }
-                        placeholder="e.g., 01XXXXXXXXX"
+            <div className="flex flex-col gap-4 pt-2! h-fit w-fit overflow-hidden">
+              <FormLayout
+                title="Payment Methods"
+                textSize="lg"
+                fontWeight="medium"
+                description={
+                  <p className="w-full  h-full">
+                    Specify the payment methods available for registration.
+                  </p>
+                }
+                id="payment-methods"
+              >
+                <div className="w-full flex flex-col gap-3">
+                  {["bkash", "nagad", "rocket"].map((method) => (
+                    <div key={method} className="flex flex-col gap-3">
+                      <PaymentMethodCard
+                        platform={method}
+                        isSelected={selectedMethods.includes(method)}
+                        onClick={(platform) => {
+                          let updatedMethods = [...selectedMethods];
+                          if (updatedMethods.includes(platform)) {
+                            updatedMethods = updatedMethods.filter(
+                              (m) => m !== platform,
+                            );
+                          } else {
+                            updatedMethods.push(platform);
+                          }
+                          setValue(
+                            `formData.transactionPlatforms`,
+                            updatedMethods,
+                          );
+                          setSelectedMethods(updatedMethods);
+                        }}
                       />
-                      <div className="w-fit">
-                        <FileInput
-                          register={register}
-                          name={`${method}QrCode`}
-                          errors={errors}
-                          addText={false}
-                          className="p-[14px_22px]! min-w-fit!"
+
+                      {selectedMethods.includes(method) && (
+                        <Stack
+                          direction={{ xs: "column", sm: "row" }}
+                          spacing={2}
+                          sx={{ width: "100%", marginBottom: "16px" }}
                         >
-                          {getValues(
-                            `formData.transactionMethods.${method}.qrCodeUrl`,
-                          )
-                            ? "Change"
-                            : "Upload"}{" "}
-                          QR Code
-                        </FileInput>
-                      </div>
-                    </Stack>
-                  )}
+                          <TextField
+                            fullWidth
+                            variant="outlined"
+                            {...register(
+                              `formData.transactionMethods.${method}.number`,
+                              {
+                                required:
+                                  selectedMethods.includes(method) &&
+                                  hasRegistrationForm === "yes"
+                                    ? "Account number is required"
+                                    : false,
+                              },
+                            )}
+                            label="Account Number"
+                            error={Boolean(
+                              errors.formData?.transactionMethods?.[method]
+                                ?.number,
+                            )}
+                            helperText={
+                              errors.formData?.transactionMethods?.[method]
+                                ?.number?.message as string
+                            }
+                            placeholder="e.g., 01XXXXXXXXX"
+                          />
+                          <div className="w-fit">
+                            <FileInput
+                              register={register}
+                              name={`${method}QrCode`}
+                              errors={errors}
+                              addText={false}
+                              className="p-[14px_22px]! min-w-fit!"
+                            >
+                              {getValues(
+                                `formData.transactionMethods.${method}.qrCodeUrl`,
+                              )
+                                ? "Change"
+                                : "Upload"}{" "}
+                              QR Code
+                            </FileInput>
+                          </div>
+                        </Stack>
+                      )}
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </FormLayout>
             </div>
-          </FormLayout>
+          </div>
         </div>
       </div>
     </FormLayout>

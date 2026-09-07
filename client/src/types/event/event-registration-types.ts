@@ -20,12 +20,13 @@ export interface EventRegistrationDetails {
   facebookUrl: string;
   photoUrl: string;
   institution: string;
+  branch?: string;
   grade: string;
   segments: string[];
   paidSoloSegments: PaidSoloSegment[];
-  transactionMethod: "bkash" | "nagad" | "rocket" | "Other";
-  transactionPhoneNumber: string;
-  transactionId: string;
+  transactionMethod?: "bkash" | "nagad" | "rocket" | "Other";
+  transactionPhoneNumber?: string;
+  transactionId?: string;
   registrationDate: string;
   status: "pending" | "validated" | "rejected";
   rejectionReason?: string;

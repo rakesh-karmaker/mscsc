@@ -4,6 +4,8 @@ export interface EventSchemaType extends mongoose.Document {
   _id: mongoose.Types.ObjectId;
   eventSlug: string;
   eventName: string;
+  eventType: "intra" | "inter" | "both";
+  eventShortName: string;
 
   eventLogoUrl: string;
   eventLogoPublicId: string;
@@ -55,6 +57,7 @@ export interface EventRegistrationSchemaType extends mongoose.Document {
   photoPublicId: string;
 
   institution: string;
+  branch?: string;
   grade: string;
 
   segments: string[];
@@ -69,9 +72,9 @@ export interface EventRegistrationSchemaType extends mongoose.Document {
     registrationDate: string;
   }[];
 
-  transactionMethod: string;
-  transactionPhoneNumber: string;
-  transactionId: string;
+  transactionMethod?: string;
+  transactionPhoneNumber?: string;
+  transactionId?: string;
 
   reference: string;
   clubReference: string;
@@ -178,6 +181,9 @@ type BasicInfoType = {
   template: string;
   eventName: string;
   eventDate: string;
+  eventType: "intra" | "inter" | "both";
+  eventShortName: string;
+
   eventLocation: string;
   eventDescription: string;
   registrationUrl: string;

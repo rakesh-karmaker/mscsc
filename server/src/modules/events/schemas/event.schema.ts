@@ -4,6 +4,8 @@ export const eventFormSchema = Joi.object({
   basicInfo: Joi.object({
     template: Joi.string().required(),
     eventName: Joi.string().required(),
+    eventShortName: Joi.string().required(),
+    eventType: Joi.string().valid("intra", "inter", "both").required(),
     eventDate: Joi.string().required(),
     eventLocation: Joi.string().required(),
     eventDescription: Joi.string().required(),

@@ -297,6 +297,8 @@ export async function createEvent(req: Request, res: Response): Promise<void> {
     const newEvent = await Event.create({
       eventSlug,
       eventName: eventData.eventName,
+      eventType: eventData.eventType,
+      eventShortName: eventData.eventShortName,
 
       ...assets,
 
@@ -457,6 +459,8 @@ export async function editEvent(req: Request, res: Response): Promise<void> {
       {
         eventSlug: newSlug,
         eventName: eventData.eventName,
+        eventType: eventData.eventType,
+        eventShortName: eventData.eventShortName,
 
         ...assets,
 
