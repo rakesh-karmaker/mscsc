@@ -61,12 +61,22 @@ export default function SegmentsDistributionChart({
     return <Loader />;
   }
 
-  // Segment distribution data
-  const segmentDistribution = Object.entries(data.segmentCounts).map(
-    ([label, value]) => ({ label, value }),
+  // filter the date so that top 6 segments are shown and the rest are grouped into "Other"
+  const sortedSegments = Object.entries(data.segmentCounts).sort(
+    (a, b) => b[1] - a[1],
   );
+  const topSegments = sortedSegments.slice(0, 6);
+  const otherSegments = sortedSegments.slice(6);
 
-  console.log(segmentDistribution);
+  // Segment distribution data
+  const segmentDistribution = topSegments.map(([label, value]) => ({
+    label,
+    value,
+  }));
+  if (otherSegments.length > 0) {
+    const otherValue = otherSegments.reduce((sum, [, value]) => sum + value, 0);
+    segmentDistribution.push({ label: "Other", value: otherValue });
+  }
 
   const size =
     (1650 > window.innerWidth && window.innerWidth > 1530) ||
